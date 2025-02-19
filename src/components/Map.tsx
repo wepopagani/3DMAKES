@@ -46,12 +46,12 @@ export default function Map() {
     version: "beta"
   });
 
-  const [AdvancedMarkerElement, setAdvancedMarkerElement] = useState(null);
+  const [AdvancedMarkerElement, setAdvancedMarkerElement] = useState<any>(null);
 
   useEffect(() => {
-    if (isLoaded) {
+    if (isLoaded && window.google) {
       const { AdvancedMarkerElement } = google.maps.marker;
-      setAdvancedMarkerElement(AdvancedMarkerElement);
+      setAdvancedMarkerElement(() => AdvancedMarkerElement);
     }
   }, [isLoaded]);
 
