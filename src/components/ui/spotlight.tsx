@@ -1,5 +1,5 @@
 'use client';
-import React, { useRef, useState, useCallback, useEffect } from 'react';
+import { useRef, useState, useCallback, useEffect } from 'react';
 import { motion, useSpring, useTransform, SpringOptions } from 'framer-motion';
 import { cn } from '../../lib/utils';
 
@@ -12,6 +12,7 @@ type SpotlightProps = {
 export function Spotlight({
   className,
   size = 200,
+  
   springOptions = { bounce: 0 },
 }: SpotlightProps) {
   const containerRef = useRef<HTMLDivElement>(null);

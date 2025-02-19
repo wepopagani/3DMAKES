@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import THREE from '../utils/threeInstance';
 import { Canvas, useFrame, useLoader } from '@react-three/fiber';
 import { OrbitControls, Text } from '@react-three/drei';
@@ -58,16 +58,30 @@ interface CloudProps {
   opacity: number;
   speed: number;
   width: number;
-  depth: number;
   segments: number;
   position: [number, number, number];
 }
 
-const CustomCloud: React.FC<CloudProps> = ({ opacity, speed, width, depth, segments, position }) => {
-  // Implementazione del cloud personalizzato
+const CustomCloud: React.FC<CloudProps> = ({ position, opacity, speed, width, segments }) => {
+  const meshRef = useRef<THREE.Mesh>(null);
+  
+  useFrame((state) => {
+    if (meshRef.current) {
+      // Fai muovere le nuvole lentamente
+      meshRef.current.position.x = position[0] + Math.sin(state.clock.elapsedTime * speed) * 2;
+      meshRef.current.rotation.y = state.clock.elapsedTime * 0.1;
+    }
+  });
+
   return (
-    <mesh position={position}>
-      {/* ... implementazione cloud ... */}
+    <mesh ref={meshRef} position={position}>
+      <sphereGeometry args={[width / 20, segments, segments]} />
+      <meshPhongMaterial 
+        color="#ffffff"
+        transparent={true}
+        opacity={opacity}
+        flatShading={true}
+      />
     </mesh>
   );
 };
@@ -152,7 +166,6 @@ function CityScene() {
         opacity={0.5}
         speed={0.4}
         width={100}
-        depth={1.5}
         segments={20}
         position={[0, 20, 0]}
       />

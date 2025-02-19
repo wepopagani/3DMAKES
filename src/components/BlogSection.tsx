@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { Language, translations } from '../utils/translations';
 import { blogPosts } from '../utils/content';
 

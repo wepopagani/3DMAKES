@@ -1,4 +1,4 @@
-import React, { useRef, Suspense, useState, useEffect } from 'react';
+import { useRef, Suspense, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera, ContactShadows } from '@react-three/drei';
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
@@ -29,7 +29,7 @@ function Model({ file, fileType, onAnalysis }: ModelViewerProps) {
   const [isRotating, setIsRotating] = useState(true);
   
   // Handle auto-rotation
-  useFrame((state) => {
+  useFrame((_) => {
     if (modelRef.current && isRotating) {
       modelRef.current.rotation.y += 0.01;
     }
