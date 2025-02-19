@@ -7,7 +7,7 @@ interface QuoteCalculatorProps {
 }
 
 const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
-const API_URL = "http://192.168.1.235:5000/upload"; // IP del Raspberry Pi
+const API_URL = "https://a1b9-89-217-108-88.ngrok-free.app/upload"; // IP del Raspberry Pi
 
 // Definiamo le opzioni di qualità come tab interattive
 const QUALITY_OPTIONS = [
