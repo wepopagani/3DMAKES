@@ -38,6 +38,15 @@ const SearchSection: React.FC<{ language: Language }> = ({ language }) => {
       .gsib_a {
         padding: 5px 9px !important;
       }
+      .gsc-results-wrapper-overlay {
+        width: 80% !important;
+        max-width: 800px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+      }
+      .gsc-results {
+        width: 100% !important;
+      }
     `;
     document.head.appendChild(styleSheet);
   }, []);
@@ -76,7 +85,7 @@ const styles = {
     fontWeight: 400
   },
   searchContainer: {
-    maxWidth: '400px',
+    maxWidth: '800px',
     margin: '0 auto',
     padding: '15px',
     background: 'transparent',
