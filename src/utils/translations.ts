@@ -106,6 +106,7 @@ export const translations = {
       viewDetails: "View Details",
       readMore: "See More Projects",
       showLess: "Show Less",
+      showMore: "Show More",
       categories: {
         industrial: "Industrial",
         architecture: "Architecture",
@@ -327,6 +328,7 @@ export const translations = {
       viewDetails: "Vedi Dettagli",
       readMore: "Vedi Altri Progetti",
       showLess: "Mostra Meno",
+      showMore: "Mostra altri progetti",
       categories: {
         industrial: "Industriale",
         architecture: "Architettura",

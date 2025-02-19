@@ -124,3 +124,10 @@ img.loaded {
 body {
   overscroll-behavior-y: none;
 }
+
+@font-face {
+  font-family: 'NomeTuoFont';
+  src: url('./fonts/tuofont.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}

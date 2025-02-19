@@ -8,8 +8,14 @@ interface ProjectsSectionProps {
 
 export default function ProjectsSection({ language }: ProjectsSectionProps) {
   const t = translations[language].projects;
-  const projectsList = projects[language];
-  const [selectedProject, setSelectedProject] = useState<(typeof projectsList)[0] | null>(null);
+  const allProjects = projects[language];
+  
+  // Aggiungiamo gli stati per gestire mostra più/meno e il progetto selezionato
+  const [showAll, setShowAll] = useState(false);
+  const [selectedProject, setSelectedProject] = useState<(typeof allProjects)[0] | null>(null);
+
+  // Mostra solo 2 progetti o tutti in base allo state showAll
+  const displayedProjects = showAll ? allProjects : allProjects.slice(0, 2);
 
   return (
     <section id="projects" className="py-20 bg-gray-900">
@@ -19,7 +25,7 @@ export default function ProjectsSection({ language }: ProjectsSectionProps) {
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {projectsList.map((project) => (
+          {displayedProjects.map((project) => (
             <div
               key={project.id}
               className="bg-gray-800/50 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-sm hover:transform hover:-translate-y-1 transition-all cursor-pointer"
@@ -58,6 +64,18 @@ export default function ProjectsSection({ language }: ProjectsSectionProps) {
             </div>
           ))}
         </div>
+
+        {/* Bottone Mostra Più/Meno */}
+        {allProjects.length > 2 && (
+          <div className="mt-8 text-center">
+            <button
+              onClick={() => setShowAll(!showAll)}
+              className="px-6 py-3 bg-red-600 text-white rounded-lg text-base font-semibold hover:bg-red-700 transition-colors shadow-lg hover:shadow-red-500/20"
+            >
+              {showAll ? t.showLess : t.showMore}
+            </button>
+          </div>
+        )}
 
         {/* Project Modal */}
         {selectedProject && (
