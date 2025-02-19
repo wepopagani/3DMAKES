@@ -1,4 +1,5 @@
-import { GoogleMap, useLoadScript, MarkerF } from '@react-google-maps/api';
+import { GoogleMap, useLoadScript } from '@react-google-maps/api';
+import { useState, useEffect } from 'react';
 
 const COORDINATES = {
   lat: 46.00558,
@@ -41,8 +42,18 @@ const mapOptions = {
 
 export default function Map() {
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: "AIzaSyAe1QXm-QU1hMjCVEggueQCHGpFwUSNDYY"
+    googleMapsApiKey: "AIzaSyAe1QXm-QU1hMjCVEggueQCHGpFwUSNDYY",
+    version: "beta"
   });
+
+  const [AdvancedMarkerElement, setAdvancedMarkerElement] = useState(null);
+
+  useEffect(() => {
+    if (isLoaded) {
+      const { AdvancedMarkerElement } = google.maps.marker;
+      setAdvancedMarkerElement(AdvancedMarkerElement);
+    }
+  }, [isLoaded]);
 
   const ErrorComponent = () => (
     <div className="w-full h-full bg-gray-800 rounded-lg flex items-center justify-center p-4">
@@ -94,14 +105,12 @@ export default function Map() {
       center={COORDINATES}
       options={mapOptions}
     >
-      <MarkerF
-        position={COORDINATES}
-        title="3DMAKES - Via Pietro Peri 9E, Lugano"
-        icon={{
-          url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png",
-          scaledSize: new window.google.maps.Size(40, 40)
-        }}
-      />
+      {isLoaded && AdvancedMarkerElement && (
+        <AdvancedMarkerElement
+          position={COORDINATES}
+          title="3DMAKES - Via Pietro Peri 9E, Lugano"
+        />
+      )}
     </GoogleMap>
   );
 }
