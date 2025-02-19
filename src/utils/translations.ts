@@ -220,6 +220,11 @@ export const translations = {
       }
     },
 
+    search: {
+      title: "Search Your 3D Model",
+      subtitle: "Not sure what to print? Get inspired by the search engine!"
+    },
+
   },
 
   it: {
@@ -440,6 +445,11 @@ export const translations = {
         process: "Il processo di stampa 3D inizia con il tuo modello 3D. Lo analizzeremo, suggeriremo le impostazioni di stampa ottimali e garantiremo la massima qualità del risultato.",
         default: "Sono qui per aiutarti con qualsiasi domanda sulla stampa 3D. Non esitare a chiedere informazioni sui materiali, prezzi o i nostri servizi!"
       }
+    },
+
+    search: {
+      title: "Cerca il Tuo Modello 3D",
+      subtitle: "Non sai cosa stampare? Lasciati ispirare dal motore di ricerca e scopri nuovi modelli 3D!"
     },
   }
 };

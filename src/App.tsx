@@ -9,6 +9,7 @@ import FAQSection from './components/FAQSection';
 import ContactSection from './components/ContactSection';
 import ChatBot from './components/ChatBot';
 import { Language, translations } from './utils/translations';
+import SearchSection from './components/SearchSection';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -127,6 +128,9 @@ function App() {
       {/* Services Section */}
       <ServicesSection language={language} />
       
+      {/* Search Section */}
+      <SearchSection language={language}/>
+
       {/* Quote Calculator Section */}
       <QuoteCalculator language={language} />
 
