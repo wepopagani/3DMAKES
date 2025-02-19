@@ -7,7 +7,7 @@ interface QuoteCalculatorProps {
 }
 
 const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
-const API_URL = "https://6559-89-217-108-88.ngrok-free.app/upload"; // IP del Raspberry Pi
+const API_URL = "http://192.168.1.235:5000/upload"; // IP del Raspberry Pi
 
 // Definiamo le opzioni di qualità come tab interattive
 const QUALITY_OPTIONS = [
@@ -40,10 +40,17 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const [material, setMaterial] = useState<string>("pla");
   const [price, setPrice] = useState<number | null>(null);
+  const [materialCost, setMaterialCost] = useState<number | null>(null);
+  const [electricityCost, setElectricityCost] = useState<number | null>(null);
+  const [depreciationCost, setDepreciationCost] = useState<number | null>(null);
 
   const handleFileChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setError(null);
     setPrintTime(null);
+    setPrice(null);
+    setMaterialCost(null);
+    setElectricityCost(null);
+    setDepreciationCost(null);
     setIsProcessing(false);
 
     const file = event.target.files?.[0];
@@ -66,16 +73,19 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
 
   const calculatePrice = (printTimeHours: number, materialGrams: number) => {
     // Costo materiale
-    const materialCost = materialGrams * 0.1;
+    const calculatedMaterialCost = materialGrams * 0.1;
+    setMaterialCost(calculatedMaterialCost);
     
     // Costo elettricità
-    const electricityCost = printTimeHours * 0.03;
+    const calculatedElectricityCost = printTimeHours * 0.03;
+    setElectricityCost(calculatedElectricityCost);
     
     // Costo ammortamento
-    const depreciationCost = printTimeHours * 15;
+    const calculatedDepreciationCost = printTimeHours * 0.25;
+    setDepreciationCost(calculatedDepreciationCost);
     
     // Somma costi base
-    const baseCost = materialCost + electricityCost + depreciationCost;
+    const baseCost = calculatedMaterialCost + calculatedElectricityCost + calculatedDepreciationCost;
     
     // Calcola il prezzo finale
     const finalPrice = baseCost * 1.35 * 1.35 * 1.2;
@@ -278,6 +288,21 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
                       <p className="text-white font-semibold text-xl">
                         <strong>Prezzo totale:</strong> {price.toFixed(2)} CHF
                       </p>
+                      {materialCost !== null && (
+                        <p className="text-white font-medium">
+                          Costo Materiale: {materialCost.toFixed(2)} CHF
+                        </p>
+                      )}
+                      {electricityCost !== null && (
+                        <p className="text-white font-medium">
+                          Costo Elettricità: {electricityCost.toFixed(2)} CHF
+                        </p>
+                      )}
+                      {depreciationCost !== null && (
+                        <p className="text-white font-medium">
+                          Costo Ammortamento: {depreciationCost.toFixed(2)} CHF
+                        </p>
+                      )}
                       {price === 10 && (
                         <p className="text-yellow-400 text-sm mt-2">
                           Il prezzo reale sarebbe inferiore, ma applichiamo il minimo di 10 CHF.
