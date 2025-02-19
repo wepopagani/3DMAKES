@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
-import THREE from '../utils/threeInstance';import { Canvas, useFrame, useLoader } from '@react-three/fiber';
-import { OrbitControls, Text, Cloud } from '@react-three/drei';
+import THREE from '../utils/threeInstance';
+import { Canvas, useFrame, useLoader } from '@react-three/fiber';
+import { OrbitControls, Text } from '@react-three/drei';
 
 function Building({ position, height, color }: { position: [number, number, number], height: number, color: string }) {
   return (
@@ -62,8 +63,13 @@ interface CloudProps {
   position: [number, number, number];
 }
 
-const Cloud: React.FC<CloudProps> = (props) => {
-  // ... implementazione cloud
+const CustomCloud: React.FC<CloudProps> = ({ opacity, speed, width, depth, segments, position }) => {
+  // Implementazione del cloud personalizzato
+  return (
+    <mesh position={position}>
+      {/* ... implementazione cloud ... */}
+    </mesh>
+  );
 };
 
 function CityScene() {
@@ -142,7 +148,7 @@ function CityScene() {
       <LocationMarker position={[0, 0, 0]} />
 
       {/* Atmospheric clouds */}
-      <Cloud 
+      <CustomCloud 
         opacity={0.5}
         speed={0.4}
         width={100}

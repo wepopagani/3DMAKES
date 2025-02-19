@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 import { SplineScene } from './ui/spline';
 import { Language, translations } from '../utils/translations';
 
@@ -6,17 +6,8 @@ interface HeroSectionProps {
   language: Language;
 }
 
-interface HeroTranslations {
-  title: string;
-  highlightedTitle: string;
-  remainingTitle: string;
-  subtitle: string;
-  getQuote: string;
-  ourServices: string;
-}
-
-export default function HeroSection({ language }: HeroSectionProps) {
-  const t = translations[language].hero;
+const HeroSection: FC<HeroSectionProps> = ({ language }) => {
+  const t = translations[language as keyof typeof translations].hero;
 
   return (
     <section id="home" className="min-h-screen relative flex items-center overflow-hidden bg-black/[0.96]">
@@ -24,7 +15,8 @@ export default function HeroSection({ language }: HeroSectionProps) {
         {/* Left content */}
         <div className="flex-1 relative z-10 lg:pr-8 mb-12 lg:mb-0">
           <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400">
-            <span className="text-red-500"></span> {t.title}
+            <span className="text-red-500">{t.highlightedTitle}</span>
+            {t.remainingTitle}
           </h1>
           <p className="text-xl md:text-2xl text-neutral-300 mb-12 max-w-2xl whitespace-pre-line">
             {t.subtitle}
@@ -82,4 +74,6 @@ export default function HeroSection({ language }: HeroSectionProps) {
       </div>
     </section>
   );
-}
+};
+
+export default HeroSection;

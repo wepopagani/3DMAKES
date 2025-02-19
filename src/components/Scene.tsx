@@ -78,12 +78,12 @@ function PrintingAnimations() {
     return pos;
   }, []);
 
-  useFrame(() => {
+  useFrame(({ clock }) => {
     groupRefs.current.forEach((group, i) => {
       if (group) {
         const pos = positions[i];
-        group.rotation.y = state.clock.getElapsedTime() * pos.speed;
-        group.position.y += Math.sin(state.clock.getElapsedTime() + pos.phase) * 0.002;
+        group.rotation.y = clock.getElapsedTime() * pos.speed;
+        group.position.y += Math.sin(clock.getElapsedTime() + pos.phase) * 0.002;
       }
     });
   });

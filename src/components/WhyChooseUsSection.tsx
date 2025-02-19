@@ -1,5 +1,77 @@
+interface WhyChooseUsSectionProps {
+  language: string;
+}
+
+type Translation = {
+  whyChooseUs: {
+    title: string;
+    expertTeam: {
+      title: string;
+      description: string;
+    };
+    quality: {
+      title: string;
+      description: string;
+    };
+    turnaround: {
+      title: string;
+      description: string;
+    };
+    pricing: {
+      title: string;
+      description: string;
+    };
+  };
+};
+
 export default function WhyChooseUsSection({ language }: WhyChooseUsSectionProps) {
-  const t = translations[language].whyChooseUs;
+  const translations: Record<string, Translation> = {
+    en: {
+      whyChooseUs: {
+        title: "Why Choose Us",
+        expertTeam: {
+          title: "Expert Team",
+          description: "Our team consists of highly skilled professionals with years of experience"
+        },
+        quality: {
+          title: "Quality Assurance",
+          description: "We maintain the highest standards of quality in all our services"
+        },
+        turnaround: {
+          title: "Quick Turnaround",
+          description: "Fast and efficient service delivery without compromising quality"
+        },
+        pricing: {
+          title: "Competitive Pricing",
+          description: "Transparent and competitive pricing for all our services"
+        }
+      }
+    },
+    it: {
+      whyChooseUs: {
+        title: "Perché Sceglierci",
+        expertTeam: {
+          title: "Team di Esperti",
+          description: "Il nostro team è composto da professionisti altamente qualificati con anni di esperienza"
+        },
+        quality: {
+          title: "Garanzia di Qualità",
+          description: "Manteniamo i più alti standard di qualità in tutti i nostri servizi"
+        },
+        turnaround: {
+          title: "Tempi Rapidi",
+          description: "Servizio veloce ed efficiente senza compromettere la qualità"
+        },
+        pricing: {
+          title: "Prezzi Competitivi",
+          description: "Prezzi trasparenti e competitivi per tutti i nostri servizi"
+        }
+      }
+    }
+  };
+  
+  const t = translations[language as keyof typeof translations]?.whyChooseUs ?? translations.en.whyChooseUs;
+  
 
   const reasons = [
     {

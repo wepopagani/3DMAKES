@@ -1,8 +1,8 @@
 import React, { useRef, Suspense, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera, ContactShadows } from '@react-three/drei';
-import { STLLoader } from 'three/examples/jsm/loaders/STLLoader';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
+import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import * as THREE from 'three';
 import { analyzeGeometry, ModelAnalysis } from '../utils/modelAnalysis';
 import { Object3D } from 'three';
@@ -31,7 +31,7 @@ function Model({ file, fileType, onAnalysis }: ModelViewerProps) {
   // Handle auto-rotation
   useFrame((state) => {
     if (modelRef.current && isRotating) {
-      modelRef.current.rotation.y += 0.005;
+      modelRef.current.rotation.y += 0.01;
     }
   });
 
