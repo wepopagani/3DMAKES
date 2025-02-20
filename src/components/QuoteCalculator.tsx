@@ -222,7 +222,7 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
               <div className="relative">
                 <input
                   type="file"
-                  accept=".stl,.obj,.gcode"
+                  accept=".stl,.obj"
                   onChange={handleFileChange}
                   className="hidden"
                   id="file-upload"
