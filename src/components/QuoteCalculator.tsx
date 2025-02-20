@@ -92,6 +92,7 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
           setFileType(extension);
         } else {
           setError("Formato file non supportato");
+          return;
         }
       }
     },
