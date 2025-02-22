@@ -386,7 +386,7 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
               {/* Selezione materiale */}
               <div className="mb-4">
                 <label className="block text-white font-medium mb-2">
-                  Materiale
+                  {t.quote.material}
                 </label>
                 <div className="grid grid-cols-4 gap-2">
                   {MATERIALS.map((mat) => {
@@ -437,7 +437,7 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
                   />
                 )}
                 <span className="relative z-10">
-                  {isProcessing ? `Elaborazione ${uploadProgress}%` : "Calcola il Prezzo"}
+                  {isProcessing ? `Elaborazione ${uploadProgress}%` : t.quote.calculatePrice}
                 </span>
               </button>
 
