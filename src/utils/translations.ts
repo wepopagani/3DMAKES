@@ -187,6 +187,17 @@ export const translations = {
       }
     },
 
+    chatbot: {
+      title: "3D Printing Assistant",
+      subtitle: "Ask me anything about 3D printing!",
+      inputPlaceholder: "Type your question here...",
+      responses: {
+        materials: "we offer a wide range of materials including PLA, PETG, ABS, and specialty filaments. Each material has unique properties suitable for different applications.",
+        pricing: "Our pricing is based on factors like material volume, print time, and complexity. You can get an instant quote using our calculator above.",
+        process: "The 3D printing process starts with your 3D model. We'll analyze it, suggest optimal print settings, and ensure the highest quality output.",
+        default: "I'm here to help with any questions about 3D printing. Feel free to ask about materials, pricing, or our services!"
+      }
+    },
     // Contact Section
     contact: {
       title: "Contact Us",

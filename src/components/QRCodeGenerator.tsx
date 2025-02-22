@@ -1,20 +1,30 @@
 import React, { useState } from 'react';
 import QRCode from 'qrcode';
 
-export default function QRCodeImageGenerator() {
+export default function QRCodeGenerator() {
   const [url, setUrl] = useState('');
   const [qrImage, setQrImage] = useState<string | null>(null);
 
-  // Funzione per generare il QR code come immagine PNG
+  // Genera QR code in formato immagine
   const generateQRCode = async () => {
     if (!url.trim()) return;
 
     try {
-      const qrImageUrl = await QRCode.toDataURL(url);
-      setQrImage(qrImageUrl);
+      const imageData = await QRCode.toDataURL(url);
+      setQrImage(imageData);
     } catch (error) {
       console.error('Errore nella generazione del QR code:', error);
     }
+  };
+
+  // Scarica immagine QR
+  const downloadQRImage = () => {
+    if (!qrImage) return;
+
+    const link = document.createElement('a');
+    link.href = qrImage;
+    link.download = 'qr-code.png';
+    link.click();
   };
 
   return (
@@ -34,17 +44,15 @@ export default function QRCodeImageGenerator() {
         Genera QR Code
       </button>
 
-      {/* Visualizza l'immagine del QR Code */}
       {qrImage && (
         <div className="mt-6">
-          <img src={qrImage} alt="QR Code" className="rounded-lg shadow-lg" />
-          <a
-            href={qrImage}
-            download="qr-code.png"
-            className="mt-4 block px-4 py-2 bg-green-600 rounded-lg hover:bg-green-700 transition text-center"
+          <img src={qrImage} alt="QR Code" className="mb-4" />
+          <button
+            onClick={downloadQRImage}
+            className="mt-4 px-4 py-2 bg-green-600 rounded-lg hover:bg-green-700 transition"
           >
             Scarica come PNG
-          </a>
+          </button>
         </div>
       )}
     </div>
