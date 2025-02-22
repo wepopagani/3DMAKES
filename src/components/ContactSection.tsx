@@ -127,7 +127,7 @@ export default function ContactSection({ language }: ContactSectionProps) {
                   value={formData.phone}
                   onChange={handleChange}
                   className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-red-500 text-white"
-                  placeholder="+41 XX XXX XX XX"
+                  placeholder="Numero di telefono"
                 />
               </div>
 
@@ -218,8 +218,8 @@ export default function ContactSection({ language }: ContactSectionProps) {
                   </svg>
                   <div>
                     <h4 className="text-white font-medium">{t.info.phone}</h4>
-                    <a href="tel:+41912345678" className="text-gray-400 hover:text-red-500 transition-colors">
-                      +41 91 234 56 78
+                    <a href="tel:+41762660396" className="text-gray-400 hover:text-red-500 transition-colors">
+                      +41 76 266 03 96
                     </a>
                   </div>
                 </div>

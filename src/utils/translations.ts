@@ -47,10 +47,11 @@ export const translations = {
     // Hero Section
     hero: {
       highlightedTitle: "3D Printing -",
-      remainingTitle: "shaping your future",
-      subtitle: "Transforming your ideas with precision, from rapid prototyping to custom production.",
-      getQuote: "Get Quote",
-      ourServices: "Our Services"
+      remainingTitle: "Turn Your Ideas into Reality",
+      subtitle: "From rapid prototyping to custom production, we bring your ideas to life with precision, speed, and top-tier quality.",
+      getQuote: "Get a Free Quote",
+      ourServices: "Explore Our Services",
+      whatsapp: "Contact Us on WhatsApp"
     },
 
     // Services Section
@@ -172,7 +173,7 @@ export const translations = {
         title: "Send Us a Message",
         name: "Name",
         email: "Email",
-        phone: "Phone (optional)",
+        phone: "Phone",
         projectType: {
           label: "Project Type",
           general: "General Inquiry",
@@ -229,37 +230,29 @@ export const translations = {
 
   it: {
     // Calcolatore Preventivi
-    title: "Ottieni un Preventivo Istantaneo",
-    uploadTitle: "Carica il Tuo Modello 3D",
-    dropzoneText: "Trascina qui il tuo file STL o OBJ, o clicca per sfogliare",
-    fileRequirements: "Dimensione massima: 50MB • Formati supportati: STL, OBJ",
-    modelAnalysis: "Analisi del Modello",
-    volume: "Volume",
-    surfaceArea: "Superficie",
-    width: "Larghezza",
-    height: "Altezza",
-    depth: "Profondità",
-    printTime: "Tempo di Stampa",
-    material: "Materiale",
-    printQuality: "Qualità di Stampa",
-    quantity: "Quantità",
-    bulkDiscount: "Sconto del 10% applicato!",
-    calculatePrice: "Calcola Prezzo",
-    uploadPrompt: "Carica un modello 3D per l'anteprima",
-    hours: "ore",
-    fileError: {
-      tooLarge: "File troppo grande. Carica un file più piccolo di 50MB.",
-      invalidFormat: "Carica un file STL o OBJ"
-    },
-    materials: {
-      pla: "PLA - Standard",
-      petg: "PETG - Versatile",
-      abs: "ABS - Resistente"
-    },
-    qualities: {
-      draft: "Bozza (0.3mm) - Veloce ed Economico",
-      standard: "Standard (0.2mm) - Qualità Bilanciata",
-      high: "Alta Qualità (0.1mm) - Dettagli Fini"
+    quoteCalculator: {
+      title: "Ottieni un Preventivo Istantaneo",
+      uploadTitle: "Carica il Tuo Modello 3D",
+      dropzoneText: "Trascina qui il tuo file STL o OBJ, o clicca per sfogliare",
+      fileRequirements: "Dimensione massima: 50MB • Formati supportati: STL, OBJ",
+      modelAnalysis: "Analisi del Modello",
+      printTime: "Tempo di Stampa",
+      material: "Materiale",
+      printQuality: "Qualità di Stampa",
+      quantity: "Quantità",
+      bulkDiscount: "Sconto del 10% applicato!",
+      calculatePrice: "Calcola Prezzo",
+      uploadPrompt: "Carica un modello 3D per l'anteprima",
+      fileError: {
+        tooLarge: "File troppo grande. Carica un file più piccolo di 50MB.",
+        invalidFormat: "Carica un file STL o OBJ"
+      },
+      modelError: {
+        tooSmall: "Il modello è troppo piccolo (min 20mm).",
+        tooLarge: "Il modello è troppo grande (max 300mm). Contattaci per stamparlo in più parti."
+      },
+      connectionError: "Errore di connessione con il server",
+      singlePriceWarning: "Il prezzo del singolo pezzo sarebbe di {singlePrice.toFixed(2)} CHF, ma c'è un minimo d'ordine di 15 CHF."
     },
     // Navigazione
     nav: {
@@ -275,10 +268,11 @@ export const translations = {
     // Sezione Hero
     hero: {
       highlightedTitle: "Stampa 3D - ",
-      remainingTitle: "Dai forma alle tue idee",
-      subtitle: "Dalla prototipazione rapida alla produzione su misura, realizziamo le tue idee con la massima precisione.",
-      getQuote: "Richiedi Preventivo",
-      ourServices: "I Nostri Servizi"
+      remainingTitle: "Trasforma le tue idee in realtà",
+      subtitle: "Dal prototipo alla produzione su misura: diamo vita alle tue idee con precisione, velocità e qualità superiore.",
+      getQuote: "Richiedi un Preventivo Gratuito",
+      ourServices: "Scopri i Nostri Servizi",
+      whatsapp: "Contattaci su WhatsApp"
     },
 
     // Sezione Servizi
@@ -399,7 +393,7 @@ export const translations = {
         title: "Inviaci un Messaggio",
         name: "Nome",
         email: "Email",
-        phone: "Telefono (opzionale)",
+        phone: "Telefono",
         projectType: {
           label: "Tipo di Progetto",
           general: "Richiesta Generale",

@@ -97,16 +97,34 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
       const f = evt.target.files?.[0];
       if (f) {
         if (f.size > MAX_FILE_SIZE) {
-          setError(t.fileError.tooLarge);
+          setError(t.QuoteCalculator.fileError.tooLarge);
           return;
         }
         const ext = f.name.split(".").pop()?.toLowerCase();
-        setFile(f);
-        setFileType(ext);
+        if (ext === "stl" || ext === "obj") {
+          setFile(f);
+          setFileType(ext);
+        } else {
+          setError("Formato file non supportato");
+        }
       }
     },
     [t]
   );
+
+  // Handler per il drag and drop
+  const handleDrop = useCallback((evt: React.DragEvent<HTMLDivElement>) => {
+    evt.preventDefault();
+    const f = evt.dataTransfer.files?.[0];
+    if (f) {
+      handleFileChange({ target: { files: [f] } } as React.ChangeEvent<HTMLInputElement>);
+    }
+  }, [handleFileChange]);
+
+  // Handler per prevenire il comportamento predefinito
+  const handleDragOver = (evt: React.DragEvent<HTMLDivElement>) => {
+    evt.preventDefault();
+  };
 
   // Calcolo del prezzo per 1 pezzo
   const calculateSinglePrice = useCallback((printTimeHours: number, materialGrams: number) => {
@@ -147,12 +165,12 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
       return;
     }
     const { x, y, z } = modelDims;
-    if (x < MIN_DIM || y < MIN_DIM || z < MIN_DIM) {
-      setError(`Il modello è troppo piccolo (min ${MIN_DIM}mm).`);
+    if (x < MIN_DIM) {
+      setError(t.quoteCalculator.modelError.tooSmall);
       return;
     }
-    if (x > MAX_DIM || y > MAX_DIM || z > MAX_DIM) {
-      setError(`Il modello è troppo grande (max ${MAX_DIM}mm). Contattaci per stamparlo in più parti.`);
+    if (x > MAX_DIM) {
+      setError(t.quoteCalculator.modelError.tooLarge);
       return;
     }
 
@@ -206,7 +224,7 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
         setSinglePrice(sp);
       }
     } catch (err) {
-      setError("Errore di connessione con il server");
+      setError(t.quoteCalculator.connectionError);
     } finally {
       setIsProcessing(false);
       setUploadProgress(0);
@@ -272,7 +290,11 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
 
           {/* Colonna sinistra */}
           <div className="space-y-8">
-            <div className="bg-gray-800/50 p-8 rounded-2xl shadow-2xl backdrop-blur-sm">
+            <div 
+              className="bg-gray-800/50 p-8 rounded-2xl shadow-2xl backdrop-blur-sm"
+              onDrop={handleDrop}
+              onDragOver={handleDragOver}
+            >
               <label className="block text-white font-medium mb-4">
                 Carica il modello 3D (.stl, .obj)
               </label>
@@ -280,7 +302,7 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
               <div className="relative">
                 <input
                   type="file"
-                  accept="*/*"
+                  accept=".stl,.obj"
                   onChange={handleFileChange}
                   className="hidden"
                   id="file-upload"
@@ -291,7 +313,7 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
                 >
                   <div className="text-center">
                     <span className="text-gray-300">
-                      {file ? file.name : "Seleziona un file"}
+                      {file ? file.name : "Seleziona un file o trascina qui"}
                     </span>
                   </div>
                 </label>
@@ -441,7 +463,7 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
                   </p>
                   {singlePrice < 15 && (
                     <span className="text-sm text-yellow-400 block mt-1">
-                      Il prezzo del singolo pezzo sarebbe di {singlePrice.toFixed(2)} CHF, ma c'è un minimo d'ordine di 15 CHF.
+                      {t.quoteCalculator.singlePriceWarning}
                     </span>
                   )}
                 </div>
