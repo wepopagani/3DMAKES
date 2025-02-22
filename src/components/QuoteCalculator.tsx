@@ -296,10 +296,12 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
               <div className="relative">
                 <input
                   type="file"
-                  accept="*/*"
+                  accept="*/*" // Accetta qualsiasi tipo di file
+                  capture="environment" // Opzionale: apre la fotocamera di default se disponibile
                   onChange={handleFileChange}
                   className="hidden"
                   id="file-upload"
+                  multiple={false} // Imposta su true se vuoi selezionare più file contemporaneamente
                 />
                 <label
                   htmlFor="file-upload"
