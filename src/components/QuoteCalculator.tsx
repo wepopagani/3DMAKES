@@ -140,6 +140,7 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
   ];
   
   const QUALITY_OPTIONS = [
+<<<<<<< HEAD
     { id: "0.3", label: "Draft (0.3mm)", mobileLabel: "Draft", desc: t.quote.draftp },
     { id: "0.2", label: "Standard (0.2mm)", mobileLabel: "STD", desc: t.quote.standard },
     { id: "0.1", label: "High (0.1mm)", mobileLabel: "High", desc: t.quote.high },
@@ -147,6 +148,14 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
       id: "0.05",
       label: "Ultra High (0.01mm)",
       mobileLabel: "Ultra High",
+=======
+    { id: "0.3", label: "Draft (0.3mm)", desc: t.quote.draftp },
+    { id: "0.2", label: "Standard (0.2mm)", desc: t.quote.standard },
+    { id: "0.1", label: "High (0.1mm)", desc: t.quote.high },
+    {
+      id: "0.05",
+      label: "Ultra High (0.01mm)",
+>>>>>>> 451a88e0ec42036f43e40f456c7047b04091947c
       desc: t.quote.ultra_high,
       extraCost: 30,
       resinOnly: true,
@@ -361,8 +370,12 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
                           : "bg-gray-700 text-gray-300"
                       } transition-all`}
                     >
+<<<<<<< HEAD
                       <span className="hidden md:inline">{option.label}</span>
                       <span className="md:hidden">{option.mobileLabel}</span>
+=======
+                      {option.label}
+>>>>>>> 451a88e0ec42036f43e40f456c7047b04091947c
                     </button>
                   ))}
                 </div>
