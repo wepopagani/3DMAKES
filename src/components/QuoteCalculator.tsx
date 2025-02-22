@@ -101,8 +101,12 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
           return;
         }
         const ext = f.name.split(".").pop()?.toLowerCase();
-        setFile(f);
-        setFileType(ext);
+        if (ext === "stl" || ext === "obj") {
+          setFile(f);
+          setFileType(ext);
+        } else {
+          setError("Formato file non supportato");
+        }
       }
     },
     [t]
@@ -280,7 +284,7 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
               <div className="relative">
                 <input
                   type="file"
-                  accept="*/*"
+                  accept=".stl,.obj"
                   onChange={handleFileChange}
                   className="hidden"
                   id="file-upload"
