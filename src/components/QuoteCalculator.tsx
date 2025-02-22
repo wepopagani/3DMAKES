@@ -80,37 +80,13 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
   const [quantity, setQuantity] = useState<number>(1);
 
   // Handler caricamento file
-  const handleFileChange = useCallback(
-    (evt: React.ChangeEvent<HTMLInputElement>) => {
-      setError(null);
-      setPrintTime(null);
-      setSinglePrice(null);
-
-      setMaterialCost(null);
-      setElectricityCost(null);
-      setDepreciationCost(null);
-
-      setIsProcessing(false);
-      setUploadProgress(0);
-      setModelDims(null);
-
-      const f = evt.target.files?.[0];
-      if (f) {
-        if (f.size > MAX_FILE_SIZE) {
-          setError(t.QuoteCalculator.fileError.tooLarge);
-          return;
-        }
-        const ext = f.name.split(".").pop()?.toLowerCase() || "";
-        if (ext === "stl" || ext === "obj") {
-          setFile(f);
-          setFileType(ext);
-        } else {
-          setError("Formato file non supportato");
-        }
-      }
-    },
-    [t]
-  );
+  const handleFileChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = evt.target.files?.[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      // ... gestisci il caricamento del file ...
+    }
+  };
 
   // Handler per il drag and drop
   const handleDrop = useCallback((evt: React.DragEvent<HTMLDivElement>) => {
