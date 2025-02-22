@@ -100,7 +100,7 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
           setError(t.QuoteCalculator.fileError.tooLarge);
           return;
         }
-        const ext = f.name.split(".").pop()?.toLowerCase();
+        const ext = f.name.split(".").pop()?.toLowerCase() || "";
         if (ext === "stl" || ext === "obj") {
           setFile(f);
           setFileType(ext);
