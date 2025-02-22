@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Language, translations } from '../utils/translations';
-import { getAIResponse } from '../utils/openaiApi';
-
+import { sendMessageToOpenAI } from '../utils/openaiApi';
 
 interface Message {
   content: string;
@@ -11,9 +10,10 @@ interface Message {
 
 interface ChatBotProps {
   language: Language;
+  currentSection: string;
 }
 
-export default function ChatBot({ language }: ChatBotProps) {
+export default function ChatBot({ language, currentSection }: ChatBotProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -45,183 +45,55 @@ export default function ChatBot({ language }: ChatBotProps) {
     setIsLoading(true);
   
     try {
-      // Chiedi la risposta direttamente all'AI
-      const aiResponse = await getAIResponse(input);
+      // Limitiamo il contesto agli ultimi 10 messaggi
+      const recentMessages = [...messages, userMessage]
+        .slice(-10) // Prendi solo gli ultimi 10 messaggi
+        .map((msg) => ({ role: msg.role, content: msg.content }));
   
+        const response = await sendMessageToOpenAI(recentMessages, 'Chatbot Section', language);  
       const botResponse: Message = {
-        content: aiResponse,
+        content: response,
         role: 'assistant',
         timestamp: new Date()
       };
   
       setMessages(prev => [...prev, botResponse]);
     } catch (error) {
-      console.error('Errore nella risposta dell\'AI:', error);
+      console.error("Errore nel generare la risposta:", error);
+  
+      const errorResponse: Message = {
+        content: "⚠️ Si è verificato un errore. Riprova più tardi.",
+        role: 'assistant',
+        timestamp: new Date()
+      };
+  
+      setMessages(prev => [...prev, errorResponse]);
     } finally {
       setIsLoading(false);
     }
   };
 
   const generateResponse = (input: string): string => {
-    const knowledgeBase = {
-      materials: {
-        keywords: ['material', 'pla', 'abs', 'petg', 'filament', 'resin'],
-        response: `We offer a comprehensive range of materials including:
-- PLA: Ideal for prototypes and decorative parts (0.1-0.3mm layers)
-- PETG: Great for functional parts with good chemical resistance (0.1-0.3mm layers)
-- ABS: Perfect for durable end-use parts (0.1-0.2mm layers)
-- Nylon: For high-strength mechanical components (0.1-0.2mm layers)
-- Carbon Fiber composites: For maximum strength-to-weight ratio (0.15-0.2mm layers)
-- Resins: For high-detail models (0.025-0.1mm layers)
+    let context = '';
 
-Typical print times:
-- Small parts (< 10cm³): 2-4 hours
-- Medium parts (10-50cm³): 4-12 hours
-- Large parts (> 50cm³): 12-48 hours
-
-Maximum build volumes:
-- FDM: 350 × 350 × 400mm
-- Resin: 192 × 120 × 200mm
-- Metal: 250 × 250 × 300mm
-
-Each material has specific properties and use cases. What's your application?`
-      },
-      pricing: {
-        keywords: ['price', 'cost', 'quote', 'expensive', 'cheap'],
-        response: `Our pricing is based on several factors:
-- Material volume and type (starting from CHF 0.5/cm³)
-- Print time (CHF 20-30/hour depending on quality)
-- Quality settings (layer height affects print time)
-- Quantity (10+ pieces get 10% discount)
-
-Typical price ranges:
-- Small parts: CHF 30-100
-- Medium parts: CHF 100-300
-- Large parts: CHF 300+
-- Complex parts may cost more
-
-You can get an instant quote using our calculator above. For custom projects, we offer personalized quotes.`
-      },
-      timing: {
-        keywords: ['time', 'fast', 'quick', 'duration', 'long', 'delivery', 'turnaround'],
-        response: `Our standard turnaround times:
-- Small parts (< 10cm³): 1-2 business days
-- Medium parts (10-50cm³): 2-3 business days
-- Large parts (> 50cm³): 3-5 business days
-- Complex projects: 5-10 business days
-
-Rush services available for 50% surcharge:
-- Same-day for small parts (when ordered before 10am)
-- Next-day for medium parts
-- 2-day for large parts
-
-Print times vary by size and quality:
-- Draft quality (0.3mm): Fastest, visible layers
-- Standard quality (0.2mm): Good balance
-- High quality (0.1mm): Slower, smooth finish`
-      },
-      quality: {
-        keywords: ['quality', 'resolution', 'accuracy', 'precision', 'detail', 'finish'],
-        response: `We ensure high quality through:
-Layer heights:
-- Ultra-fine: 0.05mm (resin)
-- High detail: 0.1mm
-- Standard: 0.2mm
-- Draft: 0.3mm
-
-Accuracy:
-- FDM: ±0.1mm or ±0.1% (whichever is greater)
-- Resin: ±0.025mm
-- Metal: ±0.1mm
-
-Resolution:
-- XY (FDM): 0.4mm nozzle standard
-- XY (Resin): 0.047mm
-- Z: Depends on layer height
-
-All prints undergo quality control checks before delivery.`
-      },
-      metal: {
-        keywords: ['metal', 'steel', 'aluminum', 'titanium', 'dmls', 'slm'],
-        response: `Our metal 3D printing services include:
-Materials available:
-- Stainless Steel 316L
-- Titanium Ti6Al4V
-- Aluminum AlSi10Mg
-- Tool Steel H13
-- Inconel 718
-
-Technologies:
-- Direct Metal Laser Sintering (DMLS)
-- Selective Laser Melting (SLM)
-
-Build volume: 250 × 250 × 300mm
-Layer height: 0.02-0.05mm
-Accuracy: ±0.1mm
-
-Applications:
-- Aerospace components
-- Medical implants
-- Industrial tooling
-- Automotive parts
-- Heat exchangers
-
-Post-processing options:
-- Heat treatment
-- Surface finishing
-- CNC machining
-- Quality inspection (CT scanning)`
-      },
-      process: {
-        keywords: ['process', 'how', 'work', 'steps', 'order'],
-        response: `Our 3D printing process:
-
-1. Design & Quote
-   - Upload your 3D model (STL/OBJ)
-   - Choose material and quality
-   - Get instant quote
-
-2. File Preparation
-   - Design review
-   - Optimization if needed
-   - Slicing and print setup
-
-3. Production
-   - Quality control checks
-   - Print monitoring
-   - Post-processing
-
-4. Quality Assurance
-   - Dimensional verification
-   - Visual inspection
-   - Functional testing
-
-5. Delivery
-   - Secure packaging
-   - Shipping worldwide
-   - Tracking provided
-
-Need help with any specific step?`
-      }
-    };
-
-    const lowercaseInput = input.toLowerCase();
-    
-    // Check each category for matching keywords
-    for (const [, data] of Object.entries(knowledgeBase)) {
-      if (data.keywords.some(keyword => lowercaseInput.includes(keyword))) {
-        return data.response;
-      }
+    switch (currentSection) {
+      case 'services':
+        context = 'L\'utente sta esplorando i nostri servizi di stampa 3D.';
+        break;
+      case 'quote':
+        context = 'L\'utente sta cercando di ottenere un preventivo.';
+        break;
+      case 'projects':
+        context = 'L\'utente sta esplorando i progetti realizzati.';
+        break;
+      case 'faq':
+        context = 'L\'utente sta leggendo le domande frequenti.';
+        break;
+      default:
+        context = 'L\'utente sta navigando sul sito.';
     }
 
-    return `I'm here to help with any questions about 3D printing! You can ask about:
-- Materials and their properties
-- Pricing and quotes
-- Print process and timelines
-- Quality and specifications
-- Metal 3D printing
-
-What would you like to know more about?`;
+    return `${context} ${input}`;
   };
 
   return (

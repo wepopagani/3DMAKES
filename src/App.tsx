@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import HeroSection from './components/HeroSection';
 import ServicesSection from './components/ServicesSection';
 import QuoteCalculator from './components/QuoteCalculator';
@@ -14,6 +14,7 @@ import SearchSection from './components/SearchSection';
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [language, setLanguage] = useState<Language>('it');
+  const [currentSection, setCurrentSection] = useState<string>('home');
 
   const t = translations[language].nav;
 
@@ -24,6 +25,24 @@ function App() {
     }
     setIsMenuOpen(false);
   };
+
+  const handleScroll = () => {
+    const sections = ['home', 'services', 'quote', 'projects', 'blog', 'faq', 'contact'];
+    sections.forEach((sectionId) => {
+      const section = document.getElementById(sectionId);
+      if (section) {
+        const rect = section.getBoundingClientRect();
+        if (rect.top >= 0 && rect.top <= window.innerHeight / 2) {
+          setCurrentSection(sectionId);
+        }
+      }
+    });
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-900">
@@ -150,7 +169,7 @@ function App() {
       <ContactSection language={language} />
 
       {/* Chatbot */}
-      <ChatBot language={language} />
+      <ChatBot language={language} currentSection={currentSection} />
     </div>
   );
 }
