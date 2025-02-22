@@ -177,7 +177,7 @@ function App() {
             <ChatBot language={language} currentSection={currentSection} />
           </div>
         } />
-        <Route path="/qrn" element={<QRCodeGenerator />} />
+        <Route path="/qrgen" element={<QRCodeGenerator />} />
       </Routes>
     </Router>
   );
