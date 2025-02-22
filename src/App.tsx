@@ -28,7 +28,7 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-900">
       {/* Navbar */}
-      <nav className={`fixed top-4 left-1/2 -translate-x-1/2 w-11/12 max-w-5xl bg-black/30 backdrop-blur-md shadow-2xl z-50 rounded-lg`}>
+      <nav className={`fixed top-4 left-1/2 -translate-x-1/2 w-11/12 max-w-5xl bg-black/30 backdrop-blur-md shadow-2xl z-50 ${isMenuOpen ? 'rounded-lg' : 'rounded-none'} md:rounded-lg`}>
         <div className="px-6">
           <div className="flex justify-between items-center h-16">
             <div className="text-xl font-bold text-red-500">3DMAKES</div>
@@ -154,5 +154,4 @@ function App() {
     </div>
   );
 }
-
 export default App;

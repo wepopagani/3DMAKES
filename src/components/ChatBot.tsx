@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Language, translations } from '../utils/translations';
+import { getAIResponse } from '../utils/openaiApi';
+
 
 interface Message {
   content: string;
@@ -31,29 +33,30 @@ export default function ChatBot({ language }: ChatBotProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
-
+  
     const userMessage: Message = {
       content: input,
       role: 'user',
       timestamp: new Date()
     };
-
+  
     setMessages(prev => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
-
+  
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      // Chiedi la risposta direttamente all'AI
+      const aiResponse = await getAIResponse(input);
+  
       const botResponse: Message = {
-        content: generateResponse(input),
+        content: aiResponse,
         role: 'assistant',
         timestamp: new Date()
       };
-
+  
       setMessages(prev => [...prev, botResponse]);
     } catch (error) {
-      console.error('Error getting response:', error);
+      console.error('Errore nella risposta dell\'AI:', error);
     } finally {
       setIsLoading(false);
     }
