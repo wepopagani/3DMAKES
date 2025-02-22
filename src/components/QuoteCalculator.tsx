@@ -18,18 +18,7 @@ const MAX_FILE_SIZE = 100 * 1024 * 1024;
 const API_URL = "https://5d8a-89-217-108-88.ngrok-free.app/upload";
 
 // Opzioni qualità
-const QUALITY_OPTIONS = [
-  { id: "0.3", label: "Draft (0.3mm)", desc: "Stampa veloce, meno dettagli" },
-  { id: "0.2", label: "Standard (0.2mm)", desc: "Bilanciato tra qualità e velocità" },
-  { id: "0.1", label: "High (0.1mm)", desc: "Maggiori dettagli, stampa più lenta" },
-  {
-    id: "0.05",
-    label: "Ultra High (0.01mm)",
-    desc: "Qualità estrema (solo resina, +30CHF)",
-    extraCost: 30,
-    resinOnly: true,
-  },
-];
+
 
 // Materiali
 const MATERIALS = [
@@ -134,7 +123,34 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
     }
     return Math.round(finalPrice * 100) / 100;
   }, []);
-
+  const MATERIALS = [
+    { id: "pla", label: "PLA", desc: t.quote.pla },
+    { id: "petg", label: "PETG", desc: t.quote.petg },
+    { id: "abs", label: "ABS", desc: t.quote.abs },
+    { id: "tpu", label: "TPU", desc: t.quote.tpu },
+    { id: "petg_cf", label: "PETG CF", desc: t.quote.petg_cf },
+    { id: "pc", label: "PC", desc: t.quote.pc },
+    { id: "nylon", label: "Nylon", desc: t.quote.nylon },
+    {
+      id: "resin",
+      label: "Resina",
+      desc: t.quote.resin,
+      resinOnly: true,
+    },
+  ];
+  
+  const QUALITY_OPTIONS = [
+    { id: "0.3", label: "Draft (0.3mm)", desc: t.quote.draftp },
+    { id: "0.2", label: "Standard (0.2mm)", desc: t.quote.standard },
+    { id: "0.1", label: "High (0.1mm)", desc: t.quote.high },
+    {
+      id: "0.05",
+      label: "Ultra High (0.01mm)",
+      desc: t.quote.ultra_high,
+      extraCost: 30,
+      resinOnly: true,
+    },
+  ];
   // Handler invio al server
   const handleCalculate = useCallback(async () => {
     if (!file) {
@@ -265,7 +281,7 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
     <section id="quote" className="py-20 bg-gray-900">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold text-center text-white mb-16">
-          Ottieni un preventivo istantaneo
+          {t.quote.title}
         </h2>
 
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -274,7 +290,7 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
           <div className="space-y-8">
             <div className="bg-gray-800/50 p-8 rounded-2xl shadow-2xl backdrop-blur-sm">
               <label className="block text-white font-medium mb-4">
-                Carica il modello 3D (.stl, .obj)
+                {t.quote.uploadTitle}
               </label>
 
               <div className="relative">
@@ -291,7 +307,7 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
                 >
                   <div className="text-center">
                     <span className="text-gray-300">
-                      {file ? file.name : "Seleziona un file"}
+                      {file ? file.name : t.quote.dropzoneText}
                     </span>
                   </div>
                 </label>
@@ -311,7 +327,7 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
                   />
                   {modelDims && (
                     <p className="text-gray-400 mt-2">
-                      Dimensioni rilevate: {modelDims.x.toFixed(2)} ×{" "}
+                      {t.quote.size}: {modelDims.x.toFixed(2)} ×{" "}
                       {modelDims.y.toFixed(2)} × {modelDims.z.toFixed(2)} mm
                     </p>
                   )}
@@ -324,13 +340,13 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
           <div className="space-y-8">
             <div className="bg-gray-800/50 p-8 rounded-2xl shadow-2xl backdrop-blur-sm">
               <h3 className="text-xl font-semibold text-white mb-4">
-                Impostazioni di stampa
+                {t.quote.printSettings}
               </h3>
 
               {/* Selezione qualità */}
               <div className="mb-4">
                 <label className="block text-white font-medium mb-2">
-                  Qualità di stampa
+                  {t.quote.printQuality}
                 </label>
                 <div className="grid grid-cols-4 gap-2">
                   {QUALITY_OPTIONS.map((option) => (
@@ -354,7 +370,7 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
 
               {QUALITY_OPTIONS.find((q) => q.id === quality)?.extraCost && (
                 <p className="text-yellow-400 text-sm">
-                  ⚠️ Questa opzione comporta un costo aggiuntivo di 30 CHF
+                  ⚠️ {t.quote.addCost}
                 </p>
               )}
 
@@ -420,7 +436,7 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
               {singlePrice !== null && (
                 <div className="mt-4 flex flex-col items-start space-y-2">
                   <label className="text-white font-medium">
-                    Quantità
+                    {t.quote.quantity}
                   </label>
                   <input
                     type="number"
@@ -436,12 +452,12 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
               {printTime && singlePrice !== null && (
                 <div className="mt-4 bg-gray-700/50 p-6 rounded-lg text-center">
                   <p className="text-white text-lg">
-                    Costo totale per {quantity} pezzi:{" "}
+                    {t.quote.cost1} {quantity} {t.quote.cost2} {" "}
                     <strong>{getTotal()?.toFixed(2)} CHF</strong>
                   </p>
                   {singlePrice < 15 && (
                     <span className="text-sm text-yellow-400 block mt-1">
-                      Il prezzo del singolo pezzo sarebbe di {singlePrice.toFixed(2)} CHF, ma c'è un minimo d'ordine di 15 CHF.
+                      {t.quote.price1}{singlePrice.toFixed(2)} {t.quote.price2}.
                     </span>
                   )}
                 </div>

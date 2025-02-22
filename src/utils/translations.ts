@@ -1,27 +1,47 @@
 
 export const translations = {
   en: {
-    // Quote Calculator
-    title: "Get an Instant Quote",
-    uploadTitle: "Upload Your 3D Model",
-    dropzoneText: "Drop your STL or OBJ file here, or click to browse",
-    fileRequirements: "Maximum file size: 50MB • Supported formats: STL, OBJ",
-    modelAnalysis: "Model Analysis",
-    volume: "Volume",
-    surfaceArea: "Surface Area",
-    width: "Width",
-    height: "Height",
-    depth: "Depth",
-    printTime: "Print Time",
-    material: "Material",
-    printQuality: "Print Quality",
-    quantity: "Quantity",
-    bulkDiscount: "10% bulk discount applied!",
-    calculatePrice: "Calculate Price",
-    uploadPrompt: "Upload a 3D model to preview",
-    hours: "hours",
+    quote: {// Quote Calculator
+      title: "Get an Instant Quote",
+      uploadTitle: "Upload Your 3D Model",
+      dropzoneText: "Drop your STL or OBJ file here, or click to browse",
+      fileRequirements: "Maximum file size: 50MB • Supported formats: STL, OBJ",
+      modelAnalysis: "Model Analysis",
+      volume: "Volume",
+      surfaceArea: "Surface Area",
+      width: "Width",
+      height: "Height",
+      depth: "Depth",
+      printTime: "Print Time",
+      material: "Material",
+      printQuality: "Print Quality",
+      printSettings: "Print Settings",
+      quantity: "Quantity",
+      bulkDiscount: "10% bulk discount applied!",
+      draftp: "Fast print, less details",
+      standard: "Standard print, good quality",
+      high: "High quality, fine details",
+      ultra_high: "Ludicrous quality (only resin, +30CHF)",
+      addCost: "This option incurs an additional cost of 30 CHF",
+      price1: "The price of the model would be ",
+      price2: " CHF",
+      cost1: "Total cost for ",
+      cost2: " pieces:",
+      pla: "Cheap and easy to print",
+      petg: "Versatile and resistant",
+      abs: "Durable and heat resistant",
+      tpu: "Elastic and soft",
+      petg_cf: "PETG with carbon fiber",
+      pc: "High-performance polymer",
+      nylon: "Strong and durable",
+      resin: "Ultra-high precision, only for Ultra High",
+      size: "Detected size",
+      calculatePrice: "Calculate Price",
+      uploadPrompt: "Upload a 3D model to preview",
+      hours: "hours"
+    },      printSettings: "Impostazioni di Stampa",
     fileError: {
-      tooLarge: "File is too large. Please upload a file smaller than 50MB.",
+      tooLarge: "File is too  large. Please upload a file smaller than 50MB.",
       invalidFormat: "Please upload an STL or OBJ file"
     },
     materials: {
@@ -210,18 +230,6 @@ export const translations = {
       }
     },
 
-    chatbot: {
-      title: "3D Printing Assistant",
-      subtitle: "Ask me anything about 3D printing!",
-      inputPlaceholder: "Type your question here...",
-      responses: {
-        materials: "We offer a wide range of materials including PLA, PETG, ABS, and specialty filaments. Each material has unique properties suitable for different applications.",
-        pricing: "Our pricing is based on factors like material volume, print time, and complexity. You can get an instant quote using our calculator above.",
-        process: "The 3D printing process starts with your 3D model. We'll analyze it, suggest optimal print settings, and ensure the highest quality output.",
-        default: "I'm here to help with any questions about 3D printing. Feel free to ask about materials, pricing, or our services!"
-      }
-    },
-
     search: {
       title: "Search Your 3D Model",
       subtitle: "Not sure what to print? Get inspired by the search engine!"
@@ -231,7 +239,7 @@ export const translations = {
 
   it: {
     // Calcolatore Preventivi
-    quoteCalculator: {
+    quote: {
       title: "Ottieni un Preventivo Istantaneo",
       uploadTitle: "Carica il Tuo Modello 3D",
       dropzoneText: "Trascina qui il tuo file STL o OBJ, o clicca per sfogliare",
@@ -240,10 +248,29 @@ export const translations = {
       printTime: "Tempo di Stampa",
       material: "Materiale",
       printQuality: "Qualità di Stampa",
+      printSettings: "Impostazioni di Stampa",
       quantity: "Quantità",
       bulkDiscount: "Sconto del 10% applicato!",
       calculatePrice: "Calcola Prezzo",
       uploadPrompt: "Carica un modello 3D per l'anteprima",
+      draftp: "Stampa veloce, meno dettagli",
+      standard: "Stampa standard, buona qualità",
+      high: "Stampa ad alta precisione, dettagli precisi",
+      ultra_high: "Qualità estrema (solo resina, +30CHF)",
+      pla: "Economico e facile da stampare",
+      petg: "Versatile e resistente",
+      abs: "Robusto e resistente al calore",
+      tpu: "Elastico e morbido",
+      petg_cf: "PETG con fibre di carbonio",
+      pc: "Policarbonato ad alta resistenza",
+      nylon: "Forte e durevole",
+      resin: "Alta precisione, solo per Ultra High",
+      size: "Dimensioni rilevate",
+      price1: "Il prezzo del modello sarebbe di ",
+      price2: " CHF",
+      addCost: "Questa opzione comporta un costo aggiuntivo di 30 CHF",
+      cost1: "Costo totale per ",
+      cost2: " pezzi:",
       fileError: {
         tooLarge: "File troppo grande. Carica un file più piccolo di 50MB.",
         invalidFormat: "Carica un file STL o OBJ"
