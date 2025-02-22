@@ -7,7 +7,7 @@ interface QuoteCalculatorProps {
 }
 
 // Limiti di dimensione
-const MIN_DIM = 20;
+const MIN_DIM = 2;
 const MAX_DIM = 300;
 
 // Prezzo minimo per 1 o più pezzi
@@ -163,11 +163,17 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
       setError("Attendi il rendering o verifica il modello: dimensioni non disponibili.");
       return;
     }
+    
     const { x, y, z } = modelDims;
-    if (x < MIN_DIM || y < MIN_DIM || z < MIN_DIM) {
-      setError(`Il modello è troppo piccolo (min ${MIN_DIM}mm).`);
+    
+    // Nuova logica per il controllo delle dimensioni minime
+    const dimensionsUnderMin = [x, y, z].filter(dim => dim < MIN_DIM).length;
+    if (dimensionsUnderMin >= 2) {
+      setError(`Il modello è troppo piccolo: almeno due dimensioni sono sotto ${MIN_DIM}mm.`);
       return;
     }
+
+    // Controllo dimensioni massime (invariato)
     if (x > MAX_DIM || y > MAX_DIM || z > MAX_DIM) {
       setError(`Il modello è troppo grande (max ${MAX_DIM}mm). Contattaci per stamparlo in più parti.`);
       return;
