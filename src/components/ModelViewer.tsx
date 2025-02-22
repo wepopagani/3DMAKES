@@ -249,10 +249,11 @@ export default function ModelViewer({
   file, 
   fileType, 
   onAnalysis, 
-  uploadPrompt = 'Upload a 3D model to preview',
-  onDimensions
+  uploadPrompt = 'Carica un modello 3D per la visualizzazione', 
+  onDimensions 
 }: ModelViewerProps) {
   const [error, setError] = useState<string | null>(null);
+  const [cameraPosition, setCameraPosition] = useState<[number, number, number]>([0, 0, 150]); // Posizione della camera
 
   // Use feature detection for device capabilities
   const devicePixelRatio = window.devicePixelRatio || 1;
@@ -269,7 +270,7 @@ export default function ModelViewer({
   }
 
   return (
-    <div className="w-full h-[400px] bg-gray-800 rounded-lg overflow-hidden relative">
+    <div className="w-full h-[400px] bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg overflow-hidden relative">
       {!file ? (
         <div className="absolute inset-0 flex items-center justify-center">
           <p className="text-gray-400">{uploadPrompt}</p>
@@ -277,43 +278,31 @@ export default function ModelViewer({
       ) : (
         <Canvas
           shadows
-          dpr={isHighPerformance ? [1, 2] : 1}
-          onError={(err) => setError(err instanceof Error ? err.message : 'Error loading model')}
-          gl={{ 
-            powerPreference: isHighPerformance ? "high-performance" : "default",
-            antialias: true,
-            alpha: false,
-            logarithmicDepthBuffer: true
-          }}
+          dpr={[1, 2]}
+          gl={{ antialias: true }}
         >
-          <PerspectiveCamera makeDefault position={[0, 0, 150]} fov={50} />
-          
+          <PerspectiveCamera makeDefault position={cameraPosition} fov={50} />
           <color attach="background" args={["#1f2937"]} />
           
+          // Luce ambientale per illuminazione generale
           <ambientLight intensity={0.5} />
-          <pointLight position={[10, 10, 10]} intensity={1} castShadow />
-          <pointLight position={[-10, -10, -10]} intensity={0.5} />
-
+          // Luce direzionale per riflessi e ombre
+          <directionalLight position={[5, 5, 5]} intensity={1.5} castShadow />
+          
           <Suspense fallback={<LoadingSpinner />}>
             <Model file={file} fileType={fileType} onAnalysis={onAnalysis} onDimensions={onDimensions} />
-            <ContactShadows
-              opacity={0.4}
-              scale={10}
-              blur={1}
-              far={10}
-              resolution={256}
-              color="#000000"
-            />
+            <ContactShadows opacity={0.4} scale={10} blur={1.5} far={10} resolution={256} color="#000000" />
           </Suspense>
 
-          <OrbitControls
-            makeDefault
-            minDistance={50}
-            maxDistance={250}
-            enableDamping
-            dampingFactor={0.05}
-            rotateSpeed={0.5}
-            target={[0, 0, 0]}
+          // Controlli migliorati per zoom e pan
+          <OrbitControls 
+            enableZoom 
+            enablePan 
+            dampingFactor={0.1} 
+            rotateSpeed={0.5} 
+            minDistance={50} // Distanza minima per lo zoom
+            maxDistance={300} // Distanza massima per lo zoom
+            target={[0, 0, 0]} // Centra il modello
           />
         </Canvas>
       )}
