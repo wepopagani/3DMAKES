@@ -17,6 +17,7 @@
     "@react-three/fiber": "^8.17.14",
     "@splinetool/react-spline": "^2.2.6",
     "@splinetool/runtime": "^1.0.17",
+    "axios": "^1.7.9",
     "clsx": "^2.0.0",
     "cors": "^2.8.5",
     "date-fns": "^2.30.0",
