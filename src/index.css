@@ -10,11 +10,7 @@
   }
 
   body {
-<<<<<<< HEAD
     @apply bg-black;
-=======
-    @apply bg-gray-900;
->>>>>>> 451a88e0ec42036f43e40f456c7047b04091947c
     overflow-x: hidden;
   }
 
