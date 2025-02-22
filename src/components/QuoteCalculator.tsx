@@ -364,7 +364,7 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
                     </button>
                   ))}
                 </div>
-                <p className="text-gray-400 mt-2">
+                <p className="hidden md:block text-gray-400 mt-2">
                   {QUALITY_OPTIONS.find((q) => q.id === quality)?.desc}
                 </p>
               </div>
