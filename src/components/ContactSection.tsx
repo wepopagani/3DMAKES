@@ -104,15 +104,11 @@ export default function ContactSection({ language }: ContactSectionProps) {
             
             <form 
               name="contact" 
-              method="POST" 
-              action="/success"
+              method="POST"
               data-netlify="true"
-              data-netlify-honeypot="bot-field"
-              onSubmit={handleSubmit} 
               className="space-y-6"
             >
               <input type="hidden" name="form-name" value="contact" />
-              <input type="hidden" name="bot-field" />
               
               <div>
                 <label htmlFor="name" className="block text-white font-medium mb-2">{t.form.name}</label>
@@ -120,11 +116,8 @@ export default function ContactSection({ language }: ContactSectionProps) {
                   type="text"
                   id="name"
                   name="name"
-                  value={formData.name}
-                  onChange={handleChange}
                   required
                   className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-red-500 text-white"
-                  placeholder={t.form.name}
                 />
               </div>
 
@@ -134,11 +127,8 @@ export default function ContactSection({ language }: ContactSectionProps) {
                   type="email"
                   id="email"
                   name="email"
-                  value={formData.email}
-                  onChange={handleChange}
                   required
                   className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-red-500 text-white"
-                  placeholder={t.form.email}
                 />
               </div>
 
@@ -148,22 +138,21 @@ export default function ContactSection({ language }: ContactSectionProps) {
                   type="tel"
                   id="phone"
                   name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
                   className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-red-500 text-white"
-                  placeholder="Numero di telefono"
                 />
               </div>
 
               <div>
-                <label htmlFor="projectType" className="block text-white font-medium mb-2">{t.form.projectType.label}</label>
+                <label htmlFor="projectType" className="block text-white font-medium mb-2">
+                  {t.form.projectType.label}
+                </label>
                 <select
                   id="projectType"
                   name="projectType"
-                  value={formData.projectType}
-                  onChange={handleChange}
+                  required
                   className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-red-500 text-white"
                 >
+                  <option value="">Seleziona...</option>
                   <option value="general">{t.form.projectType.general}</option>
                   <option value="quote">{t.form.projectType.quote}</option>
                   <option value="prototype">{t.form.projectType.prototype}</option>
@@ -177,25 +166,21 @@ export default function ContactSection({ language }: ContactSectionProps) {
                 <textarea
                   id="message"
                   name="message"
-                  value={formData.message}
-                  onChange={handleChange}
                   required
                   rows={4}
-                  className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-red-500 text-white resize-none"
-                  placeholder={t.form.message}
-                />
+                  className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-red-500 text-white"
+                ></textarea>
               </div>
 
               {error && (
                 <p className="text-red-500 text-sm">{error}</p>
               )}
 
-              <button
+              <button 
                 type="submit"
-                disabled={isSubmitting}
-                className="w-full px-8 py-4 bg-red-600 hover:bg-red-700 text-white rounded-lg shadow-2xl transition-all hover:shadow-red-500/20 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200"
               >
-                {isSubmitting ? t.form.sending : t.form.send}
+                Invia
               </button>
 
               {submitStatus === 'success' && (
