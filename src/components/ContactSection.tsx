@@ -64,27 +64,23 @@ export default function ContactSection({ language }: ContactSectionProps) {
     setIsSubmitting(true);
 
     try {
-      const formDataEncoded = new URLSearchParams({
-        'form-name': 'contact',
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        projectType: formData.projectType,
-        message: formData.message
-      }).toString();
+      const form = e.target as HTMLFormElement;
+      const formData = new FormData(form);
 
       const response = await fetch('/', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: formDataEncoded
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(formData as any).toString()
       });
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+      if (response.ok) {
+        setSubmitStatus('success');
+        setFormData(initialFormData);
+        // Opzionale: reindirizza alla pagina di successo
+        // window.location.href = '/success';
+      } else {
+        throw new Error('Form submission failed');
       }
-
-      setSubmitStatus('success');
-      setFormData(initialFormData);
     } catch (error) {
       console.error('Form submission error:', error);
       setSubmitStatus('error');
@@ -108,13 +104,15 @@ export default function ContactSection({ language }: ContactSectionProps) {
             
             <form 
               name="contact" 
-              method="POST"
+              method="POST" 
+              action="/success"
               data-netlify="true"
-              netlify
+              data-netlify-honeypot="bot-field"
               onSubmit={handleSubmit} 
               className="space-y-6"
             >
               <input type="hidden" name="form-name" value="contact" />
+              <input type="hidden" name="bot-field" />
               
               <div>
                 <label htmlFor="name" className="block text-white font-medium mb-2">{t.form.name}</label>
@@ -126,6 +124,7 @@ export default function ContactSection({ language }: ContactSectionProps) {
                   onChange={handleChange}
                   required
                   className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-red-500 text-white"
+                  placeholder={t.form.name}
                 />
               </div>
 
