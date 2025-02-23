@@ -108,15 +108,13 @@ export default function ContactSection({ language }: ContactSectionProps) {
             
             <form 
               name="contact" 
-              method="POST" 
-              action="/success"
+              method="POST"
               data-netlify="true"
-              data-netlify-honeypot="bot-field"
+              netlify
               onSubmit={handleSubmit} 
               className="space-y-6"
             >
               <input type="hidden" name="form-name" value="contact" />
-              <input type="hidden" name="bot-field" />
               
               <div>
                 <label htmlFor="name" className="block text-white font-medium mb-2">{t.form.name}</label>
@@ -128,7 +126,6 @@ export default function ContactSection({ language }: ContactSectionProps) {
                   onChange={handleChange}
                   required
                   className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-red-500 text-white"
-                  placeholder={t.form.name}
                 />
               </div>
 
