@@ -27,6 +27,22 @@
   </head>
   <body>
     <div id="root"></div>
+
+    <!-- Hidden Netlify Form for Detection -->
+    <form name="contact" data-netlify="true" hidden>
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="tel" name="phone" />
+      <select name="projectType">
+        <option value="general">General Inquiry</option>
+        <option value="quote">Quote Request</option>
+        <option value="prototype">Prototyping Project</option>
+        <option value="scanning">3D Scanning Service</option>
+        <option value="bulk">Bulk Production</option>
+      </select>
+      <textarea name="message"></textarea>
+    </form>
+
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
