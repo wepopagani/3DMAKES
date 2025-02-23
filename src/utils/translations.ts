@@ -37,7 +37,8 @@ export const translations = {
       size: "Detected size",
       calculatePrice: "Calculate Price",
       uploadPrompt: "Upload a 3D model to preview",
-      hours: "hours"
+      hours: "hours",
+      attachment: 'Attach file'
     },      printSettings: "Impostazioni di Stampa",
     fileError: {
       tooLarge: "File is too  large. Please upload a file smaller than 50MB.",
@@ -214,6 +215,7 @@ export const translations = {
           bulk: "Bulk Production"
         },
         message: "Message",
+        attachment: "Attach file",
         send: "Send Message",
         sending: "Sending...",
         success: "Message sent successfully!",
@@ -291,7 +293,8 @@ export const translations = {
         tooLarge: "Il modello è troppo grande (max 300mm). Contattaci per stamparlo in più parti."
       },
       connectionError: "Errore di connessione con il server",
-      singlePriceWarning: "Il prezzo del singolo pezzo sarebbe di {singlePrice.toFixed(2)} CHF, ma c'è un minimo d'ordine di 15 CHF."
+      singlePriceWarning: "Il prezzo del singolo pezzo sarebbe di {singlePrice.toFixed(2)} CHF, ma c'è un minimo d'ordine di 15 CHF.",
+      attachment: 'Allega file'
     },
     // Navigazione
     nav: {
@@ -442,6 +445,7 @@ export const translations = {
           bulk: "Produzione in Serie"
         },
         message: "Messaggio",
+        attachment: "Allega file",
         send: "Invia Messaggio",
         sending: "Invio in corso...",
         success: "Messaggio inviato con successo!",
