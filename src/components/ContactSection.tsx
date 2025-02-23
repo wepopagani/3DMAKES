@@ -106,6 +106,8 @@ export default function ContactSection({ language }: ContactSectionProps) {
               name="contact" 
               method="POST"
               data-netlify="true"
+              encType="multipart/form-data"
+              onSubmit={handleSubmit}
               className="space-y-6"
             >
               <input type="hidden" name="form-name" value="contact" />
@@ -170,6 +172,19 @@ export default function ContactSection({ language }: ContactSectionProps) {
                   rows={4}
                   className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-red-500 text-white"
                 ></textarea>
+              </div>
+
+              <div>
+                <label htmlFor="attachment" className="block text-white font-medium mb-2">
+                  {t.form.attachment || 'Allega file'}
+                </label>
+                <input
+                  type="file"
+                  id="attachment"
+                  name="attachment"
+                  className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-red-500 text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-red-600 file:text-white hover:file:bg-red-700"
+                  accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.stl,.obj,.step,.stp,.iges,.igs"
+                />
               </div>
 
               {error && (
