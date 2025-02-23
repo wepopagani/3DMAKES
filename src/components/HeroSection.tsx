@@ -10,8 +10,8 @@ const HeroSection: FC<HeroSectionProps> = ({ language }) => {
   const t = translations[language as keyof typeof translations].hero;
 
   return (
-    <section id="home" className="min-h-screen relative flex items-center overflow-hidden bg-black/[0.96]">
-      <div className="container mx-auto px-4 flex flex-col lg:flex-row items-center">
+    <section className="mt-16 md:pt-0 relative min-h-screen flex items-center overflow-hidden bg-black">
+      <div className="container mx-auto px-4 flex flex-col lg:flex-row items-center relative z-10">
         {/* Left content */}
         <div className="flex-1 relative z-10 lg:pr-8 mb-12 lg:mb-0">
           <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400">

@@ -13,10 +13,10 @@ const mapStyles = {
 
 const mapOptions = {
   zoomControl: true,
-  mapTypeControl: true,  // Aggiunto il controllo per cambiare il tipo di mappa
-  mapTypeId: 'roadmap',  // Impostazione iniziale su roadmap (mappa classica)
-  streetViewControl: true,  // Abilita la visualizzazione Street View
-  fullscreenControl: true,  // Abilita il pulsante di fullscreen
+  mapTypeControl: true,
+  mapTypeId: 'satellite',
+  streetViewControl: true,
+  fullscreenControl: true,
   styles: [
     { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
     { elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] },

@@ -7,7 +7,7 @@ interface QuoteCalculatorProps {
 }
 
 // Limiti di dimensione
-const MIN_DIM = 20;
+const MIN_DIM = 2;
 const MAX_DIM = 300;
 
 // Prezzo minimo per 1 o più pezzi
@@ -140,12 +140,13 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
   ];
   
   const QUALITY_OPTIONS = [
-    { id: "0.3", label: "Draft (0.3mm)", desc: t.quote.draftp },
-    { id: "0.2", label: "Standard (0.2mm)", desc: t.quote.standard },
-    { id: "0.1", label: "High (0.1mm)", desc: t.quote.high },
+    { id: "0.3", label: "Draft (0.3mm)", mobileLabel: "Draft", desc: t.quote.draftp },
+    { id: "0.2", label: "Standard (0.2mm)", mobileLabel: "STD", desc: t.quote.standard },
+    { id: "0.1", label: "High (0.1mm)", mobileLabel: "High", desc: t.quote.high },
     {
       id: "0.05",
       label: "Ultra High (0.01mm)",
+      mobileLabel: "Ultra High",
       desc: t.quote.ultra_high,
       extraCost: 30,
       resinOnly: true,
@@ -162,11 +163,17 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
       setError("Attendi il rendering o verifica il modello: dimensioni non disponibili.");
       return;
     }
+    
     const { x, y, z } = modelDims;
-    if (x < MIN_DIM || y < MIN_DIM || z < MIN_DIM) {
-      setError(`Il modello è troppo piccolo (min ${MIN_DIM}mm).`);
+    
+    // Nuova logica per il controllo delle dimensioni minime
+    const dimensionsUnderMin = [x, y, z].filter(dim => dim < MIN_DIM).length;
+    if (dimensionsUnderMin >= 2) {
+      setError(`Il modello è troppo piccolo: almeno due dimensioni sono sotto ${MIN_DIM}mm.`);
       return;
     }
+
+    // Controllo dimensioni massime (invariato)
     if (x > MAX_DIM || y > MAX_DIM || z > MAX_DIM) {
       setError(`Il modello è troppo grande (max ${MAX_DIM}mm). Contattaci per stamparlo in più parti.`);
       return;
@@ -360,7 +367,8 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
                           : "bg-gray-700 text-gray-300"
                       } transition-all`}
                     >
-                      {option.label}
+                      <span className="hidden md:inline">{option.label}</span>
+                      <span className="md:hidden">{option.mobileLabel}</span>
                     </button>
                   ))}
                 </div>
@@ -378,7 +386,7 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
               {/* Selezione materiale */}
               <div className="mb-4">
                 <label className="block text-white font-medium mb-2">
-                  Materiale
+                  {t.quote.material}
                 </label>
                 <div className="grid grid-cols-4 gap-2">
                   {MATERIALS.map((mat) => {
@@ -429,7 +437,7 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
                   />
                 )}
                 <span className="relative z-10">
-                  {isProcessing ? `Elaborazione ${uploadProgress}%` : "Calcola il Prezzo"}
+                  {isProcessing ? `Elaborazione ${uploadProgress}%` : t.quote.calculatePrice}
                 </span>
               </button>
 

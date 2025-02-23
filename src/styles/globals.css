@@ -1,0 +1,18 @@
+.navbar-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  height: 64px; /* o l'altezza che preferisci */
+}
+
+main {
+  padding-top: 64px; /* stessa altezza della navbar */
+}
+
+@media (min-width: 768px) {
+  main {
+    padding-top: 0;
+  }
+} 
