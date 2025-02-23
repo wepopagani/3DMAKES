@@ -93,7 +93,7 @@ export const translations = {
         description: "SLA printing services for highly detailed parts and smooth surfaces, ideal for high-precision applications.",
         features: [
           "Printing volume up to 220×125×200 mm",
-          "Ultra-fine resolution up to 19 microns (0.019 mm)",
+          "Ultra-fine resolution up to 0,01 mm",
           "Smooth surfaces and high precision details",
           "Specialized materials for various industries",
           "Perfect for jewelry, dentistry, and modeling"
@@ -332,7 +332,7 @@ export const translations = {
         description: "Servizi di stampa SLA per parti estremamente dettagliate e superfici lisce, ideali per applicazioni di alta precisione.",
         features: [
           "Volume di stampa fino a 220×125×200 mm",
-          "Risoluzione ultra fine fino a 19 micron (0,019 mm)",
+          "Risoluzione ultra fine fino a 0,010 mm",
           "Superfici lisce e dettagli precisi",
           "Materiali specializzati per vari settori",
           "Perfetto per gioielleria, odontoiatria e modellismo"
