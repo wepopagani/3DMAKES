@@ -56,16 +56,33 @@ export default function ContactSection({ language }: ContactSectionProps) {
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    
+
     if (!validateForm(formData)) {
       return;
     }
 
     setIsSubmitting(true);
-    
+
     try {
-      // Here you would typically send the form data to your backend
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const formDataEncoded = new URLSearchParams({
+        'form-name': 'contact',
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        projectType: formData.projectType,
+        message: formData.message
+      }).toString();
+
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: formDataEncoded
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
       setSubmitStatus('success');
       setFormData(initialFormData);
     } catch (error) {
@@ -92,11 +109,14 @@ export default function ContactSection({ language }: ContactSectionProps) {
             <form 
               name="contact" 
               method="POST" 
+              action="/success"
               data-netlify="true"
+              data-netlify-honeypot="bot-field"
               onSubmit={handleSubmit} 
               className="space-y-6"
             >
               <input type="hidden" name="form-name" value="contact" />
+              <input type="hidden" name="bot-field" />
               
               <div>
                 <label htmlFor="name" className="block text-white font-medium mb-2">{t.form.name}</label>
