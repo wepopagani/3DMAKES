@@ -1,4 +1,3 @@
-
 export const translations = {
   en: {
     quote: {// Quote Calculator
@@ -243,7 +242,8 @@ export const translations = {
 
     search: {
       title: "Search Your 3D Model",
-      subtitle: "Not sure what to print? Get inspired by the search engine!"
+      subtitle: "Not sure what to print? Get inspired by the search engine!",
+      instructions: "Once you find the model you like, download it and upload it in the next section to realize it"
     },
 
   },
@@ -482,7 +482,8 @@ export const translations = {
 
     search: {
       title: "Cerca il Tuo Modello 3D",
-      subtitle: "Non sai cosa stampare? Lasciati ispirare dal motore di ricerca e scopri nuovi modelli 3D!"
+      subtitle: "Non sai cosa stampare? Lasciati ispirare dal motore di ricerca e scopri nuovi modelli 3D!",
+      instructions: "Una volta trovato il modello che ti piace, scaricalo e caricalo nella sezione successiva per realizzarlo"
     },
   }
 };

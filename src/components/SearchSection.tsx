@@ -58,6 +58,7 @@ const SearchSection: React.FC<{ language: Language }> = ({ language }) => {
       <div className="search-container" style={styles.searchContainer}>
         <div className="gcse-search"></div>
       </div>
+      <p style={styles.instructions}>{translations[language].search.instructions}</p>
     </div>
   );
 };
@@ -90,6 +91,15 @@ const styles = {
     padding: '15px',
     background: 'transparent',
     borderRadius: '4px'
+  },
+  instructions: {
+    fontSize: '16px',
+    textAlign: 'center' as const,
+    color: '#ffffff',
+    marginTop: '20px',
+    fontFamily: "'Poppins', sans-serif",
+    fontWeight: 400,
+    fontStyle: 'italic'
   }
 };
 
