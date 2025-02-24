@@ -69,15 +69,14 @@ export default function ContactSection({ language }: ContactSectionProps) {
 
       const response = await fetch('/', {
         method: 'POST',
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(formData as any).toString()
+        body: formData
       });
 
       if (response.ok) {
         setSubmitStatus('success');
         setFormData(initialFormData);
-        // Opzionale: reindirizza alla pagina di successo
-        // window.location.href = '/success';
+        // Reindirizza alla pagina di successo
+        window.location.href = '/success';
       } else {
         throw new Error('Form submission failed');
       }
@@ -106,6 +105,7 @@ export default function ContactSection({ language }: ContactSectionProps) {
               name="contact" 
               method="POST"
               data-netlify="true"
+              onSubmit={handleSubmit}
               className="space-y-6"
             >
               <input type="hidden" name="form-name" value="contact" />
@@ -116,6 +116,8 @@ export default function ContactSection({ language }: ContactSectionProps) {
                   type="text"
                   id="name"
                   name="name"
+                  value={formData.name}
+                  onChange={handleChange}
                   required
                   className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-red-500 text-white"
                 />
@@ -127,6 +129,8 @@ export default function ContactSection({ language }: ContactSectionProps) {
                   type="email"
                   id="email"
                   name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   required
                   className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-red-500 text-white"
                 />
@@ -138,6 +142,8 @@ export default function ContactSection({ language }: ContactSectionProps) {
                   type="tel"
                   id="phone"
                   name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
                   className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-red-500 text-white"
                 />
               </div>
@@ -147,6 +153,8 @@ export default function ContactSection({ language }: ContactSectionProps) {
                 <select
                   id="projectType"
                   name="projectType"
+                  value={formData.projectType}
+                  onChange={handleChange}
                   required
                   className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-red-500 text-white"
                 >
@@ -163,6 +171,8 @@ export default function ContactSection({ language }: ContactSectionProps) {
                 <textarea
                   id="message"
                   name="message"
+                  value={formData.message}
+                  onChange={handleChange}
                   required
                   rows={4}
                   className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-red-500 text-white"
