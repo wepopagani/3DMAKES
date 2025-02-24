@@ -1,11 +1,6 @@
-[build]
+ [build]
   command = "npm run build"
   publish = "dist"
-
-[[redirects]]
-  from = "/success"
-  to = "/success/index.html"
-  status = 200
 
 [[redirects]]
   from = "/*"
@@ -15,4 +10,4 @@
 [forms]
   [forms.contact]
     name = "contact"
-    success_url = "/success" 
+    success_url = "/" 

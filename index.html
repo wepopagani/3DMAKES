@@ -29,22 +29,12 @@
     <div id="root"></div>
 
     <!-- Hidden Netlify Form -->
-    <form 
-      name="contact" 
-      netlify 
-      netlify-honeypot="bot-field" 
-      hidden
-      data-netlify-recaptcha="true"
-      data-netlify="true"
-    >
-      <input type="hidden" name="form-name" value="contact" />
-      <input name="bot-field" hidden />
+    <form name="contact" netlify hidden>
       <input type="text" name="name" />
       <input type="email" name="email" />
       <input type="tel" name="phone" />
       <select name="projectType"></select>
       <textarea name="message"></textarea>
-      <input type="file" name="attachment" />
     </form>
 
     <script type="module" src="/src/main.tsx"></script>

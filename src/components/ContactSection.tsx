@@ -56,18 +56,31 @@ export default function ContactSection({ language }: ContactSectionProps) {
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    
+
     if (!validateForm(formData)) {
       return;
     }
 
     setIsSubmitting(true);
-    
+
     try {
-      // Here you would typically send the form data to your backend
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setSubmitStatus('success');
-      setFormData(initialFormData);
+      const form = e.target as HTMLFormElement;
+      const formData = new FormData(form);
+
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(formData as any).toString()
+      });
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        setFormData(initialFormData);
+        // Opzionale: reindirizza alla pagina di successo
+        // window.location.href = '/success';
+      } else {
+        throw new Error('Form submission failed');
+      }
     } catch (error) {
       console.error('Form submission error:', error);
       setSubmitStatus('error');
@@ -89,18 +102,22 @@ export default function ContactSection({ language }: ContactSectionProps) {
           <div className="bg-gray-800/50 p-8 rounded-2xl shadow-2xl backdrop-blur-sm">
             <h3 className="text-2xl font-semibold text-white mb-6">{t.form.title}</h3>
             
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form 
+              name="contact" 
+              method="POST"
+              data-netlify="true"
+              className="space-y-6"
+            >
+              <input type="hidden" name="form-name" value="contact" />
+              
               <div>
                 <label htmlFor="name" className="block text-white font-medium mb-2">{t.form.name}</label>
                 <input
                   type="text"
                   id="name"
                   name="name"
-                  value={formData.name}
-                  onChange={handleChange}
                   required
                   className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-red-500 text-white"
-                  placeholder={t.form.name}
                 />
               </div>
 
@@ -110,11 +127,8 @@ export default function ContactSection({ language }: ContactSectionProps) {
                   type="email"
                   id="email"
                   name="email"
-                  value={formData.email}
-                  onChange={handleChange}
                   required
                   className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-red-500 text-white"
-                  placeholder={t.form.email}
                 />
               </div>
 
@@ -124,10 +138,7 @@ export default function ContactSection({ language }: ContactSectionProps) {
                   type="tel"
                   id="phone"
                   name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
                   className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-red-500 text-white"
-                  placeholder="Numero di telefono"
                 />
               </div>
 
@@ -136,8 +147,7 @@ export default function ContactSection({ language }: ContactSectionProps) {
                 <select
                   id="projectType"
                   name="projectType"
-                  value={formData.projectType}
-                  onChange={handleChange}
+                  required
                   className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-red-500 text-white"
                 >
                   <option value="general">{t.form.projectType.general}</option>
@@ -153,25 +163,21 @@ export default function ContactSection({ language }: ContactSectionProps) {
                 <textarea
                   id="message"
                   name="message"
-                  value={formData.message}
-                  onChange={handleChange}
                   required
                   rows={4}
-                  className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-red-500 text-white resize-none"
-                  placeholder={t.form.message}
-                />
+                  className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-red-500 text-white"
+                ></textarea>
               </div>
 
               {error && (
                 <p className="text-red-500 text-sm">{error}</p>
               )}
 
-              <button
+              <button 
                 type="submit"
-                disabled={isSubmitting}
-                className="w-full px-8 py-4 bg-red-600 hover:bg-red-700 text-white rounded-lg shadow-2xl transition-all hover:shadow-red-500/20 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200"
               >
-                {isSubmitting ? t.form.sending : t.form.send}
+                Invia
               </button>
 
               {submitStatus === 'success' && (
@@ -205,6 +211,7 @@ export default function ContactSection({ language }: ContactSectionProps) {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                   <div>
+                    
                     <h4 className="text-white font-medium">{t.info.email}</h4>
                     <a href="mailto:info@3dmakes.ch" className="text-gray-400 hover:text-red-500 transition-colors">
                       info@3dmakes.ch
