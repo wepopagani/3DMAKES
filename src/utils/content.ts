@@ -192,7 +192,7 @@ export const blogPosts = {
       - Produzione sostenibile
 
       Con l'avanzare della scienza dei materiali e il miglioramento delle capacità delle stampanti, vediamo sempre più industrie abbracciare la stampa 3D come tecnologia di produzione principale.`,
-      imageUrl: 'https://images.unsplash.com/photo-1581093450021-4a7360e9a6b5',
+      imageUrl: '/images/blog/future.png',
       date: '2024-01-15',
       author: 'Marco Rossi',
       category: 'Tecnologia',
@@ -211,7 +211,7 @@ export const blogPosts = {
       - Offerta di alternative biodegradabili
       
       Scegliendo materiali riciclati, i nostri clienti possono ridurre il loro impatto ambientale mantenendo risultati di alta qualità.`,
-      imageUrl: 'https://images.unsplash.com/photo-1615485290382-441e4d049cb5',
+      imageUrl: '/images/blog/sustainable.png',
       date: '2024-01-10',
       author: 'Sofia Bianchi',
       category: 'Sostenibilità',
@@ -230,7 +230,7 @@ export const blogPosts = {
       - Riduzione del peso attraverso strutture reticolari
       
       Questi progressi stanno portando ad aeromobili più efficienti e leggeri con ridotto consumo di carburante e prestazioni migliorate.`,
-      imageUrl: 'https://images.unsplash.com/photo-1517976487492-5750f3195933',
+      imageUrl: 'images/blog/aereo.png',
       date: '2023-12-20',
       author: 'Giacomo Moretti',
       category: 'Aerospaziale',
