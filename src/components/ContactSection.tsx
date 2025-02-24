@@ -8,6 +8,7 @@ interface ContactFormData {
   phone: string;
   message: string;
   projectType: string;
+  attachment?: File | null;
 }
 
 interface ContactSectionProps {
@@ -19,7 +20,8 @@ const initialFormData: ContactFormData = {
   email: '',
   phone: '',
   message: '',
-  projectType: 'general'
+  projectType: 'general',
+  attachment: null
 };
 
 export default function ContactSection({ language }: ContactSectionProps) {
@@ -34,6 +36,14 @@ export default function ContactSection({ language }: ContactSectionProps) {
     setFormData(prev => ({
       ...prev,
       [name]: value
+    }));
+  }, []);
+
+  const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    setFormData(prev => ({
+      ...prev,
+      attachment: file
     }));
   }, []);
 
@@ -105,6 +115,7 @@ export default function ContactSection({ language }: ContactSectionProps) {
               name="contact" 
               method="POST"
               data-netlify="true"
+              encType="multipart/form-data"
               onSubmit={handleSubmit}
               className="space-y-6"
             >
@@ -177,6 +188,19 @@ export default function ContactSection({ language }: ContactSectionProps) {
                   rows={4}
                   className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-red-500 text-white"
                 ></textarea>
+              </div>
+
+              <div>
+                <label htmlFor="attachment" className="block text-white font-medium mb-2">
+                  {t.form.attachment}
+                </label>
+                <input
+                  type="file"
+                  id="attachment"
+                  name="attachment"
+                  onChange={handleFileChange}
+                  className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-red-500 text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-red-600 file:text-white hover:file:bg-red-700"
+                />
               </div>
 
               {error && (

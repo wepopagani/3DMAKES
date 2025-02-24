@@ -29,12 +29,13 @@
     <div id="root"></div>
 
     <!-- Hidden Netlify Form -->
-    <form name="contact" netlify hidden>
+    <form name="contact" netlify hidden enctype="multipart/form-data">
       <input type="text" name="name" />
       <input type="email" name="email" />
       <input type="tel" name="phone" />
       <select name="projectType"></select>
       <textarea name="message"></textarea>
+      <input type="file" name="attachment" />
     </form>
 
     <script type="module" src="/src/main.tsx"></script>

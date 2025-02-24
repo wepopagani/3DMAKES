@@ -1,4 +1,4 @@
- [build]
+[build]
   command = "npm run build"
   publish = "dist"
 
@@ -10,4 +10,33 @@
 [forms]
   [forms.contact]
     name = "contact"
-    success_url = "/success" 
+    success_url = "/success"
+
+[functions]
+  node_bundler = "esbuild"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Content-Security-Policy = "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: *.netlify.app *.google.com *.googleapis.com *.gstatic.com; img-src 'self' data: blob: *.netlify.app"
+
+[build.processing]
+  skip_processing = false
+[build.processing.html]
+  pretty_urls = true
+[build.processing.images]
+  compress = true
+[build.processing.css]
+  bundle = true
+  minify = true
+[build.processing.js]
+  bundle = true
+  minify = true
+
+# Configurazione per il caricamento dei file
+[build.environment]
+  MAX_FILE_SIZE = "52428800" # 50MB in bytes 
