@@ -100,7 +100,7 @@ export default function ContactSection({ language }: ContactSectionProps) {
               className="space-y-6"
             >
               <input type="hidden" name="form-name" value="contact" />
-              <input name="bot-field" type="hidden" />
+              <input type="hidden" name="bot-field" />
 
               <div>
                 <label htmlFor="name" className="block text-white font-medium mb-2">{t.form.name}</label>
