@@ -89,19 +89,7 @@ export default function ContactSection({ language }: ContactSectionProps) {
           <div className="bg-gray-800/50 p-8 rounded-2xl shadow-2xl backdrop-blur-sm">
             <h3 className="text-2xl font-semibold text-white mb-6">{t.form.title}</h3>
             
-            <form 
-              name="contact" 
-              method="POST"
-              action="/success"
-              data-netlify="true"
-              data-netlify-honeypot="bot-field"
-              encType="multipart/form-data"
-              onSubmit={handleSubmit}
-              className="space-y-6"
-            >
-              <input type="hidden" name="form-name" value="contact" />
-              <input type="hidden" name="bot-field" />
-
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label htmlFor="name" className="block text-white font-medium mb-2">{t.form.name}</label>
                 <input
@@ -174,23 +162,6 @@ export default function ContactSection({ language }: ContactSectionProps) {
                 />
               </div>
 
-              <div>
-                <label htmlFor="attachment" className="block text-white font-medium mb-2">
-                  {t.form.attachment}
-                </label>
-                <input
-                  type="file"
-                  id="attachment"
-                  name="attachment"
-                  onChange={handleChange}
-                  className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-red-500 text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-red-600 file:text-white hover:file:bg-red-700"
-                  accept="*/*"
-                />
-                <p className="text-gray-400 text-sm mt-2">
-                  Puoi caricare qualsiasi tipo di file
-                </p>
-              </div>
-
               {error && (
                 <p className="text-red-500 text-sm">{error}</p>
               )}
@@ -198,7 +169,7 @@ export default function ContactSection({ language }: ContactSectionProps) {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200 disabled:opacity-50"
+                className="w-full px-8 py-4 bg-red-600 hover:bg-red-700 text-white rounded-lg shadow-2xl transition-all hover:shadow-red-500/20 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? t.form.sending : t.form.send}
               </button>
