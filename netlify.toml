@@ -9,4 +9,5 @@
 
 [forms]
   [forms.contact]
-    success_url = "/" 
+    name = "contact"
+    success_url = "/success" 

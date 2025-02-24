@@ -12,6 +12,7 @@ import { Language, translations } from './utils/translations';
 import SearchSection from './components/SearchSection';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import QRCodeGenerator from "./components/QRCodeGenerator";
+import Success from './pages/Success';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -178,6 +179,7 @@ function App() {
           </div>
         } />
         <Route path="/qrgen" element={<QRCodeGenerator />} />
+        <Route path="/success" element={<Success />} />
       </Routes>
     </Router>
   );

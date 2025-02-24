@@ -28,8 +28,17 @@
   <body>
     <div id="root"></div>
 
-    <!-- Hidden Netlify Form for Detection -->
-    <form name="contact" netlify hidden>
+    <!-- Hidden Netlify Form -->
+    <form 
+      name="contact" 
+      netlify 
+      netlify-honeypot="bot-field" 
+      hidden
+      data-netlify-recaptcha="true"
+      data-netlify="true"
+    >
+      <input type="hidden" name="form-name" value="contact" />
+      <input name="bot-field" hidden />
       <input type="text" name="name" />
       <input type="email" name="email" />
       <input type="tel" name="phone" />

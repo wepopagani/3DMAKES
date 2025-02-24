@@ -94,10 +94,14 @@ export default function ContactSection({ language }: ContactSectionProps) {
               method="POST"
               action="/success"
               data-netlify="true"
+              data-netlify-honeypot="bot-field"
               encType="multipart/form-data"
               onSubmit={handleSubmit}
               className="space-y-6"
             >
+              <input type="hidden" name="form-name" value="contact" />
+              <input name="bot-field" type="hidden" />
+
               <div>
                 <label htmlFor="name" className="block text-white font-medium mb-2">{t.form.name}</label>
                 <input
