@@ -255,10 +255,10 @@ export const blogPosts = {
 
       Le resine sono fotopolimeri liquidi che si induriscono quando esposti alla luce UV. Offrono alta risoluzione e sono ideali per dettagli intricati e superfici lisce.
 
-      Resine Standard: Utilizzate per la stampa generale, prototipi e creazioni artistiche.
-      Resine Ingegneristiche: Offrono proprietà meccaniche migliorate come alta resistenza, resistenza al calore e resistenza chimica.
-      Resine per Fusione: Progettate per creare stampi per gioielli e modelli per fusione a cera persa.
-      Resine Dentali: Formulate specificamente per applicazioni odontoiatriche come corone, ponti e allineatori.
+      Standard Resins: Utilizzate per la stampa generale, prototipi e creazioni artistiche.
+      Engineering Resins: Offrono proprietà meccaniche migliorate come alta resistenza, resistenza al calore e resistenza chimica.
+      Casting Resins: Progettate per creare stampi per gioielli e modelli per fusione a cera persa.
+      Dental Resins: Formulate specificamente per applicazioni odontoiatriche come corone, ponti e allineatori.
 
       Compositi: Proprietà su misura
 
@@ -369,7 +369,7 @@ export const projects = {
 The components were designed with specific tolerances and mechanical properties to withstand industrial use. We used PETG material with reinforced infill patterns to ensure maximum durability while maintaining reasonable print times.
 
 The final implementation led to significant cost savings compared to traditional manufacturing methods, meeting all functional requirements.`,
-      imageUrl: 'https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc',
+      imageUrl: '/images/projects/comp.png',
       details: {
         material: 'PETG',
         printTime: '14 hours',
@@ -399,7 +399,7 @@ The final implementation led to significant cost savings compared to traditional
 We used white PLA material with ultra-fine layer heights to achieve the necessary level of detail. The model was printed in sections to optimize build quality and allow access to internal views.
 
 The final model became a crucial tool for client presentations and helped secure project approval from stakeholders.`,
-      imageUrl: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758',
+      imageUrl: '/images/projects/arch.png',
       details: {
         material: 'PLA',
         printTime: '22 hours',
@@ -429,7 +429,7 @@ The final model became a crucial tool for client presentations and helped secure
 We employed carbon fiber reinforced PETG to achieve the optimal strength-to-weight ratio. The design incorporated complex internal structures to maximize rigidity while minimizing material use.
 
 The final components exceeded performance expectations and are now in active use in the automation system.`,
-      imageUrl: 'https://images.unsplash.com/photo-1581093806997-124204d9fa9d',
+      imageUrl: '/images/projects/rob.png',
       details: {
         material: 'PETG-CF',
         printTime: '16 hours',
@@ -459,7 +459,7 @@ The final components exceeded performance expectations and are now in active use
 Using high-performance nylon with excellent thermal properties, we created a complex cooling system that integrates multiple functions into a single part. The design features conformal cooling channels that follow the exact contour of the engine block.
 
 The final component achieved a 40% improvement in cooling efficiency while reducing the total weight by 25% compared to the traditional assembly.`,
-      imageUrl: 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3',
+      imageUrl: '/images/projects/motore.png',
       details: {
         material: 'PA12-CF',
         printTime: '32 hours',
@@ -572,7 +572,7 @@ The final component achieved a 40% improvement in cooling efficiency while reduc
 I componenti sono stati progettati con tolleranze specifiche e proprietà meccaniche per resistere all'uso industriale. Abbiamo utilizzato materiale PETG con pattern di riempimento rinforzati per garantire la massima durabilità mantenendo tempi di stampa ragionevoli.
 
 L'implementazione finale ha portato a significativi risparmi sui costi rispetto ai metodi di produzione tradizionali, soddisfacendo tutti i requisiti funzionali.`,
-      imageUrl: 'https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc',
+      imageUrl: '/images/projects/comp.png',
       details: {
         material: 'PETG',
         printTime: '14 ore',
@@ -602,7 +602,7 @@ L'implementazione finale ha portato a significativi risparmi sui costi rispetto 
 Abbiamo utilizzato materiale PLA bianco con altezze layer ultra-fini per raggiungere il livello di dettaglio necessario. Il modello è stato stampato in sezioni per ottimizzare la qualità di costruzione e consentire l'accesso alla visione interna.
 
 Il modello finale è diventato uno strumento cruciale per le presentazioni ai clienti e ha contribuito ad ottenere l'approvazione del progetto dagli stakeholder.`,
-      imageUrl: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758',
+      imageUrl: '/images/projects/arch.png',
       details: {
         material: 'PLA',
         printTime: '22 ore',
@@ -632,7 +632,7 @@ Il modello finale è diventato uno strumento cruciale per le presentazioni ai cl
 Abbiamo impiegato PETG rinforzato con fibra di carbonio per ottenere il rapporto ottimale resistenza-peso. Il design ha incorporato strutture interne complesse per massimizzare la rigidità minimizzando l'uso di materiale.
 
 I componenti finali hanno superato le aspettative di prestazione e sono ora in uso attivo nel sistema di automazione.`,
-      imageUrl: 'https://images.unsplash.com/photo-1581093806997-124204d9fa9d',
+      imageUrl: '/images/projects/rob.png',
       details: {
         material: 'PETG-CF',
         printTime: '16 ore',
@@ -662,7 +662,7 @@ I componenti finali hanno superato le aspettative di prestazione e sono ora in u
 Utilizzando nylon ad alte prestazioni con eccellenti proprietà termiche, abbiamo creato un sistema di raffreddamento complesso che integra multiple funzioni in un singolo pezzo. Il design presenta canali di raffreddamento conformi che seguono l'esatto profilo del blocco motore.
 
 Il componente finale ha raggiunto un miglioramento del 40% nell'efficienza di raffreddamento riducendo al contempo il peso totale del 25% rispetto all'assemblaggio tradizionale.`,
-      imageUrl: 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3',
+      imageUrl: '/images/projects/motore.png',
       details: {
         material: 'PA12-CF',
         printTime: '32 ore',
