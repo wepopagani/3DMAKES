@@ -208,7 +208,7 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
 
       clearInterval(interval);
 
-      // Completa
+      // Completa la barra di progresso
       for (const p of [96, 97, 98, 99, 100]) {
         setUploadProgress(p);
         await new Promise((r) => setTimeout(r, 100));
