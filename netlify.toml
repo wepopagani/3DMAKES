@@ -22,7 +22,7 @@
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Content-Security-Policy = "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: *.netlify.app *.google.com *.googleapis.com *.gstatic.com; img-src 'self' data: blob: *.netlify.app"
+    Content-Security-Policy = "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https: http: ws:;"
 
 [build.processing]
   skip_processing = false
