@@ -15,7 +15,7 @@ const MIN_PRICE = 15;
 
 // Se vuoi cambiare il massimo file, ecc.
 const MAX_FILE_SIZE = 100 * 1024 * 1024;
-const API_URL = "https://12aa-89-217-108-88.ngrok-free.app/upload";
+const API_URL = "https://df1f-89-217-105-95.ngrok-free.app/upload";
 
 // Opzioni qualità
 
