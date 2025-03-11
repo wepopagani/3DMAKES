@@ -17,26 +17,6 @@ const MIN_PRICE = 15;
 const MAX_FILE_SIZE = 100 * 1024 * 1024;
 const API_URL = "https://df1f-89-217-105-95.ngrok-free.app/upload";
 
-// Opzioni qualità
-
-
-// Materiali
-const MATERIALS = [
-  { id: "pla", label: "PLA", desc: "Economico e facile da stampare" },
-  { id: "petg", label: "PETG", desc: "Resistente e versatile" },
-  { id: "abs", label: "ABS", desc: "Resistente al calore" },
-  { id: "tpu", label: "TPU", desc: "Flessibile" },
-  { id: "petg_cf", label: "PETG CF", desc: "PETG rinforzato con fibra di carbonio" },
-  { id: "pc", label: "PC", desc: "Policarbonato ad alta resistenza" },
-  { id: "nylon", label: "Nylon", desc: "Forte e durevole" },
-  {
-    id: "resin",
-    label: "Resina",
-    desc: "Alta precisione, solo per Ultra High",
-    resinOnly: true,
-  },
-];
-
 export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
   const t = translations[language];
 
@@ -67,35 +47,76 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
 
   // Quantità
   const [quantity, setQuantity] = useState<number>(1);
+  
+  // Stato per drag and drop
+  const [isDragging, setIsDragging] = useState<boolean>(false);
 
-  // Handler caricamento file
+  // Reset degli stati quando cambia il file
+  const resetStates = () => {
+    setError(null);
+    setPrintTime(null);
+    setSinglePrice(null);
+    setMaterialCost(null);
+    setElectricityCost(null);
+    setDepreciationCost(null);
+    setIsProcessing(false);
+    setUploadProgress(0);
+    setModelDims(null);
+  };
+
+  // Handler per il caricamento del file (sia tramite input che drag & drop)
+  const processFile = (f: File) => {
+    resetStates();
+    
+    if (f.size > MAX_FILE_SIZE) {
+      setError("File troppo grande");
+      return;
+    }
+    
+    const ext = f.name.split(".").pop()?.toLowerCase() ?? "";
+    setFileType(ext);
+    setFile(f);
+  };
+
+  // Handler per l'input file tradizionale
   const handleFileChange = useCallback(
     (evt: React.ChangeEvent<HTMLInputElement>) => {
-      setError(null);
-      setPrintTime(null);
-      setSinglePrice(null);
-
-      setMaterialCost(null);
-      setElectricityCost(null);
-      setDepreciationCost(null);
-
-      setIsProcessing(false);
-      setUploadProgress(0);
-      setModelDims(null);
-
       const f = evt.target.files?.[0];
       if (f) {
-        if (f.size > MAX_FILE_SIZE) {
-          setError("File troppo grande");
-          return;
-        }
-        const ext = f.name.split(".").pop()?.toLowerCase() ?? "";
-        setFileType(ext);
-        setFile(f);
+        processFile(f);
       }
     },
-    [t]
+    []
   );
+
+  // Handler per il drag & drop
+  const handleDragOver = useCallback((e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+  }, []);
+
+  const handleDragEnter = useCallback((e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  }, []);
+
+  const handleDragLeave = useCallback((e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  }, []);
+
+  const handleDrop = useCallback((e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+    
+    const files = e.dataTransfer.files;
+    if (files && files.length > 0) {
+      processFile(files[0]);
+    }
+  }, []);
 
   // Calcolo del prezzo per 1 pezzo
   const calculateSinglePrice = useCallback((printTimeHours: number, materialGrams: number) => {
@@ -123,6 +144,8 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
     }
     return Math.round(finalPrice * 100) / 100;
   }, []);
+
+  // Materiali
   const MATERIALS = [
     { id: "pla", label: "PLA", desc: t.quote.pla },
     { id: "petg", label: "PETG", desc: t.quote.petg },
@@ -152,6 +175,7 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
       resinOnly: true,
     },
   ];
+
   // Handler invio al server
   const handleCalculate = useCallback(async () => {
     if (!file) {
@@ -243,7 +267,7 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
     } else if (material === "resin") {
       setMaterial("pla");
     }
-  }, [quality]);
+  }, [quality, material]);
 
   // Funzione per calcolare lo sconto
   const calculateDiscount = (quantity: number, price: number) => {
@@ -311,11 +335,17 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
                 />
                 <label
                   htmlFor="file-upload"
-                  className="w-full flex items-center justify-center px-6 py-4 border-2 border-dashed border-gray-600 rounded-lg cursor-pointer hover:border-red-500 transition-colors"
+                  className={`w-full flex items-center justify-center px-6 py-4 border-2 border-dashed ${
+                    isDragging ? 'border-red-500 bg-red-500/10' : 'border-gray-600'
+                  } rounded-lg cursor-pointer hover:border-red-500 transition-colors`}
+                  onDragOver={handleDragOver}
+                  onDragEnter={handleDragEnter}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
                 >
                   <div className="text-center">
                     <span className="text-gray-300">
-                      {file ? file.name : t.quote.dropzoneText}
+                      {file ? file.name : isDragging ? 'Rilascia qui il file' : t.quote.dropzoneText}
                     </span>
                   </div>
                 </label>
