@@ -15,7 +15,7 @@ const MIN_PRICE = 15;
 
 // Se vuoi cambiare il massimo file, ecc.
 const MAX_FILE_SIZE = 100 * 1024 * 1024;
-const API_URL = "https://df1f-89-217-105-95.ngrok-free.app/upload";
+const API_URL = "https://e7dc-89-217-100-200.ngrok-free.app/upload";
 
 export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
   const t = translations[language];
