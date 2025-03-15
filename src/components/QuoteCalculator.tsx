@@ -357,12 +357,90 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
 
               {file && (fileType === "stl" || fileType === "obj") && (
                 <div className="mt-4">
-                  <ModelViewer
-                    file={file}
-                    fileType={fileType}
-                    uploadPrompt="carica il modello"
-                    onDimensions={(dims) => setModelDims(dims)}
-                  />
+                  <div className="relative">
+                    <div className="aspect-square w-full h-80 md:h-96 border border-gray-700 rounded-lg overflow-hidden shadow-lg">
+                      <ModelViewer
+                        file={file}
+                        fileType={fileType}
+                        uploadPrompt="carica il modello"
+                        onDimensions={(dims) => setModelDims(dims)}
+                      />
+                    </div>
+                    <button 
+                      className="absolute top-2 right-2 bg-gray-800/70 hover:bg-gray-700 text-white p-2 rounded-md transition-colors"
+                      onClick={() => {
+                        // Creare un elemento contenitore per il modello a schermo intero
+                        const fullscreenContainer = document.createElement('div');
+                        fullscreenContainer.style.position = 'fixed';
+                        fullscreenContainer.style.top = '0';
+                        fullscreenContainer.style.left = '0';
+                        fullscreenContainer.style.width = '100vw';
+                        fullscreenContainer.style.height = '100vh';
+                        fullscreenContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+                        fullscreenContainer.style.zIndex = '9999';
+                        fullscreenContainer.style.display = 'flex';
+                        fullscreenContainer.style.justifyContent = 'center';
+                        fullscreenContainer.style.alignItems = 'center';
+                        
+                        // Aggiungere pulsante di chiusura
+                        const closeButton = document.createElement('button');
+                        closeButton.innerHTML = '✕';
+                        closeButton.style.position = 'absolute';
+                        closeButton.style.top = '20px';
+                        closeButton.style.right = '20px';
+                        closeButton.style.backgroundColor = 'rgba(200, 30, 30, 0.8)';
+                        closeButton.style.color = 'white';
+                        closeButton.style.border = 'none';
+                        closeButton.style.borderRadius = '50%';
+                        closeButton.style.width = '40px';
+                        closeButton.style.height = '40px';
+                        closeButton.style.cursor = 'pointer';
+                        closeButton.style.fontSize = '20px';
+                        closeButton.style.display = 'flex';
+                        closeButton.style.justifyContent = 'center';
+                        closeButton.style.alignItems = 'center';
+                        
+                        closeButton.onclick = () => {
+                          document.body.removeChild(fullscreenContainer);
+                        };
+                        
+                        // Creare un clone del modello viewer
+                        const modelContainer = document.createElement('div');
+                        modelContainer.style.width = '90vmin';
+                        modelContainer.style.height = '90vmin';
+                        modelContainer.style.position = 'relative';
+                        
+                        fullscreenContainer.appendChild(modelContainer);
+                        fullscreenContainer.appendChild(closeButton);
+                        document.body.appendChild(fullscreenContainer);
+                        
+                        // Renderizzare un nuovo ModelViewer dentro il container
+                        const newModelViewer = document.createElement('div');
+                        newModelViewer.style.width = '100%';
+                        newModelViewer.style.height = '100%';
+                        modelContainer.appendChild(newModelViewer);
+                        
+                        // Importa dinamicamente React e ReactDOM per rendere il componente
+                        import('react-dom/client').then((ReactDOM) => {
+                          import('react').then((React) => {
+                            const root = ReactDOM.createRoot(newModelViewer);
+                            root.render(
+                              React.createElement(ModelViewer, {
+                                file: file,
+                                fileType: fileType,
+                                uploadPrompt: "carica il modello"
+                              })
+                            );
+                          });
+                        });
+                      }}
+                      title="Visualizza a schermo intero"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 01-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12zm-9 7a1 1 0 012 0v1.586l2.293-2.293a1 1 0 011.414 1.414L6.414 15H8a1 1 0 010 2H4a1 1 0 01-1-1v-4zm13-1a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 010-2h1.586l-2.293-2.293a1 1 0 011.414-1.414L15 13.586V12a1 1 0 011-1z" />
+                      </svg>
+                    </button>
+                  </div>
                   {modelDims && (
                     <p className="text-gray-400 mt-2">
                       {t.quote.size}: {modelDims.x.toFixed(2)} ×{" "}

@@ -1,6 +1,6 @@
 import { useRef, Suspense, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, PerspectiveCamera, ContactShadows } from '@react-three/drei';
+import { OrbitControls, PerspectiveCamera, ContactShadows, Environment, Html } from '@react-three/drei';
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import * as THREE from 'three';
@@ -30,6 +30,12 @@ function Model({ file, fileType, onAnalysis, onDimensions }: ModelViewerProps) {
   // Auto-rotation state
   const [isRotating, setIsRotating] = useState(true);
   
+  // Logging per debug
+  useEffect(() => {
+    console.log("ModelViewer rendering with file:", file ? file.name : "none");
+    console.log("File type:", fileType);
+  }, [file, fileType]);
+  
   // Handle auto-rotation
   useFrame(() => {
     if (modelRef.current && isRotating) {
@@ -38,10 +44,15 @@ function Model({ file, fileType, onAnalysis, onDimensions }: ModelViewerProps) {
   });
 
   useEffect(() => {
-    if (!file) return;
+    if (!file) {
+      console.log("No file provided to ModelViewer");
+      return;
+    }
 
     let isSubscribed = true;
-    const loader = fileType === 'stl' ? new STLLoader() : new OBJLoader();
+    const loader = fileType.toLowerCase() === 'stl' ? new STLLoader() : new OBJLoader();
+    
+    console.log("Loading 3D model with loader:", fileType.toLowerCase());
     
     if (readerRef.current) {
       readerRef.current.abort();
@@ -51,8 +62,9 @@ function Model({ file, fileType, onAnalysis, onDimensions }: ModelViewerProps) {
     const reader = new FileReader();
     readerRef.current = reader;
 
-    reader.onerror = () => {
+    reader.onerror = (e) => {
       if (!isSubscribed) return;
+      console.error("FileReader error:", e);
       setError('Failed to read the file. Please try again.');
     };
 
@@ -64,21 +76,30 @@ function Model({ file, fileType, onAnalysis, onDimensions }: ModelViewerProps) {
           throw new Error('File is empty');
         }
 
-        if (fileType === 'stl') {
+        console.log("File loaded, processing...");
+        
+        if (fileType.toLowerCase() === 'stl') {
           if (!(reader.result instanceof ArrayBuffer)) {
             throw new Error('Invalid STL file format');
           }
 
           try {
+            console.log("Parsing STL file...");
             const result = (loader as STLLoader).parse(reader.result);
             if (!result.hasAttribute('normal')) {
               result.computeVertexNormals();
             }
             result.computeBoundingBox();
-            result.center();
+            
+            // Centra la geometria sull'origine
+            const center = new THREE.Vector3();
+            result.boundingBox?.getCenter(center);
+            result.translate(-center.x, -center.y, -center.z);
             
             if (isSubscribed) {
               setGeometry(result);
+              console.log("STL geometry loaded successfully");
+              
               // Calcola dimensioni
               if (result.boundingBox) {
                 const size = new THREE.Vector3();
@@ -102,9 +123,16 @@ function Model({ file, fileType, onAnalysis, onDimensions }: ModelViewerProps) {
           }
 
           try {
+            console.log("Parsing OBJ file...");
             const result = (loader as OBJLoader).parse(reader.result);
-            // Esempio di scala
-            result.scale.multiplyScalar(50);
+            
+            // Calcola bounding box del gruppo completo
+            const bbox = new THREE.Box3().setFromObject(result);
+            const center = new THREE.Vector3();
+            bbox.getCenter(center);
+            
+            // Centra l'intero gruppo
+            result.position.set(-center.x, -center.y, -center.z);
             
             let dimsFound = false;
 
@@ -113,20 +141,19 @@ function Model({ file, fileType, onAnalysis, onDimensions }: ModelViewerProps) {
                 if (!child.geometry.hasAttribute('normal')) {
                   child.geometry.computeVertexNormals();
                 }
-                child.geometry.computeBoundingBox();
-                child.geometry.center();
-
-                // Materiale base
+                
+                // Materiale migliorato per la visualizzazione
                 child.material = new THREE.MeshPhysicalMaterial({
-                  color: 0xffffff,
+                  color: 0xdddddd,
                   metalness: 0.2,
-                  roughness: 0.3,
-                  clearcoat: 0.3,
-                  clearcoatRoughness: 0.25,
+                  roughness: 0.4,
+                  clearcoat: 0.2,
+                  clearcoatRoughness: 0.2,
                   reflectivity: 1
                 });
 
                 // Calcolo dimensioni child
+                child.geometry.computeBoundingBox();
                 if (child.geometry.boundingBox) {
                   const size = new THREE.Vector3();
                   child.geometry.boundingBox.getSize(size);
@@ -138,6 +165,8 @@ function Model({ file, fileType, onAnalysis, onDimensions }: ModelViewerProps) {
             
             if (isSubscribed) {
               setGeometry(result);
+              console.log("OBJ geometry loaded successfully");
+              
               // onAnalysis
               if (onAnalysis && result.children[0] instanceof THREE.Mesh) {
                 const analysis = analyzeGeometry(result.children[0].geometry);
@@ -168,7 +197,9 @@ function Model({ file, fileType, onAnalysis, onDimensions }: ModelViewerProps) {
         return;
       }
 
-      if (fileType === 'obj') {
+      console.log("Starting file read...");
+      
+      if (fileType.toLowerCase() === 'obj') {
         reader.readAsText(file);
       } else {
         reader.readAsArrayBuffer(file);
@@ -192,43 +223,77 @@ function Model({ file, fileType, onAnalysis, onDimensions }: ModelViewerProps) {
       <mesh>
         <boxGeometry args={[1, 1, 1]} />
         <meshStandardMaterial color="red" />
+        <Html position={[0, 1.5, 0]}>
+          <div style={{
+            background: 'rgba(0,0,0,0.7)',
+            color: 'red',
+            padding: '10px',
+            borderRadius: '5px',
+            width: '200px',
+            textAlign: 'center'
+          }}>
+            {error}
+          </div>
+        </Html>
       </mesh>
     );
   }
 
   if (!geometry) {
-    return null;
+    return (
+      <mesh>
+        <sphereGeometry args={[0.5, 16, 16]} />
+        <meshStandardMaterial color="gray" wireframe />
+      </mesh>
+    );
   }
 
   if (geometry instanceof THREE.BufferGeometry) {
     const size = new THREE.Vector3();
     geometry.boundingBox?.getSize(size);
     const maxDim = Math.max(size.x, size.y, size.z);
-    const scale = maxDim > 0 ? 100 / maxDim : 1;
+    
+    // Normalizza le dimensioni del modello per adattarlo alla vista
+    const scale = maxDim > 0 ? 4 / maxDim : 1;
 
     return (
       <mesh 
         ref={modelRef as any}
         scale={[scale, scale, scale]}
+        position={[0, 0, 0]}
         onPointerOver={() => setIsRotating(false)}
         onPointerOut={() => setIsRotating(true)}
+        castShadow
+        receiveShadow
       >
         <primitive object={geometry} attach="geometry" />
         <meshPhysicalMaterial
-          color={0xffffff}
+          color={0xdddddd}
           metalness={0.2}
           roughness={0.3}
-          clearcoat={0.3}
-          clearcoatRoughness={0.25}
+          clearcoat={0.4}
+          clearcoatRoughness={0.2}
           reflectivity={1}
+          envMapIntensity={0.5}
         />
       </mesh>
     );
   } else {
+    // Calcola dimensioni del gruppo per scala appropriata
+    const bbox = new THREE.Box3().setFromObject(geometry);
+    const size = new THREE.Vector3();
+    bbox.getSize(size);
+    const maxDim = Math.max(size.x, size.y, size.z);
+    
+    // Normalizza le dimensioni del modello
+    const scale = maxDim > 0 ? 4 / maxDim : 1;
+
     return (
       <primitive 
-        ref={modelRef}
-        object={geometry}
+        ref={modelRef as any}
+        object={geometry} 
+        scale={[scale, scale, scale]}
+        position={[0, 0, 0]}
         onPointerOver={() => setIsRotating(false)}
         onPointerOut={() => setIsRotating(true)}
       />
@@ -252,76 +317,119 @@ export default function ModelViewer({
   uploadPrompt = 'Carica un modello 3D per la visualizzazione', 
   onDimensions 
 }: ModelViewerProps) {
-  const [error, setError] = useState<string | null>(null);
-  const [cameraPosition, setCameraPosition] = useState<[number, number, number]>([0, 0, 150]); // Posizione della camera
-
-  // Use feature detection for device capabilities
-  const devicePixelRatio = window.devicePixelRatio || 1;
-  const isHighPerformance = devicePixelRatio >= 2 && !isMobile();
-
-  if (file && file.size > 50 * 1024 * 1024) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  if (!file) {
     return (
-      <div className="w-full h-[400px] bg-gray-800 rounded-lg overflow-hidden flex items-center justify-center">
-        <p className="text-red-500 text-center px-4">
-          File is too large. Please upload a file smaller than 50MB.
-        </p>
+      <div className="h-full flex items-center justify-center bg-gray-800 rounded-md">
+        <p className="text-gray-400">{uploadPrompt}</p>
       </div>
     );
   }
 
   return (
-    <div className="w-full h-[400px] bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg overflow-hidden relative">
-      {!file ? (
-        <div className="absolute inset-0 flex items-center justify-center">
-          <p className="text-gray-400">{uploadPrompt}</p>
-        </div>
-      ) : (
-        <Canvas
-          shadows
-          dpr={[1, 2]}
-          gl={{ antialias: true }}
-        >
-          <PerspectiveCamera makeDefault position={cameraPosition} fov={50} />
-          <color attach="background" args={["#1f2937"]} />
-          
-          // Luce ambientale per illuminazione generale
-          <ambientLight intensity={0.5} />
-          // Luce direzionale per riflessi e ombre
-          <directionalLight position={[5, 5, 5]} intensity={1.5} castShadow />
-          
-          <Suspense fallback={<LoadingSpinner />}>
-            <Model file={file} fileType={fileType} onAnalysis={onAnalysis} onDimensions={onDimensions} />
-            <ContactShadows opacity={0.4} scale={10} blur={1.5} far={10} resolution={256} color="#000000" />
-          </Suspense>
+    <div ref={containerRef} className="h-full w-full relative">
 
-          // Controlli migliorati per zoom e pan
-          <OrbitControls 
-            enableZoom 
-            enablePan 
-            dampingFactor={0.1} 
-            rotateSpeed={0.5} 
-            minDistance={50} // Distanza minima per lo zoom
-            maxDistance={300} // Distanza massima per lo zoom
-            target={[0, 0, 0]} // Centra il modello
+      <Canvas shadows className="w-full h-full">
+        <color attach="background" args={['#1a1a1a']} />
+        <ambientLight intensity={0.6} />
+        <directionalLight
+          position={[10, 10, 10]}
+          intensity={1.8}
+          castShadow
+          shadow-mapSize={[2048, 2048]}
+        />
+        <directionalLight
+          position={[-5, 5, -5]}
+          intensity={0.8}
+          color="#a0a0ff"
+        />
+        <directionalLight
+          position={[-10, -10, -10]}
+          intensity={0.6}
+        />
+        <spotLight 
+          position={[0, 15, 0]} 
+          intensity={0.5} 
+          angle={0.5} 
+          penumbra={1} 
+          castShadow 
+        />
+        <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={35} />
+        <Suspense fallback={<LoadingSpinner />}>
+          <Model 
+            file={file} 
+            fileType={fileType} 
+            onAnalysis={onAnalysis} 
+            onDimensions={onDimensions} 
           />
-        </Canvas>
-      )}
-      
-      {error && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-800 bg-opacity-90">
-          <p className="text-red-500 text-center px-4">{error}</p>
-        </div>
-      )}
-      
-      {file && !error && (
-        <div className="absolute top-4 right-4 bg-gray-900/80 backdrop-blur-sm px-4 py-2 rounded-lg">
-          <p className="text-xs text-gray-400">
-            🖱️ Left click + drag to rotate<br />
-            🖱️ Right click + drag to pan<br />
-            🖱️ Scroll to zoom
-          </p>
-        </div>
-      )}
+        </Suspense>
+        <OrbitControls 
+          enableDamping 
+          dampingFactor={0.1}
+          minDistance={1}
+          maxDistance={100}
+          target={[0, 0, 0]}
+          makeDefault
+        />
+        <ContactShadows
+          position={[0, -1.5, 0]}
+          opacity={0.6}
+          scale={10}
+          blur={1.5}
+          far={1.5}
+        />
+        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.51, 0]} receiveShadow>
+          <planeGeometry args={[20, 20]} />
+          <meshStandardMaterial 
+            color="#222" 
+            metalness={0.2} 
+            roughness={0.8} 
+            opacity={0.4} 
+            transparent 
+          />
+        </mesh>
+      </Canvas>
     </div>
   );
 }
+
+// Aggiungo un nuovo componente alla fine del file per la sezione preventivo
+export const ModelViewerPreventivo: React.FC<ModelViewerProps> = (props) => {
+  return (
+    <div style={{ width: '100%', height: '100%', background: '#1a1a1a', borderRadius: '8px' }}>
+      <Canvas
+        camera={{ position: [0, 0, 10], fov: 45 }}
+        shadows
+        gl={{ antialias: true }}
+      >
+        <ambientLight intensity={0.5} />
+        <directionalLight
+          intensity={1}
+          position={[5, 10, 5]}
+          castShadow
+          shadow-mapSize-width={1024}
+          shadow-mapSize-height={1024}
+        />
+        <Suspense fallback={null}>
+          <Model {...props} />
+          <Environment preset="city" />
+        </Suspense>
+        <OrbitControls 
+          enableDamping
+          dampingFactor={0.1}
+          rotateSpeed={0.8}
+          minDistance={2}
+          maxDistance={20}
+        />
+        <ContactShadows
+          position={[0, -2, 0]}
+          opacity={0.6}
+          scale={10}
+          blur={1}
+          far={5}
+        />
+      </Canvas>
+    </div>
+  );
+};

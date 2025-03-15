@@ -23,12 +23,14 @@
     "@react-three/fiber": "^8.15.11",
     "@splinetool/react-spline": "^2.2.6",
     "@splinetool/runtime": "^1.0.17",
+    "@types/uuid": "^10.0.0",
     "axios": "^1.7.9",
     "clsx": "^2.0.0",
     "cors": "^2.8.5",
     "date-fns": "^2.30.0",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "firebase": "^11.4.0",
     "framer-motion": "^10.18.0",
     "langchain": "^0.3.19",
     "node-fetch": "^3.3.2",
@@ -40,7 +42,8 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^7.2.0",
     "tailwind-merge": "^2.0.0",
-    "three": "0.159.0"
+    "three": "^0.159.0",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",
