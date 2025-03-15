@@ -63,7 +63,15 @@ const TestConnection: React.FC = () => {
       if (error.code === 'auth/user-not-found') {
         try {
           // Se l'utente non esiste, registralo
-          await signUp(email, password);
+          await signUp(email, password, {
+            nome: '',
+            cognome: '',
+            telefono: '',
+            indirizzo: '',
+            citta: '',
+            cap: '',
+            email: email
+          });
           setAuthStatus('success');
           setLoginMessage('Registrazione e login effettuati con successo!');
         } catch (registerError) {

@@ -630,7 +630,7 @@ const AdminPanel: React.FC = () => {
       const storagePath = `files/${selectedUser}/${safeFileName}`;
       
       // Per i modelli 3D, proviamo a generare un'anteprima
-      let thumbnailUrl = null;
+      let thumbnailUrl: string | null = null;
       if (fileExtension && ['stl', 'obj', 'gltf'].includes(fileExtension.toLowerCase())) {
         console.log("Generazione anteprima per modello 3D...");
         const thumbnailDataUrl = await generateModelThumbnail(file);
