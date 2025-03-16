@@ -10,6 +10,8 @@ import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { onSnapshot } from 'firebase/firestore';
+import { updateProfile } from 'firebase/auth';
+import { ADMIN_EMAIL } from '../config/app-config';
 
 interface FileInfo {
   id: string;
@@ -41,7 +43,7 @@ interface UserProfileData {
 }
 
 // Lista di email di amministratori (da modificare con le email degli amministratori reali)
-const ADMIN_EMAILS = ['info@3dmakes.ch'];
+const ADMIN_EMAILS = [ADMIN_EMAIL];
 
 // Aggiungo le interfacce per la chat
 interface ChatMessage {
@@ -1335,25 +1337,31 @@ const AdminPanel: React.FC = () => {
           </div>
         )}
       
-        <div className="flex border-b border-gray-700 mb-6">
+        <div className="flex border-b border-gray-700 mb-6 overflow-x-auto no-scrollbar">
           <button
-            className={`px-4 py-2 font-medium ${
+            className={`px-6 py-3 font-medium transition-all duration-200 flex items-center ${
               activeTab === 'files'
-                ? 'text-blue-500 border-b-2 border-blue-500'
-                : 'text-gray-400 hover:text-white'
+                ? 'text-white border-b-2 border-red-500 bg-gray-800/40'
+                : 'text-gray-400 hover:text-white hover:bg-gray-800/20'
             }`}
             onClick={() => setActiveTab('files')}
           >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
             File Caricati
           </button>
           <button
-            className={`px-4 py-2 font-medium ${
+            className={`px-6 py-3 font-medium transition-all duration-200 flex items-center ${
               activeTab === 'users'
-                ? 'text-blue-500 border-b-2 border-blue-500'
-                : 'text-gray-400 hover:text-white'
+                ? 'text-white border-b-2 border-red-500 bg-gray-800/40'
+                : 'text-gray-400 hover:text-white hover:bg-gray-800/20'
             }`}
             onClick={() => setActiveTab('users')}
           >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
             Clienti
           </button>
         </div>
@@ -1829,13 +1837,20 @@ const AdminPanel: React.FC = () => {
                           {/* Barra di progresso */}
                           {uploadLoading && (
                             <div className="mt-4">
-                              <div className="w-full bg-gray-700 rounded-full h-2.5 mb-2">
+                              <div className="w-full bg-gray-700 rounded-full h-3 mb-2 overflow-hidden">
                                 <div 
-                                  className="bg-blue-600 h-2.5 rounded-full transition-all duration-300" 
+                                  className="bg-gradient-to-r from-blue-500 to-blue-600 h-3 rounded-full transition-all duration-300 ease-out flex items-center justify-end"
                                   style={{ width: `${uploadProgress}%` }}
-                                ></div>
+                                >
+                                  {uploadProgress > 15 && (
+                                    <span className="text-xs font-semibold text-white mr-2">{uploadProgress}%</span>
+                                  )}
+                                </div>
                               </div>
-                              <p className="text-xs text-gray-400 text-right">{uploadProgress}% completato</p>
+                              <div className="flex justify-between text-xs text-gray-400">
+                                <span>Caricamento in corso...</span>
+                                <span>{uploadProgress}% completato</span>
+                              </div>
                             </div>
                           )}
                         </div>
@@ -2075,29 +2090,31 @@ const AdminPanel: React.FC = () => {
                       </div>
                       
                       {/* Input messaggio */}
-                      <div className="p-3 border-t border-gray-700 flex">
-                        <input
-                          type="text"
-                          value={newMessage}
-                          onChange={(e) => setNewMessage(e.target.value)}
-                          placeholder="Scrivi un messaggio..."
-                          className="flex-grow bg-gray-700 border border-gray-600 rounded-l-md p-2 focus:outline-none focus:border-blue-500"
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter' && !e.shiftKey) {
-                              e.preventDefault();
-                              handleSendMessage();
-                            }
-                          }}
-                        />
-                        <button
-                          onClick={handleSendMessage}
-                          disabled={!newMessage.trim()}
-                          className="bg-blue-600 hover:bg-blue-700 rounded-r-md px-4 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
-                          </svg>
-                        </button>
+                      <div className="p-3 border-t border-gray-700 bg-gray-750">
+                        <div className="flex rounded-lg overflow-hidden shadow-lg ring-1 ring-gray-600 focus-within:ring-red-500 transition-all duration-200">
+                          <input
+                            type="text"
+                            value={newMessage}
+                            onChange={(e) => setNewMessage(e.target.value)}
+                            placeholder="Scrivi un messaggio..."
+                            className="flex-grow bg-gray-700 p-3 focus:outline-none text-white"
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter' && !e.shiftKey) {
+                                e.preventDefault();
+                                handleSendMessage();
+                              }
+                            }}
+                          />
+                          <button
+                            onClick={handleSendMessage}
+                            disabled={!newMessage.trim()}
+                            className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 px-4 text-white transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                              <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                            </svg>
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>

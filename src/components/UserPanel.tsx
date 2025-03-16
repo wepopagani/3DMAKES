@@ -28,6 +28,7 @@ import { STLLoader } from 'three/examples/jsm/loaders/STLLoader';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { updateEmail, reauthenticateWithCredential, EmailAuthProvider, updatePassword } from 'firebase/auth';
+import { ADMIN_EMAIL } from '../config/app-config';
 
 // Creazione di un componente separato per il visualizzatore 3D
 const StandaloneModelViewer = ({ file, fileType }: { file: File, fileType: string }) => {
@@ -118,6 +119,13 @@ const UserPanel: React.FC = () => {
   const [newMessage, setNewMessage] = useState('');
   const [loadingMessages, setLoadingMessages] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Verifica se l'utente corrente è un amministratore e reindirizza
+  useEffect(() => {
+    if (currentUser?.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
+      navigate('/admin-panel');
+    }
+  }, [currentUser, navigate]);
 
   // Resettiamo l'interfaccia di caricamento
   const resetUploadInterface = () => {

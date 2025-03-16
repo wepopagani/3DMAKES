@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../firebase/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
+import { ADMIN_EMAIL } from '../config/app-config';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -20,7 +21,13 @@ const Login: React.FC = () => {
       setError('');
       setLoading(true);
       await logIn(email, password);
-      navigate('/user-panel');
+      
+      // Reindirizza l'amministratore al pannello admin
+      if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
+        navigate('/admin-panel');
+      } else {
+        navigate('/user-panel');
+      }
     } catch (error: any) {
       setError('Errore durante il login: ' + (error.message || 'Si è verificato un errore'));
     } finally {
@@ -32,8 +39,14 @@ const Login: React.FC = () => {
     try {
       setError('');
       setGoogleLoading(true);
-      await logInWithGoogle();
-      navigate('/user-panel');
+      const result = await logInWithGoogle();
+      
+      // Reindirizza l'amministratore al pannello admin
+      if (result.user.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
+        navigate('/admin-panel');
+      } else {
+        navigate('/user-panel');
+      }
     } catch (error: any) {
       setError('Errore durante il login con Google: ' + (error.message || 'Si è verificato un errore'));
     } finally {
