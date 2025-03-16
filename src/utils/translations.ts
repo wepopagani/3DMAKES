@@ -69,7 +69,7 @@ export const translations = {
     hero: {
       highlightedTitle: "3D Printing -",
       remainingTitle: "Turn Your Ideas into Reality",
-      subtitle: "From rapid prototyping to custom production, we bring your ideas to life with precision, speed, and top-tier quality.",
+      subtitle: "From rapid prototyping to custom production, we bring your ideas to life with precision, speed, and top quality.",
       getQuote: "Get a Free Quote",
       ourServices: "Explore Our Services",
       whatsapp: "Contact Us on WhatsApp"

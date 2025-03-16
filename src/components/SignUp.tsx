@@ -200,8 +200,8 @@ const SignUp: React.FC = () => {
     <div className="min-h-screen bg-gray-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex justify-center mb-5">
-          <div className="text-4xl font-bold text-red-500 flex items-center justify-center">
-            <span className="mr-2">3DMAKES</span>
+          <div className="text-4xl font-bold bg-gradient-to-r from-red-500 to-red-700 bg-clip-text text-transparent">
+            3DMAKES
           </div>
         </div>
         <h2 className="text-center text-3xl font-extrabold text-white">

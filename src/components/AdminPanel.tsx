@@ -1533,7 +1533,7 @@ const AdminPanel: React.FC = () => {
                         {fileInfo.type === '3d' && (
                           <button
                             onClick={() => handlePreviewModel(fileInfo)}
-                            className="px-3 py-1.5 bg-red-600 hover:bg-red-700 rounded-md text-white text-sm flex items-center"
+                            className="px-3 py-1.5 bg-red-600 hover:bg-red-700 rounded-md text-white text-sm flex-1 flex items-center justify-center"
                           >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" />
@@ -1543,7 +1543,7 @@ const AdminPanel: React.FC = () => {
                         )}
                         <button
                           onClick={() => setFileToDelete(fileInfo.id)}
-                          className="px-3 py-1.5 bg-red-600 hover:bg-red-700 rounded-md text-white text-sm flex items-center ml-auto"
+                          className="px-3 py-1.5 bg-red-600 hover:bg-red-700 rounded-md text-white text-sm flex items-center"
                         >
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -2014,7 +2014,7 @@ const AdminPanel: React.FC = () => {
                                 {fileInfo.type === '3d' && (
                                   <button
                                     onClick={() => handlePreviewModel(fileInfo)}
-                                    className="px-3 py-1.5 bg-red-600 hover:bg-red-700 rounded-md text-white text-sm flex items-center"
+                                    className="px-3 py-1.5 bg-red-600 hover:bg-red-700 rounded-md text-white text-sm flex-1 flex items-center justify-center"
                                   >
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" />
@@ -2024,7 +2024,7 @@ const AdminPanel: React.FC = () => {
                                 )}
                                 <button
                                   onClick={() => setFileToDelete(fileInfo.id)}
-                                  className="px-3 py-1.5 bg-red-600 hover:bg-red-700 rounded-md text-white text-sm flex items-center ml-auto"
+                                  className="px-3 py-1.5 bg-red-600 hover:bg-red-700 rounded-md text-white text-sm flex items-center"
                                 >
                                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />

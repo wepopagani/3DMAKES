@@ -59,7 +59,7 @@ const HomePage = () => {
   return (
     <div className="min-h-screen bg-gray-900">
       {/* Navbar migliorata */}
-      <nav className={`fixed top-4 left-1/2 -translate-x-1/2 w-11/12 max-w-5xl bg-black/40 backdrop-blur-lg z-50 rounded-xl border border-gray-800/40 shadow-[0_8px_32px_rgba(0,0,0,0.4)] transition-all duration-300`}>
+      <nav className={`fixed top-4 left-1/2 -translate-x-1/2 w-11/12 max-w-6xl bg-black/40 backdrop-blur-lg z-50 rounded-xl border border-gray-800/40 shadow-[0_8px_32px_rgba(0,0,0,0.4)] transition-all duration-300`}>
         <div className="px-6">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
@@ -70,7 +70,7 @@ const HomePage = () => {
             
             <div className="flex items-center">
               {/* Desktop menu */}
-              <div className="hidden md:flex space-x-4">
+              <div className={`hidden md:flex space-x-6`}>
                 <button onClick={() => scrollToSection('home')} 
                   className={`relative px-3 py-2 text-gray-300 hover:text-white transition-colors group ${currentSection === 'home' ? 'text-white' : ''}`}>
                   {t.home}
