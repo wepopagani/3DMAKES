@@ -2,7 +2,23 @@ import React, { useState, useEffect, useCallback, memo, useRef } from 'react';
 import { useAuth } from '../firebase/AuthContext';
 import { storage, db } from '../firebase/config';
 import { ref, getDownloadURL, uploadBytesResumable, deleteObject } from 'firebase/storage';
-import { collection, addDoc, getDocs, query, where, Timestamp, orderBy, limit, deleteDoc, doc, updateDoc, getDoc } from 'firebase/firestore';
+import { 
+  collection, 
+  addDoc, 
+  getDocs, 
+  query, 
+  where, 
+  Timestamp, 
+  orderBy, 
+  limit, 
+  deleteDoc, 
+  doc, 
+  updateDoc, 
+  getDoc, 
+  setDoc, 
+  onSnapshot,
+  increment
+} from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import ModelViewer, { ModelViewerPreventivo } from './ModelViewer';
@@ -45,6 +61,15 @@ interface UserProfileData {
   email: string;
 }
 
+// Interfacce per la chat
+interface ChatMessage {
+  id: string;
+  text: string;
+  timestamp: Date;
+  sender: 'user' | 'admin';
+  read: boolean;
+}
+
 const UserPanel: React.FC = () => {
   const { currentUser, logOut } = useAuth();
   const navigate = useNavigate();
@@ -59,7 +84,7 @@ const UserPanel: React.FC = () => {
   const [userFiles, setUserFiles] = useState<FileInfo[]>([]);
   const [loadingFiles, setLoadingFiles] = useState(true);
   
-  const [activeTab, setActiveTab] = useState<'uploads' | 'impostazioni'>('uploads');
+  const [activeTab, setActiveTab] = useState<'uploads' | 'impostazioni' | 'chat'>('uploads');
 
   const [previewModelId, setPreviewModelId] = useState<string | null>(null);
   const [previewModelFile, setPreviewModelFile] = useState<File | null>(null);
@@ -87,6 +112,12 @@ const UserPanel: React.FC = () => {
   // Aggiungiamo stato per mostrare le conferme di eliminazione file
   const [fileToDelete, setFileToDelete] = useState<string | null>(null);
   const [isDeletingFile, setIsDeletingFile] = useState<boolean>(false);
+
+  // Stati per la chat
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [newMessage, setNewMessage] = useState('');
+  const [loadingMessages, setLoadingMessages] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Resettiamo l'interfaccia di caricamento
   const resetUploadInterface = () => {
@@ -860,6 +891,147 @@ const UserPanel: React.FC = () => {
     }
   }, [currentUser, fetchUserProfile]);
 
+  // Funzione per caricare i messaggi della chat
+  const fetchMessages = useCallback(async () => {
+    if (!currentUser) return;
+    
+    setLoadingMessages(true);
+    
+    try {
+      // Riferimento alla collezione di messaggi dell'utente
+      const chatRef = collection(db, `chats/${currentUser.uid}/messages`);
+      const q = query(chatRef, orderBy('timestamp', 'asc'));
+      
+      const querySnapshot = await getDocs(q);
+      
+      const chatMessages: ChatMessage[] = [];
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        chatMessages.push({
+          id: doc.id,
+          text: data.text,
+          timestamp: data.timestamp.toDate(),
+          sender: data.sender,
+          read: data.read
+        });
+      });
+      
+      setMessages(chatMessages);
+      
+      // Aggiorna lo stato di lettura dei messaggi
+      const unreadMessages = querySnapshot.docs.filter(
+        doc => doc.data().sender === 'admin' && !doc.data().read
+      );
+      
+      // Marca i messaggi come letti
+      const updatePromises = unreadMessages.map(doc => 
+        updateDoc(doc.ref, { read: true })
+      );
+      
+      await Promise.all(updatePromises);
+      
+      // Aggiorna i metadati della chat
+      const metadataRef = doc(db, `chats/${currentUser.uid}/metadata/info`);
+      await updateDoc(metadataRef, { unreadUser: 0 }).catch(() => {
+        // Se il documento non esiste ancora, lo creiamo
+        setDoc(metadataRef, { 
+          unreadUser: 0, 
+          unreadAdmin: 0,
+          lastMessage: chatMessages.length > 0 ? chatMessages[chatMessages.length - 1].text : '',
+          lastMessageTimestamp: Timestamp.now(),
+          active: true,
+          userName: userProfile?.nome && userProfile?.cognome 
+            ? `${userProfile.nome} ${userProfile.cognome}`
+            : currentUser.email || 'Utente'
+        });
+      });
+      
+    } catch (error) {
+      console.error('Errore nel recupero dei messaggi:', error);
+    } finally {
+      setLoadingMessages(false);
+    }
+  }, [currentUser, userProfile]);
+
+  // Funzione per inviare un messaggio
+  const handleSendMessage = async () => {
+    if (!newMessage.trim() || !currentUser) return;
+    
+    try {
+      // Riferimento alla collezione dei messaggi
+      const chatRef = collection(db, `chats/${currentUser.uid}/messages`);
+      
+      // Riferimento ai metadati
+      const metadataRef = doc(db, `chats/${currentUser.uid}/metadata/info`);
+      
+      // Nuovo messaggio
+      const messageData = {
+        text: newMessage.trim(),
+        timestamp: Timestamp.now(),
+        sender: 'user' as const,
+        read: false
+      };
+      
+      // Aggiunge il messaggio
+      await addDoc(chatRef, messageData);
+      
+      // Aggiorna i metadati
+      await updateDoc(metadataRef, {
+        lastMessage: newMessage.trim(),
+        lastMessageTimestamp: Timestamp.now(),
+        unreadAdmin: increment(1)
+      }).catch(() => {
+        // Se il documento non esiste, lo creiamo
+        setDoc(metadataRef, {
+          lastMessage: newMessage.trim(),
+          lastMessageTimestamp: Timestamp.now(),
+          unreadAdmin: 1,
+          unreadUser: 0,
+          active: true,
+          userName: userProfile?.nome && userProfile?.cognome 
+            ? `${userProfile.nome} ${userProfile.cognome}`
+            : currentUser.email || 'Utente'
+        });
+      });
+      
+      // Resetta l'input
+      setNewMessage('');
+      
+      // Ricarica i messaggi
+      await fetchMessages();
+    } catch (error) {
+      console.error('Errore nell\'invio del messaggio:', error);
+    }
+  };
+
+  // Scroll automatico ai nuovi messaggi
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
+
+  // Carica i messaggi quando si apre la tab chat
+  useEffect(() => {
+    if (activeTab === 'chat' && currentUser) {
+      fetchMessages();
+      
+      // Configura un listener in tempo reale per i messaggi
+      const chatRef = collection(db, `chats/${currentUser.uid}/messages`);
+      const q = query(chatRef, orderBy('timestamp', 'asc'));
+      
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        // Verifica se ci sono nuovi messaggi
+        if (!snapshot.empty) {
+          fetchMessages();
+        }
+      });
+      
+      // Pulisci il listener quando si cambia tab
+      return () => unsubscribe();
+    }
+  }, [activeTab, currentUser, fetchMessages]);
+
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       {/* Header */}
@@ -897,6 +1069,16 @@ const UserPanel: React.FC = () => {
             onClick={() => setActiveTab('uploads')}
           >
             I Miei Files
+          </button>
+          <button
+            className={`px-4 py-2 font-medium ${
+              activeTab === 'chat'
+                ? 'text-red-500 border-b-2 border-red-500'
+                : 'text-gray-400 hover:text-white'
+            }`}
+            onClick={() => setActiveTab('chat')}
+          >
+            Chat Supporto
           </button>
           <button
             className={`px-4 py-2 font-medium ${
@@ -1120,7 +1302,78 @@ const UserPanel: React.FC = () => {
           </div>
         )}
 
-        {/* Impostazioni Tab (sostituzione di Chat) */}
+        {/* Chat Tab */}
+        {activeTab === 'chat' && (
+          <div className="p-6 bg-gray-800 rounded-lg flex flex-col h-[70vh]">
+            <h2 className="text-xl font-semibold mb-4">Chat con il Supporto</h2>
+            
+            {/* Area messaggi */}
+            <div className="flex-grow bg-gray-750 rounded-lg mb-4 overflow-y-auto p-4">
+              {loadingMessages ? (
+                <div className="flex justify-center items-center h-full">
+                  <div className="w-6 h-6 border-2 border-gray-500 border-t-white rounded-full animate-spin"></div>
+                  <p className="ml-2 text-gray-400">Caricamento messaggi...</p>
+                </div>
+              ) : messages.length === 0 ? (
+                <div className="text-center py-8">
+                  <p className="text-gray-400 mb-2">Nessun messaggio.</p>
+                  <p className="text-gray-500 text-sm">Inizia la conversazione con il nostro team di supporto!</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {messages.map((message) => (
+                    <div 
+                      key={message.id} 
+                      className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                    >
+                      <div 
+                        className={`max-w-[80%] rounded-lg px-4 py-2 ${
+                          message.sender === 'user' 
+                            ? 'bg-red-600 text-white rounded-tr-none' 
+                            : 'bg-gray-700 text-white rounded-tl-none'
+                        }`}
+                      >
+                        <div className="text-sm">{message.text}</div>
+                        <div className="text-xs mt-1 opacity-80">
+                          {formatDate(message.timestamp)}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  <div ref={messagesEndRef} />
+                </div>
+              )}
+            </div>
+            
+            {/* Input messaggio */}
+            <div className="flex">
+              <input
+                type="text"
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
+                placeholder="Scrivi un messaggio..."
+                className="flex-grow bg-gray-700 border border-gray-600 rounded-l-md p-3 focus:outline-none focus:border-red-500"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSendMessage();
+                  }
+                }}
+              />
+              <button
+                onClick={handleSendMessage}
+                disabled={!newMessage.trim()}
+                className="bg-red-600 hover:bg-red-700 rounded-r-md px-4 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Impostazioni Tab */}
         {activeTab === 'impostazioni' && (
           <div className="p-6 bg-gray-800 rounded-lg">
             <h2 className="text-xl font-semibold mb-6">Impostazioni Account</h2>

@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useAuth } from '../firebase/AuthContext';
 import { db, storage } from '../firebase/config';
-import { collection, addDoc, getDocs, query, orderBy, where, doc, getDoc, deleteDoc, Timestamp, setDoc } from 'firebase/firestore';
+import { collection, addDoc, getDocs, query, orderBy, where, doc, getDoc, deleteDoc, Timestamp, setDoc, updateDoc, increment } from 'firebase/firestore';
 import { ref, getDownloadURL, uploadBytesResumable, deleteObject } from 'firebase/storage';
 import { useNavigate } from 'react-router-dom';
 import { ModelViewerPreventivo } from './ModelViewer';
@@ -9,6 +9,7 @@ import * as THREE from 'three';
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { onSnapshot } from 'firebase/firestore';
 
 interface FileInfo {
   id: string;
@@ -24,6 +25,7 @@ interface FileInfo {
 }
 
 interface UserProfileData {
+  id?: string;
   nome: string;
   cognome: string;
   telefono: string;
@@ -33,10 +35,46 @@ interface UserProfileData {
   email: string;
   createdAt?: Date;
   lastLogin?: Date;
+  unreadMessages?: number;
+  lastMessage?: string;
+  lastMessageTimestamp?: Date;
 }
 
 // Lista di email di amministratori (da modificare con le email degli amministratori reali)
 const ADMIN_EMAILS = ['info@3dmakes.ch'];
+
+// Aggiungo le interfacce per la chat
+interface ChatMessage {
+  id: string;
+  text: string;
+  timestamp: Date;
+  sender: 'user' | 'admin';
+  read: boolean;
+}
+
+interface ChatMetadata {
+  lastMessage: string;
+  lastMessageTimestamp: Date;
+  unreadAdmin: number;
+  unreadUser: number;
+  active: boolean;
+  userName: string;
+}
+
+interface User {
+  id: string;
+  email: string;
+  nome?: string;
+  cognome?: string;
+  telefono?: string;
+  indirizzo?: string;
+  citta?: string;
+  cap?: string;
+  // Aggiungo proprietà per la chat
+  unreadMessages?: number;
+  lastMessage?: string;
+  lastMessageTimestamp?: Date;
+}
 
 const AdminPanel: React.FC = () => {
   const { currentUser, logOut } = useAuth();
@@ -53,7 +91,7 @@ const AdminPanel: React.FC = () => {
   const [loadingUsers, setLoadingUsers] = useState(true);
   const [activeTab, setActiveTab] = useState<'files' | 'users'>('files');
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedUser, setSelectedUser] = useState<string | null>(null);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [userDetails, setUserDetails] = useState<UserProfileData | null>(null);
   const [userFiles, setUserFiles] = useState<FileInfo[]>([]);
 
@@ -87,6 +125,13 @@ const AdminPanel: React.FC = () => {
   const [uploadError, setUploadError] = useState('');
   
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Stati per la gestione della chat
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [newMessage, setNewMessage] = useState('');
+  const [loadingMessages, setLoadingMessages] = useState(false);
+  const [chatMetadata, setChatMetadata] = useState<ChatMetadata | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Verifica se l'utente corrente è un amministratore
   useEffect(() => {
@@ -193,47 +238,50 @@ const AdminPanel: React.FC = () => {
 
   // Carica i dettagli di un utente specifico
   const fetchUserDetails = async (userId: string) => {
+    if (!userId) return;
+    
+    setUserDetails(null);
+    setUserFiles([]);
+    
     try {
-      const userDocRef = doc(db, "users", userId);
-      const userDocSnap = await getDoc(userDocRef);
-      
-      if (userDocSnap.exists()) {
-        const userData = userDocSnap.data() as UserProfileData;
-        setUserDetails(userData);
-        
-        // Carica anche i file dell'utente
-        const filesQuery = query(
-          collection(db, 'files'),
-          where('userId', '==', userId),
-          orderBy('uploadedAt', 'desc')
-        );
-        
-        const querySnapshot = await getDocs(filesQuery);
-        
-        const files: FileInfo[] = [];
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          files.push({
-            id: doc.id,
-            name: data.originalName || data.name,
-            type: data.type,
-            url: data.url,
-            uploadedAt: data.uploadedAt.toDate(),
-            userId: data.userId,
-            userName: `${userData.nome} ${userData.cognome}`,
-            userEmail: userData.email,
-            thumbnailUrl: data.thumbnailUrl
-          });
-        });
-        
-        setUserFiles(files);
+      // Carica i dati dell'utente
+      const userDoc = await getDoc(doc(db, 'users', userId));
+      if (userDoc.exists()) {
+        setUserDetails({ 
+          id: userDoc.id, 
+          ...userDoc.data() as Omit<UserProfileData, 'id'> 
+        } as UserProfileData);
       } else {
-        setUserDetails(null);
-        setUserFiles([]);
+        console.log('Utente non trovato!');
       }
+      
+      // Carica i file dell'utente
+      const filesQuery = query(
+        collection(db, 'files'),
+        where('userId', '==', userId),
+        orderBy('uploadedAt', 'desc')
+      );
+      
+      const querySnapshot = await getDocs(filesQuery);
+      const files: FileInfo[] = [];
+      
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        files.push({
+          id: doc.id,
+          name: data.originalName || data.name,
+          type: data.type,
+          url: data.url,
+          thumbnailUrl: data.thumbnailUrl,
+          uploadedAt: data.uploadedAt.toDate(),
+          userId: data.userId,
+          uploadedByAdmin: data.uploadedByAdmin || false
+        });
+      });
+      
+      setUserFiles(files);
     } catch (error) {
-      console.error('Errore durante il recupero dei dettagli utente:', error);
-      setUserDetails(null);
+      console.error('Errore nel recupero dei dati utente:', error);
     }
   };
 
@@ -248,7 +296,7 @@ const AdminPanel: React.FC = () => {
   // Carica i dettagli dell'utente quando viene selezionato
   useEffect(() => {
     if (selectedUser) {
-      fetchUserDetails(selectedUser);
+      fetchUserDetails(selectedUser.id);
     } else {
       setUserDetails(null);
       setUserFiles([]);
@@ -258,15 +306,39 @@ const AdminPanel: React.FC = () => {
   }, [selectedUser]);
 
   // Funzione per formattare la data
-  const formatDate = (date?: Date) => {
+  const formatDate = (date?: Date | any) => {
     if (!date) return 'Data non disponibile';
-    return new Intl.DateTimeFormat('it-IT', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    }).format(date);
+    
+    // Verifica se è un timestamp Firestore e convertilo in Date
+    if (typeof date === 'object' && 'seconds' in date && 'nanoseconds' in date) {
+      date = new Date(date.seconds * 1000);
+    }
+    
+    // Verifica che sia effettivamente un oggetto Date valido
+    if (!(date instanceof Date) || isNaN(date.getTime())) {
+      console.warn('Formato data non valido:', date);
+      return 'Data non valida';
+    }
+    
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    
+    const isToday = date.getDate() === today.getDate() &&
+                   date.getMonth() === today.getMonth() &&
+                   date.getFullYear() === today.getFullYear();
+    
+    const isYesterday = date.getDate() === yesterday.getDate() &&
+                       date.getMonth() === yesterday.getMonth() &&
+                       date.getFullYear() === yesterday.getFullYear();
+    
+    if (isToday) {
+      return `Oggi ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+    } else if (isYesterday) {
+      return `Ieri ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+    } else {
+      return `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+    }
   };
 
   // Filtra i file in base al tipo selezionato
@@ -612,12 +684,16 @@ const AdminPanel: React.FC = () => {
   const handleUploadForUser = async () => {
     if (!file || !currentUser || !isAdmin || !selectedUser || !userDetails) return;
     
+    // Assicuriamoci di avere l'ID dell'utente
+    const userId = typeof selectedUser === 'string' ? selectedUser : selectedUser.id;
+    
     setUploadLoading(true);
     setUploadError('');
     setActionSuccess('');
     setUploadProgress(0);
     
     try {
+      console.log("Inizio processo di caricamento file per utente...");
       // Ottieni il nome e cognome dell'utente selezionato
       const userFullName = `${userDetails.nome} ${userDetails.cognome}`;
       
@@ -627,7 +703,8 @@ const AdminPanel: React.FC = () => {
       const safeFileName = `admin_upload_${timestamp}.${fileExtension}`;
       
       // Percorso per lo storage
-      const storagePath = `files/${selectedUser}/${safeFileName}`;
+      const storagePath = `files/${userId}/${safeFileName}`;
+      console.log("Percorso file:", storagePath);
       
       // Per i modelli 3D, proviamo a generare un'anteprima
       let thumbnailUrl: string | null = null;
@@ -642,7 +719,7 @@ const AdminPanel: React.FC = () => {
           const thumbnailFile = new File([thumbnailBlob], `thumb_${safeFileName.replace(`.${fileExtension}`, '.png')}`, { type: 'image/png' });
           
           // Carica la miniatura su Firebase Storage
-          const thumbnailPath = `thumbnails/${selectedUser}/${timestamp}_thumb.png`;
+          const thumbnailPath = `thumbnails/${userId}/${timestamp}_thumb.png`;
           const thumbnailRef = ref(storage, thumbnailPath);
           await uploadBytesResumable(thumbnailRef, thumbnailFile);
           thumbnailUrl = await getDownloadURL(thumbnailRef);
@@ -650,67 +727,74 @@ const AdminPanel: React.FC = () => {
         }
       }
       
-      // Carica il file su Firebase Storage
-      const storageRef = ref(storage, storagePath);
-      const uploadTask = uploadBytesResumable(storageRef, file);
-      
-      // Monitora il progresso dell'upload
-      uploadTask.on('state_changed', 
-        (snapshot) => {
-          const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-          setUploadProgress(progress);
-        },
-        (error) => {
-          console.error('Errore durante il caricamento:', error);
-          setUploadError(`Errore caricamento: ${error.code} - ${error.message}`);
-          setUploadLoading(false);
-        },
-        async () => {
-          // Upload completato con successo
-          try {
-            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-            
-            // Determina il tipo di file
-            const fileType = file.type.startsWith('image/') ? 'image' : 
-                           file.type.includes('3d') || fileExtension === 'obj' || fileExtension === 'stl' || fileExtension === 'gltf' ? '3d' : 'other';
-            
-            // Salva le informazioni del file in Firestore
-            const docRef = await addDoc(collection(db, 'files'), {
-              name: safeFileName,
-              originalName: file.name,
-              type: fileType,
-              url: downloadURL,
-              storagePath,
-              uploadedAt: Timestamp.now(),
-              userId: selectedUser,
-              userEmail: userDetails.email,
-              userName: userFullName,
-              uploadedByAdmin: true,
-              thumbnailUrl: thumbnailUrl
-            });
-            
-            // Resetta l'interfaccia di caricamento
-            setFile(null);
-            setFilePreview(null);
-            setUploadProgress(0);
+      try {
+        console.log("Creazione riferimento Storage...");
+        // Carica il file su Firebase Storage
+        const storageRef = ref(storage, storagePath);
+        console.log("Inizio upload...");
+        const uploadTask = uploadBytesResumable(storageRef, file);
+        
+        // Monitora il progresso dell'upload
+        uploadTask.on('state_changed', 
+          (snapshot) => {
+            const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+            setUploadProgress(progress);
+            console.log(`Progresso: ${progress}%`);
+          },
+          (error) => {
+            console.error('Errore durante il caricamento:', error);
+            setUploadError(`Errore caricamento: ${error.code} - ${error.message}`);
             setUploadLoading(false);
-            setActionSuccess('File caricato con successo per l\'utente!');
-            
-            // Cancella il messaggio di successo dopo 3 secondi
-            setTimeout(() => {
-              setActionSuccess('');
-            }, 3000);
-            
-            // Aggiorna la lista dei file dell'utente
-            fetchUserDetails(selectedUser);
-            
-          } catch (dbError: any) {
-            console.error("Errore nel salvataggio in Firestore:", dbError);
-            setUploadError(`Errore database: ${dbError.code || 'unknown'} - ${dbError.message || 'Errore sconosciuto'}`);
-            setUploadLoading(false);
+          },
+          async () => {
+            // Upload completato con successo
+            console.log("Upload completato, ottenimento URL...");
+            try {
+              const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+              console.log("URL ottenuto:", downloadURL);
+              
+              // Determina il tipo di file
+              const fileType = file.type.startsWith('image/') ? 'image' : 
+                             (file.type.includes('3d') || ['obj', 'stl', 'gltf'].includes(fileExtension?.toLowerCase() || '')) ? '3d' : 'other';
+              
+              console.log("Salvataggio informazioni file in Firestore...");
+              
+              // Salva le informazioni del file in Firestore
+              const docRef = await addDoc(collection(db, 'files'), {
+                name: file.name, // Utilizziamo il nome originale del file per visualizzazione
+                originalName: file.name,
+                type: fileType,
+                url: downloadURL,
+                storagePath,
+                uploadedAt: Timestamp.now(),
+                userId: userId, // Assicuriamoci di usare l'ID corretto
+                userEmail: userDetails.email,
+                userName: userFullName,
+                uploadedByAdmin: true,
+                thumbnailUrl: thumbnailUrl
+              });
+              
+              console.log("File salvato con successo in Firestore con ID:", docRef.id);
+              
+              // Resetta l'interfaccia di caricamento
+              resetUploadInterface();
+              setActionSuccess('File caricato con successo per l\'utente!');
+              
+              // Aggiorna la lista dei file dell'utente
+              await fetchUserDetails(userId);
+              
+            } catch (firestoreError: any) {
+              console.error("Errore nel salvataggio in Firestore:", firestoreError);
+              setUploadError(`Errore database: ${firestoreError.code || 'unknown'} - ${firestoreError.message || 'Errore sconosciuto'}`);
+              setUploadLoading(false);
+            }
           }
-        }
-      );
+        );
+      } catch (storageError: any) {
+        console.error("Errore nell'inizializzazione dello storage:", storageError);
+        setUploadError(`Errore storage: ${storageError.code || 'unknown'} - ${storageError.message || 'Errore sconosciuto'}`);
+        setUploadLoading(false);
+      }
     } catch (error: any) {
       console.error('Errore generale durante il caricamento:', error);
       setUploadError(`Si è verificato un errore imprevisto: ${error.message || 'Errore sconosciuto'}`);
@@ -722,9 +806,17 @@ const AdminPanel: React.FC = () => {
   const resetUploadInterface = () => {
     setFile(null);
     setFilePreview(null);
+    setUploadProgress(0);
+    setUploadLoading(false);
+    
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
+    
+    // Nascondiamo il messaggio di successo dopo 3 secondi
+    setTimeout(() => {
+      setActionSuccess('');
+    }, 3000);
   };
 
   // Inizia la modifica dei dati cliente
@@ -743,32 +835,34 @@ const AdminPanel: React.FC = () => {
   
   // Aggiorna i dati dell'utente
   const handleUpdateUserData = async () => {
-    if (!currentUser || !isAdmin || !selectedUser || !editedUserData) return;
+    if (!selectedUser || !editedUserData || isSavingUser) return;
+    
+    // Assicuriamoci di avere l'ID dell'utente
+    const userId = typeof selectedUser === 'string' ? selectedUser : selectedUser.id;
     
     setIsSavingUser(true);
+    setActionSuccess('');
     
     try {
       // Aggiorna i dati utente in Firestore
-      const userDocRef = doc(db, "users", selectedUser);
+      const userDocRef = doc(db, "users", userId);
       await setDoc(userDocRef, {
         ...editedUserData,
         // Mantieni le date originali
-        createdAt: userDetails?.createdAt || new Date(),
-        lastLogin: userDetails?.lastLogin || new Date()
+        ...(userDetails?.createdAt && { createdAt: Timestamp.fromDate(userDetails.createdAt) }),
+        ...(userDetails?.lastLogin && { lastLogin: Timestamp.fromDate(userDetails.lastLogin) })
       }, { merge: true });
       
-      // Aggiorna lo stato locale
-      setUserDetails(editedUserData);
+      setActionSuccess('Dati utente aggiornati con successo!');
+      
+      // Aggiorna la visualizzazione dei dettagli
+      fetchUserDetails(userId);
+      
+      // Resetta lo stato di modifica
       setIsEditingUser(false);
-      setEditedUserData(null);
-      
-      setActionSuccess("Dati del cliente aggiornati con successo!");
-      setTimeout(() => setActionSuccess(""), 3000);
-      
     } catch (error: any) {
-      console.error("Errore nell'aggiornamento dei dati:", error);
-      setUploadError(`Errore durante il salvataggio: ${error.message || 'Errore sconosciuto'}`);
-      setTimeout(() => setUploadError(""), 5000);
+      console.error('Errore durante l\'aggiornamento dei dati utente:', error);
+      setUploadError(`Errore durante l'aggiornamento: ${error.message || 'Errore sconosciuto'}`);
     } finally {
       setIsSavingUser(false);
     }
@@ -918,6 +1012,290 @@ const AdminPanel: React.FC = () => {
       console.error('Errore durante la preparazione del modello:', error);
     }
   };
+
+  // Funzione per caricare i messaggi della chat dell'utente selezionato
+  const fetchUserMessages = useCallback(async () => {
+    if (!selectedUser?.id) return;
+    
+    setLoadingMessages(true);
+    
+    try {
+      // Carica i metadati della chat
+      const metadataRef = doc(db, `chats/${selectedUser.id}/metadata/info`);
+      const metadataSnap = await getDoc(metadataRef);
+      
+      if (metadataSnap.exists()) {
+        const metaData = metadataSnap.data();
+        setChatMetadata({
+          lastMessage: metaData.lastMessage || '',
+          lastMessageTimestamp: metaData.lastMessageTimestamp?.toDate() || new Date(),
+          unreadAdmin: metaData.unreadAdmin || 0,
+          unreadUser: metaData.unreadUser || 0,
+          active: metaData.active !== false, // default a true
+          userName: metaData.userName || selectedUser.nome || selectedUser.email || 'Utente'
+        });
+      } else {
+        // Se non esiste, inizializza un nuovo documento di metadati
+        setChatMetadata({
+          lastMessage: '',
+          lastMessageTimestamp: new Date(),
+          unreadAdmin: 0,
+          unreadUser: 0,
+          active: true,
+          userName: selectedUser.nome ? `${selectedUser.nome} ${selectedUser.cognome || ''}`.trim() : (selectedUser.email || 'Utente')
+        });
+      }
+      
+      // Carica i messaggi
+      const chatRef = collection(db, `chats/${selectedUser.id}/messages`);
+      const q = query(chatRef, orderBy('timestamp', 'asc'));
+      
+      const querySnapshot = await getDocs(q);
+      
+      const chatMessages: ChatMessage[] = [];
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        try {
+          // Assicuriamoci che la data sia convertita correttamente
+          const timestamp = data.timestamp && typeof data.timestamp.toDate === 'function' 
+            ? data.timestamp.toDate() 
+            : new Date();
+          
+          chatMessages.push({
+            id: doc.id,
+            text: data.text || '',
+            timestamp: timestamp,
+            sender: data.sender || 'user',
+            read: !!data.read
+          });
+        } catch (err) {
+          console.error('Errore nella conversione della data per il messaggio:', err);
+        }
+      });
+      
+      setMessages(chatMessages);
+      
+      // Aggiorna lo stato di lettura dei messaggi
+      const unreadMessages = querySnapshot.docs.filter(
+        doc => doc.data().sender === 'user' && !doc.data().read
+      );
+      
+      // Marca i messaggi come letti
+      const updatePromises = unreadMessages.map(doc => 
+        updateDoc(doc.ref, { read: true })
+      );
+      
+      if (unreadMessages.length > 0) {
+        await Promise.all(updatePromises);
+        
+        // Aggiorna i metadati della chat
+        await updateDoc(metadataRef, { unreadAdmin: 0 }).catch(() => {
+          // Se il documento non esiste, lo creiamo
+          setDoc(metadataRef, { 
+            unreadAdmin: 0, 
+            unreadUser: 0,
+            lastMessage: chatMessages.length > 0 ? chatMessages[chatMessages.length - 1].text : '',
+            lastMessageTimestamp: Timestamp.now(),
+            active: true,
+            userName: selectedUser.nome ? `${selectedUser.nome} ${selectedUser.cognome || ''}`.trim() : (selectedUser.email || 'Utente')
+          });
+        });
+      }
+      
+    } catch (error) {
+      console.error('Errore nel recupero dei messaggi:', error);
+    } finally {
+      setLoadingMessages(false);
+    }
+  }, [selectedUser]);
+
+  // Funzione per inviare un messaggio come admin
+  const handleSendMessage = async () => {
+    if (!newMessage.trim() || !selectedUser?.id) return;
+    
+    try {
+      // Riferimento alla collezione dei messaggi
+      const chatRef = collection(db, `chats/${selectedUser.id}/messages`);
+      
+      // Riferimento ai metadati
+      const metadataRef = doc(db, `chats/${selectedUser.id}/metadata/info`);
+      
+      // Nuovo messaggio
+      const messageData = {
+        text: newMessage.trim(),
+        timestamp: Timestamp.now(),
+        sender: 'admin' as const,
+        read: false
+      };
+      
+      // Aggiunge il messaggio
+      await addDoc(chatRef, messageData);
+      
+      // Aggiorna i metadati
+      await updateDoc(metadataRef, {
+        lastMessage: newMessage.trim(),
+        lastMessageTimestamp: Timestamp.now(),
+        unreadUser: increment(1)
+      }).catch(() => {
+        // Se il documento non esiste, lo creiamo
+        setDoc(metadataRef, {
+          lastMessage: newMessage.trim(),
+          lastMessageTimestamp: Timestamp.now(),
+          unreadAdmin: 0,
+          unreadUser: 1,
+          active: true,
+          userName: selectedUser.nome ? `${selectedUser.nome} ${selectedUser.cognome || ''}`.trim() : (selectedUser.email || 'Utente')
+        });
+      });
+      
+      // Resetta l'input
+      setNewMessage('');
+      
+      // Ricarica i messaggi
+      await fetchUserMessages();
+    } catch (error) {
+      console.error('Errore nell\'invio del messaggio:', error);
+    }
+  };
+
+  // Funzione per caricare i contatori dei messaggi non letti per tutti gli utenti
+  const fetchChatMetadataForUsers = useCallback(async () => {
+    if (!allUsers.length) return;
+    
+    try {
+      const userChatData = await Promise.all(
+        allUsers.map(async (user) => {
+          try {
+            const metadataRef = doc(db, `chats/${user.id}/metadata/info`);
+            const metadataSnap = await getDoc(metadataRef);
+            
+            if (metadataSnap.exists()) {
+              const data = metadataSnap.data();
+              let timestamp;
+              
+              try {
+                // Gestiamo correttamente il timestamp
+                timestamp = data.lastMessageTimestamp && typeof data.lastMessageTimestamp.toDate === 'function'
+                  ? data.lastMessageTimestamp.toDate()
+                  : new Date();
+              } catch (err) {
+                console.warn('Errore nella conversione del timestamp:', err);
+                timestamp = new Date();
+              }
+              
+              return {
+                userId: user.id,
+                unreadAdmin: data.unreadAdmin || 0,
+                lastMessage: data.lastMessage || '',
+                lastMessageTimestamp: timestamp
+              };
+            }
+            
+            return { userId: user.id, unreadAdmin: 0, lastMessage: '', lastMessageTimestamp: new Date() };
+          } catch (error) {
+            console.error(`Errore nel recupero dei metadati della chat per l'utente ${user.id}:`, error);
+            return { userId: user.id, unreadAdmin: 0, lastMessage: '', lastMessageTimestamp: new Date() };
+          }
+        })
+      );
+      
+      // Aggiorna lo stato degli utenti con i dati della chat
+      setAllUsers(prevUsers => 
+        prevUsers.map(user => {
+          const chatData = userChatData.find(data => data.userId === user.id);
+          return {
+            ...user,
+            unreadMessages: chatData?.unreadAdmin || 0,
+            lastMessage: chatData?.lastMessage || '',
+            lastMessageTimestamp: chatData?.lastMessageTimestamp
+          };
+        })
+      );
+      
+    } catch (error) {
+      console.error('Errore nel recupero dei metadati delle chat:', error);
+    }
+  }, [allUsers]);
+
+  // Sostituisci questa funzione per gestire correttamente il tipo User
+  const handleUserClick = async (userId: string) => {
+    // Trova l'utente selezionato dall'array di utenti
+    const user = allUsers.find(u => u.id === userId);
+    if (user) {
+      // Converti il profilo utente in un oggetto User
+      setSelectedUser({
+        id: user.id,
+        email: user.email,
+        nome: user.nome,
+        cognome: user.cognome,
+        telefono: user.telefono,
+        indirizzo: user.indirizzo,
+        citta: user.citta,
+        cap: user.cap,
+        unreadMessages: user.unreadMessages,
+        lastMessage: user.lastMessage,
+        lastMessageTimestamp: user.lastMessageTimestamp
+      });
+      
+      // Carica i file dell'utente selezionato
+      await fetchUserDetails(userId);
+    }
+  };
+
+  // Aggiungi gli useEffect per la gestione della chat
+  // Scroll automatico ai nuovi messaggi
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
+
+  // Carica i messaggi e configura il listener quando viene selezionato un utente
+  useEffect(() => {
+    if (selectedUser?.id && activeTab === 'users') {
+      fetchUserMessages();
+      
+      // Configura un listener in tempo reale per i messaggi
+      const chatRef = collection(db, `chats/${selectedUser.id}/messages`);
+      const q = query(chatRef, orderBy('timestamp', 'asc'));
+      
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        // Verifica se ci sono nuovi messaggi
+        if (!snapshot.empty) {
+          fetchUserMessages();
+        }
+      });
+      
+      // Configura un listener per i metadati della chat
+      const metadataRef = doc(db, `chats/${selectedUser.id}/metadata/info`);
+      const metadataUnsubscribe = onSnapshot(metadataRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const data = snapshot.data();
+          setChatMetadata({
+            lastMessage: data.lastMessage || '',
+            lastMessageTimestamp: data.lastMessageTimestamp?.toDate() || new Date(),
+            unreadAdmin: data.unreadAdmin || 0,
+            unreadUser: data.unreadUser || 0,
+            active: data.active !== false,
+            userName: data.userName || selectedUser.nome || selectedUser.email || 'Utente'
+          });
+        }
+      });
+      
+      // Pulisci i listener quando cambia l'utente selezionato
+      return () => {
+        unsubscribe();
+        metadataUnsubscribe();
+      };
+    }
+  }, [selectedUser, activeTab, fetchUserMessages]);
+
+  // Carica i metadati delle chat quando vengono caricati gli utenti
+  useEffect(() => {
+    if (allUsers.length > 0 && activeTab === 'users') {
+      fetchChatMetadataForUsers();
+    }
+  }, [allUsers, activeTab, fetchChatMetadataForUsers]);
 
   if (!isAdmin) {
     return null; // Non mostrare nulla mentre reindirizza
@@ -1240,7 +1618,7 @@ const AdminPanel: React.FC = () => {
                             </td>
                             <td className="py-3 px-4">
                               <button
-                                onClick={() => setSelectedUser(user.id)}
+                                onClick={() => setSelectedUser(user)}
                                 className="px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded-md text-white text-sm"
                               >
                                 Dettagli
@@ -1651,6 +2029,88 @@ const AdminPanel: React.FC = () => {
                     <p className="text-gray-400">Caricamento dettagli cliente...</p>
                   </div>
                 )}
+
+                {/* Sezione Chat */}
+                {userDetails && (
+                  <div className="p-6 bg-gray-800 rounded-lg">
+                    <h2 className="text-xl font-semibold mb-4">Chat con {userDetails.nome} {userDetails.cognome}</h2>
+                    
+                    <div className="bg-gray-750 rounded-lg h-[400px] flex flex-col">
+                      {/* Area messaggi */}
+                      <div className="flex-grow overflow-y-auto p-4">
+                        {loadingMessages ? (
+                          <div className="flex justify-center items-center h-full">
+                            <div className="w-6 h-6 border-2 border-gray-500 border-t-white rounded-full animate-spin"></div>
+                            <p className="ml-2 text-gray-400">Caricamento messaggi...</p>
+                          </div>
+                        ) : messages.length === 0 ? (
+                          <div className="text-center py-8">
+                            <p className="text-gray-400 mb-2">Nessun messaggio.</p>
+                            <p className="text-gray-500 text-sm">Inizia la conversazione con questo cliente!</p>
+                          </div>
+                        ) : (
+                          <div className="space-y-4">
+                            {messages.map((message) => (
+                              <div 
+                                key={message.id} 
+                                className={`flex ${message.sender === 'admin' ? 'justify-end' : 'justify-start'}`}
+                              >
+                                <div 
+                                  className={`max-w-[80%] rounded-lg px-4 py-2 ${
+                                    message.sender === 'admin' 
+                                      ? 'bg-blue-600 text-white rounded-tr-none' 
+                                      : 'bg-gray-700 text-white rounded-tl-none'
+                                  }`}
+                                >
+                                  <div className="text-sm">{message.text}</div>
+                                  <div className="text-xs mt-1 opacity-80">
+                                    {formatDate(message.timestamp)}
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                            <div ref={messagesEndRef} />
+                          </div>
+                        )}
+                      </div>
+                      
+                      {/* Input messaggio */}
+                      <div className="p-3 border-t border-gray-700 flex">
+                        <input
+                          type="text"
+                          value={newMessage}
+                          onChange={(e) => setNewMessage(e.target.value)}
+                          placeholder="Scrivi un messaggio..."
+                          className="flex-grow bg-gray-700 border border-gray-600 rounded-l-md p-2 focus:outline-none focus:border-blue-500"
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' && !e.shiftKey) {
+                              e.preventDefault();
+                              handleSendMessage();
+                            }
+                          }}
+                        />
+                        <button
+                          onClick={handleSendMessage}
+                          disabled={!newMessage.trim()}
+                          className="bg-blue-600 hover:bg-blue-700 rounded-r-md px-4 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <div className="flex justify-center mt-6">
+                  <button
+                    onClick={() => setSelectedUser(null)}
+                    className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-md text-white"
+                  >
+                    ← Torna all'elenco clienti
+                  </button>
+                </div>
               </div>
             )}
           </div>
