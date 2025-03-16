@@ -41,6 +41,7 @@
     "react-day-picker": "^8.10.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^7.2.0",
+    "react-toastify": "^11.0.5",
     "tailwind-merge": "^2.0.0",
     "three": "0.158.0",
     "uuid": "^11.1.0"

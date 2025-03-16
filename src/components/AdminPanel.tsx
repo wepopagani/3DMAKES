@@ -12,6 +12,10 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { onSnapshot } from 'firebase/firestore';
 import { updateProfile } from 'firebase/auth';
 import { ADMIN_EMAIL } from '../config/app-config';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import firebase from 'firebase/app';
+import 'firebase/storage';
 
 interface FileInfo {
   id: string;
@@ -134,6 +138,9 @@ const AdminPanel: React.FC = () => {
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [chatMetadata, setChatMetadata] = useState<ChatMetadata | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Aggiungi questa variabile di stato all'inizio del componente con gli altri stati
+  const [uploadTask, setUploadTask] = useState<any>(null);
 
   // Verifica se l'utente corrente è un amministratore
   useEffect(() => {
@@ -735,6 +742,7 @@ const AdminPanel: React.FC = () => {
         const storageRef = ref(storage, storagePath);
         console.log("Inizio upload...");
         const uploadTask = uploadBytesResumable(storageRef, file);
+        setUploadTask(uploadTask); // Salva il riferimento all'uploadTask
         
         // Monitora il progresso dell'upload
         uploadTask.on('state_changed', 
@@ -806,19 +814,19 @@ const AdminPanel: React.FC = () => {
   
   // Resetta l'interfaccia di caricamento
   const resetUploadInterface = () => {
-    setFile(null);
-    setFilePreview(null);
-    setUploadProgress(0);
-    setUploadLoading(false);
+    setSelectedFiles([]); // Reset dell'array di file selezionati
     
+    setFilePreview(null);
+    setUploadLoading(false);
+    setUploadProgress(0);
+    setUploadError('');
+    if (uploadTask) {
+      uploadTask.cancel();
+      setUploadTask(null);
+    }
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
-    
-    // Nascondiamo il messaggio di successo dopo 3 secondi
-    setTimeout(() => {
-      setActionSuccess('');
-    }, 3000);
   };
 
   // Inizia la modifica dei dati cliente
@@ -1298,6 +1306,19 @@ const AdminPanel: React.FC = () => {
       fetchChatMetadataForUsers();
     }
   }, [allUsers, activeTab, fetchChatMetadataForUsers]);
+
+  // Aggiungi questa funzione con le altre funzioni di gestione
+  const handleCancelUpload = () => {
+    if (uploadTask) {
+      uploadTask.cancel();
+      setUploadTask(null);
+      setUploadLoading(false);
+      setUploadProgress(0);
+      setUploadError('');
+      // Mostra un messaggio all'utente
+      toast.info('Caricamento annullato');
+    }
+  };
 
   if (!isAdmin) {
     return null; // Non mostrare nulla mentre reindirizza
@@ -1839,18 +1860,25 @@ const AdminPanel: React.FC = () => {
                             <div className="mt-4">
                               <div className="w-full bg-gray-700 rounded-full h-3 mb-2 overflow-hidden">
                                 <div 
-                                  className="bg-gradient-to-r from-blue-500 to-blue-600 h-3 rounded-full transition-all duration-300 ease-out flex items-center justify-end"
+                                  className="bg-gradient-to-r from-blue-500 to-blue-600 h-3 rounded-full transition-all duration-300 ease-out"
                                   style={{ width: `${uploadProgress}%` }}
                                 >
-                                  {uploadProgress > 15 && (
-                                    <span className="text-xs font-semibold text-white mr-2">{uploadProgress}%</span>
-                                  )}
+                                  {/* Nessuna percentuale all'interno della barra */}
                                 </div>
                               </div>
                               <div className="flex justify-between text-xs text-gray-400">
                                 <span>Caricamento in corso...</span>
                                 <span>{uploadProgress}% completato</span>
                               </div>
+                              <button 
+                                onClick={handleCancelUpload}
+                                className="mt-2 px-3 py-1 bg-red-600 hover:bg-red-700 rounded-md text-white text-sm flex items-center justify-center"
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                                Annulla caricamento
+                              </button>
                             </div>
                           )}
                         </div>
@@ -1876,7 +1904,16 @@ const AdminPanel: React.FC = () => {
                               disabled={!file || uploadLoading}
                               className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                              {uploadLoading ? `Caricamento... ${uploadProgress}%` : 'Carica File'}
+                              {uploadLoading ? (
+                                <>
+                                  <svg className="animate-spin h-5 w-5 text-white mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                  </svg>
+                                </>
+                              ) : (
+                                'Carica File'
+                              )}
                             </button>
                             <button
                               onClick={resetUploadInterface}
