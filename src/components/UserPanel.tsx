@@ -120,6 +120,10 @@ const UserPanel: React.FC = () => {
   const [loadingMessages, setLoadingMessages] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  // Aggiungi questi stati all'inizio del componente, con gli altri stati
+  const [showFullScreenImage, setShowFullScreenImage] = useState<boolean>(false);
+  const [fullScreenImageUrl, setFullScreenImageUrl] = useState<string>('');
+
   // Verifica se l'utente corrente è un amministratore e reindirizza
   useEffect(() => {
     if (currentUser?.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
@@ -1011,6 +1015,12 @@ const UserPanel: React.FC = () => {
     }
   }, [activeTab, currentUser, fetchMessages]);
 
+  // Aggiungi questa funzione con le altre funzioni del componente
+  const handleFullScreenImage = (imageUrl: string) => {
+    setFullScreenImageUrl(imageUrl);
+    setShowFullScreenImage(true);
+  };
+
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       {/* Header */}
@@ -1253,6 +1263,17 @@ const UserPanel: React.FC = () => {
                           >
                             Scarica
                           </a>
+                          
+                          {/* Aggiungi questo pulsante per le immagini */}
+                          {fileInfo.type === 'image' && (
+                            <button
+                              onClick={() => handleFullScreenImage(fileInfo.url)}
+                              className="text-white bg-blue-600 hover:bg-blue-700 px-2 py-1 rounded-md text-xs flex-1 text-center"
+                            >
+                              Full Screen
+                            </button>
+                          )}
+                          
                           {fileInfo.type === '3d' && (
                             <button
                               onClick={() => fetchAndPreviewModel(fileInfo)}
@@ -1261,7 +1282,8 @@ const UserPanel: React.FC = () => {
                               Anteprima 3D
                             </button>
                           )}
-                          {/* Aggiungiamo il pulsante per eliminare */}
+                          
+                          {/* Pulsante elimina esistente */}
                           <button
                             onClick={() => setFileToDelete(fileInfo.id)}
                             className="text-white bg-gray-700 hover:bg-gray-600 px-2 py-1 rounded-md text-xs flex items-center justify-center"
@@ -1580,6 +1602,33 @@ const UserPanel: React.FC = () => {
                 </button>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modale per la visualizzazione dell'immagine a schermo intero */}
+      {showFullScreenImage && (
+        <div 
+          className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 cursor-pointer"
+          onClick={() => setShowFullScreenImage(false)}
+        >
+          <div className="relative max-w-[90vw] max-h-[90vh]">
+            <img 
+              src={fullScreenImageUrl} 
+              alt="Full screen view" 
+              className="max-w-full max-h-[90vh] object-contain"
+            />
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowFullScreenImage(false);
+              }}
+              className="absolute top-4 right-4 bg-gray-800/50 hover:bg-gray-700 rounded-full p-2 text-white"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
         </div>
       )}
