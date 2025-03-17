@@ -576,55 +576,26 @@ const UserPanel: React.FC = () => {
   // Funzione per scaricare e visualizzare il modello
   const fetchAndPreviewModel = async (fileInfo: FileInfo) => {
     try {
-      console.log("Tentativo di scaricare modello da:", fileInfo.url);
-      
-      // Imposta lo stato di anteprima anche prima di tentare il download
       setPreviewModelId(fileInfo.id);
       setPreviewModelType(fileInfo.name.split('.').pop()?.toLowerCase() || 'stl');
-      setPreviewModelFile(null); // Resetta il file esistente per mostrare il caricamento
+      setPreviewModelFile(null);
+
+      // Utilizziamo XMLHttpRequest per gestire meglio il CORS
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', fileInfo.url, true);
+      xhr.responseType = 'blob';
       
-      // Aggiungiamo opzioni per il fetch per gestire problemi CORS
-      const fetchOptions = {
-        mode: 'cors' as RequestMode,
-        headers: {
-          'Accept': 'application/octet-stream',
-          'Access-Control-Allow-Origin': '*'
+      xhr.onload = function() {
+        if (this.status === 200) {
+          const blob = this.response;
+          const file = new File([blob], fileInfo.name, {
+            type: 'application/octet-stream'
+          });
+          setPreviewModelFile(file);
         }
       };
       
-      try {
-        // Prova prima il download diretto
-        const response = await fetch(fileInfo.url, fetchOptions);
-        if (!response.ok) {
-          throw new Error(`Errore nel download: ${response.status} ${response.statusText}`);
-        }
-        
-        const blob = await response.blob();
-        console.log("Blob scaricato:", blob.type, blob.size);
-        
-        // Crea un nuovo File con il tipo corretto
-        const file = new File(
-          [blob], 
-          fileInfo.name, 
-          { type: blob.type || 'application/octet-stream' }
-        );
-        
-        // Imposta il file per la visualizzazione
-        setPreviewModelFile(file);
-      } catch (downloadError) {
-        console.error("Errore nel download diretto, potrebbero esserci problemi CORS:", downloadError);
-        
-        // Se abbiamo un'anteprima salvata, utilizziamo quella per mostrare almeno qualcosa
-        if (fileInfo.thumbnailUrl) {
-          console.log("Utilizzo l'anteprima salvata come alternativa al modello 3D");
-          // Qui si potrebbe implementare una versione semplificata del visualizzatore che mostra solo l'immagine
-          // Per ora, mostriamo un messaggio di errore più informativo
-          setPreviewModelFile(null);
-        } else {
-          console.error("Nessuna anteprima disponibile per questo modello");
-          setPreviewModelFile(null);
-        }
-      }
+      xhr.send();
     } catch (error) {
       console.error('Errore durante il download del modello:', error);
       setPreviewModelFile(null);

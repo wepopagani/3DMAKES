@@ -142,6 +142,13 @@ const AdminPanel: React.FC = () => {
   // Aggiungi questa variabile di stato all'inizio del componente con gli altri stati
   const [uploadTask, setUploadTask] = useState<any>(null);
 
+  // Aggiungi questi stati all'inizio del componente dove ci sono gli altri useState
+  const [userToDelete, setUserToDelete] = useState<string | null>(null);
+  const [isDeletingUser, setIsDeletingUser] = useState(false);
+
+  const [showFullScreenImage, setShowFullScreenImage] = useState<boolean>(false);
+  const [fullScreenImageUrl, setFullScreenImageUrl] = useState<string>('');
+
   // Verifica se l'utente corrente è un amministratore
   useEffect(() => {
     if (currentUser && ADMIN_EMAILS.includes(currentUser.email || '')) {
@@ -350,10 +357,12 @@ const AdminPanel: React.FC = () => {
     }
   };
 
-  // Filtra i file in base al tipo selezionato
+  // Modifica la costante filteredFiles
   const filteredFiles = filter === 'all' 
     ? allFiles 
-    : allFiles.filter(file => file.type === filter);
+    : filter === 'images' 
+      ? allFiles.filter(file => file.type === 'image')
+      : allFiles.filter(file => file.type === '3d');
 
   // Filtra gli utenti in base al termine di ricerca
   const filteredUsers = allUsers.filter(user => {
@@ -988,38 +997,40 @@ const AdminPanel: React.FC = () => {
     setTimeout(() => setActionSuccess(""), 3000);
   };
 
-  // Funzione per preparare e mostrare il visualizzatore 3D
+  // Modifica la funzione handlePreviewModel
   const handlePreviewModel = async (fileInfo: FileInfo) => {
     try {
-      // Solo per i file di tipo 3D
       if (fileInfo.type !== '3d') return;
       
-      // Ottieni il tipo di file dalla URL o dal nome
       const fileName = fileInfo.name.toLowerCase();
       const fileExtension = fileName.split('.').pop() || '';
-      let fileType = '';
       
-      if (fileExtension === 'stl') {
-        fileType = 'stl';
-      } else if (fileExtension === 'obj') {
-        fileType = 'obj';
-      } else {
-        console.error('Tipo di file non supportato:', fileExtension);
-        return;
+      // Aggiungi l'header di autorizzazione alla richiesta
+      const response = await fetch(fileInfo.url, {
+        headers: {
+          'Accept': 'application/octet-stream',
+          'Origin': window.location.origin
+        },
+        mode: 'cors'
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
-      // Scarica il file dal server
-      const response = await fetch(fileInfo.url);
+
       const blob = await response.blob();
-      const file = new File([blob], fileInfo.name, { type: 'application/octet-stream' });
-      
-      // Imposta gli stati per il visualizzatore
+      const file = new File([blob], fileInfo.name, { 
+        type: 'application/octet-stream' 
+      });
+
       setPreviewFile(file);
-      setPreviewFileType(fileType);
+      setPreviewFileType(fileExtension);
       setPreviewURL(fileInfo.url);
       setShowModelViewer(true);
     } catch (error) {
       console.error('Errore durante la preparazione del modello:', error);
+      // Mostra un messaggio di errore all'utente
+      toast.error('Errore nel caricamento del modello 3D. Riprova più tardi.');
     }
   };
 
@@ -1320,6 +1331,80 @@ const AdminPanel: React.FC = () => {
     }
   };
 
+  // Aggiungi questa funzione per eliminare l'utente
+  const handleDeleteUser = async (userId: string) => {
+    if (!userId) return;
+    setIsDeletingUser(true);
+    
+    try {
+      // 1. Elimina tutti i file dell'utente
+      const filesQuery = query(
+        collection(db, 'files'),
+        where('userId', '==', userId)
+      );
+      
+      const querySnapshot = await getDocs(filesQuery);
+      const deletePromises: Promise<void>[] = [];
+      
+      querySnapshot.forEach((doc) => {
+        const fileData = doc.data();
+        
+        // Elimina documento Firestore
+        deletePromises.push(deleteDoc(doc.ref));
+        
+        // Elimina file da Storage
+        if (fileData.url) {
+          const storageRefPath = fileData.url.split('?')[0].split('/o/')[1];
+          if (storageRefPath) {
+            const decodedPath = decodeURIComponent(storageRefPath);
+            const storageRef = ref(storage, decodedPath);
+            deletePromises.push(deleteObject(storageRef));
+          }
+        }
+        
+        // Elimina thumbnail se esiste
+        if (fileData.thumbnailUrl) {
+          const thumbnailPath = fileData.thumbnailUrl.split('?')[0].split('/o/')[1];
+          if (thumbnailPath) {
+            const decodedPath = decodeURIComponent(thumbnailPath);
+            const thumbRef = ref(storage, decodedPath);
+            deletePromises.push(deleteObject(thumbRef));
+          }
+        }
+      });
+      
+      // 2. Elimina i dati utente da Firestore
+      deletePromises.push(deleteDoc(doc(db, 'users', userId)));
+      
+      // 3. Elimina la chat dell'utente
+      const chatRef = doc(db, 'chats', userId);
+      const chatSnapshot = await getDoc(chatRef);
+      if (chatSnapshot.exists()) {
+        deletePromises.push(deleteDoc(chatRef));
+      }
+      
+      // 4. Esegui tutte le operazioni di eliminazione
+      await Promise.all(deletePromises);
+      
+      // 5. Aggiorna la lista degli utenti e resetta la selezione
+      setSelectedUser(null);
+      await fetchAllUsers();
+      setActionSuccess('Utente eliminato con successo!');
+      
+    } catch (error: any) {
+      console.error('Errore durante l\'eliminazione dell\'utente:', error);
+      setUploadError(`Errore durante l'eliminazione: ${error.message || 'Errore sconosciuto'}`);
+    } finally {
+      setIsDeletingUser(false);
+      setUserToDelete(null);
+    }
+  };
+
+  const handleFullScreenImage = (imageUrl: string) => {
+    setFullScreenImageUrl(imageUrl);
+    setShowFullScreenImage(true);
+  };
+
   if (!isAdmin) {
     return null; // Non mostrare nulla mentre reindirizza
   }
@@ -1551,6 +1636,20 @@ const AdminPanel: React.FC = () => {
                           </svg>
                           Scarica
                         </a>
+                        
+                        {/* Aggiungi questo pulsante per le immagini */}
+                        {fileInfo.type === 'image' && (
+                          <button
+                            onClick={() => handleFullScreenImage(fileInfo.url)}
+                            className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 rounded-md text-white text-sm flex items-center"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 14a1 1 0 011-1h4a1 1 0 010 2H5a1 1 0 01-1-1zM15 14a1 1 0 011-1h4a1 1 0 010 2h-4a1 1 0 01-1-1zM4 19a1 1 0 011-1h14a1 1 0 010 2H5a1 1 0 01-1-1zM4 9a1 1 0 011-1h14a1 1 0 010 2H5a1 1 0 01-1-1z" />
+                            </svg>
+                            Full Screen
+                          </button>
+                        )}
+                        
                         {fileInfo.type === '3d' && (
                           <button
                             onClick={() => handlePreviewModel(fileInfo)}
@@ -1562,6 +1661,7 @@ const AdminPanel: React.FC = () => {
                             Vista 3D
                           </button>
                         )}
+                        
                         <button
                           onClick={() => setFileToDelete(fileInfo.id)}
                           className="px-3 py-1.5 bg-red-600 hover:bg-red-700 rounded-md text-white text-sm flex items-center"
@@ -1668,40 +1768,30 @@ const AdminPanel: React.FC = () => {
                     <div className="p-6 bg-gray-800 rounded-lg">
                       <div className="flex justify-between items-center mb-6">
                         <h2 className="text-xl font-semibold">Dettagli Cliente</h2>
-                        {!isEditingUser ? (
-                          <button
-                            onClick={handleStartEditUser}
-                            className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 rounded-md text-white text-sm flex items-center"
-                          >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                            </svg>
-                            Modifica
-                          </button>
-                        ) : (
-                          <div className="flex gap-2">
-                            <button
-                              onClick={handleUpdateUserData}
-                              disabled={isSavingUser}
-                              className="px-3 py-1.5 bg-green-600 hover:bg-green-700 rounded-md text-white text-sm flex items-center disabled:opacity-50"
-                            >
-                              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                              </svg>
-                              {isSavingUser ? 'Salvataggio...' : 'Salva'}
-                            </button>
-                            <button
-                              onClick={handleCancelEditUser}
-                              disabled={isSavingUser}
-                              className="px-3 py-1.5 bg-gray-600 hover:bg-gray-700 rounded-md text-white text-sm flex items-center disabled:opacity-50"
-                            >
-                              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                              </svg>
-                              Annulla
-                            </button>
-                          </div>
-                        )}
+                        <div className="flex gap-2">
+                          {!isEditingUser && (
+                            <>
+                              <button
+                                onClick={handleStartEditUser}
+                                className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 rounded-md text-white text-sm flex items-center"
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                                Modifica
+                              </button>
+                              <button
+                                onClick={() => setUserToDelete(userDetails?.id || '')}
+                                className="px-3 py-1.5 bg-red-600 hover:bg-red-700 rounded-md text-white text-sm flex items-center"
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                                Elimina Utente
+                              </button>
+                            </>
+                          )}
+                        </div>
                       </div>
                       
                       {!isEditingUser ? (
@@ -2048,6 +2138,19 @@ const AdminPanel: React.FC = () => {
                                   </svg>
                                   Scarica
                                 </a>
+                                
+                                {fileInfo.type === 'image' && (
+                                  <button
+                                    onClick={() => handleFullScreenImage(fileInfo.url)}
+                                    className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 rounded-md text-white text-sm flex items-center"
+                                  >
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 14a1 1 0 011-1h4a1 1 0 010 2H5a1 1 0 01-1-1zM15 14a1 1 0 011-1h4a1 1 0 010 2h-4a1 1 0 01-1-1zM4 19a1 1 0 011-1h14a1 1 0 010 2H5a1 1 0 01-1-1zM4 9a1 1 0 011-1h14a1 1 0 010 2H5a1 1 0 01-1-1z" />
+                                    </svg>
+                                    Full Screen
+                                  </button>
+                                )}
+                                
                                 {fileInfo.type === '3d' && (
                                   <button
                                     onClick={() => handlePreviewModel(fileInfo)}
@@ -2059,6 +2162,7 @@ const AdminPanel: React.FC = () => {
                                     Vista 3D
                                   </button>
                                 )}
+                                
                                 <button
                                   onClick={() => setFileToDelete(fileInfo.id)}
                                   className="px-3 py-1.5 bg-red-600 hover:bg-red-700 rounded-md text-white text-sm flex items-center"
@@ -2275,6 +2379,64 @@ const AdminPanel: React.FC = () => {
                 </a>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Modale di conferma eliminazione utente */}
+      {userToDelete && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+          <div className="bg-gray-800 rounded-lg w-full max-w-md overflow-hidden">
+            <div className="p-4 border-b border-gray-700">
+              <h3 className="text-xl font-semibold">Conferma eliminazione utente</h3>
+            </div>
+            <div className="p-6">
+              <p className="text-gray-300 mb-6">
+                Sei sicuro di voler eliminare questo utente? Questa operazione eliminerà anche tutti i suoi file e non può essere annullata.
+              </p>
+              <div className="flex justify-end space-x-3">
+                <button 
+                  onClick={() => setUserToDelete(null)}
+                  className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-md transition-colors"
+                  disabled={isDeletingUser}
+                >
+                  Annulla
+                </button>
+                <button 
+                  onClick={() => userToDelete && handleDeleteUser(userToDelete)}
+                  className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-md transition-colors"
+                  disabled={isDeletingUser}
+                >
+                  {isDeletingUser ? 'Eliminazione...' : 'Elimina'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showFullScreenImage && (
+        <div 
+          className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 cursor-pointer"
+          onClick={() => setShowFullScreenImage(false)}
+        >
+          <div className="relative max-w-[90vw] max-h-[90vh]">
+            <img 
+              src={fullScreenImageUrl} 
+              alt="Full screen view" 
+              className="max-w-full max-h-[90vh] object-contain"
+            />
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowFullScreenImage(false);
+              }}
+              className="absolute top-4 right-4 bg-gray-800/50 hover:bg-gray-700 rounded-full p-2 text-white"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
         </div>
       )}
