@@ -263,6 +263,22 @@ const HomePage = () => {
   );
 };
 
+// Aggiungi questo componente nell'App.tsx
+const LinkShRedirect = () => {
+  useEffect(() => {
+    window.location.href = 'http://server.3dmakes.ch:3000';
+  }, []);
+  
+  return (
+    <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+      <div className="text-center">
+        <h1 className="text-2xl mb-4">Reindirizzamento in corso...</h1>
+        <div className="w-8 h-8 border-4 border-gray-600 border-t-red-500 rounded-full animate-spin mx-auto"></div>
+      </div>
+    </div>
+  );
+};
+
 function App() {
   return (
     <AuthProvider>
@@ -276,6 +292,9 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/user-panel" element={<UserPanel />} />
           <Route path="/admin-panel" element={<AdminPanel />} />
+          
+          {/* Reindirizzamento automatico a LinkSh */}
+          <Route path="/linksh" element={<LinkShRedirect />} />
         </Routes>
       </Router>
     </AuthProvider>
