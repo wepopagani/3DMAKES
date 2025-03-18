@@ -1,5 +1,59 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
+
+// Traduzioni per multilingua
+const traduzioni = {
+  it: {
+    telefono: "Telefono",
+    email: "Email",
+    indirizzo: "Indirizzo",
+    apriGoogleMaps: "Apri in Google Maps",
+    sitoWeb: "Sito Web",
+    social: "Social",
+    aggiungiContatti: "Aggiungi ai contatti",
+    creatocon: "Creato con"
+  },
+  en: {
+    telefono: "Phone",
+    email: "Email",
+    indirizzo: "Address",
+    apriGoogleMaps: "Open in Google Maps",
+    sitoWeb: "Website",
+    social: "Social Media",
+    aggiungiContatti: "Add to contacts",
+    creatocon: "Created with"
+  },
+  fr: {
+    telefono: "Téléphone",
+    email: "Email",
+    indirizzo: "Adresse",
+    apriGoogleMaps: "Ouvrir dans Google Maps",
+    sitoWeb: "Site Web",
+    social: "Réseaux sociaux",
+    aggiungiContatti: "Ajouter aux contacts",
+    creatocon: "Créé avec"
+  },
+  de: {
+    telefono: "Telefon",
+    email: "E-Mail",
+    indirizzo: "Adresse",
+    apriGoogleMaps: "In Google Maps öffnen",
+    sitoWeb: "Webseite",
+    social: "Soziale Medien",
+    aggiungiContatti: "Zu Kontakten hinzufügen",
+    creatocon: "Erstellt mit"
+  },
+  es: {
+    telefono: "Teléfono",
+    email: "Correo electrónico",
+    indirizzo: "Dirección",
+    apriGoogleMaps: "Abrir en Google Maps",
+    sitoWeb: "Sitio web",
+    social: "Redes sociales",
+    aggiungiContatti: "Añadir a contactos",
+    creatocon: "Creado con"
+  }
+};
 
 const ContactView: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -20,9 +74,16 @@ const ContactView: React.FC = () => {
     azienda: string;
     ruolo: string;
     sito: string;
+    social: {
+      linkedin: string;
+      facebook: string;
+      instagram: string;
+      x: string;
+    }
   } | null>(null);
   
   const [vCardUrl, setVCardUrl] = useState('');
+  const [lingua, setLingua] = useState('it');
   
   useEffect(() => {
     // Estrai i parametri dall'URL
@@ -44,6 +105,16 @@ const ContactView: React.FC = () => {
     const ruolo = searchParams.get('title') || '';
     const sito = searchParams.get('url') || '';
     
+    // Estrai la lingua preferita
+    const linguaParam = searchParams.get('lingua') || 'it';
+    setLingua(linguaParam);
+    
+    // Estrai i profili social
+    const linkedin = searchParams.get('linkedin') || '';
+    const facebook = searchParams.get('facebook') || '';
+    const instagram = searchParams.get('instagram') || '';
+    const x = searchParams.get('x') || '';
+    
     if (nome || cognome) {
       setContactData({
         nome,
@@ -61,7 +132,13 @@ const ContactView: React.FC = () => {
         },
         azienda,
         ruolo,
-        sito
+        sito,
+        social: {
+          linkedin,
+          facebook,
+          instagram,
+          x
+        }
       });
       
       // Genera l'URL della vCard
@@ -98,6 +175,9 @@ END:VCARD`;
     
     setVCardUrl(vCardDataUrl);
   };
+  
+  // Ottieni le traduzioni in base alla lingua
+  const t = traduzioni[lingua as keyof typeof traduzioni] || traduzioni.it;
   
   if (!contactData) {
     return (
@@ -137,7 +217,7 @@ END:VCARD`;
                 </svg>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Telefono</p>
+                <p className="text-sm text-gray-500">{t.telefono}</p>
                 <a href={`tel:${contactData.telefono}`} className="text-lg font-medium text-gray-800">{contactData.telefono}</a>
               </div>
             </div>
@@ -151,7 +231,7 @@ END:VCARD`;
                 </svg>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Email</p>
+                <p className="text-sm text-gray-500">{t.email}</p>
                 <a href={`mailto:${contactData.email}`} className="text-lg font-medium text-gray-800">{contactData.email}</a>
               </div>
             </div>
@@ -166,7 +246,7 @@ END:VCARD`;
                 </svg>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Indirizzo</p>
+                <p className="text-sm text-gray-500">{t.indirizzo}</p>
                 
                 {/* Visualizzazione dettagliata dell'indirizzo */}
                 <div>
@@ -184,7 +264,7 @@ END:VCARD`;
                     </p>
                   )}
                   
-                  {contactData.indirizzoDettagli.paese && contactData.indirizzoDettagli.paese !== "Italia" && (
+                  {contactData.indirizzoDettagli.paese && (
                     <p className="text-lg font-medium text-gray-800">
                       {contactData.indirizzoDettagli.paese}
                     </p>
@@ -202,7 +282,7 @@ END:VCARD`;
                   rel="noopener noreferrer" 
                   className="text-sm text-blue-600 mt-1 block hover:underline"
                 >
-                  Apri in Google Maps
+                  {t.apriGoogleMaps}
                 </a>
               </div>
             </div>
@@ -212,12 +292,77 @@ END:VCARD`;
             <div className="flex items-center py-3">
               <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mr-4">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
                 </svg>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Sito Web</p>
+                <p className="text-sm text-gray-500">{t.sitoWeb}</p>
                 <a href={contactData.sito.startsWith('http') ? contactData.sito : `https://${contactData.sito}`} target="_blank" rel="noopener noreferrer" className="text-lg font-medium text-gray-800">{contactData.sito}</a>
+              </div>
+            </div>
+          )}
+          
+          {/* Profili social */}
+          {(contactData.social.linkedin || contactData.social.facebook || 
+            contactData.social.instagram || contactData.social.x) && (
+            <div className="mt-4">
+              <h3 className="text-lg font-medium mb-3 text-gray-700">{t.social}</h3>
+              <div className="flex flex-wrap gap-3">
+                {contactData.social.linkedin && (
+                  <a 
+                    href={contactData.social.linkedin} 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2 bg-blue-100 text-blue-600 rounded-full hover:bg-blue-200 transition-colors"
+                    aria-label="LinkedIn"
+                  >
+                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z" />
+                    </svg>
+                  </a>
+                )}
+                
+                {contactData.social.facebook && (
+                  <a 
+                    href={contactData.social.facebook} 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2 bg-blue-100 text-blue-600 rounded-full hover:bg-blue-200 transition-colors"
+                    aria-label="Facebook"
+                  >
+                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z" />
+                    </svg>
+                  </a>
+                )}
+                
+                {contactData.social.instagram && (
+                  <a 
+                    href={contactData.social.instagram} 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2 bg-pink-100 text-pink-600 rounded-full hover:bg-pink-200 transition-colors"
+                    aria-label="Instagram"
+                  >
+                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 2c2.717 0 3.056.01 4.122.06 1.065.05 1.79.217 2.428.465.66.254 1.216.598 1.772 1.153.509.5.902 1.105 1.153 1.772.247.637.415 1.363.465 2.428.047 1.066.06 1.405.06 4.122 0 2.717-.01 3.056-.06 4.122-.05 1.065-.218 1.79-.465 2.428a4.883 4.883 0 0 1-1.153 1.772c-.5.508-1.105.902-1.772 1.153-.637.247-1.363.415-2.428.465-1.066.047-1.405.06-4.122.06-2.717 0-3.056-.01-4.122-.06-1.065-.05-1.79-.218-2.428-.465a4.89 4.89 0 0 1-1.772-1.153 4.904 4.904 0 0 1-1.153-1.772c-.248-.637-.415-1.363-.465-2.428C2.013 15.056 2 14.717 2 12c0-2.717.01-3.056.06-4.122.05-1.066.217-1.79.465-2.428a4.88 4.88 0 0 1 1.153-1.772A4.897 4.897 0 0 1 5.45 2.525c.638-.248 1.362-.415 2.428-.465C8.944 2.013 9.283 2 12 2zm0 1.802c-2.67 0-2.986.01-4.04.059-.976.045-1.505.207-1.858.344-.466.182-.8.398-1.15.748-.35.35-.566.684-.748 1.15-.137.353-.3.882-.344 1.857-.048 1.055-.058 1.37-.058 4.04 0 2.67.01 2.986.058 4.04.045.977.207 1.505.344 1.858.182.466.399.8.748 1.15.35.35.684.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.04.058 2.67 0 2.987-.01 4.04-.058.977-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.684.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.04 0-2.67-.01-2.986-.058-4.04-.045-.977-.207-1.505-.344-1.858a3.097 3.097 0 0 0-.748-1.15 3.098 3.098 0 0 0-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.055-.048-1.37-.058-4.04-.058zm0 3.063a5.135 5.135 0 1 1 0 10.27 5.135 5.135 0 0 1 0-10.27zm0 8.468a3.333 3.333 0 1 0 0-6.666 3.333 3.333 0 0 0 0 6.666zm6.538-8.469a1.2 1.2 0 1 1-2.4 0 1.2 1.2 0 0 1 2.4 0z" />
+                    </svg>
+                  </a>
+                )}
+                
+                {contactData.social.x && (
+                  <a 
+                    href={contactData.social.x} 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2 bg-black text-white rounded-full hover:bg-gray-800 transition-colors"
+                    aria-label="X"
+                  >
+                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg>
+                  </a>
+                )}
               </div>
             </div>
           )}
@@ -230,11 +375,11 @@ END:VCARD`;
             download={`${contactData.nome}_${contactData.cognome}.vcf`}
             className="inline-block w-full py-3 px-6 bg-gradient-to-r from-red-500 to-red-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
           >
-            Aggiungi ai contatti
+            {t.aggiungiContatti}
           </a>
           
           <div className="mt-6 text-center text-sm text-gray-500">
-            Creato con <a href="/" className="text-red-600 hover:underline">3D Makes</a>
+            {t.creatocon} <a href="/" className="text-red-600 hover:underline">3D Makes</a>
           </div>
         </div>
       </div>
