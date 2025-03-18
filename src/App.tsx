@@ -20,6 +20,10 @@ import UserPanel from './components/UserPanel';
 import AdminPanel from './components/AdminPanel';
 import { AuthProvider, useAuth } from './firebase/AuthContext';
 import LinkShortener from './components/LinkShortener';
+import VCardGenerator from './components/VCardGenerator';
+import CiotolePersonalizzabili from './components/CiotolePersonalizzabili';
+import AccessoriRistorativi from './components/AccessoriRistorativi';
+import GadgetAziendali from './components/GadgetAziendali';
 
 // Componente HomePage con accesso al contesto di autenticazione
 const HomePage = () => {
@@ -296,6 +300,10 @@ function App() {
           
           {/* Usa il componente LinkShortener */}
           <Route path="/linksh" element={<LinkShortener />} />
+          <Route path="/vcard" element={<VCardGenerator />} />
+          <Route path="/ciotole-personalizzabili" element={<CiotolePersonalizzabili />} />
+          <Route path="/accessori-ristorativi" element={<AccessoriRistorativi />} />
+          <Route path="/gadget-aziendali" element={<GadgetAziendali />} />
         </Routes>
       </Router>
     </AuthProvider>
