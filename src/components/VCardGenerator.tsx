@@ -1,6 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import QRCode from 'qrcode';
+
+// Interfaccia per i risultati di ricerca dell'indirizzo
+interface AddressResult {
+  place_id: number;
+  display_name: string;
+  address: {
+    road?: string;
+    house_number?: string;
+    postcode?: string;
+    city?: string;
+    town?: string;
+    village?: string;
+    state?: string;
+    country?: string;
+  };
+}
 
 const VCardGenerator: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -8,7 +24,14 @@ const VCardGenerator: React.FC = () => {
     cognome: '',
     telefono: '',
     email: '',
-    indirizzo: '',
+    indirizzo: {
+      via: '',
+      numeroCivico: '',
+      citta: '',
+      cap: '',
+      provincia: '',
+      paese: 'Italia'
+    },
     azienda: '',
     ruolo: '',
     sito: ''
@@ -21,12 +44,119 @@ const VCardGenerator: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [qrImage, setQrImage] = useState<string | null>(null);
   
+  // Stati per l'autocompletamento dell'indirizzo
+  const [addressSearch, setAddressSearch] = useState('');
+  const [addressResults, setAddressResults] = useState<AddressResult[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [showAddressResults, setShowAddressResults] = useState(false);
+  const searchTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const resultsRef = useRef<HTMLDivElement>(null);
+  
+  // Effetto per il debounce della ricerca indirizzi
+  useEffect(() => {
+    if (addressSearch.length < 3) {
+      setAddressResults([]);
+      setShowAddressResults(false);
+      return;
+    }
+
+    if (searchTimeout.current) {
+      clearTimeout(searchTimeout.current);
+    }
+
+    searchTimeout.current = setTimeout(() => {
+      searchAddresses(addressSearch);
+    }, 500); // Attende 500ms dopo l'ultima digitazione
+
+    return () => {
+      if (searchTimeout.current) {
+        clearTimeout(searchTimeout.current);
+      }
+    };
+  }, [addressSearch]);
+  
+  // Effetto per chiudere i risultati quando si clicca fuori
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (resultsRef.current && !resultsRef.current.contains(event.target as Node)) {
+        setShowAddressResults(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+  
+  // Funzione per cercare indirizzi tramite OpenStreetMap/Nominatim
+  const searchAddresses = async (query: string) => {
+    if (query.length < 3) return;
+    
+    setIsSearching(true);
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
+          query
+        )}&format=json&addressdetails=1&limit=5&countrycodes=ch,it`
+      );
+      
+      if (!response.ok) {
+        throw new Error('Errore nella ricerca degli indirizzi');
+      }
+      
+      const data = await response.json();
+      setAddressResults(data);
+      setShowAddressResults(true);
+    } catch (error) {
+      console.error('Errore nella ricerca degli indirizzi:', error);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+  
+  // Funzione per selezionare un indirizzo dai risultati
+  const handleSelectAddress = (result: AddressResult) => {
+    // Estrai le informazioni dell'indirizzo
+    const address = result.address;
+    
+    // Componi l'indirizzo con nome della strada e numero civico se disponibili
+    let via = address.road || '';
+    let numeroCivico = address.house_number || '';
+    let citta = address.city || address.town || address.village || '';
+    let cap = address.postcode || '';
+    let provincia = address.state || '';
+    let paese = address.country || 'Italia';
+    
+    // Aggiorna formData con i nuovi valori dell'indirizzo
+    setFormData(prev => ({
+      ...prev,
+      indirizzo: {
+        via,
+        numeroCivico,
+        citta,
+        cap,
+        provincia,
+        paese
+      }
+    }));
+    
+    // Aggiorna il campo di ricerca con l'indirizzo completo selezionato
+    setAddressSearch(result.display_name);
+    
+    // Chiudi il dropdown dei risultati
+    setShowAddressResults(false);
+  };
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
   
   const generateVCard = () => {
+    // Formatta l'indirizzo completo
+    const indirizzoCompleto = formattaIndirizzo();
+    
     // Crea il contenuto vCard in formato standard
     const vCardContent = `BEGIN:VCARD
 VERSION:3.0
@@ -36,12 +166,11 @@ ${formData.azienda ? `ORG:${formData.azienda}\n` : ''}
 ${formData.ruolo ? `TITLE:${formData.ruolo}\n` : ''}
 ${formData.telefono ? `TEL;TYPE=CELL:${formData.telefono}\n` : ''}
 ${formData.email ? `EMAIL:${formData.email}\n` : ''}
-${formData.indirizzo ? `ADR:;;${formData.indirizzo};;;;\n` : ''}
+${indirizzoCompleto ? `ADR:;;${indirizzoCompleto};;;;\n` : ''}
 ${formData.sito ? `URL:${formData.sito}\n` : ''}
 END:VCARD`;
     
     // Codifica il contenuto come data URL con il Content-Disposition corretto
-    // Questo aiuta iOS a riconoscere il file come vCard scaricabile
     const encodedVCard = encodeURIComponent(vCardContent);
     const vCardDataUrl = `data:text/vcard;charset=utf-8;content-disposition=attachment;filename=${formData.nome}_${formData.cognome}.vcf,${encodedVCard}`;
     
@@ -49,18 +178,66 @@ END:VCARD`;
     setShowResults(true);
     
     // Accorcia l'URL e genera il QR
-    shortenVCardUrl(vCardDataUrl);
+    shortenVCardUrl(vCardDataUrl, indirizzoCompleto);
   };
   
-  const shortenVCardUrl = async (url: string) => {
+  // Funzione per formattare l'indirizzo
+  const formattaIndirizzo = () => {
+    const { via, numeroCivico, citta, cap, provincia, paese } = formData.indirizzo;
+    
+    // Verifica quali componenti dell'indirizzo sono stati inseriti
+    const componenti = [];
+    
+    if (via) {
+      componenti.push(`${via}${numeroCivico ? ' ' + numeroCivico : ''}`);
+    }
+    
+    if (citta || cap || provincia) {
+      const secondaLinea = [citta, cap, provincia].filter(Boolean).join(", ");
+      if (secondaLinea) componenti.push(secondaLinea);
+    }
+    
+    if (paese && paese !== 'Italia') {
+      componenti.push(paese);
+    }
+    
+    return componenti.join(", ");
+  };
+  
+  const shortenVCardUrl = async (url: string, indirizzoCompleto: string) => {
     setLoading(true);
     
     try {
-      // Nota: stiamo accorciando l'URL della vCard direttamente
+      // Creiamo una query string con i dati del contatto
+      const contactParams = new URLSearchParams();
+      contactParams.append('nome', formData.nome);
+      contactParams.append('cognome', formData.cognome);
+      if (formData.telefono) contactParams.append('tel', formData.telefono);
+      if (formData.email) contactParams.append('email', formData.email);
+      
+      // Aggiungi sia l'indirizzo completo che i componenti separati
+      if (indirizzoCompleto) contactParams.append('adr', indirizzoCompleto);
+      
+      // Aggiungi anche i componenti individuali dell'indirizzo
+      if (formData.indirizzo.via) contactParams.append('via', formData.indirizzo.via);
+      if (formData.indirizzo.numeroCivico) contactParams.append('civico', formData.indirizzo.numeroCivico);
+      if (formData.indirizzo.citta) contactParams.append('citta', formData.indirizzo.citta);
+      if (formData.indirizzo.cap) contactParams.append('cap', formData.indirizzo.cap);
+      if (formData.indirizzo.provincia) contactParams.append('provincia', formData.indirizzo.provincia);
+      if (formData.indirizzo.paese) contactParams.append('paese', formData.indirizzo.paese);
+      
+      if (formData.azienda) contactParams.append('org', formData.azienda);
+      if (formData.ruolo) contactParams.append('title', formData.ruolo);
+      if (formData.sito) contactParams.append('url', formData.sito);
+      
+      // Crea l'URL della pagina di visualizzazione contatto
+      const contactViewUrl = `${window.location.origin}/contact-view?${contactParams.toString()}`;
+      
+      // Accorcia l'URL della pagina di visualizzazione
       const response = await fetch('https://server.3dmakes.ch:3000/api/shorten', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ originalUrl: url })
+        body: JSON.stringify({ originalUrl: contactViewUrl })
       });
       
       const data = await response.json();
@@ -68,10 +245,9 @@ END:VCARD`;
       if (data.success) {
         setShortUrl(data.shortUrl);
         
-        // Qui generiamo un QR code diretto all'URL della vCard
-        // senza passare dalla pagina HTML intermedia
+        // Genera il QR code per l'URL della pagina di visualizzazione
         try {
-          const imageData = await QRCode.toDataURL(url); // Punta direttamente alla vCard
+          const imageData = await QRCode.toDataURL(contactViewUrl);
           setQrImage(imageData);
         } catch (qrError) {
           console.error('Errore nella generazione del QR:', qrError);
@@ -144,13 +320,41 @@ END:VCARD`;
             
             <div className="md:col-span-2">
               <label className="block text-gray-300 mb-1">Indirizzo</label>
-              <input
-                type="text"
-                name="indirizzo"
-                value={formData.indirizzo}
-                onChange={handleChange}
-                className="w-full bg-gray-700 border border-gray-600 rounded p-2 text-white"
-              />
+              <div className="relative">
+                <input
+                  type="text"
+                  value={addressSearch}
+                  onChange={(e) => setAddressSearch(e.target.value)}
+                  placeholder="Inizia a digitare per cercare l'indirizzo..."
+                  className="w-full bg-gray-700 border border-gray-600 rounded p-2 text-white"
+                />
+                {isSearching && (
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                    <div className="w-4 h-4 border-2 border-gray-500 border-t-white rounded-full animate-spin"></div>
+                  </div>
+                )}
+                
+                {/* Risultati della ricerca */}
+                {showAddressResults && addressResults.length > 0 && (
+                  <div 
+                    ref={resultsRef}
+                    className="absolute z-10 mt-1 w-full bg-gray-700 shadow-lg rounded-md max-h-60 overflow-auto"
+                  >
+                    <ul className="py-1">
+                      {addressResults.map((result) => (
+                        <li 
+                          key={result.place_id}
+                          onClick={() => handleSelectAddress(result)}
+                          className="px-4 py-2 hover:bg-gray-600 cursor-pointer text-sm text-white"
+                        >
+                          {result.display_name}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+              <p className="text-xs text-gray-400 mt-1">Cerca e seleziona un indirizzo dalle opzioni suggerite</p>
             </div>
             
             <div>

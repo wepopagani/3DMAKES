@@ -24,6 +24,7 @@ import VCardGenerator from './components/VCardGenerator';
 import CiotolePersonalizzabili from './components/CiotolePersonalizzabili';
 import AccessoriRistorativi from './components/AccessoriRistorativi';
 import GadgetAziendali from './components/GadgetAziendali';
+import ContactView from './components/ContactView';
 
 // Componente HomePage con accesso al contesto di autenticazione
 const HomePage = () => {
@@ -304,6 +305,7 @@ function App() {
           <Route path="/ciotole-personalizzabili" element={<CiotolePersonalizzabili />} />
           <Route path="/accessori-ristorativi" element={<AccessoriRistorativi />} />
           <Route path="/gadget-aziendali" element={<GadgetAziendali />} />
+          <Route path="/contact-view" element={<ContactView />} />
         </Routes>
       </Router>
     </AuthProvider>
