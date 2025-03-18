@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "/:shortCode([A-Za-z0-9]{7})"
+  to = "https://server.3dmakes.ch:3000/:shortCode"
+  status = 200
+  force = true
