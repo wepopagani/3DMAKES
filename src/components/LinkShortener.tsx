@@ -1,7 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const LinkShortener: React.FC = () => {
+  const [originalUrl, setOriginalUrl] = useState('');
+  const [shortUrl, setShortUrl] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [showResult, setShowResult] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const handleShorten = async () => {
+    if (!originalUrl) return;
+    
+    setLoading(true);
+    setError('');
+    
+    try {
+      const response = await fetch('http://server.3dmakes.ch:3000/api/shorten', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ originalUrl })
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        setShortUrl(data.shortUrl);
+        setShowResult(true);
+      } else {
+        setError('Errore durante l\'accorciamento');
+      }
+    } catch (err) {
+      setError('Errore di connessione al server');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(shortUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
     <div className="min-h-screen bg-gray-900 text-white pt-20 pb-12">
       <div className="container mx-auto px-4">
@@ -10,22 +51,55 @@ const LinkShortener: React.FC = () => {
           <p className="text-gray-400 mb-4">Accorcia i tuoi link in modo semplice e veloce</p>
         </header>
         
-        {/* Contenitore senza bordo e senza ombre */}
-        <div className="max-w-4xl mx-auto rounded-lg overflow-hidden">
-          <iframe 
-            src="http://server.3dmakes.ch:3000" 
-            title="LinkSh Service" 
-            className="w-full h-[450px] bg-gray-900" 
-            style={{ 
-              border: 'none',
-              outline: 'none',
-              boxShadow: 'none'  // Elimina qualsiasi ombra dell'iframe
-            }}
-          />
+        <div className="max-w-3xl mx-auto bg-gray-800 rounded-lg p-6">
+          <div className="mb-4">
+            <label className="block text-gray-300 mb-2">Incolla qui il tuo URL lungo:</label>
+            <div className="flex flex-col md:flex-row gap-2">
+              <input
+                type="url"
+                value={originalUrl}
+                onChange={(e) => setOriginalUrl(e.target.value)}
+                className="flex-grow bg-gray-700 border border-gray-600 rounded-l p-3 text-white"
+                placeholder="https://esempio-molto-lungo.com/percorso"
+              />
+              <button
+                onClick={handleShorten}
+                disabled={loading}
+                className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-r"
+              >
+                {loading ? '...' : 'Accorcia'}
+              </button>
+            </div>
+          </div>
+          
+          {error && (
+            <div className="p-3 bg-red-500/20 border border-red-500 rounded-md text-red-400 mb-4">
+              {error}
+            </div>
+          )}
+          
+          {showResult && (
+            <div className="mt-6">
+              <h3 className="text-xl font-semibold mb-3 text-gray-300">Il tuo URL accorciato:</h3>
+              <div className="flex items-center bg-gray-700 p-2 rounded-lg">
+                <input
+                  type="text"
+                  value={shortUrl}
+                  readOnly
+                  className="bg-transparent flex-grow p-2"
+                />
+                <button
+                  onClick={copyToClipboard}
+                  className={`${copied ? 'bg-green-600' : 'bg-blue-600 hover:bg-blue-700'} text-white px-4 py-2 rounded-md ml-2`}
+                >
+                  {copied ? 'Copiato!' : 'Copia'}
+                </button>
+              </div>
+            </div>
+          )}
         </div>
         
-        {/* Bottone per generare QR Code */}
-        <div className="mt-4 text-center">
+        <div className="mt-8 text-center">
           <Link 
             to="/qrgen" 
             className="inline-block px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-md transition-colors duration-200"
