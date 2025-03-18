@@ -15,4 +15,12 @@ main {
   main {
     padding-top: 0;
   }
+}
+
+@font-face {
+  font-family: 'TuoFont';
+  src: url('../fonts/tuofont.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 } 

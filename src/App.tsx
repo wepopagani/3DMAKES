@@ -19,6 +19,7 @@ import SignUp from './components/SignUp';
 import UserPanel from './components/UserPanel';
 import AdminPanel from './components/AdminPanel';
 import { AuthProvider, useAuth } from './firebase/AuthContext';
+import LinkShortener from './components/LinkShortener';
 
 // Componente HomePage con accesso al contesto di autenticazione
 const HomePage = () => {
@@ -293,8 +294,8 @@ function App() {
           <Route path="/user-panel" element={<UserPanel />} />
           <Route path="/admin-panel" element={<AdminPanel />} />
           
-          {/* Reindirizzamento automatico a LinkSh */}
-          <Route path="/linksh" element={<LinkShRedirect />} />
+          {/* Usa il componente LinkShortener */}
+          <Route path="/linksh" element={<LinkShortener />} />
         </Routes>
       </Router>
     </AuthProvider>

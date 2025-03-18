@@ -421,18 +421,20 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
                         modelContainer.appendChild(newModelViewer);
                         
                         // Importa dinamicamente React e ReactDOM per rendere il componente
-                        import('react-dom/client').then((ReactDOM) => {
-                          import('react').then((React) => {
-                            const root = ReactDOM.createRoot(newModelViewer);
-                            root.render(
-                              React.createElement(ModelViewer, {
-                                file: file,
-                                fileType: fileType,
-                                uploadPrompt: "carica il modello"
-                              })
-                            );
-                          });
-                        });
+                        // const importReact = () => import('react');
+                        // const importReactDOM = () => import('react-dom/client');
+                        // importReact().then((React) => {
+                        //   importReactDOM().then((ReactDOM) => {
+                        //     const root = ReactDOM.createRoot(newModelViewer);
+                        //     root.render(
+                        //       React.createElement(ModelViewer, {
+                        //         file: file,
+                        //         fileType: fileType,
+                        //         uploadPrompt: "carica il modello"
+                        //       })
+                        //     );
+                        //   });
+                        // });
                       }}
                       title="Visualizza a schermo intero"
                     >
