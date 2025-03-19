@@ -1724,9 +1724,6 @@ const AdminPanel: React.FC = () => {
                       <thead>
                         <tr className="bg-gray-700">
                           <th className="py-3 px-4 text-left text-sm font-medium text-gray-300">Nome</th>
-                          <th className="py-3 px-4 text-left text-sm font-medium text-gray-300">Email</th>
-                          <th className="py-3 px-4 text-left text-sm font-medium text-gray-300">Telefono</th>
-                          <th className="py-3 px-4 text-left text-sm font-medium text-gray-300">Registrato il</th>
                           <th className="py-3 px-4 text-left text-sm font-medium text-gray-300">Azioni</th>
                         </tr>
                       </thead>
@@ -1735,15 +1732,6 @@ const AdminPanel: React.FC = () => {
                           <tr key={user.id} className="border-t border-gray-700 hover:bg-gray-700">
                             <td className="py-3 px-4">
                               {user.nome} {user.cognome}
-                            </td>
-                            <td className="py-3 px-4 text-gray-300">
-                              {user.email}
-                            </td>
-                            <td className="py-3 px-4 text-gray-300">
-                              {user.telefono || 'N/D'}
-                            </td>
-                            <td className="py-3 px-4 text-gray-300">
-                              {formatDate(user.createdAt)}
                             </td>
                             <td className="py-3 px-4">
                               <button
