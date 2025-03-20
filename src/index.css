@@ -131,3 +131,23 @@ body {
   font-weight: normal;
   font-style: normal;
 }
+
+/* Animazione per i nuovi messaggi nella chat */
+@keyframes messageAppear {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message-item {
+  transition: all 0.3s ease;
+}
+
+.message-new {
+  animation: messageAppear 0.3s ease-out;
+}

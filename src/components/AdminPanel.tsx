@@ -138,6 +138,7 @@ const AdminPanel: React.FC = () => {
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [chatMetadata, setChatMetadata] = useState<ChatMetadata | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   // Aggiungi questa variabile di stato all'inizio del componente con gli altri stati
   const [uploadTask, setUploadTask] = useState<any>(null);
@@ -1149,6 +1150,9 @@ const AdminPanel: React.FC = () => {
         read: false
       };
       
+      // Resetta l'input prima dell'invio per migliorare la reattività
+      setNewMessage('');
+      
       // Aggiunge il messaggio
       await addDoc(chatRef, messageData);
       
@@ -1169,10 +1173,8 @@ const AdminPanel: React.FC = () => {
         });
       });
       
-      // Resetta l'input
-      setNewMessage('');
-      
-      // Ricarica i messaggi
+      // Ricarica i messaggi senza forzare lo scroll
+      // Lo scroll avverrà automaticamente tramite l'effetto di useEffect quando messages cambia
       await fetchUserMessages();
     } catch (error) {
       console.error('Errore nell\'invio del messaggio:', error);
@@ -1263,13 +1265,39 @@ const AdminPanel: React.FC = () => {
     }
   };
 
-  // Aggiungi gli useEffect per la gestione della chat
-  // Scroll automatico ai nuovi messaggi
-  useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+  // Funzione per scorrere in basso nella chat
+  const scrollToBottom = useCallback(() => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTo({
+        top: messagesContainerRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
     }
-  }, [messages]);
+  }, []);
+
+  // Modifichiamo l'effetto per la gestione dei nuovi messaggi e dello scroll
+  useEffect(() => {
+    if (messages.length > 0) {
+      // Prima applicare l'animazione al nuovo messaggio
+      const lastMessage = document.querySelector('.message-item:last-child');
+      if (lastMessage) {
+        lastMessage.classList.add('message-new');
+        setTimeout(() => {
+          lastMessage.classList.remove('message-new');
+        }, 500);
+      }
+      
+      // Poi eseguiamo lo scroll
+      scrollToBottom();
+    }
+  }, [messages, scrollToBottom]);
+
+  // Se c'è un cambiamento nella tab o nell'utente selezionato, scorri in basso
+  useEffect(() => {
+    if (activeTab === 'users' && selectedUser) {
+      scrollToBottom();
+    }
+  }, [activeTab, selectedUser, scrollToBottom]);
 
   // Carica i messaggi e configura il listener quando viene selezionato un utente
   useEffect(() => {
@@ -1284,6 +1312,7 @@ const AdminPanel: React.FC = () => {
         // Verifica se ci sono nuovi messaggi
         if (!snapshot.empty) {
           fetchUserMessages();
+          // Rimuoviamo il setTimeout qui, lo scroll avverrà tramite l'effect sopra
         }
       });
       
@@ -1309,7 +1338,7 @@ const AdminPanel: React.FC = () => {
         metadataUnsubscribe();
       };
     }
-  }, [selectedUser, activeTab, fetchUserMessages]);
+  }, [selectedUser, activeTab, fetchUserMessages, scrollToBottom]);
 
   // Carica i metadati delle chat quando vengono caricati gli utenti
   useEffect(() => {
@@ -1724,7 +1753,7 @@ const AdminPanel: React.FC = () => {
                       <thead>
                         <tr className="bg-gray-700">
                           <th className="py-3 px-4 text-left text-sm font-medium text-gray-300">Nome</th>
-                          <th className="py-3 px-4 text-left text-sm font-medium text-gray-300">Azioni</th>
+                          <th className="py-3 px-4 text-right text-sm font-medium text-gray-300">Azioni</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -1733,7 +1762,7 @@ const AdminPanel: React.FC = () => {
                             <td className="py-3 px-4">
                               {user.nome} {user.cognome}
                             </td>
-                            <td className="py-3 px-4">
+                            <td className="py-3 px-4 text-right">
                               <button
                                 onClick={() => setSelectedUser(user)}
                                 className="px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded-md text-white text-sm"
@@ -2181,7 +2210,7 @@ const AdminPanel: React.FC = () => {
                     
                     <div className="bg-gray-750 rounded-lg h-[400px] flex flex-col">
                       {/* Area messaggi */}
-                      <div className="flex-grow overflow-y-auto p-4">
+                      <div className="flex-grow overflow-y-auto p-4" ref={messagesContainerRef}>
                         {loadingMessages ? (
                           <div className="flex justify-center items-center h-full">
                             <div className="w-6 h-6 border-2 border-gray-500 border-t-white rounded-full animate-spin"></div>
@@ -2197,7 +2226,7 @@ const AdminPanel: React.FC = () => {
                             {messages.map((message) => (
                               <div 
                                 key={message.id} 
-                                className={`flex ${message.sender === 'admin' ? 'justify-end' : 'justify-start'}`}
+                                className={`flex message-item ${message.sender === 'admin' ? 'justify-end' : 'justify-start'}`}
                               >
                                 <div 
                                   className={`max-w-[80%] rounded-lg px-4 py-2 ${

@@ -119,6 +119,7 @@ const UserPanel: React.FC = () => {
   const [newMessage, setNewMessage] = useState('');
   const [loadingMessages, setLoadingMessages] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   // Aggiungi questi stati all'inizio del componente, con gli altri stati
   const [showFullScreenImage, setShowFullScreenImage] = useState<boolean>(false);
@@ -899,9 +900,10 @@ const UserPanel: React.FC = () => {
         });
       });
       
+      // Aggiorna i messaggi
       setMessages(chatMessages);
       
-      // Aggiorna lo stato di lettura dei messaggi
+      // Aggiorna i metadati e marca i messaggi come letti in background
       const unreadMessages = querySnapshot.docs.filter(
         doc => doc.data().sender === 'admin' && !doc.data().read
       );
@@ -936,9 +938,95 @@ const UserPanel: React.FC = () => {
     }
   }, [currentUser, userProfile]);
 
+  // Funzione per scorrere in basso nella chat
+  const scrollToBottom = useCallback(() => {
+    if (messagesContainerRef.current) {
+      const container = messagesContainerRef.current;
+      // Scrolliamo direttamente alla posizione finale senza animazione
+      // per prevenire il comportamento di scroll indesiderato
+      container.scrollTop = container.scrollHeight;
+    }
+  }, []);
+
+  // Modifichiamo l'effetto per la gestione dei nuovi messaggi e dello scroll
+  useEffect(() => {
+    if (messages.length > 0) {
+      const lastMessage = document.querySelector('.message-item:last-child');
+      if (lastMessage) {
+        lastMessage.classList.add('message-new');
+        setTimeout(() => {
+          lastMessage.classList.remove('message-new');
+        }, 500);
+      }
+      
+      // Usiamo un setTimeout con priorità alta per assicurarci che avvenga dopo il rendering
+      setTimeout(() => {
+        scrollToBottom();
+      }, 0);
+    }
+  }, [messages, scrollToBottom]);
+
+  // Effetto per monitorare il cambio di tab e caricare i messaggi
+  useEffect(() => {
+    if (activeTab === 'chat' && currentUser) {
+      // Eseguiamo un caricamento iniziale dei messaggi
+      fetchMessages();
+      
+      // Configura un listener in tempo reale per i messaggi
+      const chatRef = collection(db, `chats/${currentUser.uid}/messages`);
+      const q = query(chatRef, orderBy('timestamp', 'asc'));
+      
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        let hasNewMessages = false;
+        let isFromAdmin = false;
+        
+        snapshot.docChanges().forEach((change) => {
+          if (change.type === 'added') {
+            const data = change.doc.data();
+            hasNewMessages = true;
+            if (data.sender === 'admin') {
+              isFromAdmin = true;
+            }
+          }
+        });
+        
+        // Ricarica solo se ci sono nuovi messaggi dall'admin
+        // I messaggi dell'utente vengono già gestiti con il metodo ottimistico
+        if (hasNewMessages && isFromAdmin) {
+          fetchMessages();
+        }
+      });
+      
+      // Puliamo il listener quando cambiamo tab
+      return () => unsubscribe();
+    }
+  }, [activeTab, currentUser, fetchMessages]);
+
   // Funzione per inviare un messaggio
   const handleSendMessage = async () => {
     if (!newMessage.trim() || !currentUser) return;
+    
+    const messageText = newMessage.trim();
+    
+    // Resetta l'input prima dell'invio per migliorare la reattività
+    setNewMessage('');
+    
+    // Manteniamo uno stato ottimistico aggiungendo subito il messaggio localmente
+    const optimisticMessage: ChatMessage = {
+      id: `temp-${Date.now()}`,
+      text: messageText,
+      timestamp: new Date(),
+      sender: 'user',
+      read: false
+    };
+    
+    // Aggiungiamo il messaggio localmente
+    setMessages(prev => [...prev, optimisticMessage]);
+    
+    // Facciamo lo scroll immediatamente dopo aver aggiunto il messaggio ottimistico
+    setTimeout(() => {
+      scrollToBottom();
+    }, 0);
     
     try {
       // Riferimento alla collezione dei messaggi
@@ -949,7 +1037,7 @@ const UserPanel: React.FC = () => {
       
       // Nuovo messaggio
       const messageData = {
-        text: newMessage.trim(),
+        text: messageText,
         timestamp: Timestamp.now(),
         sender: 'user' as const,
         read: false
@@ -960,13 +1048,13 @@ const UserPanel: React.FC = () => {
       
       // Aggiorna i metadati
       await updateDoc(metadataRef, {
-        lastMessage: newMessage.trim(),
+        lastMessage: messageText,
         lastMessageTimestamp: Timestamp.now(),
         unreadAdmin: increment(1)
       }).catch(() => {
         // Se il documento non esiste, lo creiamo
         setDoc(metadataRef, {
-          lastMessage: newMessage.trim(),
+          lastMessage: messageText,
           lastMessageTimestamp: Timestamp.now(),
           unreadAdmin: 1,
           unreadUser: 0,
@@ -977,43 +1065,54 @@ const UserPanel: React.FC = () => {
         });
       });
       
-      // Resetta l'input
-      setNewMessage('');
+      // Ricarica i messaggi in background senza mostrare il caricamento
+      const reloadMessages = async () => {
+        try {
+          // Riferimento alla collezione di messaggi dell'utente
+          const chatRef = collection(db, `chats/${currentUser.uid}/messages`);
+          const q = query(chatRef, orderBy('timestamp', 'asc'));
+          
+          const querySnapshot = await getDocs(q);
+          
+          const chatMessages: ChatMessage[] = [];
+          querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            chatMessages.push({
+              id: doc.id,
+              text: data.text,
+              timestamp: data.timestamp.toDate(),
+              sender: data.sender,
+              read: data.read
+            });
+          });
+          
+          // Aggiorniamo i messaggi senza influenzare lo scroll
+          setMessages(chatMessages);
+          
+          // Aggiorna i metadati e marca i messaggi come letti in background
+          const unreadMessages = querySnapshot.docs.filter(
+            doc => doc.data().sender === 'admin' && !doc.data().read
+          );
+          
+          // Marca i messaggi come letti
+          const updatePromises = unreadMessages.map(doc => 
+            updateDoc(doc.ref, { read: true })
+          );
+          
+          await Promise.all(updatePromises);
+        } catch (error) {
+          console.error('Errore nel recupero dei messaggi:', error);
+        }
+      };
       
-      // Ricarica i messaggi
-      await fetchMessages();
+      reloadMessages();
+      
     } catch (error) {
       console.error('Errore nell\'invio del messaggio:', error);
+      // In caso di errore, rimuoviamo il messaggio ottimistico
+      setMessages(prev => prev.filter(msg => msg.id !== optimisticMessage.id));
     }
   };
-
-  // Scroll automatico ai nuovi messaggi
-  useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [messages]);
-
-  // Carica i messaggi quando si apre la tab chat
-  useEffect(() => {
-    if (activeTab === 'chat' && currentUser) {
-      fetchMessages();
-      
-      // Configura un listener in tempo reale per i messaggi
-      const chatRef = collection(db, `chats/${currentUser.uid}/messages`);
-      const q = query(chatRef, orderBy('timestamp', 'asc'));
-      
-      const unsubscribe = onSnapshot(q, (snapshot) => {
-        // Verifica se ci sono nuovi messaggi
-        if (!snapshot.empty) {
-          fetchMessages();
-        }
-      });
-      
-      // Pulisci il listener quando si cambia tab
-      return () => unsubscribe();
-    }
-  }, [activeTab, currentUser, fetchMessages]);
 
   // Aggiungi questa funzione con le altre funzioni del componente
   const handleFullScreenImage = (imageUrl: string) => {
@@ -1309,7 +1408,7 @@ const UserPanel: React.FC = () => {
             <h2 className="text-xl font-semibold mb-4">Chat con il Supporto</h2>
             
             {/* Area messaggi */}
-            <div className="flex-grow bg-gray-750 rounded-lg mb-4 overflow-y-auto p-4">
+            <div className="flex-grow bg-gray-750 rounded-lg mb-4 overflow-y-auto p-4" ref={messagesContainerRef}>
               {loadingMessages ? (
                 <div className="flex justify-center items-center h-full">
                   <div className="w-6 h-6 border-2 border-gray-500 border-t-white rounded-full animate-spin"></div>
@@ -1325,7 +1424,7 @@ const UserPanel: React.FC = () => {
                   {messages.map((message) => (
                     <div 
                       key={message.id} 
-                      className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                      className={`flex message-item ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                     >
                       <div 
                         className={`max-w-[80%] rounded-lg px-4 py-2 ${
