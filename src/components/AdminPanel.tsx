@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useAuth } from '../firebase/AuthContext';
 import { db, storage } from '../firebase/config';
-import { collection, addDoc, getDocs, query, orderBy, where, doc, getDoc, deleteDoc, Timestamp, setDoc, updateDoc, increment } from 'firebase/firestore';
+import { collection, addDoc, getDocs, query, orderBy, where, doc, getDoc, deleteDoc, Timestamp, setDoc, updateDoc, increment, limit } from 'firebase/firestore';
 import { ref, getDownloadURL, uploadBytesResumable, deleteObject } from 'firebase/storage';
 import { useNavigate } from 'react-router-dom';
 import { ModelViewerPreventivo } from './ModelViewer';
@@ -95,7 +95,7 @@ const AdminPanel: React.FC = () => {
   // Stati per la gestione dei profili utente
   const [allUsers, setAllUsers] = useState<(UserProfileData & {id: string})[]>([]);
   const [loadingUsers, setLoadingUsers] = useState(true);
-  const [activeTab, setActiveTab] = useState<'files' | 'users'>('files');
+  const [activeTab, setActiveTab] = useState<'files' | 'users' | 'chat'>('files');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [userDetails, setUserDetails] = useState<UserProfileData | null>(null);
@@ -1242,10 +1242,13 @@ const AdminPanel: React.FC = () => {
 
   // Sostituisci questa funzione per gestire correttamente il tipo User
   const handleUserClick = async (userId: string) => {
-    // Trova l'utente selezionato dall'array di utenti
+    // Reset dello stato dei messaggi quando si cambia utente
+    setMessages([]);
+    setLoadingMessages(true);
+    
+    // Trova e imposta l'utente selezionato
     const user = allUsers.find(u => u.id === userId);
     if (user) {
-      // Converti il profilo utente in un oggetto User
       setSelectedUser({
         id: user.id,
         email: user.email,
@@ -1260,7 +1263,7 @@ const AdminPanel: React.FC = () => {
         lastMessageTimestamp: user.lastMessageTimestamp
       });
       
-      // Carica i file dell'utente selezionato
+      // Carica i dettagli dell'utente
       await fetchUserDetails(userId);
     }
   };
@@ -1342,10 +1345,110 @@ const AdminPanel: React.FC = () => {
 
   // Carica i metadati delle chat quando vengono caricati gli utenti
   useEffect(() => {
-    if (allUsers.length > 0 && activeTab === 'users') {
-      fetchChatMetadataForUsers();
+    if (allUsers.length > 0 && activeTab === 'chat') {
+      // Carica i metadati delle chat per tutti gli utenti
+      const loadChatMetadata = async () => {
+        try {
+          const userChatData = await Promise.all(
+            allUsers.map(async (user) => {
+              const metadataRef = doc(db, `chats/${user.id}/metadata/info`);
+              const messagesRef = collection(db, `chats/${user.id}/messages`);
+              const metadataSnap = await getDoc(metadataRef);
+              const messagesSnap = await getDocs(query(messagesRef, orderBy('timestamp', 'desc'), limit(1)));
+              
+              let lastMessage = '';
+              let lastMessageTimestamp = null;
+              
+              if (!messagesSnap.empty) {
+                const lastMessageData = messagesSnap.docs[0].data();
+                lastMessage = lastMessageData.text;
+                lastMessageTimestamp = lastMessageData.timestamp?.toDate();
+              }
+
+              return {
+                userId: user.id,
+                unreadAdmin: metadataSnap.exists() ? metadataSnap.data().unreadAdmin || 0 : 0,
+                lastMessage,
+                lastMessageTimestamp
+              };
+            })
+          );
+
+          // Aggiorna lo stato degli utenti con i dati delle chat
+          setAllUsers(prevUsers => 
+            prevUsers.map(user => {
+              const chatData = userChatData.find(data => data.userId === user.id);
+              return {
+                ...user,
+                unreadMessages: chatData?.unreadAdmin || 0,
+                lastMessage: chatData?.lastMessage || '',
+                lastMessageTimestamp: chatData?.lastMessageTimestamp
+              };
+            })
+          );
+        } catch (error) {
+          console.error('Errore nel caricamento dei metadati delle chat:', error);
+        }
+      };
+
+      loadChatMetadata();
     }
-  }, [allUsers, activeTab, fetchChatMetadataForUsers]);
+  }, [allUsers.length, activeTab]);
+
+  // Modifica l'effetto per la gestione dei messaggi quando si seleziona un utente
+  useEffect(() => {
+    if (selectedUser?.id && activeTab === 'chat') {
+      setLoadingMessages(true);
+      
+      // Riferimenti Firestore
+      const chatRef = collection(db, `chats/${selectedUser.id}/messages`);
+      const metadataRef = doc(db, `chats/${selectedUser.id}/metadata/info`);
+      
+      // Query per i messaggi ordinati per timestamp
+      const q = query(chatRef, orderBy('timestamp', 'asc'));
+      
+      // Listener in tempo reale per i messaggi
+      const unsubscribeMessages = onSnapshot(q, (snapshot) => {
+        const newMessages: ChatMessage[] = [];
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          newMessages.push({
+            id: doc.id,
+            text: data.text,
+            timestamp: data.timestamp.toDate(),
+            sender: data.sender,
+            read: data.read
+          });
+        });
+        setMessages(newMessages);
+        setLoadingMessages(false);
+        
+        // Marca i messaggi non letti come letti
+        snapshot.docs.forEach(async (doc) => {
+          const messageData = doc.data();
+          if (messageData.sender === 'user' && !messageData.read) {
+            await updateDoc(doc.ref, { read: true });
+          }
+        });
+      });
+      
+      // Listener per i metadati della chat
+      const unsubscribeMetadata = onSnapshot(metadataRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const data = snapshot.data();
+          if (data.unreadAdmin > 0) {
+            updateDoc(metadataRef, { unreadAdmin: 0 });
+          }
+        }
+      });
+      
+      // Cleanup dei listener quando si cambia utente o si esce dalla chat
+      return () => {
+        unsubscribeMessages();
+        unsubscribeMetadata();
+      };
+    }
+  }, [selectedUser?.id, activeTab]);
 
   // Aggiungi questa funzione con le altre funzioni di gestione
   const handleCancelUpload = () => {
@@ -1471,8 +1574,9 @@ const AdminPanel: React.FC = () => {
             {uploadError}
           </div>
         )}
-      
-        <div className="flex border-b border-gray-700 mb-6 overflow-x-auto no-scrollbar">
+
+        {/* Tab Navigation */}
+        <div className="flex border-b border-gray-700 mb-6">
           <button
             className={`px-6 py-3 font-medium transition-all duration-200 flex items-center ${
               activeTab === 'files'
@@ -1499,7 +1603,173 @@ const AdminPanel: React.FC = () => {
             </svg>
             Clienti
           </button>
+          <button
+            className={`px-6 py-3 font-medium transition-all duration-200 flex items-center ${
+              activeTab === 'chat'
+                ? 'text-white border-b-2 border-red-500 bg-gray-800/40'
+                : 'text-gray-400 hover:text-white hover:bg-gray-800/20'
+            }`}
+            onClick={() => {
+              setActiveTab('chat');
+              // Reset dello stato quando si cambia tab
+              setSelectedUser(null);
+              setMessages([]);
+            }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+            Chat
+          </button>
         </div>
+
+        {/* Chat Tab Content */}
+        {activeTab === 'chat' && (
+          <div className="p-6 bg-gray-800 rounded-lg">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Lista Clienti */}
+              <div className="bg-gray-750 rounded-lg p-4">
+                <div className="mb-4">
+                  <input
+                    type="text"
+                    placeholder="Cerca cliente..."
+                    className="w-full bg-gray-700 p-3 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                </div>
+                
+                {/* Lista Clienti nella Chat */}
+                <div className="space-y-2 max-h-[calc(100vh-300px)] overflow-y-auto">
+                  {loadingUsers ? (
+                    <div className="text-center py-4 text-gray-400">
+                      Caricamento clienti...
+                    </div>
+                  ) : filteredUsers.length === 0 ? (
+                    <div className="text-center py-4 text-gray-400">
+                      Nessun cliente trovato
+                    </div>
+                  ) : (
+                    filteredUsers.map(user => (
+                      <button
+                        key={user.id}
+                        onClick={() => handleUserClick(user.id)}
+                        className={`w-full p-4 rounded-lg text-left transition-colors ${
+                          selectedUser?.id === user.id 
+                            ? 'bg-red-600 text-white' 
+                            : 'bg-gray-700 hover:bg-gray-600'
+                        }`}
+                      >
+                        <div className="flex justify-between items-center">
+                          <div className="font-medium">{user.nome} {user.cognome}</div>
+                          {user.unreadMessages && user.unreadMessages > 0 && (
+                            <div className="bg-blue-500 text-white px-2 py-0.5 rounded-full text-xs">
+                              {user.unreadMessages}
+                            </div>
+                          )}
+                        </div>
+                        {user.lastMessage && (
+                          <div className="text-sm text-gray-400 truncate mt-1">
+                            {user.lastMessage}
+                          </div>
+                        )}
+                        {user.lastMessageTimestamp && (
+                          <div className="text-xs text-gray-400 mt-1">
+                            {formatDate(user.lastMessageTimestamp)}
+                          </div>
+                        )}
+                      </button>
+                    ))
+                  )}
+                </div>
+              </div>
+
+              {/* Area Chat */}
+              <div className="md:col-span-2 bg-gray-750 rounded-lg flex flex-col h-[calc(100vh-300px)]">
+                {selectedUser ? (
+                  <>
+                    {/* Header Chat */}
+                    <div className="p-4 border-b border-gray-700">
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <h3 className="font-medium">
+                            {userDetails?.nome} {userDetails?.cognome}
+                          </h3>
+                          <p className="text-sm text-gray-400">{userDetails?.email}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Messaggi */}
+                    <div className="flex-1 overflow-y-auto p-4" ref={messagesContainerRef}>
+                      {loadingMessages ? (
+                        <div className="flex justify-center items-center h-full">
+                          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-500"></div>
+                        </div>
+                      ) : messages.length === 0 ? (
+                        <div className="text-center text-gray-400 mt-4">
+                          Nessun messaggio. Inizia la conversazione!
+                        </div>
+                      ) : (
+                        messages.map(message => (
+                          <div
+                            key={message.id}
+                            className={`mb-4 flex ${message.sender === 'admin' ? 'justify-end' : 'justify-start'}`}
+                          >
+                            <div
+                              className={`max-w-[70%] rounded-lg px-4 py-2 ${
+                                message.sender === 'admin'
+                                  ? 'bg-red-600 text-white rounded-br-none'
+                                  : 'bg-gray-700 text-white rounded-bl-none'
+                              }`}
+                            >
+                              <p>{message.text}</p>
+                              <p className="text-xs mt-1 opacity-75">
+                                {formatDate(message.timestamp)}
+                              </p>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+
+                    {/* Input Messaggio */}
+                    <div className="p-4 border-t border-gray-700">
+                      <div className="flex space-x-2">
+                        <input
+                          type="text"
+                          value={newMessage}
+                          onChange={(e) => setNewMessage(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' && !e.shiftKey) {
+                              e.preventDefault();
+                              handleSendMessage();
+                            }
+                          }}
+                          placeholder="Scrivi un messaggio..."
+                          className="flex-1 bg-gray-700 p-3 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none"
+                        />
+                        <button
+                          onClick={handleSendMessage}
+                          disabled={!newMessage.trim()}
+                          className="px-4 bg-red-600 hover:bg-red-700 rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <div className="flex-1 flex items-center justify-center text-gray-400">
+                    Seleziona un cliente per visualizzare la chat
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Files Tab */}
         {activeTab === 'files' && (
@@ -1544,7 +1814,7 @@ const AdminPanel: React.FC = () => {
             </div>
 
             {/* Files List */}
-            <div className="p-6 bg-gray-800 rounded-lg">
+          <div className="p-6 bg-gray-800 rounded-lg">
               {/* Controlli per selezione multipla */}
               <div className="flex justify-between items-center mb-4">
                 <div className="flex items-center">
@@ -1725,14 +1995,14 @@ const AdminPanel: React.FC = () => {
                   />
                 </div>
                 {selectedUser && (
-                  <button
+                    <button
                     onClick={() => setSelectedUser(null)}
                     className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-md transition-colors text-white"
                   >
                     ← Torna alla lista
                   </button>
                 )}
-              </div>
+                        </div>
             </div>
 
             {/* User List */}
@@ -1768,7 +2038,7 @@ const AdminPanel: React.FC = () => {
                                 className="px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded-md text-white text-sm"
                               >
                                 Dettagli
-                              </button>
+                    </button>
                             </td>
                           </tr>
                         ))}
@@ -1808,9 +2078,9 @@ const AdminPanel: React.FC = () => {
                               </button>
                             </>
                           )}
-                        </div>
-                      </div>
-                      
+                </div>
+              </div>
+
                       {!isEditingUser ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div>
@@ -2129,7 +2399,7 @@ const AdminPanel: React.FC = () => {
                               </div>
                               <h3 className="font-medium truncate" title={fileInfo.name}>
                                 {fileInfo.name}
-                              </h3>
+                      </h3>
                               <div className="space-y-1 mt-2">
                                 <p className="text-sm text-gray-400 flex items-center">
                                   <span className="w-24 inline-block font-medium">Utente:</span>
@@ -2143,7 +2413,7 @@ const AdminPanel: React.FC = () => {
                                   <span className="w-24 inline-block font-medium">Data:</span>
                                   <span>{formatDate(fileInfo.uploadedAt)}</span>
                                 </p>
-                              </div>
+                    </div>
                               <div className="mt-3 flex flex-wrap gap-2">
                                 <a
                                   href={fileInfo.url}
@@ -2224,37 +2494,37 @@ const AdminPanel: React.FC = () => {
                         ) : (
                           <div className="space-y-4">
                             {messages.map((message) => (
-                              <div 
-                                key={message.id} 
+                        <div
+                          key={message.id}
                                 className={`flex message-item ${message.sender === 'admin' ? 'justify-end' : 'justify-start'}`}
-                              >
-                                <div 
+                        >
+                          <div
                                   className={`max-w-[80%] rounded-lg px-4 py-2 ${
-                                    message.sender === 'admin' 
+                              message.sender === 'admin'
                                       ? 'bg-blue-600 text-white rounded-tr-none' 
                                       : 'bg-gray-700 text-white rounded-tl-none'
-                                  }`}
-                                >
+                            }`}
+                          >
                                   <div className="text-sm">{message.text}</div>
                                   <div className="text-xs mt-1 opacity-80">
-                                    {formatDate(message.timestamp)}
+                              {formatDate(message.timestamp)}
                                   </div>
-                                </div>
-                              </div>
-                            ))}
-                            <div ref={messagesEndRef} />
                           </div>
+                        </div>
+                      ))}
+                            <div ref={messagesEndRef} />
+                    </div>
                         )}
                       </div>
                       
                       {/* Input messaggio */}
                       <div className="p-3 border-t border-gray-700 bg-gray-750">
                         <div className="flex rounded-lg overflow-hidden shadow-lg ring-1 ring-gray-600 focus-within:ring-red-500 transition-all duration-200">
-                          <input
-                            type="text"
-                            value={newMessage}
-                            onChange={(e) => setNewMessage(e.target.value)}
-                            placeholder="Scrivi un messaggio..."
+                        <input
+                          type="text"
+                          value={newMessage}
+                          onChange={(e) => setNewMessage(e.target.value)}
+                          placeholder="Scrivi un messaggio..."
                             className="flex-grow bg-gray-700 p-3 focus:outline-none text-white"
                             onKeyDown={(e) => {
                               if (e.key === 'Enter' && !e.shiftKey) {
