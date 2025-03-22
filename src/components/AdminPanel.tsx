@@ -150,6 +150,14 @@ const AdminPanel: React.FC = () => {
   const [showFullScreenImage, setShowFullScreenImage] = useState<boolean>(false);
   const [fullScreenImageUrl, setFullScreenImageUrl] = useState<string>('');
 
+  // Aggiungi questi stati all'inizio del componente AdminPanel
+  const [fileToRename, setFileToRename] = useState<FileInfo | null>(null);
+  const [newFileName, setNewFileName] = useState('');
+  const [isRenaming, setIsRenaming] = useState(false);
+
+  const [successMessage, setSuccessMessage] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string>('');
+
   // Verifica se l'utente corrente è un amministratore
   useEffect(() => {
     if (currentUser && ADMIN_EMAILS.includes(currentUser.email || '')) {
@@ -1537,6 +1545,58 @@ const AdminPanel: React.FC = () => {
     setShowFullScreenImage(true);
   };
 
+  // Aggiungi questa funzione per gestire il rename
+  const handleRenameFile = async () => {
+    if (!fileToRename || !newFileName.trim()) return;
+    
+    setIsRenaming(true);
+    
+    try {
+      // Ottieni l'estensione del file originale
+      const originalExtension = fileToRename.name.split('.').pop() || '';
+      // Assicurati che il nuovo nome abbia la stessa estensione
+      const newName = newFileName.endsWith(`.${originalExtension}`) 
+        ? newFileName 
+        : `${newFileName}.${originalExtension}`;
+
+      // Aggiorna il documento in Firestore
+      const fileRef = doc(db, 'files', fileToRename.id);
+      await updateDoc(fileRef, {
+        name: newName,
+        originalName: newName
+      });
+
+      // Aggiorna la lista dei file localmente
+      setAllFiles(prevFiles => 
+        prevFiles.map(file => 
+          file.id === fileToRename.id 
+            ? { ...file, name: newName } 
+            : file
+        )
+      );
+
+      setFileToRename(null);
+      setNewFileName('');
+      setSuccessMessage('File rinominato con successo!');
+      
+      // Nascondi il messaggio di successo dopo 3 secondi
+      setTimeout(() => {
+        setSuccessMessage('');
+      }, 3000);
+
+    } catch (error) {
+      console.error('Errore durante la ridenominazione:', error);
+      setErrorMessage('Errore durante la ridenominazione del file');
+      
+      // Nascondi il messaggio di errore dopo 5 secondi
+      setTimeout(() => {
+        setErrorMessage('');
+      }, 5000);
+    } finally {
+      setIsRenaming(false);
+    }
+  };
+
   if (!isAdmin) {
     return null; // Non mostrare nulla mentre reindirizza
   }
@@ -1961,6 +2021,19 @@ const AdminPanel: React.FC = () => {
                           </button>
                         )}
                         
+                        <button
+                          onClick={() => {
+                            setFileToRename(fileInfo);
+                            setNewFileName(fileInfo.name);
+                          }}
+                          className="px-3 py-1.5 bg-gray-700 hover:bg-gray-600 rounded-md text-white text-sm flex items-center"
+                          title="Rinomina file"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                          </svg>
+                          Rinomina
+                        </button>
                         <button
                           onClick={() => setFileToDelete(fileInfo.id)}
                           className="px-3 py-1.5 bg-red-600 hover:bg-red-700 rounded-md text-white text-sm flex items-center"
@@ -2724,6 +2797,50 @@ const AdminPanel: React.FC = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Modale per rinominare il file */}
+      {fileToRename && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+          <div className="bg-gray-800 rounded-lg w-full max-w-md overflow-hidden">
+            <div className="p-4 border-b border-gray-700">
+              <h3 className="text-xl font-semibold">Rinomina file</h3>
+            </div>
+            <div className="p-6">
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Nuovo nome file
+                </label>
+                <input
+                  type="text"
+                  value={newFileName}
+                  onChange={(e) => setNewFileName(e.target.value)}
+                  className="w-full bg-gray-700 border border-gray-600 rounded-md p-2 focus:outline-none focus:border-red-500"
+                  placeholder="Inserisci il nuovo nome"
+                />
+              </div>
+              <div className="flex justify-end space-x-3">
+                <button 
+                  onClick={() => {
+                    setFileToRename(null);
+                    setNewFileName('');
+                  }}
+                  className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-md transition-colors"
+                  disabled={isRenaming}
+                >
+                  Annulla
+                </button>
+                <button 
+                  onClick={handleRenameFile}
+                  className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-md transition-colors"
+                  disabled={isRenaming || !newFileName.trim()}
+                >
+                  {isRenaming ? 'Rinominando...' : 'Rinomina'}
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}
