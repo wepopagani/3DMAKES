@@ -175,6 +175,38 @@ export const blogPosts = {
       author: 'Thomas Anderson',
       category: 'Resources',
       readTime: '7'
+    },
+    {
+      id: '9',
+      title: 'Smart NFC Corporate Gadgets: The Future of Business Networking',
+      excerpt: 'Discover how NFC technology is transforming traditional corporate merchandising into interactive business tools.',
+      content: `Our innovative line of NFC-enabled corporate gadgets represents a significant evolution in business networking and brand promotion. Each item combines elegant design with smart functionality, creating powerful touchpoints for digital interaction.
+
+      Smart NFC Keychains
+      We've reinvented the traditional corporate keychain by integrating NFC technology. Each keychain becomes a digital touchpoint that can:
+      - Share digital business cards instantly
+      - Direct to company websites or landing pages
+      - Provide quick access to social profiles
+      - Share digital catalogs or promotions
+      The design shown is just a starting point - we customize every aspect according to your preferences.
+
+      Intelligent ID Badges
+      Our NFC badges represent the future of corporate identification. Beyond traditional recognition functions, each badge contains:
+      - Complete professional profile accessible via smartphone
+      - Verifiable credentials and certifications
+      - Immediate professional contact information
+      - Access control system integration
+      The presented model is indicative - we create custom designs tailored to your company's needs.
+
+      Display Solutions
+      Counter displays transform into interactive information points. We design ideal solutions for your needs, customizing dimensions, materials, and style to best showcase your commercial offering.
+
+      Each product in our range represents just a starting point - the real strength lies in complete customization, allowing each gadget to be adapted to your specific needs.`,
+      imageUrl: '/images/blog/nfc-gadgets.png',
+      date: '2024-03-15',
+      author: 'Mark Johnson',
+      category: 'Business Innovation',
+      readTime: '5'
     }
   ],
   it: [
@@ -353,6 +385,38 @@ export const blogPosts = {
       author: 'Tommaso Andrei',
       category: 'Risorse',
       readTime: '7'
+    },
+    {
+      id: '9',
+      title: 'Gadget Aziendali NFC Smart: Il Futuro del Networking Aziendale',
+      excerpt: 'Scopri come la tecnologia NFC sta trasformando il merchandising aziendale tradizionale in strumenti di business interattivi.',
+      content: `La nostra innovativa linea di gadget aziendali con tecnologia NFC rappresenta un'importante evoluzione nel networking aziendale e nella promozione del brand. Ogni articolo combina design elegante e funzionalità smart, creando potenti punti di contatto per l'interazione digitale.
+
+      Smart NFC Keychains
+      We've reinvented the traditional corporate keychain by integrating NFC technology. Each keychain becomes a digital touchpoint that can:
+      - Share digital business cards instantly
+      - Direct to company websites or landing pages
+      - Provide quick access to social profiles
+      - Share digital catalogs or promotions
+      The design shown is just a starting point - we customize every aspect according to your preferences.
+
+      Intelligent ID Badges
+      Our NFC badges represent the future of corporate identification. Beyond traditional recognition functions, each badge contains:
+      - Complete professional profile accessible via smartphone
+      - Verifiable credentials and certifications
+      - Immediate professional contact information
+      - Access control system integration
+      The presented model is indicative - we create custom designs tailored to your company's needs.
+
+      Display Solutions
+      Counter displays transform into interactive information points. We design ideal solutions for your needs, customizing dimensions, materials, and style to best showcase your commercial offering.
+
+      Each product in our range represents just a starting point - the real strength lies in complete customization, allowing each gadget to be adapted to your specific needs.`,
+      imageUrl: '/images/blog/nfc-gadgets.png',
+      date: '2024-03-15',
+      author: 'Marco Bianchi',
+      category: 'Innovazione Aziendale',
+      readTime: '5'
     }
   ]
 };
@@ -440,6 +504,57 @@ The implementation has shown remarkable results, with riders reporting improved 
     },
     {
       id: '3',
+      title: 'Smart NFC Corporate Gadgets',
+      category: 'Business Innovation',
+      description: 'Smart corporate gadgets with integrated NFC technology for modern business networking and digital interaction.',
+      longDescription: `Our innovative line of NFC-enabled corporate gadgets represents a significant evolution in business networking and brand promotion. Each item combines elegant design with smart functionality, creating powerful touchpoints for digital interaction.
+
+      Smart NFC Keychains
+      We've reinvented the traditional corporate keychain by integrating NFC technology. Each keychain becomes a digital touchpoint that can:
+      - Share digital business cards instantly
+      - Direct to company websites or landing pages
+      - Provide quick access to social profiles
+      - Share digital catalogs or promotions
+      The design shown is just a starting point - we customize every aspect according to your preferences.
+
+      Intelligent ID Badges
+      Our NFC badges represent the future of corporate identification. Beyond traditional recognition functions, each badge contains:
+      - Complete professional profile accessible via smartphone
+      - Verifiable credentials and certifications
+      - Immediate professional contact information
+      - Access control system integration
+      The presented model is indicative - we create custom designs tailored to your company's needs.
+
+      Display Solutions
+      Counter displays transform into interactive information points. We design ideal solutions for your needs, customizing dimensions, materials, and style to best showcase your commercial offering.
+
+      Each product in our range represents just a starting point - the real strength lies in complete customization, allowing each gadget to be adapted to your specific needs.`,
+      imageUrl: '/images/projects/nfc-gadgets.png',
+      details: {
+        material: 'PETG, PLA, PETG-CF',
+        printTime: 'Varies by product',
+        quality: '0.16mm layer',
+        size: 'Various sizes'
+      },
+      challenges: [
+        'NFC integration in compact designs',
+        'Ensuring durability for daily use',
+        'Maintaining signal strength through materials',
+        'Creating user-friendly programming interfaces'
+      ],
+      benefits: [
+        'Instant digital information sharing',
+        'Complete customization options',
+        'Professional brand representation',
+        'Integration with existing systems'
+      ],
+      cta: {
+        text: 'Explore Corporate Gadgets',
+        link: '/gadget-aziendali'
+      }
+    },
+    {
+      id: '4',
       title: 'Custom Medical Prosthetics',
       category: 'Medical',
       description: 'Customized prosthetic devices printed with biocompatible materials for individual patient needs.',
@@ -479,7 +594,7 @@ The implementation has shown remarkable results, with riders reporting improved 
       ]
     },
     {
-      id: '4',
+      id: '5',
       title: 'Custom Mechanical Components',
       category: 'Industrial',
       description: 'High-precision mechanical components printed in PETG with reinforced infill for industrial applications.',
@@ -591,6 +706,57 @@ L'implementazione ha mostrato risultati notevoli, con cavalieri che riportano pr
     },
     {
       id: '3',
+      title: 'Gadget Aziendali NFC Smart',
+      category: 'Innovazione Aziendale',
+      description: 'Gadget aziendali smart con tecnologia NFC integrata per il networking aziendale moderno e l\'interazione digitale.',
+      longDescription: `La nostra innovativa linea di gadget aziendali con tecnologia NFC rappresenta un'importante evoluzione nel networking aziendale e nella promozione del brand. Ogni articolo combina design elegante e funzionalità smart, creando potenti punti di contatto per l'interazione digitale.
+
+      Portachiavi NFC Smart
+      Abbiamo reinventato il tradizionale portachiavi aziendale integrando la tecnologia NFC. Ogni portachiavi diventa un punto di contatto digitale che può:
+      - Condividere biglietti da visita digitali istantaneamente
+      - Indirizzare a siti web aziendali o landing page
+      - Fornire accesso rapido ai profili social
+      - Condividere cataloghi digitali o promozioni
+      Il design mostrato è solo un punto di partenza - personalizziamo ogni aspetto secondo le tue preferenze.
+
+      Badge Identificativi Intelligenti
+      I nostri badge NFC rappresentano il futuro dell'identificazione aziendale. Oltre alle funzioni di riconoscimento tradizionali, ogni badge contiene:
+      - Profilo professionale completo accessibile via smartphone
+      - Credenziali e certificazioni verificabili
+      - Informazioni di contatto professionale immediate
+      - Integrazione con sistemi di controllo accessi
+      Il modello presentato è indicativo - creiamo design personalizzati su misura per la tua azienda.
+
+      Soluzioni Espositive
+      Gli espositori da banco si trasformano in punti informativi interattivi. Progettiamo soluzioni ideali per le tue esigenze, personalizzando dimensioni, materiali e stile per valorizzare al meglio la tua offerta commerciale.
+
+      Ogni prodotto della nostra gamma rappresenta solo un punto di partenza - la vera forza sta nella personalizzazione completa, che permette di adattare ogni gadget alle tue esigenze specifiche.`,
+      imageUrl: '/images/projects/nfc-gadgets.png',
+      details: {
+        material: 'PETG, PLA, PETG-CF',
+        printTime: 'Varia per prodotto',
+        quality: 'strato 0.16mm',
+        size: 'Dimensioni varie'
+      },
+      challenges: [
+        'Integrazione NFC in design compatti',
+        'Garanzia di durabilità per uso quotidiano',
+        'Mantenimento della forza del segnale attraverso i materiali',
+        'Creazione di interfacce di programmazione intuitive'
+      ],
+      benefits: [
+        'Condivisione istantanea di informazioni digitali',
+        'Opzioni di personalizzazione complete',
+        'Rappresentazione professionale del brand',
+        'Integrazione con sistemi esistenti'
+      ],
+      cta: {
+        text: 'Esplora i Gadget Aziendali',
+        link: '/gadget-aziendali'
+      }
+    },
+    {
+      id: '4',
       title: 'Protesi Mediche Personalizzate',
       category: 'Medicale',
       description: 'Dispositivi protesici personalizzati stampati con materiali biocompatibili per le esigenze individuali dei pazienti.',
@@ -630,7 +796,7 @@ L'implementazione ha mostrato risultati notevoli, con cavalieri che riportano pr
       ]
     },
     {
-      id: '4',
+      id: '5',
       title: 'Componenti Meccanici Personalizzati',
       category: 'Industriale',
       description: 'Componenti meccanici di alta precisione stampati in PETG con riempimento rinforzato per applicazioni industriali.',

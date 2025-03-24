@@ -14,6 +14,7 @@ export const translations = {
       printTime: "Print Time",
       material: "Material",
       printQuality: "Print Quality",
+      
       printSettings: "Print Settings",
       quantity: "Quantity",
       bulkDiscount: "10% bulk discount applied!",
@@ -248,6 +249,11 @@ export const translations = {
       instructions: "Once you find the model you like, download it and upload it in the next section to realize it"
     },
 
+    horseshoeResearch: {
+      title: "Research on Equine Horseshoeing with TPU Cushions",
+      downloadPdf: "Download PDF",
+      backToProject: "Back to Project",
+    }
   },
 
   it: {
@@ -489,6 +495,12 @@ export const translations = {
       subtitle: "Non sai cosa stampare? Lasciati ispirare dal motore di ricerca e scopri nuovi modelli 3D!",
       instructions: "Una volta trovato il modello che ti piace, scaricalo e caricalo nella sezione successiva per realizzarlo"
     },
+
+    horseshoeResearch: {
+      title: "Ricerca sulla Ferratura Equina con Cuscinetti in TPU",
+      downloadPdf: "Scarica PDF",
+      backToProject: "Torna al Progetto",
+    }
   }
 };
 

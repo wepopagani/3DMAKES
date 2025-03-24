@@ -13,21 +13,21 @@ const GadgetAziendali: React.FC = () => {
     {
       id: 1,
       titolo: "Portachiavi NFC Smart",
-      descrizione: "Portachiavi innovativi con tecnologia NFC integrata. Personalizzabili con il logo aziendale e programmabili per condividere istantaneamente sito web, contatti o biglietto da visita digitale. Disponibili in diverse forme e materiali premium.",
+      descrizione: "Portachiavi innovativi con tecnologia NFC integrata. Il design mostrato è solo un esempio - personalizziamo completamente forma, colori e materiali secondo le tue preferenze. Ogni portachiavi è programmabile per condividere istantaneamente sito web, contatti o biglietto da visita digitale.",
       categoria: "Accessori Smart",
       immagine: immagini[0]
     },
     {
       id: 2,
       titolo: "Badge NFC Intelligenti",
-      descrizione: "Badge identificativi di nuova generazione con chip NFC incorporato. Personalizzabili con logo aziendale, foto, nome e ruolo. Permettono l'accesso rapido al profilo professionale e ai contatti digitali del dipendente.",
+      descrizione: "Badge identificativi di nuova generazione con chip NFC incorporato. Il modello presentato è indicativo - realizziamo il design su misura per la tua azienda, personalizzando layout, materiali e finiture. Ogni badge permette l'accesso rapido al profilo professionale del dipendente.",
       categoria: "Identificazione Smart",
       immagine: immagini[1]
     },
     {
       id: 3,
       titolo: "Espositori da Banco",
-      descrizione: "Espositori da banco e vetrina per prodotti o materiale informativo. Struttura leggera ma robusta, personalizzabile nel design e nei colori per valorizzare la tua offerta commerciale.",
+      descrizione: "Espositori da banco e vetrina per prodotti o materiale informativo. Il modello mostrato è solo dimostrativo - progettiamo la soluzione ideale per le tue esigenze, personalizzando dimensioni, materiali e stile per valorizzare al meglio la tua offerta commerciale.",
       categoria: "Display",
       immagine: immagini[2]
     }
