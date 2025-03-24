@@ -32,7 +32,7 @@ app.post('/api/invia-ordine', async (req, res) => {
     // Invia l'email
     await trasportatore.sendMail({
       from: '"Store Ciotole" <info@3dmakes.ch>',
-      to: "marco@3dmakes.ch", // aggiornato con il tuo indirizzo email
+      to: "wepo.pagani10@gmail.com", // aggiornato con il tuo indirizzo email
       subject: `Nuovo ordine: ${titoloProdotto}`,
       text: `Nuovo ordine personalizzato:
             Prodotto ID: ${prodottoId}

@@ -67,6 +67,16 @@ const CiotolePersonalizzabili: React.FC = () => {
   const [coloreSelezionato, setColoreSelezionato] = useState('');
   const [nomePersonalizzato, setNomePersonalizzato] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  // Nuovi stati per i dati del cliente
+  const [nomeCliente, setNomeCliente] = useState('');
+  const [cognomeCliente, setCognomeCliente] = useState('');
+  const [telefono, setTelefono] = useState('');
+  
+  // Stati per le modali di conferma ed errore
+  const [showConferma, setShowConferma] = useState(false);
+  const [showErrore, setShowErrore] = useState(false);
+  const [messaggioConferma, setMessaggioConferma] = useState('');
+  const [messaggioErrore, setMessaggioErrore] = useState('');
   
   // Colori disponibili
   const coloriDisponibili = [
@@ -83,6 +93,9 @@ const CiotolePersonalizzabili: React.FC = () => {
     setProdottoSelezionato(prodotto);
     setColoreSelezionato(coloriDisponibili[0].codice);
     setNomePersonalizzato('');
+    setNomeCliente('');
+    setCognomeCliente('');
+    setTelefono('');
     setModalAperto(true);
   };
   
@@ -98,6 +111,12 @@ const CiotolePersonalizzabili: React.FC = () => {
       colore: coloreSelezionato,
       nomeColore: coloreSelezionatoObj?.nome || 'Sconosciuto',
       nome: nomePersonalizzato,
+      // Aggiungi i dati del cliente
+      cliente: {
+        nome: nomeCliente,
+        cognome: cognomeCliente,
+        telefono: telefono
+      },
       timestamp: new Date().toISOString()
     };
     
@@ -120,26 +139,39 @@ const CiotolePersonalizzabili: React.FC = () => {
       setIsLoading(false);
       
       if (dati.success) {
-        alert(`Grazie per il tuo ordine! Riceverai presto la tua ${prodottoSelezionato.titolo} personalizzata con il nome "${nomePersonalizzato}" in colore ${coloreSelezionatoObj?.nome}.`);
+        // Invece di alert, mostro la modale di conferma
+        const messaggio = `Grazie per il tuo ordine! Riceverai presto la tua ${prodottoSelezionato.titolo} personalizzata con il nome "${nomePersonalizzato}" in colore ${coloreSelezionatoObj?.nome}.`;
+        setMessaggioConferma(messaggio);
+        setShowConferma(true);
       } else {
-        // In caso di errore, mostra un messaggio e offri il metodo mailto come fallback
-        if (confirm(`Si è verificato un errore nell'invio dell'email. Vuoi utilizzare il tuo client email?`)) {
-          // Crea il corpo dell'email in formato leggibile
-          const corpoEmail = 
-            `Nuovo ordine personalizzato!\n\n` +
-            `Prodotto: ${prodottoSelezionato.titolo}\n` +
-            `Colore: ${coloreSelezionatoObj?.nome}\n` +
-            `Nome personalizzato: ${nomePersonalizzato}\n` +
-            `Data: ${new Date().toLocaleString('it-IT')}\n\n`;
-          
-          window.location.href = `mailto:marco@3dmakes.ch?subject=Nuovo ordine: ${prodottoSelezionato.titolo}&body=${encodeURIComponent(corpoEmail)}`;
-        }
+        // Mostro la modale di errore invece del confirm
+        setMessaggioErrore(`Si è verificato un errore nell'invio dell'email. Vuoi utilizzare il tuo client email?`);
+        setShowErrore(true);
       }
     } catch (errore) {
       console.error("Errore durante l'invio dell'ordine:", errore);
       setIsLoading(false);
-      alert("Si è verificato un errore nell'elaborazione dell'ordine. Riprova più tardi.");
+      
+      // Mostro la modale di errore
+      setMessaggioErrore("Si è verificato un errore nell'elaborazione dell'ordine. Riprova più tardi.");
+      setShowErrore(true);
     }
+  };
+
+  // Funzione per gestire il fallback via email
+  const inviaEmailFallback = () => {
+    const coloreSelezionatoObj = coloriDisponibili.find(c => c.codice === coloreSelezionato);
+    const corpoEmail = 
+      `Nuovo ordine personalizzato!\n\n` +
+      `Prodotto: ${prodottoSelezionato.titolo}\n` +
+      `Colore: ${coloreSelezionatoObj?.nome}\n` +
+      `Nome personalizzato: ${nomePersonalizzato}\n` +
+      `Nome cliente: ${nomeCliente} ${cognomeCliente}\n` +
+      `Telefono: ${telefono}\n` +
+      `Data: ${new Date().toLocaleString('it-IT')}\n\n`;
+      
+    window.location.href = `mailto:wepo.pagani10@gmail.com?subject=Nuovo ordine: ${prodottoSelezionato.titolo}&body=${encodeURIComponent(corpoEmail)}`;
+    setShowErrore(false);
   };
 
   return (
@@ -242,45 +274,100 @@ const CiotolePersonalizzabili: React.FC = () => {
       {/* Modale di personalizzazione */}
       {modalAperto && prodottoSelezionato && (
         <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
-          <div className="bg-gray-800 rounded-lg p-6 max-w-md w-full">
+          <div className="bg-gray-800 rounded-lg p-6 max-w-lg w-full">
             <h2 className="text-2xl font-bold mb-4 text-center">
               Personalizza {prodottoSelezionato.titolo}
             </h2>
             
-            {/* Selettore di colore */}
-            <div className="mb-6">
-              <h3 className="text-lg font-medium mb-2">Scegli il colore:</h3>
-              <div className="grid grid-cols-3 gap-2">
-                {coloriDisponibili.map((colore) => (
-                  <div 
-                    key={colore.codice} 
-                    className={`p-2 rounded-md cursor-pointer border-2 ${coloreSelezionato === colore.codice ? 'border-red-500' : 'border-transparent'}`}
-                    onClick={() => setColoreSelezionato(colore.codice)}
-                  >
-                    <div className="flex items-center">
-                      <div 
-                        className="w-6 h-6 rounded-full mr-2"
-                        style={{ backgroundColor: colore.codice, border: colore.codice === '#FFFFFF' ? '1px solid #ccc' : 'none' }}
-                      ></div>
-                      <span>{colore.nome}</span>
+            <div className="bg-gray-700 rounded-lg p-4 mb-6">
+              <h3 className="text-xl font-semibold mb-3 border-b border-gray-600 pb-2">Dettagli Prodotto</h3>
+              
+              {/* Selettore di colore */}
+              <div className="mb-4">
+                <h4 className="text-lg font-medium mb-2">Scegli il colore:</h4>
+                <div className="grid grid-cols-3 gap-2">
+                  {coloriDisponibili.map((colore) => (
+                    <div 
+                      key={colore.codice} 
+                      className={`p-2 rounded-md cursor-pointer border-2 ${coloreSelezionato === colore.codice ? 'border-red-500' : 'border-transparent'}`}
+                      onClick={() => setColoreSelezionato(colore.codice)}
+                    >
+                      <div className="flex items-center">
+                        <div 
+                          className="w-6 h-6 rounded-full mr-2"
+                          style={{ backgroundColor: colore.codice, border: colore.codice === '#FFFFFF' ? '1px solid #ccc' : 'none' }}
+                        ></div>
+                        <span>{colore.nome}</span>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+              </div>
+              
+              {/* Campo per il nome dell'animale */}
+              <div className="mb-4">
+                <h4 className="text-lg font-medium mb-2">Nome da personalizzare:</h4>
+                <input 
+                  type="text" 
+                  className="w-full px-3 py-2 bg-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 text-white"
+                  placeholder="Inserisci il nome del tuo animale"
+                  value={nomePersonalizzato}
+                  onChange={(e) => setNomePersonalizzato(e.target.value)}
+                  maxLength={20}
+                />
+                <p className="text-sm text-gray-400 mt-1">Massimo 20 caratteri</p>
               </div>
             </div>
             
-            {/* Campo per il nome */}
-            <div className="mb-6">
-              <h3 className="text-lg font-medium mb-2">Nome da personalizzare:</h3>
-              <input 
-                type="text" 
-                className="w-full px-3 py-2 bg-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 text-white"
-                placeholder="Inserisci il nome del tuo animale"
-                value={nomePersonalizzato}
-                onChange={(e) => setNomePersonalizzato(e.target.value)}
-                maxLength={20}
-              />
-              <p className="text-sm text-gray-400 mt-1">Massimo 20 caratteri</p>
+            {/* Sezione dati cliente */}
+            <div className="bg-gray-700 rounded-lg p-4 mb-6">
+              <h3 className="text-xl font-semibold mb-3 border-b border-gray-600 pb-2">I tuoi dati</h3>
+              
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1 text-gray-300">Nome</label>
+                  <input 
+                    type="text" 
+                    className="w-full px-3 py-2 bg-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 text-white"
+                    placeholder="Il tuo nome"
+                    value={nomeCliente}
+                    onChange={(e) => setNomeCliente(e.target.value)}
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1 text-gray-300">Cognome</label>
+                  <input 
+                    type="text" 
+                    className="w-full px-3 py-2 bg-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 text-white"
+                    placeholder="Il tuo cognome"
+                    value={cognomeCliente}
+                    onChange={(e) => setCognomeCliente(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+              
+              <div className="mb-2">
+                <label className="block text-sm font-medium mb-1 text-gray-300">Numero di telefono (WhatsApp)</label>
+                <input 
+                  type="tel" 
+                  className="w-full px-3 py-2 bg-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 text-white"
+                  placeholder="+41 XX XXX XX XX"
+                  value={telefono}
+                  onChange={(e) => setTelefono(e.target.value)}
+                  required
+                />
+              </div>
+              
+              <div className="mt-3 p-3 bg-green-800 bg-opacity-30 rounded-md border border-green-600">
+                <div className="flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <p className="text-sm text-green-300">Ti contatteremo a breve su WhatsApp per confermare l'ordine</p>
+                </div>
+              </div>
             </div>
             
             {/* Pulsanti */}
@@ -294,7 +381,7 @@ const CiotolePersonalizzabili: React.FC = () => {
               <button 
                 className="flex-1 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-md transition-colors"
                 onClick={inviaPersonalizzazione}
-                disabled={!nomePersonalizzato.trim()}
+                disabled={!nomePersonalizzato.trim() || !nomeCliente.trim() || !cognomeCliente.trim() || !telefono.trim()}
               >
                 Conferma ordine
               </button>
@@ -309,6 +396,60 @@ const CiotolePersonalizzabili: React.FC = () => {
           <div className="bg-gray-800 p-6 rounded-lg shadow-xl">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-500 mx-auto"></div>
             <p className="mt-4 text-white text-center">Invio dell'ordine in corso...</p>
+          </div>
+        </div>
+      )}
+      
+      {/* Modale di conferma */}
+      {showConferma && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white text-gray-800 rounded-lg p-6 max-w-md w-full shadow-xl">
+            <div className="flex justify-center mb-4">
+              <div className="h-16 w-16 bg-green-100 rounded-full flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+            </div>
+            <h3 className="text-xl font-bold text-center mb-4">Ordine Confermato</h3>
+            <p className="text-center mb-6">{messaggioConferma}</p>
+            <button 
+              onClick={() => setShowConferma(false)} 
+              className="w-full py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-md transition-colors"
+            >
+              Chiudi
+            </button>
+          </div>
+        </div>
+      )}
+      
+      {/* Modale di errore */}
+      {showErrore && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white text-gray-800 rounded-lg p-6 max-w-md w-full shadow-xl">
+            <div className="flex justify-center mb-4">
+              <div className="h-16 w-16 bg-red-100 rounded-full flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+            </div>
+            <h3 className="text-xl font-bold text-center mb-4">Si è verificato un errore</h3>
+            <p className="text-center mb-6">{messaggioErrore}</p>
+            <div className="flex space-x-3">
+              <button 
+                onClick={() => setShowErrore(false)} 
+                className="flex-1 py-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium rounded-md transition-colors"
+              >
+                Chiudi
+              </button>
+              <button 
+                onClick={inviaEmailFallback} 
+                className="flex-1 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-md transition-colors"
+              >
+                Usa Email
+              </button>
+            </div>
           </div>
         </div>
       )}
