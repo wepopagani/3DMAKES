@@ -138,6 +138,18 @@ export default function ProjectsSection({ language }: ProjectsSectionProps) {
                       </ul>
                     </div>
                   )}
+
+                  {/* Aggiungi qui il bottone CTA */}
+                  {selectedProject.cta && (
+                    <div className="mt-8 mb-6">
+                      <a 
+                        href={selectedProject.cta.link} 
+                        className="inline-block px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-md transition-colors shadow-lg hover:shadow-red-500/20"
+                      >
+                        {selectedProject.cta.text}
+                      </a>
+                    </div>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8 pt-8 border-t border-gray-700">

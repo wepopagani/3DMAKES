@@ -361,6 +361,121 @@ export const projects = {
   en: [
     {
       id: '1',
+      title: 'Customizable Pet Bowls',
+      category: 'Pet Accessories',
+      description: 'Collection of bowls and accessories for pets made with 3D printing in carefully selected materials to ensure safety and practicality.',
+      longDescription: `Our line of customizable pet bowls has been designed with animal well-being in mind. We offer different solutions tailored to the specific needs of dogs and cats.
+
+The slow feeding bowls, made of PETG, are designed to slow down food consumption, preventing digestive problems and obesity. PETG is a material that retains very few bacteria and is extremely durable, ideal for food contact.
+
+For those who prefer traditional stainless steel bowls, we offer supporting structures in PLA (an organic and biodegradable material) in different sizes: two options for dogs (14 cm and 16 cm in diameter) and a standard size for cats. These structures can be personalized with your pet's name and in various colors.
+
+We complete the range with the NFC pendant in PETG-CF, reinforced with carbon fiber to ensure high resistance while maintaining a weight of only 5g. The integrated NFC tag contains all essential information about your pet and your contact details, working even where there is no internet connection.`,
+      imageUrl: '/images/projects/ciotole.png',
+      details: {
+        material: 'PETG, PLA, PETG-CF, Stainless Steel',
+        printTime: 'Varies by model',
+        quality: '0.16mm layer',
+        size: 'Various dimensions'
+      },
+      challenges: [
+        'Creating effective slow feeding designs',
+        'Optimizing durability for daily use',
+        'Customization while maintaining functionality',
+        'Miniaturization of NFC tag for the pendant'
+      ],
+      benefits: [
+        'Materials selected for food safety',
+        'Complete customization (name and colors)',
+        'Specific solutions for different needs',
+        'Identification pendant working everywhere'
+      ],
+      cta: {
+        text: 'Customize your bowl',
+        link: '/ciotole-personalizzabili'
+      }
+    },
+    {
+      id: '2',
+      title: 'TPU Horseshoe Cushions',
+      category: 'Equestrian',
+      description: 'Custom 3D printed TPU cushions for horseshoes, designed to reduce joint stress and improve grip on various terrains.',
+      longDescription: `This innovative project offers a significant improvement in traditional horseshoeing by incorporating custom-designed TPU (Thermoplastic Polyurethane) cushions. These cushions can be installed either before or after the metal horseshoe, providing multiple benefits for the horse's health and performance.
+
+TPU is an ideal material for this application due to its unique properties. It combines the elasticity of rubber with the durability and processability of thermoplastics. The material offers excellent shock absorption capabilities while maintaining resilience over time, even under the significant stress of equine movement.
+
+The cushions serve multiple purposes:
+- Reducing impact stress on joints, tendons, and ligaments
+- Improving traction on various surfaces, including slippery or uneven terrain
+- Dampening vibration on hard surfaces
+- Providing better weight distribution across the hoof
+
+Each cushion is custom-designed based on the specific horse's measurements and needs. Using 3D scanning technology, we create precise models that perfectly match the hoof shape and size. This level of customization allows for addressing individual biomechanical issues that might affect the horse's performance or comfort.
+
+The implementation has shown remarkable results, with riders reporting improved performance, reduced lameness issues, and increased comfort for their horses, especially on challenging terrains or during intensive activities.`,
+      imageUrl: '/images/projects/horseshoe.png',
+      details: {
+        material: 'TPU (Thermoplastic Polyurethane)',
+        printTime: '3-4 hours per set',
+        quality: '0.2mm layer',
+        size: 'Custom to horse specifications'
+      },
+      challenges: [
+        'Creating designs that work with standard horseshoes',
+        'Ensuring durability under extreme stress conditions',
+        'Optimizing flexibility while maintaining structural integrity',
+        'Developing custom solutions for different equestrian disciplines'
+      ],
+      benefits: [
+        'Reduced joint and ligament stress for the horse',
+        'Improved traction on various terrains',
+        'Better shock absorption on hard surfaces',
+        'Extended horseshoe longevity',
+        'Customizable to address specific movement issues'
+      ]
+    },
+    {
+      id: '3',
+      title: 'Custom Medical Prosthetics',
+      category: 'Medical',
+      description: 'Customized prosthetic devices printed with biocompatible materials for individual patient needs.',
+      longDescription: `This groundbreaking project focuses on creating personalized prosthetic solutions using advanced 3D printing technologies. Each prosthetic is custom-designed to match the patient's specific measurements and requirements.
+
+      Key Achievements:
+      - Reduced production time by 60% compared to traditional methods
+      - Decreased costs by 45% while maintaining high quality
+      - Improved patient comfort through precise customization
+      - Integrated lightweight internal structures
+
+      Technical Specifications:
+      - Biocompatible materials certified for medical use
+      - High-precision printing with 50-micron layer height
+      - Optimized support structures for minimal post-processing
+      - Integrated comfort features for extended wear
+
+      The project has successfully helped dozens of patients regain mobility and confidence, while establishing new standards for prosthetic manufacturing.`,
+      imageUrl: '/images/projects/medical.jpg',
+      details: {
+        material: 'Medical-grade PEEK',
+        printTime: '32 hours',
+        quality: '0.05mm layer',
+        size: '25 × 12 × 8 cm'
+      },
+      challenges: [
+        'Meeting medical certification requirements',
+        'Achieving perfect fit for each patient',
+        'Ensuring long-term durability',
+        'Optimizing weight while maintaining strength'
+      ],
+      benefits: [
+        'Fully customized solutions for each patient',
+        'Rapid production and delivery',
+        'Significant cost reduction',
+        'Improved comfort and functionality'
+      ]
+    },
+    {
+      id: '4',
       title: 'Custom Mechanical Components',
       category: 'Industrial',
       description: 'High-precision mechanical components printed in PETG with reinforced infill for industrial applications.',
@@ -388,298 +503,82 @@ The final implementation led to significant cost savings compared to traditional
         'Custom functionality impossible with traditional methods',
         'Immediate availability of spare parts'
       ]
-    },
-    {
-      id: '2',
-      title: 'Architectural Model',
-      category: 'Architecture',
-      description: 'Detailed architectural model printed in white PLA with ultra-fine layer height for maximum detail.',
-      longDescription: `This architectural visualization project required creating a highly detailed scale model of a proposed building complex. The model needed to show both external details and internal spatial arrangements.
-
-We used white PLA material with ultra-fine layer heights to achieve the necessary level of detail. The model was printed in sections to optimize build quality and allow access to internal views.
-
-The final model became a crucial tool for client presentations and helped secure project approval from stakeholders.`,
-      imageUrl: '/images/projects/arch.png',
-      details: {
-        material: 'PLA',
-        printTime: '22 hours',
-        quality: '0.08mm layer',
-        size: '25 × 25 × 15 cm'
-      },
-      challenges: [
-        'Extremely fine detail requirements',
-        'Large size requiring sectional printing',
-        'Need for perfect surface finish',
-        'Complex internal structures'
-      ],
-      benefits: [
-        'Highly accurate design representation',
-        'Cost-effective compared to traditional modeling',
-        'Ability to print multiple iterations',
-        'Easy reproduction if needed'
-      ]
-    },
-    {
-      id: '4',
-      title: 'Custom Robotic Components',
-      category: 'Robotics',
-      description: 'Custom robotic components printed in carbon fiber reinforced PETG for maximum strength.',
-      longDescription: `This robotics project required developing custom components for a specialized automation system. The parts needed exceptional strength while maintaining low weight.
-
-We employed carbon fiber reinforced PETG to achieve the optimal strength-to-weight ratio. The design incorporated complex internal structures to maximize rigidity while minimizing material use.
-
-The final components exceeded performance expectations and are now in active use in the automation system.`,
-      imageUrl: '/images/projects/rob.png',
-      details: {
-        material: 'PETG-CF',
-        printTime: '16 hours',
-        quality: '0.15mm layer',
-        size: '18 × 12 × 8 cm'
-      },
-      challenges: [
-        'High strength requirements',
-        'Complex geometric features',
-        'Weight optimization needs',
-        'Integration with electronics'
-      ],
-      benefits: [
-        'Superior strength-to-weight ratio',
-        'Custom design optimization',
-        'Rapid production capability',
-        'Cost-effective solution'
-      ]
-    },
-    {
-      id: '5',
-      title: 'Automotive Cooling System',
-      category: 'Automotive',
-      description: 'Complex cooling system components with integrated channels printed in high-performance nylon.',
-      longDescription: `This automotive project focused on creating an optimized cooling system for a high-performance racing engine. The design required intricate internal channels that would be impossible to manufacture using traditional methods.
-
-Using high-performance nylon with excellent thermal properties, we created a complex cooling system that integrates multiple functions into a single part. The design features conformal cooling channels that follow the exact contour of the engine block.
-
-The final component achieved a 40% improvement in cooling efficiency while reducing the total weight by 25% compared to the traditional assembly.`,
-      imageUrl: '/images/projects/motore.png',
-      details: {
-        material: 'PA12-CF',
-        printTime: '32 hours',
-        quality: '0.12mm layer',
-        size: '28 × 15 × 12 cm'
-      },
-      challenges: [
-        'Complex internal channel design',
-        'High temperature resistance requirements',
-        'Pressure testing requirements',
-        'Weight optimization while maintaining strength'
-      ],
-      benefits: [
-        '40% improved cooling efficiency',
-        '25% weight reduction',
-        'Integration of multiple components into one part',
-        'Enhanced thermal performance'
-      ]
-    },
-    {
-      id: '3',
-      title: 'Custom Medical Prosthetics',
-      category: 'Medical',
-      description: 'Customized prosthetic devices printed with biocompatible materials for individual patient needs.',
-      longDescription: `This groundbreaking project focuses on creating personalized prosthetic solutions using advanced 3D printing technologies. Each prosthetic is custom-designed to match the patient's specific measurements and requirements.
-
-      Key Achievements:
-      - Reduced production time by 60% compared to traditional methods
-      - Decreased costs by 45% while maintaining high quality
-      - Improved patient comfort through precise customization
-      - Integrated lightweight internal structures
-
-      Technical Specifications:
-      - Biocompatible materials certified for medical use
-      - High-precision printing with 50-micron layer height
-      - Optimized support structures for minimal post-processing
-      - Integrated comfort features for extended wear
-    
-
-      The project has successfully helped dozens of patients regain mobility and confidence, while establishing new standards for prosthetic manufacturing.`,
-      imageUrl: '/images/projects/medical.jpg',
-      details: {
-        material: 'Medical-grade PEEK',
-        printTime: '32 hours',
-        quality: '0.05mm layer',
-        size: '25 × 12 × 8 cm'
-      },
-      challenges: [
-        'Meeting medical certification requirements',
-        'Achieving perfect fit for each patient',
-        'Ensuring long-term durability',
-        'Optimizing weight while maintaining strength'
-      ],
-      benefits: [
-        'Fully customized solutions for each patient',
-        'Rapid production and delivery',
-        'Significant cost reduction',
-        'Improved comfort and functionality'
-      ]
-    },
-    {
-      id: '4',
-      title: 'Architectural Scale Models',
-      category: 'Architecture',
-      description: 'High-detail architectural models for urban planning and client presentations.',
-      longDescription: `This innovative project revolutionizes architectural visualization through advanced 3D printing techniques. We create highly detailed scale models of buildings and urban developments that help architects and developers better communicate their vision.
-
-      Project Highlights:
-      - Ultra-high detail reproduction of architectural features
-      - Modular design for easy transport and assembly
-      - Integration of lighting systems
-      - Custom material finishes for realistic appearance
-
-      Technical Details:
-      - Multi-material printing capabilities
-      - Seamless assembly of large-scale models
-      - Integrated mounting solutions
-      - Weather-resistant coatings for outdoor displays
-
-      The project has been successfully implemented for several major urban development presentations, helping secure project approvals and client buy-in.`,
-      imageUrl: '/images/projects/architecture.jpg',
-      details: {
-        material: 'PLA & PETG',
-        printTime: '45 hours',
-        quality: '0.1mm layer',
-        size: '60 × 60 × 40 cm'
-      },
-      challenges: [
-        'Maintaining precise scale accuracy',
-        'Creating seamless multi-part assemblies',
-        'Achieving realistic surface finishes',
-        'Managing complex geometric details'
-      ],
-      benefits: [
-        'Enhanced project visualization',
-        'Improved stakeholder communication',
-        'Rapid design iteration capability',
-        'Cost-effective compared to traditional methods'
-      ]
     }
   ],
   it: [
     {
       id: '1',
-      title: 'Componenti Meccanici Personalizzati',
-      category: 'Industriale',
-      description: 'Componenti meccanici di alta precisione stampati in PETG con riempimento rinforzato per applicazioni industriali.',
-      longDescription: `Questo progetto ha coinvolto la creazione di componenti meccanici personalizzati per un sistema di automazione industriale. Il cliente necessitava di parti specializzate non disponibili sul mercato e richiedeva tempi di consegna rapidi.
+      title: 'Ciotole Personalizzabili',
+      category: 'Accessori per Animali',
+      description: 'Collezione di ciotole e accessori per animali domestici realizzati con stampa 3D in materiali selezionati per garantire sicurezza e praticità.',
+      longDescription: `La nostra linea di ciotole personalizzabili è stata progettata pensando al benessere degli animali domestici. Offriamo diverse soluzioni adatte alle esigenze specifiche di cani e gatti.
 
-I componenti sono stati progettati con tolleranze specifiche e proprietà meccaniche per resistere all'uso industriale. Abbiamo utilizzato materiale PETG con pattern di riempimento rinforzati per garantire la massima durabilità mantenendo tempi di stampa ragionevoli.
+Le ciotole slow feeding, realizzate in PETG, sono pensate per rallentare l'assunzione di cibo, prevenendo problemi digestivi e obesità. Il PETG è un materiale che trattiene pochissimi batteri ed è estremamente resistente, ideale per il contatto con gli alimenti.
 
-L'implementazione finale ha portato a significativi risparmi sui costi rispetto ai metodi di produzione tradizionali, soddisfacendo tutti i requisiti funzionali.`,
-      imageUrl: '/images/projects/comp.png',
+Per chi preferisce le classiche ciotole in acciaio inox, offriamo strutture di supporto in PLA (materiale organico e biodegradabile) in diverse dimensioni: due misure per cani (14 cm e 16 cm di diametro) e una misura standard per gatti. Queste strutture possono essere personalizzate con il nome del tuo animale e in diversi colori.
+
+Completiamo la gamma con il ciondolo NFC in PETG-CF, rinforzato in fibra di carbonio per garantire elevata resistenza pur mantenendo un peso di soli 5g. Il tag NFC integrato contiene tutte le informazioni essenziali del tuo animale e i tuoi dati di contatto, funzionando anche dove non c'è connessione a internet.`,
+      imageUrl: '/images/projects/ciotole.png',
       details: {
-        material: 'PETG',
-        printTime: '14 ore',
-        quality: '0.1mm layer',
-        size: '15 × 8 × 5 cm'
+        material: 'PETG, PLA, PETG-CF, Acciaio Inox',
+        printTime: 'Variabile per modello',
+        quality: '0.16mm layer',
+        size: 'Varie dimensioni'
       },
       challenges: [
-        'Geometria complessa che richiede tolleranze precise',
-        'Elevati requisiti di resistenza per uso industriale',
-        'Necessità di resistenza al calore fino a 70°C',
-        'Integrazione con sistemi meccanici esistenti'
+        'Creazione di design slow feeding efficaci',
+        'Ottimizzazione della resistenza per uso quotidiano',
+        'Personalizzazione mantenendo la funzionalità',
+        'Miniaturizzazione del tag NFC per il ciondolo'
       ],
       benefits: [
-        'Riduzione dei costi del 60% rispetto alla produzione tradizionale',
-        'Capacità di iterazione rapida per ottimizzazione del design',
-        'Funzionalità personalizzate impossibili con metodi tradizionali',
-        'Disponibilità immediata di parti di ricambio'
-      ]
+        'Materiali selezionati per uso alimentare e sicurezza',
+        'Personalizzazione completa (nome e colori)',
+        'Soluzioni specifiche per esigenze diverse',
+        'Ciondolo di identificazione funzionante ovunque'
+      ],
+      cta: {
+        text: 'Personalizza la tua ciotola',
+        link: '/ciotole-personalizzabili'
+      }
     },
     {
       id: '2',
-      title: 'Modello Architettonico',
-      category: 'Architettura',
-      description: 'Modello architettonico dettagliato stampato in PLA bianco con altezza layer ultra-fine per il massimo dettaglio.',
-      longDescription: `Questo progetto di visualizzazione architettonica richiedeva la creazione di un modello in scala altamente dettagliato di un complesso edilizio proposto. Il modello doveva mostrare sia i dettagli esterni che le disposizioni spaziali interne.
+      title: 'Cuscinetti in TPU per Ferrature Equine',
+      category: 'Equitazione',
+      description: 'Cuscinetti in TPU stampati in 3D su misura per ferrature dei cavalli, progettati per ridurre lo stress articolare e migliorare l\'aderenza su vari terreni.',
+      longDescription: `Questo progetto innovativo offre un miglioramento significativo nella tradizionale ferratura dei cavalli incorporando cuscinetti in TPU (Poliuretano Termoplastico) progettati su misura. Questi cuscinetti possono essere installati sia prima che dopo il ferro di cavallo metallico, fornendo molteplici benefici per la salute e le prestazioni del cavallo.
 
-Abbiamo utilizzato materiale PLA bianco con altezze layer ultra-fini per raggiungere il livello di dettaglio necessario. Il modello è stato stampato in sezioni per ottimizzare la qualità di costruzione e consentire l'accesso alla visione interna.
+Il TPU è un materiale ideale per questa applicazione grazie alle sue proprietà uniche. Combina l'elasticità della gomma con la durabilità e la lavorabilità dei termoplastici. Il materiale offre eccellenti capacità di assorbimento degli urti mantenendo la resilienza nel tempo, anche sotto lo stress significativo del movimento equino.
 
-Il modello finale è diventato uno strumento cruciale per le presentazioni ai clienti e ha contribuito ad ottenere l'approvazione del progetto dagli stakeholder.`,
-      imageUrl: '/images/projects/arch.png',
+I cuscinetti servono a molteplici scopi:
+- Riduzione dello stress da impatto su articolazioni, tendini e legamenti
+- Miglioramento della trazione su varie superfici, compreso il terreno scivoloso o irregolare
+- Attenuazione delle vibrazioni su superfici dure
+- Migliore distribuzione del peso su tutto lo zoccolo
+
+Ogni cuscinetto è progettato su misura in base alle specifiche misurazioni e necessità del cavallo. Utilizzando la tecnologia di scansione 3D, creiamo modelli precisi che si adattano perfettamente alla forma e alle dimensioni dello zoccolo. Questo livello di personalizzazione permette di affrontare problemi biomeccanici individuali che potrebbero influire sulle prestazioni o sul comfort del cavallo.
+
+L'implementazione ha mostrato risultati notevoli, con cavalieri che riportano prestazioni migliorate, riduzione dei problemi di zoppia e maggiore comfort per i loro cavalli, specialmente su terreni difficili o durante attività intensive.`,
+      imageUrl: '/images/projects/horseshoe.png',
       details: {
-        material: 'PLA',
-        printTime: '22 ore',
-        quality: '0.08mm layer',
-        size: '25 × 25 × 15 cm'
+        material: 'TPU (Poliuretano Termoplastico)',
+        printTime: '3-4 ore per set',
+        quality: 'strato 0.2mm',
+        size: 'Personalizzato secondo le specifiche del cavallo'
       },
       challenges: [
-        'Requisiti di dettaglio estremamente fini',
-        'Grandi dimensioni che richiedono stampa in sezioni',
-        'Necessità di finitura superficiale perfetta',
-        'Strutture interne complesse'
+        'Creazione di design compatibili con ferri standard',
+        'Garantire durabilità in condizioni di stress estremo',
+        'Ottimizzare la flessibilità mantenendo l\'integrità strutturale',
+        'Sviluppare soluzioni personalizzate per diverse discipline equestri'
       ],
       benefits: [
-        'Rappresentazione altamente accurata del design',
-        'Conveniente rispetto alla modellazione tradizionale',
-        'Possibilità di stampare multiple iterazioni',
-        'Facile riproduzione se necessario'
-      ]
-    },
-    {
-      id: '4',
-      title: 'Componenti Robotici Personalizzati',
-      category: 'Robotica',
-      description: 'Componenti robotici personalizzati stampati in PETG rinforzato con fibra di carbonio per massima resistenza.',
-      longDescription: `Questo progetto robotico richiedeva lo sviluppo di componenti personalizzati per un sistema di automazione specializzato. Le parti necessitavano di resistenza eccezionale mantenendo un peso ridotto.
-
-Abbiamo impiegato PETG rinforzato con fibra di carbonio per ottenere il rapporto ottimale resistenza-peso. Il design ha incorporato strutture interne complesse per massimizzare la rigidità minimizzando l'uso di materiale.
-
-I componenti finali hanno superato le aspettative di prestazione e sono ora in uso attivo nel sistema di automazione.`,
-      imageUrl: '/images/projects/rob.png',
-      details: {
-        material: 'PETG-CF',
-        printTime: '16 ore',
-        quality: '0.15mm layer',
-        size: '18 × 12 × 8 cm'
-      },
-      challenges: [
-        'Requisiti di alta resistenza',
-        'Caratteristiche geometriche complesse',
-        'Necessità di ottimizzazione del peso',
-        'Integrazione con componenti elettronici'
-      ],
-      benefits: [
-        'Superiore rapporto resistenza-peso',
-        'Ottimizzazione personalizzata del design',
-        'Capacità di produzione rapida',
-        'Soluzione conveniente'
-      ]
-    },
-    {
-      id: '5',
-      title: 'Sistema di Raffreddamento Automotive',
-      category: 'Automotive',
-      description: 'Componenti complessi del sistema di raffreddamento con canali integrati stampati in nylon ad alte prestazioni.',
-      longDescription: `Questo progetto automotive si è concentrato sulla creazione di un sistema di raffreddamento ottimizzato per un motore da corsa ad alte prestazioni. Il design richiedeva canali interni intricati che sarebbero stati impossibili da produrre con metodi tradizionali.
-
-Utilizzando nylon ad alte prestazioni con eccellenti proprietà termiche, abbiamo creato un sistema di raffreddamento complesso che integra multiple funzioni in un singolo pezzo. Il design presenta canali di raffreddamento conformi che seguono l'esatto profilo del blocco motore.
-
-Il componente finale ha raggiunto un miglioramento del 40% nell'efficienza di raffreddamento riducendo al contempo il peso totale del 25% rispetto all'assemblaggio tradizionale.`,
-      imageUrl: '/images/projects/motore.png',
-      details: {
-        material: 'PA12-CF',
-        printTime: '32 ore',
-        quality: '0.12mm layer',
-        size: '28 × 15 × 12 cm'
-      },
-      challenges: [
-        'Design complesso dei canali interni',
-        'Requisiti di resistenza alle alte temperature',
-        'Requisiti di test di pressione',
-        'Ottimizzazione del peso mantenendo la resistenza'
-      ],
-      benefits: [
-        'Efficienza di raffreddamento migliorata del 40%',
-        'Riduzione del peso del 25%',
-        'Integrazione di più componenti in uno',
-        'Prestazioni termiche migliorate'
+        'Riduzione dello stress su articolazioni e legamenti del cavallo',
+        'Miglioramento dell\'aderenza su vari terreni',
+        'Migliore assorbimento degli urti su superfici dure',
+        'Maggiore longevità della ferratura',
+        'Personalizzabile per risolvere problemi specifici di movimento'
       ]
     },
     {
@@ -724,42 +623,32 @@ Il componente finale ha raggiunto un miglioramento del 40% nell'efficienza di ra
     },
     {
       id: '4',
-      title: 'Modelli Architettonici in Scala',
-      category: 'Architettura',
-      description: 'Modelli architettonici ad alta definizione per la pianificazione urbana e presentazioni ai clienti.',
-      longDescription: `Questo progetto innovativo rivoluziona la visualizzazione architettonica attraverso tecniche di stampa 3D avanzate. Creiamo modelli in scala altamente dettagliati di edifici e sviluppi urbani che aiutano architetti e sviluppatori a comunicare meglio la loro visione.
+      title: 'Componenti Meccanici Personalizzati',
+      category: 'Industriale',
+      description: 'Componenti meccanici di alta precisione stampati in PETG con riempimento rinforzato per applicazioni industriali.',
+      longDescription: `Questo progetto ha coinvolto la creazione di componenti meccanici personalizzati per un sistema di automazione industriale. Il cliente necessitava di parti specializzate non disponibili sul mercato e richiedeva tempi di consegna rapidi.
 
-      Punti Salienti del Progetto:
-      - Riproduzione ultra-dettagliata di caratteristiche architettoniche
-      - Design modulare per facile trasporto e assemblaggio
-      - Integrazione di sistemi di illuminazione
-      - Finiture materiali personalizzate per aspetto realistico
+I componenti sono stati progettati con tolleranze specifiche e proprietà meccaniche per resistere all'uso industriale. Abbiamo utilizzato materiale PETG con pattern di riempimento rinforzati per garantire la massima durabilità mantenendo tempi di stampa ragionevoli.
 
-      Dettagli Tecnici:
-      - Capacità di stampa multi-materiale
-      - Assemblaggio perfetto di modelli su larga scala
-      - Soluzioni di montaggio integrate
-      - Rivestimenti resistenti alle intemperie per esposizioni all'aperto
-
-      Il progetto è stato implementato con successo per diverse presentazioni di sviluppo urbano importante, contribuendo a ottenere approvazioni di progetto e consenso dei clienti.`,
-      imageUrl: '/images/projects/architecture.jpg',
+L'implementazione finale ha portato a significativi risparmi sui costi rispetto ai metodi di produzione tradizionali, soddisfacendo tutti i requisiti funzionali.`,
+      imageUrl: '/images/projects/comp.png',
       details: {
-        material: 'PLA e PETG',
-        printTime: '45 ore',
-        quality: 'strato 0.1mm',
-        size: '60 × 60 × 40 cm'
+        material: 'PETG',
+        printTime: '14 ore',
+        quality: '0.1mm layer',
+        size: '15 × 8 × 5 cm'
       },
       challenges: [
-        'Mantenere precisione della scala',
-        'Creare assemblaggi multiparte perfetti',
-        'Ottenere finiture superficiali realistiche',
-        'Gestire dettagli geometrici complessi'
+        'Geometria complessa che richiede tolleranze precise',
+        'Elevati requisiti di resistenza per uso industriale',
+        'Necessità di resistenza al calore fino a 70°C',
+        'Integrazione con sistemi meccanici esistenti'
       ],
       benefits: [
-        'Visualizzazione migliorata del progetto',
-        'Migliore comunicazione con gli stakeholder',
-        'Capacità di iterazione rapida del design',
-        'Conveniente rispetto ai metodi tradizionali'
+        'Riduzione dei costi del 60% rispetto alla produzione tradizionale',
+        'Capacità di iterazione rapida per ottimizzazione del design',
+        'Funzionalità personalizzate impossibili con metodi tradizionali',
+        'Disponibilità immediata di parti di ricambio'
       ]
     }
   ]
