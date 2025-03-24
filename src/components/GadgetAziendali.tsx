@@ -4,24 +4,24 @@ import { Link } from 'react-router-dom';
 const GadgetAziendali: React.FC = () => {
   // Immagini di esempio (sostituite con URL reali in produzione)
   const immagini = [
-    "https://example.com/portachiavi.jpg",
-    "https://example.com/badge.jpg",
-    "https://example.com/espositori.jpg",
+    "/images/gadget/badge.png",
+    "/images/gadget/portachiavi.png",
+    "/images/gadget/espositori.png",
   ];
 
   const prodotti = [
     {
       id: 1,
-      titolo: "Portachiavi Aziendali",
-      descrizione: "Portachiavi personalizzati con il logo della tua azienda, disponibili in diverse forme e colori. Realizzati in materiale resistente e durevole per rappresentare al meglio il tuo brand.",
-      categoria: "Accessori",
+      titolo: "Portachiavi NFC Smart",
+      descrizione: "Portachiavi innovativi con tecnologia NFC integrata. Personalizzabili con il logo aziendale e programmabili per condividere istantaneamente sito web, contatti o biglietto da visita digitale. Disponibili in diverse forme e materiali premium.",
+      categoria: "Accessori Smart",
       immagine: immagini[0]
     },
     {
       id: 2,
-      titolo: "Badge e Targhette",
-      descrizione: "Badge identificativi e targhette nominative per il personale, personalizzabili con logo aziendale, nome e ruolo. Design moderno con finiture professionali per dare un'immagine curata.",
-      categoria: "Identificazione",
+      titolo: "Badge NFC Intelligenti",
+      descrizione: "Badge identificativi di nuova generazione con chip NFC incorporato. Personalizzabili con logo aziendale, foto, nome e ruolo. Permettono l'accesso rapido al profilo professionale e ai contatti digitali del dipendente.",
+      categoria: "Identificazione Smart",
       immagine: immagini[1]
     },
     {
