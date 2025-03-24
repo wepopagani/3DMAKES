@@ -42,6 +42,18 @@ const GadgetAziendali: React.FC = () => {
     { nome: "Decorazioni da Scrivania", descrizione: "Per un tocco personale all'ambiente di lavoro" }
   ];
 
+  const handleContactClick = () => {
+    // Naviga prima alla home
+    window.location.href = '/';
+    // Aspetta che la pagina sia caricata e poi scrolla in fondo
+    setTimeout(() => {
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: 'smooth'
+      });
+    }, 100);
+  };
+
   return (
     <div className="min-h-screen bg-gray-900 text-white pt-20 pb-12">
       <div className="container mx-auto px-4">
@@ -54,7 +66,7 @@ const GadgetAziendali: React.FC = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {prodotti.map((prodotto) => (
-            <div key={prodotto.id} className="bg-gray-800 rounded-lg overflow-hidden shadow-xl">
+            <div key={prodotto.id} className="bg-gray-800 rounded-lg overflow-hidden shadow-xl flex flex-col">
               <div className="h-64 bg-gray-700 flex items-center justify-center">
                 <img 
                   src={prodotto.immagine} 
@@ -66,14 +78,17 @@ const GadgetAziendali: React.FC = () => {
                   }}
                 />
               </div>
-              <div className="p-6">
+              <div className="p-6 flex flex-col flex-grow">
                 <h2 className="text-xl font-semibold mb-2">{prodotto.titolo}</h2>
                 <div className="mb-3">
                   <span className="px-3 py-1 bg-blue-600 rounded-full text-sm">{prodotto.categoria}</span>
                 </div>
-                <p className="text-gray-300 mb-4">{prodotto.descrizione}</p>
-                <button className="w-full py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-md transition-colors">
-                  Richiedi preventivo
+                <p className="text-gray-300 mb-4 flex-grow">{prodotto.descrizione}</p>
+                <button 
+                  onClick={handleContactClick}
+                  className="w-full py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-md transition-colors text-center mt-auto"
+                >
+                  Contattaci per una proposta personalizzata
                 </button>
               </div>
             </div>
