@@ -18,4 +18,17 @@ export default defineConfig({
   define: {
     'process.env': process.env,
   },
+  assetsInclude: ['**/*.pdf'],
+  build: {
+    rollupOptions: {
+      output: {
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name.endsWith('.pdf')) {
+            return 'documents/[name][extname]';
+          }
+          return 'assets/[name]-[hash][extname]';
+        },
+      },
+    },
+  },
 });
