@@ -432,7 +432,11 @@ The implementation has shown remarkable results, with riders reporting improved 
         'Better shock absorption on hard surfaces',
         'Extended horseshoe longevity',
         'Customizable to address specific movement issues'
-      ]
+      ],
+      cta: {
+        text: 'Leggi la ricerca completa',
+        link: '/ricerca-ferratura-tpu'
+      }
     },
     {
       id: '3',
@@ -579,7 +583,11 @@ L'implementazione ha mostrato risultati notevoli, con cavalieri che riportano pr
         'Migliore assorbimento degli urti su superfici dure',
         'Maggiore longevità della ferratura',
         'Personalizzabile per risolvere problemi specifici di movimento'
-      ]
+      ],
+      cta: {
+        text: 'Leggi la ricerca completa',
+        link: '/ricerca-ferratura-tpu'
+      }
     },
     {
       id: '3',
