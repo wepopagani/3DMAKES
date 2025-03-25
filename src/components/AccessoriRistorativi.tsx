@@ -4,34 +4,44 @@ import { Link } from 'react-router-dom';
 const AccessoriRistorativi: React.FC = () => {
   // Immagini di esempio (sostituite con URL reali in produzione)
   const immagini = [
-    "https://example.com/qr-menu-cubo.jpg",
-    "https://example.com/sottobicchieri.jpg",
-    "https://example.com/portaposate.jpg",
+    "/images/accessori/cubo.png",
+    "/images/accessori/Sottobicchiere.png",
+    "/images/accessori/portaborse.png",
   ];
 
   const prodotti = [
     {
       id: 1,
       titolo: "Cubo QR Menu & WiFi",
-      descrizione: "Elegante cubo da tavolo stampato in 3D con QR code personalizzati per il menu digitale e l'accesso rapido al WiFi. Realizzato in materiale eco-compatibile, resistente a liquidi e facile da pulire.",
+      descrizione: "Cubo elegante da tavolo 5x5x5cm stampato in 3D. Due facce verticali personalizzabili con il tuo logo, due facce con QR code per menu digitale e WiFi con relative indicazioni. Disponibile in vari colori e finiture. Opzione per integrazione tag NFC. Materiale eco-compatibile, resistente a liquidi e facile da pulire.",
       categoria: "Digitale",
       immagine: immagini[0]
     },
     {
       id: 2,
       titolo: "Set Sottobicchieri Personalizzati",
-      descrizione: "Set di sottobicchieri eleganti e funzionali, personalizzabili con il logo del tuo locale. Disponibili in diversi colori e finiture, con possibilità di forme geometriche uniche per distinguere il tuo locale.",
+      descrizione: "Sottobicchieri professionali diametro 9cm in PETG-CF, materiale ultra resistente agli urti e alle alte temperature. Personalizzabili con il logo del tuo locale, disponibili in diverse colorazioni. La finitura in fibra di carbonio garantisce un'eleganza senza tempo e una durabilità eccezionale.",
       categoria: "Tavola",
       immagine: immagini[1]
     },
     {
       id: 3,
-      titolo: "Portaposate Design",
-      descrizione: "Innovativo portaposate da tavolo con design moderno ed ergonomico. Personalizzabile nei colori e nelle finiture, aggiunge stile e organizzazione al tavolo. Facile da pulire e impilabile per risparmiare spazio.",
-      categoria: "Organizzazione",
+      titolo: "Poggia Borse Design",
+      descrizione: "Elegante poggia borse da tavolo, progettato per tenere le borse dei clienti sollevate da terra in modo sicuro e igienico. Personalizzabile con il logo del tuo locale, disponibile in diverse finiture e colori per abbinarsi perfettamente al tuo arredamento.",
+      categoria: "Accessori",
       immagine: immagini[2]
     }
   ];
+
+  const scrollToBottom = () => {
+    // Piccolo timeout per assicurarsi che lo scroll avvenga dopo il cambio pagina
+    setTimeout(() => {
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: 'smooth'
+      });
+    }, 100);
+  };
 
   return (
     <div className="min-h-screen bg-gray-900 text-white pt-20 pb-12">
@@ -45,7 +55,7 @@ const AccessoriRistorativi: React.FC = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {prodotti.map((prodotto) => (
-            <div key={prodotto.id} className="bg-gray-800 rounded-lg overflow-hidden shadow-xl">
+            <div key={prodotto.id} className="bg-gray-800 rounded-lg overflow-hidden shadow-xl flex flex-col">
               <div className="h-64 bg-gray-700 flex items-center justify-center">
                 <img 
                   src={prodotto.immagine} 
@@ -57,15 +67,19 @@ const AccessoriRistorativi: React.FC = () => {
                   }}
                 />
               </div>
-              <div className="p-6">
+              <div className="p-6 flex flex-col flex-grow">
                 <h2 className="text-xl font-semibold mb-2">{prodotto.titolo}</h2>
                 <div className="mb-3">
                   <span className="px-3 py-1 bg-blue-600 rounded-full text-sm">{prodotto.categoria}</span>
                 </div>
-                <p className="text-gray-300 mb-4">{prodotto.descrizione}</p>
-                <button className="w-full py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-md transition-colors">
-                  Scopri di più
-                </button>
+                <p className="text-gray-300 mb-4 flex-grow">{prodotto.descrizione}</p>
+                <Link 
+                  to="/"
+                  onClick={scrollToBottom}
+                  className="w-full py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-md transition-colors block text-center mt-auto"
+                >
+                  Contattaci
+                </Link>
               </div>
             </div>
           ))}
@@ -110,7 +124,7 @@ const AccessoriRistorativi: React.FC = () => {
             <div className="bg-gray-700 p-4 rounded-lg text-center">
               <div className="h-12 w-12 bg-blue-600 rounded-full mx-auto mb-2 flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z" />
                 </svg>
               </div>
               <h3 className="text-md font-medium">Portamenu</h3>

@@ -176,38 +176,7 @@ export const blogPosts = {
       category: 'Resources',
       readTime: '7'
     },
-    {
-      id: '9',
-      title: 'Smart NFC Corporate Gadgets: The Future of Business Networking',
-      excerpt: 'Discover how NFC technology is transforming traditional corporate merchandising into interactive business tools.',
-      content: `Our innovative line of NFC-enabled corporate gadgets represents a significant evolution in business networking and brand promotion. Each item combines elegant design with smart functionality, creating powerful touchpoints for digital interaction.
-
-      Smart NFC Keychains
-      We've reinvented the traditional corporate keychain by integrating NFC technology. Each keychain becomes a digital touchpoint that can:
-      - Share digital business cards instantly
-      - Direct to company websites or landing pages
-      - Provide quick access to social profiles
-      - Share digital catalogs or promotions
-      The design shown is just a starting point - we customize every aspect according to your preferences.
-
-      Intelligent ID Badges
-      Our NFC badges represent the future of corporate identification. Beyond traditional recognition functions, each badge contains:
-      - Complete professional profile accessible via smartphone
-      - Verifiable credentials and certifications
-      - Immediate professional contact information
-      - Access control system integration
-      The presented model is indicative - we create custom designs tailored to your company's needs.
-
-      Display Solutions
-      Counter displays transform into interactive information points. We design ideal solutions for your needs, customizing dimensions, materials, and style to best showcase your commercial offering.
-
-      Each product in our range represents just a starting point - the real strength lies in complete customization, allowing each gadget to be adapted to your specific needs.`,
-      imageUrl: '/images/blog/nfc-gadgets.png',
-      date: '2024-03-15',
-      author: 'Mark Johnson',
-      category: 'Business Innovation',
-      readTime: '5'
-    }
+   
   ],
   it: [
     {
@@ -385,38 +354,6 @@ export const blogPosts = {
       author: 'Tommaso Andrei',
       category: 'Risorse',
       readTime: '7'
-    },
-    {
-      id: '9',
-      title: 'Gadget Aziendali NFC Smart: Il Futuro del Networking Aziendale',
-      excerpt: 'Scopri come la tecnologia NFC sta trasformando il merchandising aziendale tradizionale in strumenti di business interattivi.',
-      content: `La nostra innovativa linea di gadget aziendali con tecnologia NFC rappresenta un'importante evoluzione nel networking aziendale e nella promozione del brand. Ogni articolo combina design elegante e funzionalità smart, creando potenti punti di contatto per l'interazione digitale.
-
-      Smart NFC Keychains
-      We've reinvented the traditional corporate keychain by integrating NFC technology. Each keychain becomes a digital touchpoint that can:
-      - Share digital business cards instantly
-      - Direct to company websites or landing pages
-      - Provide quick access to social profiles
-      - Share digital catalogs or promotions
-      The design shown is just a starting point - we customize every aspect according to your preferences.
-
-      Intelligent ID Badges
-      Our NFC badges represent the future of corporate identification. Beyond traditional recognition functions, each badge contains:
-      - Complete professional profile accessible via smartphone
-      - Verifiable credentials and certifications
-      - Immediate professional contact information
-      - Access control system integration
-      The presented model is indicative - we create custom designs tailored to your company's needs.
-
-      Display Solutions
-      Counter displays transform into interactive information points. We design ideal solutions for your needs, customizing dimensions, materials, and style to best showcase your commercial offering.
-
-      Each product in our range represents just a starting point - the real strength lies in complete customization, allowing each gadget to be adapted to your specific needs.`,
-      imageUrl: '/images/blog/nfc-gadgets.png',
-      date: '2024-03-15',
-      author: 'Marco Bianchi',
-      category: 'Innovazione Aziendale',
-      readTime: '5'
     }
   ]
 };
@@ -622,6 +559,60 @@ The final implementation led to significant cost savings compared to traditional
         'Custom functionality impossible with traditional methods',
         'Immediate availability of spare parts'
       ]
+    },
+    {
+      id: '6',
+      title: 'Custom Office Accessories',
+      category: 'Professional Accessories',
+      description: '3D printed innovative office accessories collection, from multifunctional QR cube to personalized coasters and personal item holders.',
+      longDescription: `Our office accessories line represents the perfect union of functionality, modern design, and customization. Each element has been designed with the specific needs of modern professional environments in mind.
+
+      QR Menu & WiFi Cube (5x5x5cm)
+      - Two vertical faces customizable with company logo
+      - Two faces dedicated to QR codes for digital menu and WiFi access
+      - NFC tag integration option
+      - Eco-friendly and liquid-resistant material
+      - Available in various colors and finishes
+
+      Professional Coaster Set (9cm)
+      - Made of ultra-resistant PETG-CF
+      - Customizable with company logo
+      - Carbon fiber finish for elegance and durability
+      - Heat resistant
+      - Available in different colors
+
+      Design Bag Holder
+      - Elegant solution for keeping bags elevated
+      - Customizable with company logo
+      - Modern and ergonomic design
+      - Available in different finishes and colors
+      - Perfectly matches existing furniture
+
+      Each accessory can be fully customized in colors, finishes, and dimensions to perfectly fit your professional environment.`,
+      imageUrl: '/images/projects/office-accessories.png',
+      details: {
+        material: 'PETG, PETG-CF, PLA',
+        printTime: 'Varies by product',
+        quality: '0.16mm layer',
+        size: 'Dimensioni multiple'
+      },
+      challenges: [
+        'Integrazione di tecnologie smart in design compatti',
+        'Mantenimento dell\'eleganza con massima funzionalità',
+        'Durabilità per uso quotidiano intensivo',
+        'Personalizzazione mantenendo standard qualitativi'
+      ],
+      benefits: [
+        'Completa personalizzazione per brand identity',
+        'Materiali selezionati per durabilità',
+        'Design moderno ed ergonomico',
+        'Integrazione di funzionalità smart',
+        'Soluzioni pratiche per l\'organizzazione degli spazi'
+      ],
+      cta: {
+        text: 'Scopri gli Accessori',
+        link: '/accessori-ristorativi'
+      }
     }
   ],
   it: [
@@ -824,6 +815,60 @@ L'implementazione finale ha portato a significativi risparmi sui costi rispetto 
         'Funzionalità personalizzate impossibili con metodi tradizionali',
         'Disponibilità immediata di parti di ricambio'
       ]
+    },
+    {
+      id: '6',
+      title: 'Accessori da Ufficio Personalizzati',
+      category: 'Accessori Professionali',
+      description: 'Collezione di accessori da ufficio innovativi stampati in 3D, dal cubo QR multifunzione ai sottobicchieri personalizzati e supporti per oggetti personali.',
+      longDescription: `La nostra linea di accessori da ufficio rappresenta l'unione perfetta tra funzionalità, design moderno e personalizzazione. Ogni elemento è stato progettato pensando alle esigenze specifiche degli ambienti professionali moderni.
+
+      Cubo QR Menu & WiFi (5x5x5cm)
+      - Due facce verticali personalizzabili con il logo aziendale
+      - Due facce dedicate ai QR code per menu digitale e accesso WiFi
+      - Opzione per integrazione tag NFC
+      - Materiale eco-compatibile e resistente ai liquidi
+      - Disponibile in vari colori e finiture
+
+      Set Sottobicchieri Professionali (9cm)
+      - Realizzati in PETG-CF ultra resistente
+      - Personalizzabili con logo aziendale
+      - Finitura in fibra di carbonio per eleganza e durabilità
+      - Resistenti alle alte temperature
+      - Disponibili in diverse colorazioni
+
+      Poggia Borse Design
+      - Soluzione elegante per tenere le borse sollevate
+      - Personalizzabile con logo aziendale
+      - Design moderno ed ergonomico
+      - Disponibile in diverse finiture e colori
+      - Si adatta perfettamente all'arredamento esistente
+
+      Ogni accessorio può essere completamente personalizzato nei colori, nelle finiture e nelle dimensioni per adattarsi perfettamente al tuo ambiente professionale.`,
+      imageUrl: '/images/projects/office-accessories.png',
+      details: {
+        material: 'PETG, PETG-CF, PLA',
+        printTime: 'Variabile per prodotto',
+        quality: 'strato 0.16mm',
+        size: 'Dimensioni multiple'
+      },
+      challenges: [
+        'Integrazione di tecnologie smart in design compatti',
+        'Mantenimento dell\'eleganza con massima funzionalità',
+        'Durabilità per uso quotidiano intensivo',
+        'Personalizzazione mantenendo standard qualitativi'
+      ],
+      benefits: [
+        'Completa personalizzazione per brand identity',
+        'Materiali selezionati per durabilità',
+        'Design moderno ed ergonomico',
+        'Integrazione di funzionalità smart',
+        'Soluzioni pratiche per l\'organizzazione degli spazi'
+      ],
+      cta: {
+        text: 'Scopri gli Accessori',
+        link: '/accessori-ristorativi'
+      }
     }
   ]
 };
