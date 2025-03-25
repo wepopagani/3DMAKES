@@ -176,7 +176,6 @@ export const blogPosts = {
       category: 'Resources',
       readTime: '7'
     },
-   
   ],
   it: [
     {
@@ -492,6 +491,92 @@ The implementation has shown remarkable results, with riders reporting improved 
     },
     {
       id: '4',
+      title: 'Restaurant Accessories Collection',
+      category: 'Hospitality',
+      description: 'Innovative and customizable restaurant accessories designed to enhance dining experience and operational efficiency.',
+      longDescription: `Our restaurant accessories collection represents a perfect blend of functionality and style, designed specifically for modern dining establishments. Each piece is customizable to match your restaurant's branding and aesthetic needs.
+
+      QR Menu & WiFi Cube (5x5x5cm)
+      An elegant table accessory that combines multiple functions:
+      - Two vertical faces customizable with your restaurant logo
+      - Two faces featuring QR codes for digital menu and WiFi access
+      - Available in various colors and finishes
+      - Optional NFC tag integration
+      - Made from eco-friendly, liquid-resistant material
+
+      Professional Coasters (9cm)
+      High-quality coasters made from PETG-CF (Carbon Fiber reinforced):
+      - Ultra-resistant to impacts and high temperatures
+      - Customizable with restaurant logo
+      - Available in various colors
+      - Carbon fiber finish for timeless elegance
+      - Superior durability for intensive use
+
+      Bag Holders
+      Elegant table-side solution for guests' bags:
+      - Keeps bags safely elevated from the floor
+      - Customizable with restaurant branding
+      - Available in various finishes and colors
+      - Designed to complement your interior décor
+
+      Each item in our collection is designed with both practicality and aesthetics in mind, helping restaurants create a more organized and professional dining environment while enhancing the customer experience.`,
+      imageUrl: '/images/projects/restaurant-accessories.png',
+      details: {
+        material: 'PETG, PETG-CF, PLA',
+        printTime: 'Varies by product',
+        quality: '0.16mm layer',
+        size: 'Various dimensions'
+      },
+      challenges: [
+        'Ensuring durability for intensive commercial use',
+        'Maintaining aesthetic appeal with functional design',
+        'Creating efficient QR code placement for easy scanning',
+        'Developing hygienic and easy-to-clean surfaces'
+      ],
+      benefits: [
+        'Complete customization options',
+        'Professional brand representation',
+        'Improved dining experience',
+        'Durable and practical solutions',
+        'Modern technology integration'
+      ],
+      cta: {
+        text: 'Explore Restaurant Accessories',
+        link: '/accessori-ristorativi'
+      }
+    },
+    {
+      id: '5',
+      title: 'Custom Mechanical Components',
+      category: 'Industrial',
+      description: 'High-precision mechanical components printed in PETG with reinforced infill for industrial applications.',
+      longDescription: `This project involved creating custom mechanical components for an industrial automation system. The client needed specialized parts not available on the market and required quick turnaround times.
+
+The components were designed with specific tolerances and mechanical properties to withstand industrial use. We used PETG material with reinforced infill patterns to ensure maximum durability while maintaining reasonable print times.
+
+The final implementation led to significant cost savings compared to traditional manufacturing methods, meeting all functional requirements.`,
+      imageUrl: '/images/projects/comp.png',
+      details: {
+        material: 'PETG',
+        printTime: '14 hours',
+        quality: '0.1mm layer',
+        size: '15 × 8 × 5 cm'
+      },
+      challenges: [
+        'Complex geometry requiring precise tolerances',
+        'High strength requirements for industrial use',
+        'Need for heat resistance up to 70°C',
+        'Integration with existing mechanical systems'
+      ],
+      benefits: [
+        '60% cost reduction compared to traditional manufacturing',
+        'Rapid iteration capability for design optimization',
+        'Custom functionality impossible with traditional methods',
+        'Immediate availability of spare parts'
+      ]
+    },
+    {
+      id: '6',
       title: 'Custom Medical Prosthetics',
       category: 'Medical',
       description: 'Customized prosthetic devices printed with biocompatible materials for individual patient needs.',
@@ -529,91 +614,8 @@ The implementation has shown remarkable results, with riders reporting improved 
         'Significant cost reduction',
         'Improved comfort and functionality'
       ]
-    },
-    {
-      id: '5',
-      title: 'Custom Mechanical Components',
-      category: 'Industrial',
-      description: 'High-precision mechanical components printed in PETG with reinforced infill for industrial applications.',
-      longDescription: `This project involved creating custom mechanical components for an industrial automation system. The client needed specialized parts not available on the market and required quick turnaround times.
-
-The components were designed with specific tolerances and mechanical properties to withstand industrial use. We used PETG material with reinforced infill patterns to ensure maximum durability while maintaining reasonable print times.
-
-The final implementation led to significant cost savings compared to traditional manufacturing methods, meeting all functional requirements.`,
-      imageUrl: '/images/projects/comp.png',
-      details: {
-        material: 'PETG',
-        printTime: '14 hours',
-        quality: '0.1mm layer',
-        size: '15 × 8 × 5 cm'
-      },
-      challenges: [
-        'Complex geometry requiring precise tolerances',
-        'High strength requirements for industrial use',
-        'Need for heat resistance up to 70°C',
-        'Integration with existing mechanical systems'
-      ],
-      benefits: [
-        '60% cost reduction compared to traditional manufacturing',
-        'Rapid iteration capability for design optimization',
-        'Custom functionality impossible with traditional methods',
-        'Immediate availability of spare parts'
-      ]
-    },
-    {
-      id: '6',
-      title: 'Custom Office Accessories',
-      category: 'Professional Accessories',
-      description: '3D printed innovative office accessories collection, from multifunctional QR cube to personalized coasters and personal item holders.',
-      longDescription: `Our office accessories line represents the perfect union of functionality, modern design, and customization. Each element has been designed with the specific needs of modern professional environments in mind.
-
-      QR Menu & WiFi Cube (5x5x5cm)
-      - Two vertical faces customizable with company logo
-      - Two faces dedicated to QR codes for digital menu and WiFi access
-      - NFC tag integration option
-      - Eco-friendly and liquid-resistant material
-      - Available in various colors and finishes
-
-      Professional Coaster Set (9cm)
-      - Made of ultra-resistant PETG-CF
-      - Customizable with company logo
-      - Carbon fiber finish for elegance and durability
-      - Heat resistant
-      - Available in different colors
-
-      Design Bag Holder
-      - Elegant solution for keeping bags elevated
-      - Customizable with company logo
-      - Modern and ergonomic design
-      - Available in different finishes and colors
-      - Perfectly matches existing furniture
-
-      Each accessory can be fully customized in colors, finishes, and dimensions to perfectly fit your professional environment.`,
-      imageUrl: '/images/projects/office-accessories.png',
-      details: {
-        material: 'PETG, PETG-CF, PLA',
-        printTime: 'Varies by product',
-        quality: '0.16mm layer',
-        size: 'Dimensioni multiple'
-      },
-      challenges: [
-        'Integrazione di tecnologie smart in design compatti',
-        'Mantenimento dell\'eleganza con massima funzionalità',
-        'Durabilità per uso quotidiano intensivo',
-        'Personalizzazione mantenendo standard qualitativi'
-      ],
-      benefits: [
-        'Completa personalizzazione per brand identity',
-        'Materiali selezionati per durabilità',
-        'Design moderno ed ergonomico',
-        'Integrazione di funzionalità smart',
-        'Soluzioni pratiche per l\'organizzazione degli spazi'
-      ],
-      cta: {
-        text: 'Scopri gli Accessori',
-        link: '/accessori-ristorativi'
-      }
     }
+
   ],
   it: [
     {
@@ -748,6 +750,92 @@ L'implementazione ha mostrato risultati notevoli, con cavalieri che riportano pr
     },
     {
       id: '4',
+      title: 'Collezione Accessori Ristorativi',
+      category: 'Ristorazione',
+      description: 'Accessori innovativi e personalizzabili per ristoranti, progettati per migliorare l\'esperienza di ristorazione e l\'efficienza operativa.',
+      longDescription: `La nostra collezione di accessori per la ristorazione rappresenta una perfetta fusione tra funzionalità e stile, progettata specificamente per i moderni locali di ristorazione. Ogni pezzo è personalizzabile per adattarsi al branding e alle esigenze estetiche del tuo ristorante.
+
+      Cubo QR Menu & WiFi (5x5x5cm)
+      Un elegante accessorio da tavolo che combina più funzioni:
+      - Due facce verticali personalizzabili con il logo del tuo ristorante
+      - Due facce con codici QR per menu digitale e accesso WiFi
+      - Disponibile in vari colori e finiture
+      - Possibilità di integrazione tag NFC
+      - Realizzato in materiale ecologico e resistente ai liquidi
+
+      Sottobicchieri Professionali (9cm)
+      Sottobicchieri di alta qualità in PETG-CF (rinforzato in fibra di carbonio):
+      - Ultra resistenti agli urti e alle alte temperature
+      - Personalizzabili con il logo del ristorante
+      - Disponibili in diverse colorazioni
+      - Finitura in fibra di carbonio per un'eleganza senza tempo
+      - Durabilità superiore per uso intensivo
+
+      Poggia Borse
+      Elegante soluzione da tavolo per le borse degli ospiti:
+      - Mantiene le borse sollevate da terra in modo sicuro
+      - Personalizzabile con il brand del ristorante
+      - Disponibile in diverse finiture e colori
+      - Progettato per integrarsi con l'arredamento
+
+      Ogni elemento della nostra collezione è progettato pensando sia alla praticità che all'estetica, aiutando i ristoranti a creare un ambiente più organizzato e professionale migliorando al contempo l'esperienza del cliente.`,
+      imageUrl: '/images/projects/restaurant-accessories.png',
+      details: {
+        material: 'PETG, PETG-CF, PLA',
+        printTime: 'Variabile per prodotto',
+        quality: 'strato 0.16mm',
+        size: 'Dimensioni varie'
+      },
+      challenges: [
+        'Garantire durabilità per uso commerciale intensivo',
+        'Mantenere appeal estetico con design funzionale',
+        'Creare posizionamento efficiente dei QR code per facile scansione',
+        'Sviluppare superfici igieniche e facili da pulire'
+      ],
+      benefits: [
+        'Opzioni di personalizzazione complete',
+        'Rappresentazione professionale del brand',
+        'Esperienza di ristorazione migliorata',
+        'Soluzioni durevoli e pratiche',
+        'Integrazione tecnologica moderna'
+      ],
+      cta: {
+        text: 'Esplora gli Accessori Ristorativi',
+        link: '/accessori-ristorativi'
+      }
+    },
+    {
+      id: '5',
+      title: 'Componenti Meccanici Personalizzati',
+      category: 'Industriale',
+      description: 'Componenti meccanici di alta precisione stampati in PETG con riempimento rinforzato per applicazioni industriali.',
+      longDescription: `Questo progetto ha coinvolto la creazione di componenti meccanici personalizzati per un sistema di automazione industriale. Il cliente necessitava di parti specializzate non disponibili sul mercato e richiedeva tempi di consegna rapidi.
+
+I componenti sono stati progettati con tolleranze specifiche e proprietà meccaniche per resistere all'uso industriale. Abbiamo utilizzato materiale PETG con pattern di riempimento rinforzati per garantire la massima durabilità mantenendo tempi di stampa ragionevoli.
+
+L'implementazione finale ha portato a significativi risparmi sui costi rispetto ai metodi di produzione tradizionali, soddisfacendo tutti i requisiti funzionali.`,
+      imageUrl: '/images/projects/comp.png',
+      details: {
+        material: 'PETG',
+        printTime: '14 ore',
+        quality: '0.1mm layer',
+        size: '15 × 8 × 5 cm'
+      },
+      challenges: [
+        'Geometria complessa che richiede tolleranze precise',
+        'Elevati requisiti di resistenza per uso industriale',
+        'Necessità di resistenza al calore fino a 70°C',
+        'Integrazione con sistemi meccanici esistenti'
+      ],
+      benefits: [
+        'Riduzione dei costi del 60% rispetto alla produzione tradizionale',
+        'Capacità di iterazione rapida per ottimizzazione del design',
+        'Funzionalità personalizzate impossibili con metodi tradizionali',
+        'Disponibilità immediata di parti di ricambio'
+      ]
+    },
+    {
+      id: '6',
       title: 'Protesi Mediche Personalizzate',
       category: 'Medicale',
       description: 'Dispositivi protesici personalizzati stampati con materiali biocompatibili per le esigenze individuali dei pazienti.',
@@ -785,90 +873,7 @@ L'implementazione ha mostrato risultati notevoli, con cavalieri che riportano pr
         'Riduzione significativa dei costi',
         'Comfort e funzionalità migliorati'
       ]
-    },
-    {
-      id: '5',
-      title: 'Componenti Meccanici Personalizzati',
-      category: 'Industriale',
-      description: 'Componenti meccanici di alta precisione stampati in PETG con riempimento rinforzato per applicazioni industriali.',
-      longDescription: `Questo progetto ha coinvolto la creazione di componenti meccanici personalizzati per un sistema di automazione industriale. Il cliente necessitava di parti specializzate non disponibili sul mercato e richiedeva tempi di consegna rapidi.
-
-I componenti sono stati progettati con tolleranze specifiche e proprietà meccaniche per resistere all'uso industriale. Abbiamo utilizzato materiale PETG con pattern di riempimento rinforzati per garantire la massima durabilità mantenendo tempi di stampa ragionevoli.
-
-L'implementazione finale ha portato a significativi risparmi sui costi rispetto ai metodi di produzione tradizionali, soddisfacendo tutti i requisiti funzionali.`,
-      imageUrl: '/images/projects/comp.png',
-      details: {
-        material: 'PETG',
-        printTime: '14 ore',
-        quality: '0.1mm layer',
-        size: '15 × 8 × 5 cm'
-      },
-      challenges: [
-        'Geometria complessa che richiede tolleranze precise',
-        'Elevati requisiti di resistenza per uso industriale',
-        'Necessità di resistenza al calore fino a 70°C',
-        'Integrazione con sistemi meccanici esistenti'
-      ],
-      benefits: [
-        'Riduzione dei costi del 60% rispetto alla produzione tradizionale',
-        'Capacità di iterazione rapida per ottimizzazione del design',
-        'Funzionalità personalizzate impossibili con metodi tradizionali',
-        'Disponibilità immediata di parti di ricambio'
-      ]
-    },
-    {
-      id: '6',
-      title: 'Accessori da Ufficio Personalizzati',
-      category: 'Accessori Professionali',
-      description: 'Collezione di accessori da ufficio innovativi stampati in 3D, dal cubo QR multifunzione ai sottobicchieri personalizzati e supporti per oggetti personali.',
-      longDescription: `La nostra linea di accessori da ufficio rappresenta l'unione perfetta tra funzionalità, design moderno e personalizzazione. Ogni elemento è stato progettato pensando alle esigenze specifiche degli ambienti professionali moderni.
-
-      Cubo QR Menu & WiFi (5x5x5cm)
-      - Due facce verticali personalizzabili con il logo aziendale
-      - Due facce dedicate ai QR code per menu digitale e accesso WiFi
-      - Opzione per integrazione tag NFC
-      - Materiale eco-compatibile e resistente ai liquidi
-      - Disponibile in vari colori e finiture
-
-      Set Sottobicchieri Professionali (9cm)
-      - Realizzati in PETG-CF ultra resistente
-      - Personalizzabili con logo aziendale
-      - Finitura in fibra di carbonio per eleganza e durabilità
-      - Resistenti alle alte temperature
-      - Disponibili in diverse colorazioni
-
-      Poggia Borse Design
-      - Soluzione elegante per tenere le borse sollevate
-      - Personalizzabile con logo aziendale
-      - Design moderno ed ergonomico
-      - Disponibile in diverse finiture e colori
-      - Si adatta perfettamente all'arredamento esistente
-
-      Ogni accessorio può essere completamente personalizzato nei colori, nelle finiture e nelle dimensioni per adattarsi perfettamente al tuo ambiente professionale.`,
-      imageUrl: '/images/projects/office-accessories.png',
-      details: {
-        material: 'PETG, PETG-CF, PLA',
-        printTime: 'Variabile per prodotto',
-        quality: 'strato 0.16mm',
-        size: 'Dimensioni multiple'
-      },
-      challenges: [
-        'Integrazione di tecnologie smart in design compatti',
-        'Mantenimento dell\'eleganza con massima funzionalità',
-        'Durabilità per uso quotidiano intensivo',
-        'Personalizzazione mantenendo standard qualitativi'
-      ],
-      benefits: [
-        'Completa personalizzazione per brand identity',
-        'Materiali selezionati per durabilità',
-        'Design moderno ed ergonomico',
-        'Integrazione di funzionalità smart',
-        'Soluzioni pratiche per l\'organizzazione degli spazi'
-      ],
-      cta: {
-        text: 'Scopri gli Accessori',
-        link: '/accessori-ristorativi'
-      }
     }
+   
   ]
 };
