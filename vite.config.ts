@@ -14,7 +14,14 @@ export default defineConfig({
       'localhost',
       'd29e-89-217-100-200.ngrok-free.app',
       '*.ngrok-free.app'
-    ]
+    ],
+    proxy: {
+      '/upload': {
+        target: 'https://server.3dmakes.ch',
+        changeOrigin: true,
+        secure: false
+      }
+    }
   },
   define: {
     'process.env': process.env,

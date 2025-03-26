@@ -15,7 +15,7 @@ const MIN_PRICE = 15;
 
 // Se vuoi cambiare il massimo file, ecc.
 const MAX_FILE_SIZE = 100 * 1024 * 1024;
-const API_URL = "https://server.3dmakes.ch/upload";
+const API_URL = "/upload";
 
 export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
   const t = translations[language];
@@ -228,6 +228,12 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
       const res = await fetch(API_URL, {
         method: "POST",
         body: formData,
+        headers: {
+          'Origin': 'http://localhost:5173',
+          'Access-Control-Request-Method': 'POST',
+        },
+        // Importante per le credenziali
+        credentials: 'include',
       });
 
       clearInterval(interval);
