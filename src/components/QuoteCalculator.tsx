@@ -228,12 +228,6 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
       const res = await fetch(API_URL, {
         method: "POST",
         body: formData,
-        headers: {
-          'Origin': 'http://localhost:5173',
-          'Access-Control-Request-Method': 'POST',
-        },
-        // Importante per le credenziali
-        credentials: 'include',
       });
 
       clearInterval(interval);

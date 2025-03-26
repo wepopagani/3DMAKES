@@ -19,7 +19,7 @@ export default defineConfig({
       '/upload': {
         target: 'https://server.3dmakes.ch',
         changeOrigin: true,
-        secure: false
+        secure: false,
       }
     }
   },
