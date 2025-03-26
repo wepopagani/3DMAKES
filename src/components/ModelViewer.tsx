@@ -1,11 +1,9 @@
 import { useRef, Suspense, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera, ContactShadows, Environment, Html } from '@react-three/drei';
-import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
-import * as THREE from 'three';
 import { analyzeGeometry, ModelAnalysis } from '../utils/modelAnalysis';
 import { Object3D } from 'three';
+import THREE, { STLLoader, OBJLoader } from '../utils/threeInstance';
 
 interface ModelViewerProps {
   file: File | null;

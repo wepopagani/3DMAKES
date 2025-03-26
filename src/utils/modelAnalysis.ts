@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import THREE from './threeInstance';
 
 export interface ModelAnalysis {
   volume: number;       // in cubic centimeters (cm³)

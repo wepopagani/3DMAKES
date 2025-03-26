@@ -10,6 +10,12 @@
   },
   "overrides": {
     "three": "0.158.0",
+    "@react-three/fiber": {
+      "three": "0.158.0"
+    },
+    "@react-three/drei": {
+      "three": "0.158.0"
+    },
     "stats-gl": {
       "three": "0.158.0"
     }
