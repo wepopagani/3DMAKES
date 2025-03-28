@@ -14,8 +14,8 @@ const MAX_DIM = 300;
 const MIN_PRICE = 15;
 
 // Se vuoi cambiare il massimo file, ecc.
-const MAX_FILE_SIZE = 100 * 1024 * 1024;
-const API_URL = "http://192.168.1.182:5000/upload";
+const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
+const API_URL = "https://server.3dmakes.ch/upload";
 
 export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
   const t = translations[language];
@@ -69,11 +69,16 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
     resetStates();
     
     if (f.size > MAX_FILE_SIZE) {
-      setError("File troppo grande");
+      setError(`File troppo grande (max ${Math.round(MAX_FILE_SIZE/1024/1024)}MB). Per file più grandi, contattaci.`);
       return;
     }
     
     const ext = f.name.split(".").pop()?.toLowerCase() ?? "";
+    if (!["stl", "obj"].includes(ext)) {
+      setError("Formato file non supportato. Usa STL o OBJ.");
+      return;
+    }
+    
     setFileType(ext);
     setFile(f);
   };
@@ -228,12 +233,14 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
       const res = await fetch(API_URL, {
         method: "POST",
         body: formData,
-        credentials: 'omit',
-        mode: 'cors',
-        headers: {
-          'Accept': '*/*',
-        }
       });
+
+      if (!res.ok) {
+        if (res.status === 413) {
+          throw new Error(`File troppo grande per il server. Per file più grandi, contattaci.`);
+        }
+        throw new Error(`Errore del server: ${res.status}`);
+      }
 
       clearInterval(interval);
 
@@ -257,12 +264,13 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
         const sp = calculateSinglePrice(printTimeHours, materialGrams);
         setSinglePrice(sp);
       }
-    } catch (err) {
-      console.error("Errore di connessione:", err);
-      setError("Errore di connessione con il server");
+    } catch (err: any) {
+      setError(err.message || "Errore di connessione con il server");
+      console.error("Errore upload:", err);
     } finally {
       setIsProcessing(false);
       setUploadProgress(0);
+      clearInterval(interval); // Assicurati di pulire l'intervallo
     }
   }, [file, modelDims, quality, calculateSinglePrice]);
 
@@ -316,31 +324,12 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
 
   return (
     <section id="quote" className="py-20 bg-gray-900">
-      <div className="container mx-auto px-4 mb-8">
-        <div className="bg-yellow-600/20 border-2 border-yellow-600 rounded-lg p-4 text-center">
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg>
-            <h3 className="text-xl font-bold text-yellow-500">
-              Servizio Temporaneamente Non Disponibile
-            </h3>
-          </div>
-          <p className="text-yellow-400">
-            Il servizio di preventivo automatico è attualmente in manutenzione. 
-            Ci scusiamo per il disagio. Per richiedere un preventivo, contattaci direttamente via email o telefono.
-          </p>
-        </div>
-      </div>
-
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold text-center text-white mb-16">
           {t.quote.title}
         </h2>
 
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 relative disabled-section">
-          {/* Overlay semi-trasparente */}
-          <div className="absolute inset-0 bg-gray-900/50 backdrop-blur-sm z-10 rounded-lg" />
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
 
           {/* Colonna sinistra */}
           <div className="space-y-8">

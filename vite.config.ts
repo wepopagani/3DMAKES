@@ -7,21 +7,11 @@ export default defineConfig({
     react(),
   ],
   server: {
-    proxy: {
-      '/upload': {
-        target: 'https://3c83-89-217-100-200.ngrok-free.app',
-        changeOrigin: true,
-        secure: false,
-      }
-    },
     headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-      'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization'
+      // Rimuovi l'intestazione CSP qui
     },
     allowedHosts: [
       'localhost',
-      '192.168.1.182',
       'd29e-89-217-100-200.ngrok-free.app',
       '*.ngrok-free.app'
     ]
