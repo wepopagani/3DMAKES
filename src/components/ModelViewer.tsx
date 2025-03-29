@@ -70,10 +70,63 @@ interface PlacementPlane {
   dimensions: THREE.Vector2;
 }
 
+function getLargeFlatFaces(geometry: THREE.BufferGeometry, thresholdArea = 100): PlacementPlane[] {
+  const position = geometry.attributes.position;
+  const index = geometry.index;
+  const faces: PlacementPlane[] = [];
+
+  if (!index) return faces;
+
+  for (let i = 0; i < index.count; i += 3) {
+    const a = index.getX(i);
+    const b = index.getX(i + 1);
+    const c = index.getX(i + 2);
+
+    const va = new THREE.Vector3().fromBufferAttribute(position, a);
+    const vb = new THREE.Vector3().fromBufferAttribute(position, b);
+    const vc = new THREE.Vector3().fromBufferAttribute(position, c);
+
+    const ab = new THREE.Vector3().subVectors(vb, va);
+    const ac = new THREE.Vector3().subVectors(vc, va);
+    const normal = new THREE.Vector3().crossVectors(ab, ac).normalize();
+
+    const area = 0.5 * ab.cross(ac).length();
+    if (area > thresholdArea) {
+      const centroid = new THREE.Vector3().add(va).add(vb).add(vc).divideScalar(3);
+
+      faces.push({
+        normal,
+        area,
+        position: centroid,
+        rotation: new THREE.Euler(),
+        dimensions: new THREE.Vector2(Math.sqrt(area), Math.sqrt(area)),
+      });
+    }
+  }
+  return faces;
+}
+
 function Model({ file, fileType, onDimensions }: ModelViewerProps) {
   const [geometry, setGeometry] = useState<THREE.BufferGeometry | THREE.Group | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [faces, setFaces] = useState<PlacementPlane[]>([]);
   const modelRef = useRef<THREE.Mesh | THREE.Group>(null);
+
+  const orientModelToFace = (face: PlacementPlane) => {
+    if (!modelRef.current) return;
+
+    const quaternion = new THREE.Quaternion().setFromUnitVectors(
+      face.normal,
+      new THREE.Vector3(0, 1, 0)
+    );
+
+    modelRef.current.setRotationFromQuaternion(quaternion);
+
+    // Aggiorna la posizione per mantenere il modello sul piano
+    const bbox = new THREE.Box3().setFromObject(modelRef.current);
+    const minY = bbox.min.y;
+    modelRef.current.position.y -= minY;
+  };
 
   useEffect(() => {
     if (!file) return;
@@ -89,7 +142,9 @@ function Model({ file, fileType, onDimensions }: ModelViewerProps) {
           const bbox = result.boundingBox!;
           const center = new THREE.Vector3();
           bbox.getCenter(center);
-          result.translate(-center.x, -center.y, -center.z);
+          
+          // Centra il modello alla base invece che al centro
+          result.translate(-center.x, -bbox.min.y, -center.z);
           
           const size = new THREE.Vector3();
           bbox.getSize(size);
@@ -98,13 +153,20 @@ function Model({ file, fileType, onDimensions }: ModelViewerProps) {
           if (!result.hasAttribute('normal')) {
             result.computeVertexNormals();
           }
+
+          // Calcola le facce piane
+          const faces = getLargeFlatFaces(result);
+          setFaces(faces);
+          
           setGeometry(result);
         } else {
           const result = (loader as OBJLoader).parse(reader.result as string);
           const bbox = new THREE.Box3().setFromObject(result);
           const center = new THREE.Vector3();
           bbox.getCenter(center);
-          result.position.set(-center.x, -center.y, -center.z);
+          
+          // Centra il modello alla base invece che al centro
+          result.position.set(-center.x, -bbox.min.y, -center.z);
           
           const size = new THREE.Vector3();
           bbox.getSize(size);
@@ -135,9 +197,7 @@ function Model({ file, fileType, onDimensions }: ModelViewerProps) {
     );
   }
 
-  if (!geometry) {
-    return null;
-  }
+  if (!geometry) return null;
 
   if (geometry instanceof THREE.BufferGeometry) {
     const size = new THREE.Vector3();
@@ -146,24 +206,35 @@ function Model({ file, fileType, onDimensions }: ModelViewerProps) {
     const scale = maxDim > 0 ? 4 / maxDim : 1;
 
     return (
-      <mesh 
-        ref={modelRef as any}
-        scale={[scale, scale, scale]}
-        position={[0, 2, 0]}
-        castShadow={false}
-        receiveShadow={false}
-      >
-        <primitive object={geometry} attach="geometry" />
-        <meshPhysicalMaterial
-          color={0xdddddd}
-          metalness={0.2}
-          roughness={0.3}
-          clearcoat={0.4}
-          clearcoatRoughness={0.2}
-          reflectivity={1}
-          envMapIntensity={0.5}
-        />
-      </mesh>
+      <>
+        <mesh 
+          ref={modelRef as any}
+          scale={[scale, scale, scale]}
+          position={[0, 0, 0]}
+        >
+          <primitive object={geometry} attach="geometry" />
+          <meshPhysicalMaterial
+            color={0xdddddd}
+            metalness={0.2}
+            roughness={0.3}
+            clearcoat={0.4}
+            clearcoatRoughness={0.2}
+            reflectivity={1}
+            envMapIntensity={0.5}
+          />
+        </mesh>
+        {faces.map((face, idx) => (
+          <mesh
+            key={idx}
+            position={face.position}
+            rotation={face.rotation}
+            onClick={() => orientModelToFace(face)}
+          >
+            <planeGeometry args={[face.dimensions.x, face.dimensions.y]} />
+            <meshStandardMaterial color="#ff69b4" transparent opacity={0.3} />
+          </mesh>
+        ))}
+      </>
     );
   }
 
