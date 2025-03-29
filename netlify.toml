@@ -8,31 +8,54 @@
   port = 3000
   functionsPort = 8888
 
+# Reindirizzamento per SPA
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 
+# Reindirizzamento per l'API
 [[redirects]]
   from = "/api/*"
-  to = "/.netlify/functions/:splat"
+  to = "https://short.3dmakes.ch/api/:splat"
   status = 200
   force = true
-  headers = { Access-Control-Allow-Origin = "*" }
+  [redirects.headers]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type, Authorization"
+
+# Reindirizzamento per le funzioni Netlify
+[[redirects]]
+  from = "/.netlify/functions/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
 
 [functions]
   node_bundler = "esbuild"
 
+# Headers globali
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type, Authorization"
+
+[forms]
+  [forms.contact]
+    name = "contact"
+    success_url = "/success"
+
 [build.processing]
   skip_processing = false
-
 [build.processing.html]
   pretty_urls = true
-
+[build.processing.images]
+  compress = true
 [build.processing.css]
   bundle = true
   minify = true
-
 [build.processing.js]
   bundle = true
   minify = true

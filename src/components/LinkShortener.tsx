@@ -16,14 +16,24 @@ const LinkShortener: React.FC = () => {
     setError('');
     
     try {
-      const response = await fetch('/api/shorten', {
+      // Usa direttamente l'URL del server in sviluppo
+      const apiUrl = import.meta.env.DEV 
+        ? 'https://short.3dmakes.ch/api/shorten'
+        : '/api/shorten';
+
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          'Accept': 'application/json',
+          // Aggiungi l'origin corretto
+          'Origin': window.location.origin
         },
+        // Aggiungi credentials se necessario
+        credentials: 'include',
         body: JSON.stringify({ 
           originalUrl,
+          // Aggiungi altri parametri se necessario
           source: 'web'
         })
       });

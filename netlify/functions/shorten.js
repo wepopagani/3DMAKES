@@ -1,6 +1,4 @@
-import fetch from 'node-fetch';
-
-const API_URL = 'https://short.3dmakes.ch/api/shorten';
+const fetch = require('node-fetch');
 
 export const handler = async (event) => {
   if (event.httpMethod !== 'POST') {
@@ -20,41 +18,37 @@ export const handler = async (event) => {
       };
     }
 
+    const response = await fetch('https://short.3dmakes.ch/api/shorten', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({ 
+        originalUrl,
+        source: 'web'
+      })
+    });
+
+    const data = await response.text(); // Cambiato da response.json() a response.text()
+    
     try {
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({ 
-          originalUrl,
-          source: 'web'
-        }),
-        timeout: 8000 // 8 secondi di timeout
-      });
-
-      if (!response.ok) {
-        throw new Error(`Errore API: ${response.status}`);
-      }
-
-      const data = await response.json();
-      
+      const jsonData = JSON.parse(data);
       return {
         statusCode: 200,
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(jsonData)
       };
-    } catch (fetchError) {
-      console.error('Errore di connessione:', fetchError);
+    } catch (e) {
+      console.error('Risposta non valida dal server:', data);
       return {
-        statusCode: 503,
+        statusCode: 500,
         body: JSON.stringify({ 
-          error: 'Servizio temporaneamente non disponibile',
-          message: 'Impossibile contattare il servizio di shortening. Riprova più tardi.'
+          error: 'Errore nella risposta del server',
+          details: data.substring(0, 200) // Per debug
         })
       };
     }
@@ -62,10 +56,7 @@ export const handler = async (event) => {
     console.error('Errore:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ 
-        error: 'Errore interno del server',
-        message: error.message 
-      })
+      body: JSON.stringify({ error: 'Errore interno del server' })
     };
   }
 }; 

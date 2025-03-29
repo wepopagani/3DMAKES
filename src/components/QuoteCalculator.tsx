@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import ModelViewer from "./ModelViewer";
 import { translations, Language } from "../utils/translations";
+import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 
 interface QuoteCalculatorProps {
@@ -187,14 +188,14 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
     setUploadProgress(0);
     const interval = setInterval(() => {
       setUploadProgress(prev => {
-        if (prev >= 92) {
+        if (prev >= 85) {
           clearInterval(interval);
-          return 92;
+          return 85;
         }
-        // Incrementopiù piccolo e costante
-        return Math.min(90, Math.floor(prev + 1));
+        // Incremento più piccolo e costante
+        return Math.min(85, Math.floor(prev + 1));
       });
-    }, 100); // Aggiornamento ogni 50ms
+    }, 50); // Aggiornamento ogni 50ms
     
     return interval;
   };

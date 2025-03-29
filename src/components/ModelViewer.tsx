@@ -2,9 +2,8 @@ import { useRef, Suspense, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera, ContactShadows, Environment, Html } from '@react-three/drei';
 import { analyzeGeometry, ModelAnalysis } from '../utils/modelAnalysis';
-import { BufferAttribute, Object3D } from 'three';
+import { Object3D } from 'three';
 import THREE, { STLLoader, OBJLoader } from '../utils/threeInstance';
-import { Box3, Vector3, Matrix4, Euler, Quaternion } from 'three';
 
 interface ModelViewerProps {
   file: File | null;
@@ -18,46 +17,6 @@ interface ModelViewerProps {
 // Use window.matchMedia instead of navigator.userAgent
 const isMobile = () => {
   return window.matchMedia('(max-width: 768px)').matches;
-};
-
-// Aggiungi questa funzione per trovare l'orientamento ottimale
-const findOptimalOrientation = (geometry: THREE.BufferGeometry) => {
-  geometry.computeBoundingBox();
-  const box = geometry.boundingBox!;
-  const size = new Vector3();
-  box.getSize(size);
-
-  // Creiamo le 6 possibili orientazioni (una per ogni faccia del box)
-  const orientations = [
-    new Euler(0, 0, 0), // originale
-    new Euler(Math.PI / 2, 0, 0), // rotazione 90° su X
-    new Euler(-Math.PI / 2, 0, 0), // rotazione -90° su X
-    new Euler(Math.PI, 0, 0), // rotazione 180° su X
-    new Euler(0, 0, Math.PI / 2), // rotazione 90° su Z
-    new Euler(0, 0, -Math.PI / 2), // rotazione -90° su Z
-  ];
-
-  let bestRotation = new Euler();
-  let maxArea = 0;
-
-  orientations.forEach(rotation => {
-    const matrix = new Matrix4().makeRotationFromEuler(rotation);
-    const rotatedSize = size.clone().applyMatrix4(matrix);
-    
-    // Calcola l'area della faccia che sarà appoggiata (XZ)
-    const area = Math.abs(rotatedSize.x * rotatedSize.z);
-    
-    // Se questa area è maggiore della precedente, aggiorna la rotazione migliore
-    if (area > maxArea) {
-      maxArea = area;
-      bestRotation = rotation.clone();
-    }
-  });
-
-  // Aggiungi una rotazione di 180° sull'asse Y per girare il modello
-  bestRotation.y = Math.PI;
-
-  return bestRotation;
 };
 
 function Model({ file, fileType, onAnalysis, onDimensions }: ModelViewerProps) {
@@ -124,41 +83,26 @@ function Model({ file, fileType, onAnalysis, onDimensions }: ModelViewerProps) {
 
           try {
             console.log("Parsing STL file...");
-            const result = (loader as STLLoader).parse(reader.result as ArrayBuffer);
+            const result = (loader as STLLoader).parse(reader.result);
             if (!result.hasAttribute('normal')) {
               result.computeVertexNormals();
             }
             result.computeBoundingBox();
             
-            // Applica la rotazione ottimale
-            const optimalRotation = findOptimalOrientation(result);
-            const rotationMatrix = new Matrix4().makeRotationFromEuler(optimalRotation);
-            result.applyMatrix4(rotationMatrix);
-            
-            // Centra e sposta il modello in modo che poggi sul piano Y = 0
-            const bbox = new Box3().setFromBufferAttribute(result.attributes.position as BufferAttribute);
-            const center = new Vector3();
-            bbox.getCenter(center);
-            const size = new Vector3();
-            bbox.getSize(size);
-            
-            // Trasla per centrare X e Z, ma metti la base su Y = 0
-            result.translate(-center.x, -bbox.min.y, -center.z);
+            // Centra la geometria sull'origine
+            const center = new THREE.Vector3();
+            result.boundingBox?.getCenter(center);
+            result.translate(-center.x, -center.y, -center.z);
             
             if (isSubscribed) {
               setGeometry(result);
               console.log("STL geometry loaded successfully");
               
-              // Aggiorna le dimensioni
+              // Calcola dimensioni
               if (result.boundingBox) {
-                const finalSize = new Vector3();
-                result.computeBoundingBox();
-                result.boundingBox.getSize(finalSize);
-                onDimensions?.({
-                  x: Math.abs(finalSize.x),
-                  y: Math.abs(finalSize.y),
-                  z: Math.abs(finalSize.z)
-                });
+                const size = new THREE.Vector3();
+                result.boundingBox.getSize(size);
+                onDimensions?.({ x: size.x, y: size.y, z: size.z });
               }
 
               // Se c'è onAnalysis
@@ -180,75 +124,58 @@ function Model({ file, fileType, onAnalysis, onDimensions }: ModelViewerProps) {
             console.log("Parsing OBJ file...");
             const result = (loader as OBJLoader).parse(reader.result);
             
-            // Trova la mesh principale
-            let mainMesh: THREE.Mesh<THREE.BufferGeometry> | null = null;
+            // Calcola bounding box del gruppo completo
+            const bbox = new THREE.Box3().setFromObject(result);
+            const center = new THREE.Vector3();
+            bbox.getCenter(center);
+            
+            // Centra l'intero gruppo
+            result.position.set(-center.x, -center.y, -center.z);
+            
+            let dimsFound = false;
+
             result.traverse((child: Object3D) => {
-              if (child instanceof THREE.Mesh && child.geometry instanceof THREE.BufferGeometry) {
-                mainMesh = child;
+              if (child instanceof THREE.Mesh) {
+                if (!child.geometry.hasAttribute('normal')) {
+                  child.geometry.computeVertexNormals();
+                }
+                
+                // Materiale migliorato per la visualizzazione
+                child.material = new THREE.MeshPhysicalMaterial({
+                  color: 0xdddddd,
+                  metalness: 0.2,
+                  roughness: 0.4,
+                  clearcoat: 0.2,
+                  clearcoatRoughness: 0.2,
+                  reflectivity: 1
+                });
+
+                // Calcolo dimensioni child
+                child.geometry.computeBoundingBox();
+                if (child.geometry.boundingBox) {
+                  const size = new THREE.Vector3();
+                  child.geometry.boundingBox.getSize(size);
+                  dimsFound = true;
+                  onDimensions?.({ x: size.x, y: size.y, z: size.z });
+                }
               }
             });
-
-            if (mainMesh && mainMesh.geometry) {
-              // Applica la rotazione ottimale alla geometria
-              const optimalRotation = findOptimalOrientation(mainMesh.geometry);
-              const rotationMatrix = new Matrix4().makeRotationFromEuler(optimalRotation);
-              mainMesh.geometry.applyMatrix4(rotationMatrix);
+            
+            if (isSubscribed) {
+              setGeometry(result);
+              console.log("OBJ geometry loaded successfully");
               
-              // Calcola bounding box del gruppo completo
-              const bbox = new Box3().setFromObject(result);
-              const center = new Vector3();
-              const size = new Vector3();
-              bbox.getCenter(center);
-              bbox.getSize(size);
-              
-              // Centra e sposta il modello in modo che poggi sul piano Y = 0
-              result.position.set(-center.x, -bbox.min.y, -center.z);
-              
-              let dimsFound = false;
-
-              result.traverse((child: Object3D) => {
-                if (child instanceof THREE.Mesh) {
-                  if (!child.geometry.hasAttribute('normal')) {
-                    child.geometry.computeVertexNormals();
-                  }
-                  
-                  // Materiale migliorato per la visualizzazione
-                  child.material = new THREE.MeshPhysicalMaterial({
-                    color: 0xdddddd,
-                    metalness: 0.2,
-                    roughness: 0.4,
-                    clearcoat: 0.2,
-                    clearcoatRoughness: 0.2,
-                    reflectivity: 1
-                  });
-
-                  // Calcolo dimensioni child
-                  child.geometry.computeBoundingBox();
-                  if (child.geometry.boundingBox) {
-                    const meshSize = new Vector3();
-                    child.geometry.boundingBox.getSize(meshSize);
-                    dimsFound = true;
-                    onDimensions?.({
-                      x: Math.abs(meshSize.x),
-                      y: Math.abs(meshSize.y),
-                      z: Math.abs(meshSize.z)
-                    });
-                  }
-                }
-              });
-              
-              if (isSubscribed) {
-                setGeometry(result);
-                console.log("OBJ geometry loaded successfully");
-                
-                // Se non abbiamo trovato dimensioni in un mesh, usa il bounding box del gruppo
-                if (!dimsFound) {
-                  onDimensions?.({
-                    x: Math.abs(size.x),
-                    y: Math.abs(size.y),
-                    z: Math.abs(size.z)
-                  });
-                }
+              // onAnalysis
+              if (onAnalysis && result.children[0] instanceof THREE.Mesh) {
+                const analysis = analyzeGeometry(result.children[0].geometry);
+                onAnalysis(analysis);
+              }
+              // Se non abbiamo trovato dimensioni in un mesh, potresti tentare boundingBox del group
+              if (!dimsFound) {
+                const groupBox = new THREE.Box3().setFromObject(result);
+                const size = new THREE.Vector3();
+                groupBox.getSize(size);
+                onDimensions?.({ x: size.x, y: size.y, z: size.z });
               }
             }
           } catch (err) {
@@ -426,11 +353,7 @@ export default function ModelViewer({
           penumbra={1} 
           castShadow 
         />
-        <PerspectiveCamera 
-          makeDefault 
-          position={[5, 5, 5]} 
-          fov={35}
-        />
+        <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={35} />
         <Suspense fallback={<LoadingSpinner />}>
           <Model 
             file={file} 
@@ -448,17 +371,13 @@ export default function ModelViewer({
           makeDefault
         />
         <ContactShadows
-          position={[0, -0.01, 0]}
+          position={[0, -1.5, 0]}
           opacity={0.6}
           scale={10}
           blur={1.5}
           far={1.5}
         />
-        <mesh 
-          rotation={[-Math.PI / 2, 0, 0]} 
-          position={[0, -0.01, 0]} 
-          receiveShadow
-        >
+        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.51, 0]} receiveShadow>
           <planeGeometry args={[20, 20]} />
           <meshStandardMaterial 
             color="#222" 
