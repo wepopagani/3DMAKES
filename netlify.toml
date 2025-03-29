@@ -2,34 +2,37 @@
   command = "npm run build"
   publish = "dist"
   functions = "netlify/functions"
-  
+
 [dev]
   command = "npm run dev"
   port = 3000
-  functions = "netlify/functions"
+  functionsPort = 8888
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 
-[forms]
-  [forms.contact]
-    name = "contact"
-    success_url = "/success"
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+  force = true
+  headers = { Access-Control-Allow-Origin = "*" }
 
 [functions]
   node_bundler = "esbuild"
 
 [build.processing]
   skip_processing = false
+
 [build.processing.html]
   pretty_urls = true
-[build.processing.images]
-  compress = true
+
 [build.processing.css]
   bundle = true
   minify = true
+
 [build.processing.js]
   bundle = true
   minify = true
@@ -37,3 +40,8 @@
 # Configurazione per il caricamento dei file
 [build.environment]
   MAX_FILE_SIZE = "52428800" # 50MB in bytes 
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*" 

@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import ModelViewer from "./ModelViewer";
 import { translations, Language } from "../utils/translations";
+import 'nprogress/nprogress.css';
 
 interface QuoteCalculatorProps {
   language: Language;
@@ -181,98 +182,102 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
     },
   ];
 
+  // Modifica la funzione simulateProgress per essere più lenta e graduale
+  const simulateProgress = () => {
+    setUploadProgress(0);
+    const interval = setInterval(() => {
+      setUploadProgress(prev => {
+        if (prev >= 92) {
+          clearInterval(interval);
+          return 92;
+        }
+        // Incrementopiù piccolo e costante
+        return Math.min(90, Math.floor(prev + 1));
+      });
+    }, 100); // Aggiornamento ogni 50ms
+    
+    return interval;
+  };
+
   // Handler invio al server
   const handleCalculate = useCallback(async () => {
     if (!file) {
       setError("Nessun file selezionato");
       return;
     }
-    // Check dimensioni
-    if (!modelDims) {
-      setError("Attendi il rendering o verifica il modello: dimensioni non disponibili.");
-      return;
-    }
-    
-    const { x, y, z } = modelDims;
-    
-    // Nuova logica per il controllo delle dimensioni minime
-    const dimensionsUnderMin = [x, y, z].filter(dim => dim < MIN_DIM).length;
-    if (dimensionsUnderMin >= 2) {
-      setError(`Il modello è troppo piccolo: almeno due dimensioni sono sotto ${MIN_DIM}mm.`);
-      return;
-    }
-
-    // Controllo dimensioni massime (invariato)
-    if (x > MAX_DIM || y > MAX_DIM || z > MAX_DIM) {
-      setError(`Il modello è troppo grande (max ${MAX_DIM}mm). Contattaci per stamparlo in più parti.`);
-      return;
-    }
-
-    setIsProcessing(true);
-    setError(null);
-    setPrintTime(null);
-    setUploadProgress(0);
-    setSinglePrice(null);
-
-    // Barra fake
-    const interval = setInterval(() => {
-      setUploadProgress((prev) => {
-        if (prev >= 95) {
-          clearInterval(interval);
-          return 95;
-        }
-        return prev + 1;
-      });
-    }, 150);
 
     try {
+      if (file.size > MAX_FILE_SIZE) {
+        setError(`File troppo grande (max ${Math.round(MAX_FILE_SIZE/1024/1024)}MB). Per file più grandi, contattaci.`);
+        return;
+      }
+
+      setIsProcessing(true);
+      setError(null);
+      setPrintTime(null);
+      setSinglePrice(null);
+
+      // Avvia la simulazione del progresso
+      const progressInterval = simulateProgress();
+
       const formData = new FormData();
       formData.append("file", file);
       formData.append("quality", quality);
+      formData.append("material", material);
 
       const res = await fetch(API_URL, {
         method: "POST",
-        body: formData,
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: formData
       });
+
+      // Ferma la simulazione e completa il progresso gradualmente
+      clearInterval(progressInterval);
+      
+      // Completa il progresso da 85 a 100 gradualmente
+      const completeProgress = setInterval(() => {
+        setUploadProgress(prev => {
+          if (prev >= 100) {
+            clearInterval(completeProgress);
+            return 100;
+          }
+          return Math.min(100, Math.floor(prev + 1));
+        });
+      }, 30);
 
       if (!res.ok) {
         if (res.status === 413) {
-          throw new Error(`File troppo grande per il server. Per file più grandi, contattaci.`);
+          throw new Error(`File troppo grande per il server (max 50MB). Per file più grandi, contattaci.`);
         }
-        throw new Error(`Errore del server: ${res.status}`);
-      }
-
-      clearInterval(interval);
-
-      // Completa la barra di progresso
-      for (const p of [96, 97, 98, 99, 100]) {
-        setUploadProgress(p);
-        await new Promise((r) => setTimeout(r, 100));
+        const errorText = await res.text();
+        throw new Error(`Errore del server (${res.status}): ${errorText}`);
       }
 
       const data = await res.json();
+      
       if (data.error) {
-        setError(data.error);
-      } else {
-        setPrintTime(data.print_time);
-
-        // print_time in minuti
-        const printTimeHours = parseFloat(data.print_time) / 60;
-        const materialGrams = parseFloat(data.filament_used_grams);
-
-        // Calcola il costo per 1 pezzo
-        const sp = calculateSinglePrice(printTimeHours, materialGrams);
-        setSinglePrice(sp);
+        throw new Error(data.error);
       }
+
+      // Aspetta che il progresso sia completato
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      setPrintTime(data.print_time);
+      const printTimeHours = parseFloat(data.print_time) / 60;
+      const materialGrams = parseFloat(data.filament_used_grams);
+      const sp = calculateSinglePrice(printTimeHours, materialGrams);
+      setSinglePrice(sp);
+
     } catch (err: any) {
+      console.error("Errore durante l'upload:", err);
       setError(err.message || "Errore di connessione con il server");
-      console.error("Errore upload:", err);
     } finally {
       setIsProcessing(false);
       setUploadProgress(0);
-      clearInterval(interval); // Assicurati di pulire l'intervallo
     }
-  }, [file, modelDims, quality, calculateSinglePrice]);
+  }, [file, quality, material, calculateSinglePrice]);
 
   // Cambia materiale se qualitá = 0.05 => resin
   useEffect(() => {
@@ -561,7 +566,7 @@ export default function QuoteCalculator({ language }: QuoteCalculatorProps) {
                   />
                 )}
                 <span className="relative z-10">
-                  {isProcessing ? `Elaborazione ${uploadProgress}%` : t.quote.calculatePrice}
+                  {isProcessing ? `Elaborazione ${Math.floor(uploadProgress)}%` : t.quote.calculatePrice}
                 </span>
               </button>
 

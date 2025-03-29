@@ -3,39 +3,31 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 
 export default defineConfig({
-  plugins: [
-    react(),
-  ],
+  plugins: [react()],
   server: {
-    headers: {
-      // Rimuovi l'intestazione CSP qui
-    },
-    allowedHosts: [
-      'localhost',
-      'd29e-89-217-100-200.ngrok-free.app',
-      '*.ngrok-free.app'
-    ]
-  },
-  define: {
-    'process.env': process.env,
-  },
-  assetsInclude: ['**/*.pdf'],
-  publicDir: 'public',
-  build: {
-    rollupOptions: {
-      output: {
-        assetFileNames: (assetInfo) => {
-          if (assetInfo.name.endsWith('.pdf')) {
-            return 'documents/[name][extname]';
-          }
-          return 'assets/[name]-[hash][extname]';
-        },
-      },
-    },
+    port: 5173,
+    cors: true,
+    proxy: {
+      '/api': {
+        target: 'https://short.3dmakes.ch',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, '/api'),
+        configure: (proxy, _options) => {
+          proxy.on('error', (err, _req, _res) => {
+            console.log('proxy error', err);
+          });
+          proxy.on('proxyReq', (proxyReq, req, _res) => {
+            proxyReq.setHeader('Origin', 'https://short.3dmakes.ch');
+            proxyReq.setHeader('Host', 'short.3dmakes.ch');
+          });
+        }
+      }
+    }
   },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src')
     }
-  },
+  }
 });

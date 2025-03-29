@@ -16,11 +16,21 @@ const LinkShortener: React.FC = () => {
     setError('');
     
     try {
-      const response = await fetch('https://server.3dmakes.ch:3000/api/shorten', {
+      const response = await fetch('/api/shorten', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ originalUrl })
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ 
+          originalUrl,
+          source: 'web'
+        })
       });
+      
+      if (!response.ok) {
+        throw new Error(`Errore del server: ${response.status}`);
+      }
       
       const data = await response.json();
       
@@ -28,10 +38,11 @@ const LinkShortener: React.FC = () => {
         setShortUrl(data.shortUrl);
         setShowResult(true);
       } else {
-        setError('Errore durante l\'accorciamento');
+        setError(data.message || 'Errore durante l\'accorciamento');
       }
-    } catch (err) {
-      setError('Errore di connessione al server');
+    } catch (err: any) {
+      console.error('Errore:', err);
+      setError(err.message || 'Errore di connessione al server');
     } finally {
       setLoading(false);
     }
