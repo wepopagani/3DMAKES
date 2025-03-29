@@ -10,8 +10,8 @@ interface ModelViewerProps {
   fileType: string;
   onAnalysis?: (analysis: ModelAnalysis) => void;
   uploadPrompt?: string;
-  // AGGIUNTA: callback per dimensioni
   onDimensions?: (dims: { x: number; y: number; z: number }) => void;
+  onOrientationChange?: (rotation: { x: number; y: number; z: number }) => void;
 }
 
 // Use window.matchMedia instead of navigator.userAgent
@@ -19,202 +19,107 @@ const isMobile = () => {
   return window.matchMedia('(max-width: 768px)').matches;
 };
 
-function Model({ file, fileType, onAnalysis, onDimensions }: ModelViewerProps) {
+// Aggiungi questa funzione per calcolare la posizione ottimale
+const calculateOptimalRotation = (geometry: THREE.BufferGeometry | THREE.Group) => {
+  let bbox: THREE.Box3;
+  
+  if (geometry instanceof THREE.BufferGeometry) {
+    bbox = new THREE.Box3().setFromBufferAttribute(geometry.attributes.position as THREE.BufferAttribute);
+  } else {
+    bbox = new THREE.Box3().setFromObject(geometry);
+  }
+
+  const size = new THREE.Vector3();
+  bbox.getSize(size);
+
+  // Calcola il rapporto tra le dimensioni
+  const ratio = {
+    xy: size.x / size.y,
+    xz: size.x / size.z,
+    yz: size.y / size.z
+  };
+
+  // Determina la rotazione ottimale
+  const rotation = new THREE.Vector3(0, 0, 0);
+
+  // Se l'oggetto è più alto che largo, ruotalo di 90 gradi
+  if (size.z > size.x && size.z > size.y) {
+    rotation.x = Math.PI / 2;
+  }
+  // Se l'oggetto è più largo che alto, ruotalo di 90 gradi
+  else if (size.x > size.z && size.x > size.y) {
+    rotation.z = Math.PI / 2;
+  }
+
+  // Calcola il centro
+  const center = new THREE.Vector3();
+  bbox.getCenter(center);
+
+  return {
+    rotation,
+    center,
+    size
+  };
+};
+
+interface PlacementPlane {
+  normal: THREE.Vector3;
+  area: number;
+  rotation: THREE.Euler;
+  position: THREE.Vector3;
+  dimensions: THREE.Vector2;
+}
+
+function Model({ file, fileType, onDimensions }: ModelViewerProps) {
   const [geometry, setGeometry] = useState<THREE.BufferGeometry | THREE.Group | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const readerRef = useRef<FileReader | null>(null);
   const modelRef = useRef<THREE.Mesh | THREE.Group>(null);
 
-  // Auto-rotation state
-  const [isRotating, setIsRotating] = useState(true);
-  
-  // Logging per debug
   useEffect(() => {
-    console.log("ModelViewer rendering with file:", file ? file.name : "none");
-    console.log("File type:", fileType);
-  }, [file, fileType]);
-  
-  // Handle auto-rotation
-  useFrame(() => {
-    if (modelRef.current && isRotating) {
-      modelRef.current.rotation.y += 0.01;
-    }
-  });
+    if (!file) return;
 
-  useEffect(() => {
-    if (!file) {
-      console.log("No file provided to ModelViewer");
-      return;
-    }
-
-    let isSubscribed = true;
     const loader = fileType.toLowerCase() === 'stl' ? new STLLoader() : new OBJLoader();
-    
-    console.log("Loading 3D model with loader:", fileType.toLowerCase());
-    
-    if (readerRef.current) {
-      readerRef.current.abort();
-      readerRef.current = null;
-    }
-
     const reader = new FileReader();
-    readerRef.current = reader;
-
-    reader.onerror = (e) => {
-      if (!isSubscribed) return;
-      console.error("FileReader error:", e);
-      setError('Failed to read the file. Please try again.');
-    };
 
     reader.onload = () => {
-      if (!isSubscribed) return;
-
       try {
-        if (!reader.result) {
-          throw new Error('File is empty');
-        }
-
-        console.log("File loaded, processing...");
-        
         if (fileType.toLowerCase() === 'stl') {
-          if (!(reader.result instanceof ArrayBuffer)) {
-            throw new Error('Invalid STL file format');
+          const result = (loader as STLLoader).parse(reader.result as ArrayBuffer);
+          result.computeBoundingBox();
+          const bbox = result.boundingBox!;
+          const center = new THREE.Vector3();
+          bbox.getCenter(center);
+          result.translate(-center.x, -center.y, -center.z);
+          
+          const size = new THREE.Vector3();
+          bbox.getSize(size);
+          onDimensions?.({ x: size.x, y: size.y, z: size.z });
+          
+          if (!result.hasAttribute('normal')) {
+            result.computeVertexNormals();
           }
-
-          try {
-            console.log("Parsing STL file...");
-            const result = (loader as STLLoader).parse(reader.result);
-            if (!result.hasAttribute('normal')) {
-              result.computeVertexNormals();
-            }
-            result.computeBoundingBox();
-            
-            // Centra la geometria sull'origine
-            const center = new THREE.Vector3();
-            result.boundingBox?.getCenter(center);
-            result.translate(-center.x, -center.y, -center.z);
-            
-            if (isSubscribed) {
-              setGeometry(result);
-              console.log("STL geometry loaded successfully");
-              
-              // Calcola dimensioni
-              if (result.boundingBox) {
-                const size = new THREE.Vector3();
-                result.boundingBox.getSize(size);
-                onDimensions?.({ x: size.x, y: size.y, z: size.z });
-              }
-
-              // Se c'è onAnalysis
-              if (onAnalysis) {
-                const analysis = analyzeGeometry(result);
-                onAnalysis(analysis);
-              }
-            }
-          } catch (err) {
-            console.error('Error parsing STL:', err);
-            setError('Invalid or corrupted STL file');
-          }
+          setGeometry(result);
         } else {
-          if (typeof reader.result !== 'string') {
-            throw new Error('Invalid OBJ file format');
-          }
-
-          try {
-            console.log("Parsing OBJ file...");
-            const result = (loader as OBJLoader).parse(reader.result);
-            
-            // Calcola bounding box del gruppo completo
-            const bbox = new THREE.Box3().setFromObject(result);
-            const center = new THREE.Vector3();
-            bbox.getCenter(center);
-            
-            // Centra l'intero gruppo
-            result.position.set(-center.x, -center.y, -center.z);
-            
-            let dimsFound = false;
-
-            result.traverse((child: Object3D) => {
-              if (child instanceof THREE.Mesh) {
-                if (!child.geometry.hasAttribute('normal')) {
-                  child.geometry.computeVertexNormals();
-                }
-                
-                // Materiale migliorato per la visualizzazione
-                child.material = new THREE.MeshPhysicalMaterial({
-                  color: 0xdddddd,
-                  metalness: 0.2,
-                  roughness: 0.4,
-                  clearcoat: 0.2,
-                  clearcoatRoughness: 0.2,
-                  reflectivity: 1
-                });
-
-                // Calcolo dimensioni child
-                child.geometry.computeBoundingBox();
-                if (child.geometry.boundingBox) {
-                  const size = new THREE.Vector3();
-                  child.geometry.boundingBox.getSize(size);
-                  dimsFound = true;
-                  onDimensions?.({ x: size.x, y: size.y, z: size.z });
-                }
-              }
-            });
-            
-            if (isSubscribed) {
-              setGeometry(result);
-              console.log("OBJ geometry loaded successfully");
-              
-              // onAnalysis
-              if (onAnalysis && result.children[0] instanceof THREE.Mesh) {
-                const analysis = analyzeGeometry(result.children[0].geometry);
-                onAnalysis(analysis);
-              }
-              // Se non abbiamo trovato dimensioni in un mesh, potresti tentare boundingBox del group
-              if (!dimsFound) {
-                const groupBox = new THREE.Box3().setFromObject(result);
-                const size = new THREE.Vector3();
-                groupBox.getSize(size);
-                onDimensions?.({ x: size.x, y: size.y, z: size.z });
-              }
-            }
-          } catch (err) {
-            console.error('Error parsing OBJ:', err);
-            setError('Invalid or corrupted OBJ file');
-          }
+          const result = (loader as OBJLoader).parse(reader.result as string);
+          const bbox = new THREE.Box3().setFromObject(result);
+          const center = new THREE.Vector3();
+          bbox.getCenter(center);
+          result.position.set(-center.x, -center.y, -center.z);
+          
+          const size = new THREE.Vector3();
+          bbox.getSize(size);
+          onDimensions?.(size);
+          
+          setGeometry(result);
         }
       } catch (err) {
-        console.error('Error processing file:', err);
-        setError('Failed to process the 3D model');
+        console.error('Error processing model:', err);
+        setError('Errore nel processamento del modello 3D');
       }
     };
 
-    try {
-      if (file.size === 0) {
-        setError('File is empty');
-        return;
-      }
-
-      console.log("Starting file read...");
-      
-      if (fileType.toLowerCase() === 'obj') {
-        reader.readAsText(file);
-      } else {
-        reader.readAsArrayBuffer(file);
-      }
-    } catch (err) {
-      console.error('Error initiating file read:', err);
-      setError('Failed to read the file');
-    }
-
-    return () => {
-      isSubscribed = false;
-      if (readerRef.current) {
-        readerRef.current.abort();
-        readerRef.current = null;
-      }
-    };
-  }, [file, fileType, onAnalysis, onDimensions]);
+    reader.readAsArrayBuffer(file);
+  }, [file, fileType, onDimensions]);
 
   if (error) {
     return (
@@ -222,14 +127,7 @@ function Model({ file, fileType, onAnalysis, onDimensions }: ModelViewerProps) {
         <boxGeometry args={[1, 1, 1]} />
         <meshStandardMaterial color="red" />
         <Html position={[0, 1.5, 0]}>
-          <div style={{
-            background: 'rgba(0,0,0,0.7)',
-            color: 'red',
-            padding: '10px',
-            borderRadius: '5px',
-            width: '200px',
-            textAlign: 'center'
-          }}>
+          <div className="bg-black/70 text-red-500 p-3 rounded text-center">
             {error}
           </div>
         </Html>
@@ -238,31 +136,22 @@ function Model({ file, fileType, onAnalysis, onDimensions }: ModelViewerProps) {
   }
 
   if (!geometry) {
-    return (
-      <mesh>
-        <sphereGeometry args={[0.5, 16, 16]} />
-        <meshStandardMaterial color="gray" wireframe />
-      </mesh>
-    );
+    return null;
   }
 
   if (geometry instanceof THREE.BufferGeometry) {
     const size = new THREE.Vector3();
     geometry.boundingBox?.getSize(size);
     const maxDim = Math.max(size.x, size.y, size.z);
-    
-    // Normalizza le dimensioni del modello per adattarlo alla vista
     const scale = maxDim > 0 ? 4 / maxDim : 1;
 
     return (
       <mesh 
         ref={modelRef as any}
         scale={[scale, scale, scale]}
-        position={[0, 0, 0]}
-        onPointerOver={() => setIsRotating(false)}
-        onPointerOut={() => setIsRotating(true)}
-        castShadow
-        receiveShadow
+        position={[0, 2, 0]}
+        castShadow={false}
+        receiveShadow={false}
       >
         <primitive object={geometry} attach="geometry" />
         <meshPhysicalMaterial
@@ -276,115 +165,69 @@ function Model({ file, fileType, onAnalysis, onDimensions }: ModelViewerProps) {
         />
       </mesh>
     );
-  } else {
-    // Calcola dimensioni del gruppo per scala appropriata
-    const bbox = new THREE.Box3().setFromObject(geometry);
-    const size = new THREE.Vector3();
-    bbox.getSize(size);
-    const maxDim = Math.max(size.x, size.y, size.z);
-    
-    // Normalizza le dimensioni del modello
-    const scale = maxDim > 0 ? 4 / maxDim : 1;
-
-    return (
-      <primitive 
-        ref={modelRef as any}
-        object={geometry} 
-        scale={[scale, scale, scale]}
-        position={[0, 0, 0]}
-        onPointerOver={() => setIsRotating(false)}
-        onPointerOut={() => setIsRotating(true)}
-      />
-    );
   }
-}
 
-function LoadingSpinner() {
+  const bbox = new THREE.Box3().setFromObject(geometry);
+  const size = new THREE.Vector3();
+  bbox.getSize(size);
+  const maxDim = Math.max(size.x, size.y, size.z);
+  const scale = maxDim > 0 ? 4 / maxDim : 1;
+
   return (
-    <mesh>
-      <torusGeometry args={[1, 0.2, 16, 32]} />
-      <meshStandardMaterial color="white" />
-    </mesh>
+    <primitive 
+      ref={modelRef as any}
+      object={geometry} 
+      scale={[scale, scale, scale]}
+      position={[0, 2, 0]}
+    />
   );
 }
 
-export default function ModelViewer({ 
-  file, 
-  fileType, 
-  onAnalysis, 
-  uploadPrompt = 'Carica un modello 3D per la visualizzazione', 
-  onDimensions 
-}: ModelViewerProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  
+export default function ModelViewer({ file, fileType, onDimensions }: ModelViewerProps) {
   if (!file) {
     return (
       <div className="h-full flex items-center justify-center bg-gray-800 rounded-md">
-        <p className="text-gray-400">{uploadPrompt}</p>
+        <p className="text-gray-400">Carica un modello 3D</p>
       </div>
     );
   }
 
   return (
-    <div ref={containerRef} className="h-full w-full relative">
+    <div className="h-full w-full relative">
+      <div className="absolute top-4 right-4 z-10">
+        <div className="group relative">
+          <button 
+            className="w-8 h-8 flex items-center justify-center bg-gray-900/50 hover:bg-gray-800/70 text-gray-400 hover:text-white rounded-full transition-all duration-200"
+            title="Informazioni"
+          >
+            i
+          </button>
+          <div className="absolute right-0 mt-2 w-64 bg-gray-900/90 backdrop-blur-sm text-white px-4 py-3 rounded-xl text-sm opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 shadow-xl">
+            Non ti piace l'orientamento? Controlla nel tuo software la posizione e ricaricalo come preferisci
+          </div>
+        </div>
+      </div>
 
-      <Canvas shadows className="w-full h-full">
+      <Canvas className="w-full h-full">
         <color attach="background" args={['#1a1a1a']} />
-        <ambientLight intensity={0.6} />
-        <directionalLight
-          position={[10, 10, 10]}
-          intensity={1.8}
-          castShadow
-          shadow-mapSize={[2048, 2048]}
-        />
-        <directionalLight
-          position={[-5, 5, -5]}
-          intensity={0.8}
-          color="#a0a0ff"
-        />
-        <directionalLight
-          position={[-10, -10, -10]}
-          intensity={0.6}
-        />
-        <spotLight 
-          position={[0, 15, 0]} 
-          intensity={0.5} 
-          angle={0.5} 
-          penumbra={1} 
-          castShadow 
-        />
-        <PerspectiveCamera makeDefault position={[0, 0, 10]} fov={35} />
-        <Suspense fallback={<LoadingSpinner />}>
-          <Model 
-            file={file} 
-            fileType={fileType} 
-            onAnalysis={onAnalysis} 
-            onDimensions={onDimensions} 
-          />
+        <ambientLight intensity={0.7} />
+        <directionalLight position={[10, 10, 10]} intensity={0.8} />
+        <PerspectiveCamera makeDefault position={[0, 2, 10]} fov={35} />
+        <Suspense fallback={null}>
+          <Model file={file} fileType={fileType} onDimensions={onDimensions} />
         </Suspense>
         <OrbitControls 
           enableDamping 
           dampingFactor={0.1}
           minDistance={1}
           maxDistance={100}
-          target={[0, 0, 0]}
-          makeDefault
         />
-        <ContactShadows
-          position={[0, -1.5, 0]}
-          opacity={0.6}
-          scale={10}
-          blur={1.5}
-          far={1.5}
-        />
-        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.51, 0]} receiveShadow>
+        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
           <planeGeometry args={[20, 20]} />
           <meshStandardMaterial 
-            color="#222" 
-            metalness={0.2} 
-            roughness={0.8} 
-            opacity={0.4} 
-            transparent 
+            color="#333" 
+            metalness={0}
+            roughness={1}
           />
         </mesh>
       </Canvas>

@@ -7,6 +7,8 @@ const AccessoriRistorativi: React.FC = () => {
     "/images/accessori/cubo.png",
     "/images/accessori/Sottobicchiere.png",
     "/images/accessori/portaborse.png",
+    "/images/accessori/poggiabacchette.png",
+    "/images/accessori/zucchero.png",
   ];
 
   const prodotti = [
@@ -30,6 +32,20 @@ const AccessoriRistorativi: React.FC = () => {
       descrizione: "Elegante poggia borse da tavolo, progettato per tenere le borse dei clienti sollevate da terra in modo sicuro e igienico. Personalizzabile con il logo del tuo locale, disponibile in diverse finiture e colori per abbinarsi perfettamente al tuo arredamento.",
       categoria: "Accessori",
       immagine: immagini[2]
+    },
+    {
+      id: 4,
+      titolo: "Porta Bacchette/Posate Personalizzato",
+      descrizione: "Elegante porta bacchette e posate da tavolo, perfetto per ristoranti di sushi e non solo. Design minimalista con spazio per il logo del tuo locale in rilievo. Realizzato in materiale food-safe e lavabile in lavastoviglie. Disponibile in varie dimensioni e colori per adattarsi al tuo stile. Ideale anche come porta posate tradizionale.",
+      categoria: "Tavola",
+      immagine: immagini[3]
+    },
+    {
+      id: 5,
+      titolo: "Dispenser Zucchero Personalizzato",
+      descrizione: "Dispenser per zucchero e dolcificanti dal design moderno ed elegante. Personalizzabile con il logo del tuo locale e disponibile in diverse forme e dimensioni. Dotato di sistema anti-umidità e facile da ricaricare. Realizzato in materiale alimentare di alta qualità, resistente e durevole. Perfetto per bar, caffetterie e ristoranti.",
+      categoria: "Accessori",
+      immagine: immagini[4]
     }
   ];
 
