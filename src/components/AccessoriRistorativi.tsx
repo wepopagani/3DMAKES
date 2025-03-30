@@ -36,7 +36,7 @@ const AccessoriRistorativi: React.FC = () => {
     {
       id: 4,
       titolo: "Porta Bacchette/Posate Personalizzato",
-      descrizione: "Elegante porta bacchette e posate da tavolo, perfetto per ristoranti di sushi e non solo. Design minimalista con spazio per il logo del tuo locale in rilievo. Realizzato in materiale food-safe e lavabile in lavastoviglie. Disponibile in varie dimensioni e colori per adattarsi al tuo stile. Ideale anche come porta posate tradizionale.",
+      descrizione: "Elegante porta bacchette e posate da tavolo, perfetto per ristoranti di sushi e non solo. Design minimalista con spazio per il logo del tuo locale in rilievo. Realizzato in materiale food-safe e disponibile in varie dimensioni e colori per adattarsi al tuo stile. Ideale anche come porta posate tradizionale.",
       categoria: "Tavola",
       immagine: immagini[3]
     },

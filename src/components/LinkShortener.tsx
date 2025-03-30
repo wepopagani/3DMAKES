@@ -16,24 +16,27 @@ const LinkShortener: React.FC = () => {
     setError('');
     
     try {
-      // Usa direttamente l'URL del server in sviluppo
-      const apiUrl = import.meta.env.DEV 
-        ? 'https://short.3dmakes.ch/api/shorten'
-        : '/api/shorten';
-
-      const response = await fetch(apiUrl, {
+      // Implementazione di una soluzione locale per lo sviluppo
+      if (import.meta.env.DEV) {
+        // Simuliamo una risposta positiva per lo sviluppo locale
+        setTimeout(() => {
+          const mockShortUrl = `https://short.3dmakes.ch/${Math.random().toString(36).substring(2, 8)}`;
+          setShortUrl(mockShortUrl);
+          setShowResult(true);
+          setLoading(false);
+        }, 800); // simuliamo un ritardo di rete
+        return;
+      }
+      
+      // In produzione, usiamo la funzione Netlify
+      const response = await fetch('/.netlify/functions/shorten', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          // Aggiungi l'origin corretto
-          'Origin': window.location.origin
+          'Accept': 'application/json'
         },
-        // Aggiungi credentials se necessario
-        credentials: 'include',
         body: JSON.stringify({ 
           originalUrl,
-          // Aggiungi altri parametri se necessario
           source: 'web'
         })
       });
