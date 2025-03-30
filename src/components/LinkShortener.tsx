@@ -16,8 +16,8 @@ const LinkShortener: React.FC = () => {
     setError('');
     
     try {
-      // Punto direttamente al server Raspberry Pi
-      const apiUrl = 'https://short.3dmakes.ch/api/shorten';
+      // Usa il proxy configurato in vite.config.ts invece dell'URL diretto
+      const apiUrl = '/api/shorten';
       
       const response = await fetch(apiUrl, {
         method: 'POST',

@@ -21,6 +21,11 @@ export default defineConfig({
             proxyReq.setHeader('Origin', 'https://short.3dmakes.ch');
             proxyReq.setHeader('Host', 'short.3dmakes.ch');
           });
+          proxy.on('proxyRes', (proxyRes, req, res) => {
+            proxyRes.headers['Access-Control-Allow-Origin'] = '*';
+            proxyRes.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS';
+            proxyRes.headers['Access-Control-Allow-Headers'] = 'Content-Type, Accept';
+          });
         }
       }
     }

@@ -18,6 +18,16 @@ interface AddressResult {
   };
 }
 
+// Interfaccia per le proprietà dell'autocomplete di Google
+interface GooglePlace {
+  address_components: {
+    long_name: string;
+    short_name: string;
+    types: string[];
+  }[];
+  formatted_address: string;
+}
+
 // Aggiungi le lingue supportate
 const lingueDisponibili = [
   { codice: 'it', nome: 'Italiano' },
@@ -70,6 +80,108 @@ const VCardGenerator: React.FC = () => {
   
   // Aggiungi queste funzioni per la validazione
   const [errors, setErrors] = useState<Record<string, string>>({});
+  
+  const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  
+  // Carica Google Maps API
+  useEffect(() => {
+    // Verifico se lo script è già stato caricato
+    if (!document.getElementById('google-maps-script')) {
+      const script = document.createElement('script');
+      script.id = 'google-maps-script';
+      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAH-o9eHTwVsSgrFEvbDVunCbxJU_oddjs&libraries=places&language=it`;
+      script.async = true;
+      script.defer = true;
+      script.onload = initializeAutocomplete;
+      document.head.appendChild(script);
+    } else {
+      initializeAutocomplete();
+    }
+    
+    return () => {
+      // Cleanup se necessario
+      if (autocompleteRef.current) {
+        google.maps.event.clearInstanceListeners(autocompleteRef.current);
+      }
+    };
+  }, []);
+  
+  const initializeAutocomplete = () => {
+    if (inputRef.current && window.google) {
+      autocompleteRef.current = new google.maps.places.Autocomplete(inputRef.current, {
+        types: ['address'],
+        componentRestrictions: { country: ['it', 'ch'] }, // Italia e Svizzera
+        fields: ['address_components', 'formatted_address']
+      });
+      
+      autocompleteRef.current.addListener('place_changed', handlePlaceSelect);
+    }
+  };
+  
+  const handlePlaceSelect = () => {
+    if (autocompleteRef.current) {
+      const place = autocompleteRef.current.getPlace() as GooglePlace;
+      
+      if (place && place.address_components) {
+        console.log('Place selected:', place);
+        
+        // Estraggo le informazioni dall'indirizzo
+        let street = '';
+        let streetNumber = '';
+        let postalCode = '';
+        let city = '';
+        let state = '';
+        let country = '';
+        
+        place.address_components.forEach(component => {
+          const types = component.types;
+          
+          if (types.includes('route')) {
+            street = component.long_name;
+          }
+          
+          if (types.includes('street_number')) {
+            streetNumber = component.long_name;
+          }
+          
+          if (types.includes('postal_code')) {
+            postalCode = component.long_name;
+          }
+          
+          if (types.includes('locality')) {
+            city = component.long_name;
+          } else if (types.includes('administrative_area_level_3') && !city) {
+            city = component.long_name;
+          }
+          
+          if (types.includes('administrative_area_level_1')) {
+            state = component.short_name;
+          }
+          
+          if (types.includes('country')) {
+            country = component.long_name;
+          }
+        });
+        
+        // Aggiorno il formData con i dati estratti
+        setFormData(prev => ({
+          ...prev,
+          indirizzo: {
+            via: street,
+            numeroCivico: streetNumber,
+            citta: city,
+            cap: postalCode,
+            provincia: state,
+            paese: country
+          }
+        }));
+        
+        // Aggiorno il campo di visualizzazione con l'indirizzo completo
+        setAddressSearch(place.formatted_address);
+      }
+    }
+  };
   
   const validateInput = () => {
     const newErrors: Record<string, string> = {};
@@ -479,6 +591,23 @@ ${socialLines}END:VCARD`;
             
             <div className="md:col-span-2">
               <h3 className="text-lg font-medium mb-3 text-gray-300">Indirizzo</h3>
+              <div className="grid grid-cols-1 gap-3 mb-3">
+                <div>
+                  <label className="block text-gray-300 mb-1">Cerca indirizzo (Google Maps)</label>
+                  <input
+                    type="text"
+                    ref={inputRef}
+                    value={addressSearch}
+                    onChange={(e) => setAddressSearch(e.target.value)}
+                    placeholder="Inizia a digitare l'indirizzo..."
+                    className="w-full bg-gray-700 border border-gray-600 rounded p-2 text-white"
+                  />
+                  <p className="text-xs text-gray-400 mt-1">
+                    Seleziona un indirizzo dai suggerimenti per compilare automaticamente i campi
+                  </p>
+                </div>
+              </div>
+              
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-gray-300 mb-1">Via</label>

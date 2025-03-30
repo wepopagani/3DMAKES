@@ -1,6 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import QRCode from 'qrcode';
+
+// Interfaccia per le proprietà dell'autocomplete
+interface GooglePlace {
+  address_components: {
+    long_name: string;
+    short_name: string;
+    types: string[];
+  }[];
+  formatted_address: string;
+}
 
 interface PetTagData {
   proprietario: {
@@ -47,6 +56,103 @@ const NfcPetTag: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   
+  const [addressInput, setAddressInput] = useState('');
+  const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  
+  // Carica Google Maps API
+  useEffect(() => {
+    // Verifico se lo script è già stato caricato
+    if (!document.getElementById('google-maps-script')) {
+      const script = document.createElement('script');
+      script.id = 'google-maps-script';
+      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAH-o9eHTwVsSgrFEvbDVunCbxJU_oddjs&libraries=places&language=it`;
+      script.async = true;
+      script.defer = true;
+      script.onload = initializeAutocomplete;
+      document.head.appendChild(script);
+    } else {
+      initializeAutocomplete();
+    }
+    
+    return () => {
+      // Cleanup se necessario
+      if (autocompleteRef.current) {
+        google.maps.event.clearInstanceListeners(autocompleteRef.current);
+      }
+    };
+  }, []);
+  
+  const initializeAutocomplete = () => {
+    if (inputRef.current && window.google) {
+      autocompleteRef.current = new google.maps.places.Autocomplete(inputRef.current, {
+        types: ['address'],
+        componentRestrictions: { country: ['it', 'ch'] }, // Italia e Svizzera
+        fields: ['address_components', 'formatted_address']
+      });
+      
+      autocompleteRef.current.addListener('place_changed', handlePlaceSelect);
+    }
+  };
+  
+  const handlePlaceSelect = () => {
+    if (autocompleteRef.current) {
+      const place = autocompleteRef.current.getPlace() as GooglePlace;
+      
+      if (place && place.address_components) {
+        console.log('Place selected:', place);
+        
+        // Estraggo le informazioni dall'indirizzo
+        let street = '';
+        let streetNumber = '';
+        let postalCode = '';
+        let city = '';
+        let country = '';
+        
+        place.address_components.forEach(component => {
+          const types = component.types;
+          
+          if (types.includes('route')) {
+            street = component.long_name;
+          }
+          
+          if (types.includes('street_number')) {
+            streetNumber = component.long_name;
+          }
+          
+          if (types.includes('postal_code')) {
+            postalCode = component.long_name;
+          }
+          
+          if (types.includes('locality')) {
+            city = component.long_name;
+          } else if (types.includes('administrative_area_level_3') && !city) {
+            city = component.long_name;
+          }
+          
+          if (types.includes('country')) {
+            country = component.long_name;
+          }
+        });
+        
+        // Aggiorno il formData con i dati estratti
+        setFormData(prev => ({
+          ...prev,
+          proprietario: {
+            ...prev.proprietario,
+            via: street,
+            cap: postalCode,
+            citta: city,
+            paese: country
+          }
+        }));
+        
+        // Aggiorno il campo di visualizzazione con l'indirizzo completo
+        setAddressInput(place.formatted_address);
+      }
+    }
+  };
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     
@@ -91,60 +197,14 @@ const NfcPetTag: React.FC = () => {
       // URL della pagina di visualizzazione
       const viewUrl = `${window.location.origin}/pet-view?${params.toString()}`;
       
-      // Accorcia l'URL
-      try {
-        const response = await fetch('https://server.3dmakes.ch:3000/api/shorten', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ originalUrl: viewUrl })
-        });
-        
-        const data = await response.json();
-        
-        if (data.success) {
-          setShortUrl(data.shortUrl);
-          
-          // Genera il QR code
-          try {
-            const imageData = await QRCode.toDataURL(data.shortUrl, {
-              color: {
-                dark: '#000000',
-                light: '#ffffff'
-              },
-              margin: 2
-            });
-            setQrImage(imageData);
-          } catch (qrError) {
-            console.error('Errore nella generazione del QR:', qrError);
-          }
-          
-          setShowResults(true);
-        } else {
-          setError('Errore durante l\'accorciamento dell\'URL');
-        }
-      } catch (error) {
-        console.error('Errore durante la richiesta al server:', error);
-        
-        // In caso di errore, usa comunque l'URL lungo e genera il QR code
-        try {
-          const imageData = await QRCode.toDataURL(viewUrl, {
-            color: {
-              dark: '#000000',
-              light: '#ffffff'
-            },
-            margin: 2
-          });
-          setQrImage(imageData);
-          setShortUrl(viewUrl);
-          setShowResults(true);
-        } catch (qrError) {
-          console.error('Errore nella generazione del QR:', qrError);
-        }
-      }
+      // Usa direttamente l'URL lungo (più sicuro!)
+      setShortUrl(viewUrl);
+      setShowResults(true);
+      setLoading(false);
+      
     } catch (error) {
       console.error('Errore:', error);
       setError('Si è verificato un errore durante la creazione del tag');
-    } finally {
       setLoading(false);
     }
   };
@@ -209,14 +269,18 @@ const NfcPetTag: React.FC = () => {
             </div>
             
             <div className="md:col-span-2">
-              <label className="block text-gray-300 mb-1">Via/Indirizzo</label>
+              <label className="block text-gray-300 mb-1">Indirizzo (cerca con Google Maps)</label>
               <input
                 type="text"
-                name="proprietario.via"
-                value={formData.proprietario.via}
-                onChange={handleChange}
+                ref={inputRef}
+                value={addressInput}
+                onChange={(e) => setAddressInput(e.target.value)}
+                placeholder="Inizia a digitare l'indirizzo..."
                 className="w-full bg-gray-700 border border-gray-600 rounded p-2 text-white"
               />
+              <p className="text-xs text-gray-400 mt-1">
+                Digita e seleziona un indirizzo per compilare automaticamente i campi sottostanti
+              </p>
             </div>
             
             <div>
@@ -236,6 +300,17 @@ const NfcPetTag: React.FC = () => {
                 type="text"
                 name="proprietario.citta"
                 value={formData.proprietario.citta}
+                onChange={handleChange}
+                className="w-full bg-gray-700 border border-gray-600 rounded p-2 text-white"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-gray-300 mb-1">Paese</label>
+              <input
+                type="text"
+                name="proprietario.paese"
+                value={formData.proprietario.paese}
                 onChange={handleChange}
                 className="w-full bg-gray-700 border border-gray-600 rounded p-2 text-white"
               />
@@ -331,56 +406,39 @@ const NfcPetTag: React.FC = () => {
           <div className="max-w-3xl mx-auto bg-gray-800 rounded-lg p-6 shadow-xl">
             <h2 className="text-xl font-semibold mb-6 text-center">Tag NFC Generato</h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="flex flex-col items-center">
-                <h3 className="text-lg font-medium mb-3 text-gray-300">QR Code</h3>
-                {qrImage && (
-                  <div className="bg-white p-4 rounded-lg shadow-md">
-                    <img src={qrImage} alt="Tag NFC QR Code" className="w-48 h-48" />
-                  </div>
-                )}
-                <div className="mt-4">
-                  <a
-                    href={qrImage || ''}
-                    download="pet-tag-qrcode.png"
-                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors inline-block"
+            <div className="max-w-xl mx-auto">
+              <h3 className="text-lg font-medium mb-3 text-gray-300">Link del Tag</h3>
+              
+              <div className="mb-4">
+                <p className="text-sm text-gray-400 mb-1">Link per accedere alle informazioni:</p>
+                <div className="flex items-center bg-gray-700 p-2 rounded-lg">
+                  <input
+                    type="text"
+                    value={shortUrl}
+                    readOnly
+                    className="bg-transparent flex-grow p-1"
+                  />
+                  <button
+                    onClick={() => navigator.clipboard.writeText(shortUrl)}
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-md ml-2"
                   >
-                    Scarica QR Code
-                  </a>
+                    Copia
+                  </button>
                 </div>
+                <p className="text-sm text-yellow-400 mt-2">
+                  Nota: Questo è un URL diretto che funzionerà anche se il servizio di accorciamento link non è disponibile.
+                </p>
               </div>
               
-              <div>
-                <h3 className="text-lg font-medium mb-3 text-gray-300">Link Tag</h3>
-                
-                <div className="mb-4">
-                  <p className="text-sm text-gray-400 mb-1">Link per accedere alle informazioni:</p>
-                  <div className="flex items-center bg-gray-700 p-2 rounded-lg">
-                    <input
-                      type="text"
-                      value={shortUrl}
-                      readOnly
-                      className="bg-transparent flex-grow p-1"
-                    />
-                    <button
-                      onClick={() => navigator.clipboard.writeText(shortUrl)}
-                      className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-md ml-2"
-                    >
-                      Copia
-                    </button>
-                  </div>
-                </div>
-                
-                <div className="mt-6 p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
-                  <h4 className="font-medium text-blue-300 mb-2">Come usare questo tag:</h4>
-                  <ol className="list-decimal pl-5 text-gray-300 space-y-2">
-                    <li>Procurati un tag NFC scrivibile compatibile con i collari per animali</li>
-                    <li>Usa un'app per scrivere tag NFC sul tuo smartphone</li>
-                    <li>Copia il link generato e scrivilo nel tag NFC</li>
-                    <li>Applica il tag al collare del tuo animale</li>
-                    <li>Chiunque trovi il tuo animale potrà leggere il tag con uno smartphone per visualizzare le informazioni di contatto</li>
-                  </ol>
-                </div>
+              <div className="mt-6 p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
+                <h4 className="font-medium text-blue-300 mb-2">Come usare questo tag:</h4>
+                <ol className="list-decimal pl-5 text-gray-300 space-y-2">
+                  <li>Procurati un tag NFC scrivibile compatibile con i collari per animali</li>
+                  <li>Usa un'app per scrivere tag NFC sul tuo smartphone</li>
+                  <li>Copia il link generato e scrivilo nel tag NFC</li>
+                  <li>Applica il tag al collare del tuo animale</li>
+                  <li>Chiunque trovi il tuo animale potrà leggere il tag con uno smartphone per visualizzare le informazioni di contatto</li>
+                </ol>
               </div>
             </div>
           </div>
