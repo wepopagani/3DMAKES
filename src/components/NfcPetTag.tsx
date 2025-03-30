@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import QRCode from 'qrcode';
 
 interface PetTagData {
   proprietario: {
@@ -41,6 +42,7 @@ const NfcPetTag: React.FC = () => {
   });
   
   const [shortUrl, setShortUrl] = useState('');
+  const [qrImage, setQrImage] = useState<string | null>(null);
   const [showResults, setShowResults] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -101,6 +103,21 @@ const NfcPetTag: React.FC = () => {
         
         if (data.success) {
           setShortUrl(data.shortUrl);
+          
+          // Genera il QR code
+          try {
+            const imageData = await QRCode.toDataURL(data.shortUrl, {
+              color: {
+                dark: '#000000',
+                light: '#ffffff'
+              },
+              margin: 2
+            });
+            setQrImage(imageData);
+          } catch (qrError) {
+            console.error('Errore nella generazione del QR:', qrError);
+          }
+          
           setShowResults(true);
         } else {
           setError('Errore durante l\'accorciamento dell\'URL');
@@ -108,9 +125,21 @@ const NfcPetTag: React.FC = () => {
       } catch (error) {
         console.error('Errore durante la richiesta al server:', error);
         
-        // In caso di errore, usa comunque l'URL lungo
-        setShortUrl(viewUrl);
-        setShowResults(true);
+        // In caso di errore, usa comunque l'URL lungo e genera il QR code
+        try {
+          const imageData = await QRCode.toDataURL(viewUrl, {
+            color: {
+              dark: '#000000',
+              light: '#ffffff'
+            },
+            margin: 2
+          });
+          setQrImage(imageData);
+          setShortUrl(viewUrl);
+          setShowResults(true);
+        } catch (qrError) {
+          console.error('Errore nella generazione del QR:', qrError);
+        }
       }
     } catch (error) {
       console.error('Errore:', error);
@@ -302,36 +331,56 @@ const NfcPetTag: React.FC = () => {
           <div className="max-w-3xl mx-auto bg-gray-800 rounded-lg p-6 shadow-xl">
             <h2 className="text-xl font-semibold mb-6 text-center">Tag NFC Generato</h2>
             
-            <div className="max-w-xl mx-auto">
-              <h3 className="text-lg font-medium mb-3 text-gray-300">Link del Tag</h3>
-              
-              <div className="mb-4">
-                <p className="text-sm text-gray-400 mb-1">Link per accedere alle informazioni:</p>
-                <div className="flex items-center bg-gray-700 p-2 rounded-lg">
-                  <input
-                    type="text"
-                    value={shortUrl}
-                    readOnly
-                    className="bg-transparent flex-grow p-1"
-                  />
-                  <button
-                    onClick={() => navigator.clipboard.writeText(shortUrl)}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-md ml-2"
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="flex flex-col items-center">
+                <h3 className="text-lg font-medium mb-3 text-gray-300">QR Code</h3>
+                {qrImage && (
+                  <div className="bg-white p-4 rounded-lg shadow-md">
+                    <img src={qrImage} alt="Tag NFC QR Code" className="w-48 h-48" />
+                  </div>
+                )}
+                <div className="mt-4">
+                  <a
+                    href={qrImage || ''}
+                    download="pet-tag-qrcode.png"
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors inline-block"
                   >
-                    Copia
-                  </button>
+                    Scarica QR Code
+                  </a>
                 </div>
               </div>
               
-              <div className="mt-6 p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
-                <h4 className="font-medium text-blue-300 mb-2">Come usare questo tag:</h4>
-                <ol className="list-decimal pl-5 text-gray-300 space-y-2">
-                  <li>Procurati un tag NFC scrivibile compatibile con i collari per animali</li>
-                  <li>Usa un'app per scrivere tag NFC sul tuo smartphone</li>
-                  <li>Copia il link generato e scrivilo nel tag NFC</li>
-                  <li>Applica il tag al collare del tuo animale</li>
-                  <li>Chiunque trovi il tuo animale potrà leggere il tag con uno smartphone per visualizzare le informazioni di contatto</li>
-                </ol>
+              <div>
+                <h3 className="text-lg font-medium mb-3 text-gray-300">Link Tag</h3>
+                
+                <div className="mb-4">
+                  <p className="text-sm text-gray-400 mb-1">Link per accedere alle informazioni:</p>
+                  <div className="flex items-center bg-gray-700 p-2 rounded-lg">
+                    <input
+                      type="text"
+                      value={shortUrl}
+                      readOnly
+                      className="bg-transparent flex-grow p-1"
+                    />
+                    <button
+                      onClick={() => navigator.clipboard.writeText(shortUrl)}
+                      className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-md ml-2"
+                    >
+                      Copia
+                    </button>
+                  </div>
+                </div>
+                
+                <div className="mt-6 p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
+                  <h4 className="font-medium text-blue-300 mb-2">Come usare questo tag:</h4>
+                  <ol className="list-decimal pl-5 text-gray-300 space-y-2">
+                    <li>Procurati un tag NFC scrivibile compatibile con i collari per animali</li>
+                    <li>Usa un'app per scrivere tag NFC sul tuo smartphone</li>
+                    <li>Copia il link generato e scrivilo nel tag NFC</li>
+                    <li>Applica il tag al collare del tuo animale</li>
+                    <li>Chiunque trovi il tuo animale potrà leggere il tag con uno smartphone per visualizzare le informazioni di contatto</li>
+                  </ol>
+                </div>
               </div>
             </div>
           </div>
