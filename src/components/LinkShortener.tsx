@@ -16,20 +16,10 @@ const LinkShortener: React.FC = () => {
     setError('');
     
     try {
-      // Implementazione di una soluzione locale per lo sviluppo
-      if (import.meta.env.DEV) {
-        // Simuliamo una risposta positiva per lo sviluppo locale
-        setTimeout(() => {
-          const mockShortUrl = `https://short.3dmakes.ch/${Math.random().toString(36).substring(2, 8)}`;
-          setShortUrl(mockShortUrl);
-          setShowResult(true);
-          setLoading(false);
-        }, 800); // simuliamo un ritardo di rete
-        return;
-      }
+      // Punto direttamente al server Raspberry Pi
+      const apiUrl = 'https://short.3dmakes.ch/api/shorten';
       
-      // In produzione, usiamo la funzione Netlify
-      const response = await fetch('/.netlify/functions/shorten', {
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',

@@ -26,6 +26,8 @@ import AccessoriRistorativi from './components/AccessoriRistorativi';
 import GadgetAziendali from './components/GadgetAziendali';
 import ContactView from './components/ContactView';
 import RicercaFerraturaTpu from './pages/RicercaFerraturaTpu';
+import NfcPetTag from './components/NfcPetTag';
+import PetView from './components/PetView';
 
 // Componente HomePage con accesso al contesto di autenticazione
 const HomePage = () => {
@@ -308,6 +310,8 @@ function App() {
           <Route path="/gadget-aziendali" element={<GadgetAziendali />} />
           <Route path="/contact-view" element={<ContactView />} />
           <Route path="/ricerca-ferratura-tpu" element={<RicercaFerraturaTpu />} />
+          <Route path="/nfc" element={<NfcPetTag />} />
+          <Route path="/pet-view" element={<PetView />} />
         </Routes>
       </Router>
     </AuthProvider>
