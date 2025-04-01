@@ -7,6 +7,7 @@ const GadgetAziendali: React.FC = () => {
     "/images/gadget/badge.png",
     "/images/gadget/portachiavi.png",
     "/images/gadget/espositori.png",
+    "/images/gadget/telefono.png",
   ];
 
   const prodotti = [
@@ -30,6 +31,13 @@ const GadgetAziendali: React.FC = () => {
       descrizione: "Espositori da banco e vetrina per prodotti o materiale informativo. Il modello mostrato è solo dimostrativo - progettiamo la soluzione ideale per le tue esigenze, personalizzando dimensioni, materiali e stile per valorizzare al meglio la tua offerta commerciale.",
       categoria: "Display",
       immagine: immagini[2]
+    },
+    {
+      id: 4,
+      titolo: "Supporto Telefono Aziendale",
+      descrizione: "Supporto elegante e funzionale per smartphone con design minimalista. Personalizzabile con il logo aziendale, questo supporto compatto permette di mantenere il telefono in posizione verticale ideale per videoconferenze e visualizzazione contenuti. Realizzato in materiali durevoli e di alta qualità.",
+      categoria: "Accessori Ufficio",
+      immagine: immagini[3]
     }
   ];
 
