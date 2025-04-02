@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 export default function QRCodeGenerator() {
   const [url, setUrl] = useState('');
   const [qrImage, setQrImage] = useState<string | null>(null);
+  const [fileName, setFileName] = useState('qr-code');
 
   // Genera QR code in formato immagine
   const generateQRCode = async () => {
@@ -24,7 +25,7 @@ export default function QRCodeGenerator() {
 
     const link = document.createElement('a');
     link.href = qrImage;
-    link.download = 'qr-code.png';
+    link.download = `${fileName.trim() || 'qr-code'}.png`;
     link.click();
   };
 
@@ -74,6 +75,16 @@ export default function QRCodeGenerator() {
             src={qrImage}
             alt="QR Code"
             className="w-64 h-64 rounded-lg border-4 border-gray-300 shadow-md"
+          />
+          {/* File Name Input */}
+          <motion.input
+            type="text"
+            placeholder="Nome del file..."
+            value={fileName}
+            onChange={(e) => setFileName(e.target.value)}
+            className="w-full max-w-xs p-2 rounded-lg text-gray-800 shadow-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
           />
           <button
             onClick={downloadQRImage}
