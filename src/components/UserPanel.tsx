@@ -130,6 +130,9 @@ const UserPanel: React.FC = () => {
   const [newFileName, setNewFileName] = useState('');
   const [isRenaming, setIsRenaming] = useState(false);
 
+  // Aggiungi questo stato per gestire il dropdown menu
+  const [showDropdown, setShowDropdown] = useState(false);
+
   // Verifica se l'utente corrente è un amministratore e reindirizza
   useEffect(() => {
     if (currentUser?.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
@@ -1177,67 +1180,117 @@ const UserPanel: React.FC = () => {
     }
   };
 
+  // Aggiungi questo useEffect dopo gli altri
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (showDropdown && !target.closest('.dropdown-container')) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showDropdown]);
+
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       {/* Header */}
       <header className="bg-gray-800 shadow-md">
         <div className="container mx-auto px-4 py-6 flex justify-between items-center">
           <h1 className="text-2xl font-bold">Pannello Utente</h1>
-          <div className="flex items-center space-x-4">
-            <div className="flex flex-col items-end">
-              <span className="text-gray-100 font-medium">
-                {loadingProfile ? 'Caricamento...' : `Bentornato, ${userProfile?.nome || 'Utente'}`}
-              </span>
-              <span className="text-gray-400 text-sm">
-                {currentUser?.email}
-              </span>
+          <div className="flex items-center space-x-4 relative">
+            <div className="flex flex-col items-end dropdown-container">
+              <button 
+                onClick={() => setShowDropdown(!showDropdown)}
+                className="flex items-center space-x-2 focus:outline-none"
+              >
+                <span className="text-gray-100 font-medium">
+                  {loadingProfile ? 'Caricamento...' : `${userProfile?.nome || 'Utente'}`}
+                </span>
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  className={`h-5 w-5 transition-transform ${showDropdown ? 'rotate-180' : ''}`} 
+                  viewBox="0 0 20 20" 
+                  fill="currentColor"
+                >
+                  <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                </svg>
+              </button>
+              <span className="text-gray-400 text-sm">{currentUser?.email}</span>
+
+              {/* Dropdown Menu */}
+              {showDropdown && (
+                <div className="absolute right-0 top-full mt-2 w-64 bg-gray-800 rounded-lg shadow-lg border border-gray-700 z-50">
+                  <div className="p-2">
+                    {/* Files Option */}
+                    <button 
+                      onClick={() => {
+                        setActiveTab('uploads');
+                        setShowDropdown(false);
+                      }}
+                      className="w-full text-left px-4 py-2 rounded hover:bg-gray-700 flex items-center space-x-2"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                      </svg>
+                      <span>I Miei Files</span>
+                    </button>
+
+                    {/* Chat Option */}
+                    <button 
+                      onClick={() => {
+                        setActiveTab('chat');
+                        setShowDropdown(false);
+                      }}
+                      className="w-full text-left px-4 py-2 rounded hover:bg-gray-700 flex items-center space-x-2"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                      </svg>
+                      <span>Chat</span>
+                    </button>
+
+                    {/* Settings Option */}
+                    <button 
+                      onClick={() => {
+                        setActiveTab('impostazioni');
+                        setShowDropdown(false);
+                      }}
+                      className="w-full text-left px-4 py-2 rounded hover:bg-gray-700 flex items-center space-x-2"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                      <span>Impostazioni</span>
+                    </button>
+
+                    {/* Divider */}
+                    <div className="my-2 border-t border-gray-700"></div>
+
+                    {/* Sign Out Option */}
+                    <button 
+                      onClick={handleLogout}
+                      className="w-full text-left px-4 py-2 rounded hover:bg-gray-700 flex items-center space-x-2 text-red-400"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                      </svg>
+                      <span>Esci</span>
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
-            <button
-              onClick={handleLogout}
-              className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-md transition-colors"
-            >
-              Logout
-            </button>
           </div>
         </div>
       </header>
 
-      {/* Tabs */}
+      {/* Contenuto principale - rimuovi la barra di navigazione e mostra direttamente il contenuto */}
       <div className="container mx-auto px-4 py-6">
-        <div className="flex border-b border-gray-700 mb-6">
-          <button
-            className={`px-4 py-2 font-medium ${
-              activeTab === 'uploads'
-                ? 'text-red-500 border-b-2 border-red-500'
-                : 'text-gray-400 hover:text-white'
-            }`}
-            onClick={() => setActiveTab('uploads')}
-          >
-            I Miei Files
-          </button>
-          <button
-            className={`px-4 py-2 font-medium ${
-              activeTab === 'chat'
-                ? 'text-red-500 border-b-2 border-red-500'
-                : 'text-gray-400 hover:text-white'
-            }`}
-            onClick={() => setActiveTab('chat')}
-          >
-            Chat
-          </button>
-          <button
-            className={`px-4 py-2 font-medium ${
-              activeTab === 'impostazioni'
-                ? 'text-red-500 border-b-2 border-red-500'
-                : 'text-gray-400 hover:text-white'
-            }`}
-            onClick={() => setActiveTab('impostazioni')}
-          >
-            Impostazioni
-          </button>
-        </div>
-
-        {/* File Upload Tab */}
         {activeTab === 'uploads' && (
           <div>
             {/* Upload Section */}
@@ -1473,7 +1526,6 @@ const UserPanel: React.FC = () => {
           </div>
         )}
 
-        {/* Chat Tab */}
         {activeTab === 'chat' && (
           <div className="p-6 bg-gray-800 rounded-lg flex flex-col h-[70vh]">
             <h2 className="text-xl font-semibold mb-4">Chat con il Supporto</h2>
@@ -1544,7 +1596,6 @@ const UserPanel: React.FC = () => {
           </div>
         )}
 
-        {/* Impostazioni Tab */}
         {activeTab === 'impostazioni' && (
           <div className="p-6 bg-gray-800 rounded-lg">
             <h2 className="text-xl font-semibold mb-6">Impostazioni Account</h2>

@@ -158,6 +158,9 @@ const AdminPanel: React.FC = () => {
   const [successMessage, setSuccessMessage] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
 
+  // Aggiungi questo stato per il dropdown
+  const [showDropdown, setShowDropdown] = useState(false);
+
   // Verifica se l'utente corrente è un amministratore
   useEffect(() => {
     if (currentUser && ADMIN_EMAILS.includes(currentUser.email || '')) {
@@ -1597,6 +1600,21 @@ const AdminPanel: React.FC = () => {
     }
   };
 
+  // Aggiungi questo useEffect per gestire il click fuori dal dropdown
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (showDropdown && !target.closest('.dropdown-container')) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showDropdown]);
+
   if (!isAdmin) {
     return null; // Non mostrare nulla mentre reindirizza
   }
@@ -1607,21 +1625,93 @@ const AdminPanel: React.FC = () => {
       <header className="bg-gray-800 shadow-md">
         <div className="container mx-auto px-4 py-6 flex justify-between items-center">
           <h1 className="text-2xl font-bold">Pannello Amministratore</h1>
-          <div className="flex items-center space-x-4">
-            <span className="text-gray-300">
-              {currentUser?.email} (Admin)
-            </span>
-            <button
-              onClick={handleLogout}
-              className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-md transition-colors"
-            >
-              Logout
-            </button>
+          <div className="flex items-center space-x-4 relative">
+            <div className="flex flex-col items-end dropdown-container">
+              <button 
+                onClick={() => setShowDropdown(!showDropdown)}
+                className="flex items-center space-x-2 focus:outline-none"
+              >
+                <span className="text-gray-100 font-medium">
+                  info@3dmakes.ch (Admin)
+                </span>
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  className={`h-5 w-5 transition-transform ${showDropdown ? 'rotate-180' : ''}`} 
+                  viewBox="0 0 20 20" 
+                  fill="currentColor"
+                >
+                  <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                </svg>
+              </button>
+
+              {/* Dropdown Menu */}
+              {showDropdown && (
+                <div className="absolute right-0 top-full mt-2 w-64 bg-gray-800 rounded-lg shadow-lg border border-gray-700 z-50">
+                  <div className="p-2">
+                    {/* Files Option */}
+                    <button 
+                      onClick={() => {
+                        setActiveTab('files');
+                        setShowDropdown(false);
+                      }}
+                      className="w-full text-left px-4 py-2 rounded hover:bg-gray-700 flex items-center space-x-2"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                      </svg>
+                      <span>File Caricati</span>
+                    </button>
+
+                    {/* Users Option */}
+                    <button 
+                      onClick={() => {
+                        setActiveTab('users');
+                        setShowDropdown(false);
+                      }}
+                      className="w-full text-left px-4 py-2 rounded hover:bg-gray-700 flex items-center space-x-2"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                      </svg>
+                      <span>Clienti</span>
+                    </button>
+
+                    {/* Chat Option */}
+                    <button 
+                      onClick={() => {
+                        setActiveTab('chat');
+                        setShowDropdown(false);
+                      }}
+                      className="w-full text-left px-4 py-2 rounded hover:bg-gray-700 flex items-center space-x-2"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                      </svg>
+                      <span>Chat</span>
+                    </button>
+
+                    {/* Divider */}
+                    <div className="my-2 border-t border-gray-700"></div>
+
+                    {/* Sign Out Option */}
+                    <button 
+                      onClick={handleLogout}
+                      className="w-full text-left px-4 py-2 rounded hover:bg-gray-700 flex items-center space-x-2 text-red-400"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                      </svg>
+                      <span>Logout</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </header>
 
-      {/* Tabs */}
+      {/* Contenuto principale - rimuovi la barra di navigazione e mostra direttamente il contenuto */}
       <div className="container mx-auto px-4 py-6">
         {actionSuccess && (
           <div className="mb-4 p-3 bg-green-500/20 border border-green-500 rounded-md text-green-500">
@@ -1636,52 +1726,43 @@ const AdminPanel: React.FC = () => {
         )}
 
         {/* Tab Navigation */}
+        {/* 
         <div className="flex border-b border-gray-700 mb-6">
           <button
-            className={`px-6 py-3 font-medium transition-all duration-200 flex items-center ${
+            className={`flex items-center space-x-2 px-4 py-2 font-medium ${
               activeTab === 'files'
-                ? 'text-white border-b-2 border-red-500 bg-gray-800/40'
-                : 'text-gray-400 hover:text-white hover:bg-gray-800/20'
+                ? 'text-white border-b-2 border-red-500'
+                : 'text-gray-400 hover:text-white'
             }`}
             onClick={() => setActiveTab('files')}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            File Caricati
+            <svg>...</svg>
+            <span>File Caricati</span>
           </button>
           <button
-            className={`px-6 py-3 font-medium transition-all duration-200 flex items-center ${
+            className={`flex items-center space-x-2 px-4 py-2 font-medium ${
               activeTab === 'users'
-                ? 'text-white border-b-2 border-red-500 bg-gray-800/40'
-                : 'text-gray-400 hover:text-white hover:bg-gray-800/20'
+                ? 'text-white border-b-2 border-red-500'
+                : 'text-gray-400 hover:text-white'
             }`}
             onClick={() => setActiveTab('users')}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-            </svg>
-            Clienti
+            <svg>...</svg>
+            <span>Clienti</span>
           </button>
           <button
-            className={`px-6 py-3 font-medium transition-all duration-200 flex items-center ${
+            className={`flex items-center space-x-2 px-4 py-2 font-medium ${
               activeTab === 'chat'
-                ? 'text-white border-b-2 border-red-500 bg-gray-800/40'
-                : 'text-gray-400 hover:text-white hover:bg-gray-800/20'
+                ? 'text-white border-b-2 border-red-500'
+                : 'text-gray-400 hover:text-white'
             }`}
-            onClick={() => {
-              setActiveTab('chat');
-              // Reset dello stato quando si cambia tab
-              setSelectedUser(null);
-              setMessages([]);
-            }}
+            onClick={() => setActiveTab('chat')}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-            </svg>
-            Chat
+            <svg>...</svg>
+            <span>Chat</span>
           </button>
         </div>
+        */}
 
         {/* Chat Tab Content */}
         {activeTab === 'chat' && (
