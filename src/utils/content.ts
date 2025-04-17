@@ -360,6 +360,68 @@ export const blogPosts = {
 export const projects = {
   en: [
     {
+      id: '0',
+      title: '3D Printing in Dental Technology: A New Era',
+      category: 'Medical',
+      description: 'Innovations and practical applications of 3D printing in the dental sector, for dental clinics and laboratories.',
+      longDescription: `In recent years, 3D printing has revolutionized the dental industry, bringing innovation, efficiency, and new opportunities for both laboratories and dental practices. But what are the real possibilities offered by this technology? And why are more and more dental professionals choosing it every day?
+
+### Speed, Precision, and Customization
+
+3D printing allows transforming a digital scan into a physical model in just a few hours. Whether it's a dental model for treatment planning, a surgical guide for implantology, or a bite for bruxism, rapid execution is one of the most appreciated benefits.  
+Furthermore, the precision achieved by the latest generation printers guarantees reliable and repeatable results, reducing errors and remakes.
+
+### Practical Applications: From Diagnostic Model to Trial Prosthesis
+
+With 3D printing, it is now possible to create:
+- **Dental models**: ideal for diagnosis, patient communication, and planning orthodontic or prosthetic treatments.
+- **Surgical guides**: customized guides that increase safety and precision in implantology procedures.
+- **Bites and splints**: custom devices for treating bruxism or dental protection.
+- **Individual impression trays**: to obtain more precise and comfortable impressions.
+- **Temporary prostheses, crowns, and trial bridges**: rapid solutions to test aesthetics and functionality before final realization.
+
+### Benefits for Clinics and Laboratories
+
+- **Reduced delivery times**: internal production or through a specialized service allows obtaining devices in much shorter times compared to traditional methods.
+- **Cost savings**: less material waste, fewer manual steps, fewer errors.
+- **Enhanced communication**: patients can see and touch the final result already at the design stage, increasing their trust and satisfaction.
+- **Flexibility**: possibility to customize each device based on the patient's specific needs.
+
+### The Future is Digital
+
+3D printing doesn't replace the dental technician's expertise but enhances it. It allows working in a more digital, precise, and faster way, integrating artisanal tradition with the most advanced technologies.
+
+At **3DMAKES**, we believe that the future of dental technology is already here: a future made of collaboration, innovation, and quality.  
+If you are a dental clinic or laboratory and want to discover how 3D printing can improve your work, contact us: we will be happy to show you the possibilities of this extraordinary technology!
+
+**Marco Pagani – 3DMAKES**  
+info@3dmakes.ch | +41 76 266 03 96`,
+      imageUrl: '/images/progetti/dental.png',
+      details: {
+        material: 'Biocompatible resins, PETG, PLA',
+        printTime: 'Varies by application type',
+        quality: '0.05-0.1mm layer',
+        size: 'Customized according to clinical needs'
+      },
+      challenges: [
+        'Achieving precision within clinical tolerances',
+        'Using certified biocompatible materials',
+        'Ensuring reproducibility of results',
+        'Integration with existing digital workflows'
+      ],
+      benefits: [
+        'Significant reduction in production time',
+        'Greater precision compared to traditional methods',
+        'Possibility of complete customization',
+        'Better communication with the patient',
+        'Perfect integration between digital and manual work'
+      ],
+      cta: {
+        text: 'Discover dental applications',
+        link: '/3d-printing-dentistry'
+      }
+    },
+    {
       id: '1',
       title: 'Customizable Pet Bowls',
       category: 'Pet Accessories',
@@ -615,9 +677,70 @@ The final implementation led to significant cost savings compared to traditional
         'Improved comfort and functionality'
       ]
     }
-
   ],
   it: [
+    {
+      id: '0',
+      title: 'Stampa 3D in Odontotecnica: Una Nuova Era',
+      category: 'Medicale',
+      description: 'Innovazioni e applicazioni pratiche della stampa 3D nel settore odontotecnico, per studi dentistici e laboratori.',
+      longDescription: `Negli ultimi anni, la stampa 3D ha rivoluzionato il settore odontotecnico, portando innovazione, efficienza e nuove opportunità sia per i laboratori che per gli studi dentistici. Ma quali sono le reali possibilità offerte da questa tecnologia? E perché sempre più professionisti del dentale la scelgono ogni giorno?
+
+### Velocità, Precisione e Personalizzazione
+
+La stampa 3D permette di trasformare una scansione digitale in un modello fisico in poche ore. Che si tratti di un modello dentale per la pianificazione di un trattamento, di una dima chirurgica per implantologia o di un bite per il bruxismo, la rapidità di esecuzione è uno dei vantaggi più apprezzati.  
+Inoltre, la precisione raggiunta dalle stampanti di ultima generazione garantisce risultati affidabili e ripetibili, riducendo errori e rifacimenti.
+
+### Applicazioni Pratiche: Dal Modello Diagnostico alla Protesi di Prova
+
+Con la stampa 3D oggi è possibile realizzare:
+- **Modelli dentali**: ideali per la diagnosi, la comunicazione col paziente e la pianificazione di trattamenti ortodontici o protesici.
+- **Dime chirurgiche**: guide personalizzate che aumentano la sicurezza e la precisione negli interventi di implantologia.
+- **Bite e splint**: dispositivi su misura per il trattamento del bruxismo o per la protezione dentale.
+- **Vassoi individuali per impronte**: per ottenere impronte più precise e confortevoli.
+- **Protesi provvisorie, corone e ponti di prova**: soluzioni rapide per testare estetica e funzionalità prima della realizzazione definitiva.
+
+### Vantaggi per Studi e Laboratori
+
+- **Riduzione dei tempi di consegna**: la produzione interna o tramite un servizio specializzato permette di ottenere i dispositivi in tempi molto più brevi rispetto ai metodi tradizionali.
+- **Risparmio sui costi**: meno sprechi di materiale, meno passaggi manuali, meno errori.
+- **Maggiore comunicazione**: il paziente può vedere e toccare con mano il risultato finale già in fase di progettazione, aumentando la sua fiducia e soddisfazione.
+- **Flessibilità**: possibilità di personalizzare ogni dispositivo in base alle esigenze specifiche del paziente.
+
+### Il Futuro è Digitale
+
+La stampa 3D non sostituisce la competenza dell'odontotecnico, ma la potenzia. Permette di lavorare in modo più digitale, preciso e veloce, integrando la tradizione artigianale con le tecnologie più avanzate.
+
+Noi di **3DMAKES** crediamo che il futuro dell'odontotecnica sia già qui: un futuro fatto di collaborazione, innovazione e qualità.  
+Se sei uno studio dentistico o un laboratorio e vuoi scoprire come la stampa 3D può migliorare il tuo lavoro, contattaci: saremo felici di mostrarti dal vivo le possibilità di questa straordinaria tecnologia!
+
+**Marco Pagani – 3DMAKES**  
+info@3dmakes.ch | +41 76 266 03 96`,
+      imageUrl: '/images/progetti/dental.png',
+      details: {
+        material: 'Resine biocompatibili, PETG, PLA',
+        printTime: 'Variabile per tipo di applicazione',
+        quality: 'strato 0.05-0.1mm',
+        size: 'Personalizzato secondo necessità cliniche'
+      },
+      challenges: [
+        'Ottenere precisione entro tolleranze cliniche',
+        'Utilizzo di materiali biocompatibili certificati',
+        'Garantire riproducibilità dei risultati',
+        'Integrazione con flussi di lavoro digitali esistenti'
+      ],
+      benefits: [
+        'Riduzione significativa dei tempi di produzione',
+        'Maggiore precisione rispetto ai metodi tradizionali',
+        'Possibilità di personalizzazione completa',
+        'Migliore comunicazione con il paziente',
+        'Integrazione perfetta tra digitale e manuale'
+      ],
+      cta: {
+        text: 'Scopri le applicazioni dentali',
+        link: '/stampa-3d-odontoiatria'
+      }
+    },
     {
       id: '1',
       title: 'Ciotole Personalizzabili',
@@ -874,6 +997,5 @@ L'implementazione finale ha portato a significativi risparmi sui costi rispetto 
         'Comfort e funzionalità migliorati'
       ]
     }
-   
   ]
 };
