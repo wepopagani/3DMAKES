@@ -2,9 +2,38 @@ import { useState } from 'react';
 import { Language, translations } from '../utils/translations';
 import { projects } from '../utils/content';
 
+interface Project {
+  id: string;
+  title: string;
+  category?: string;
+  description?: string;
+  longDescription?: string;
+  excerpt: string;
+  content: string;
+  imageUrl: string;
+  details: {
+    material: string;
+    printTime: string;
+    quality: string;
+    size: string;
+  };
+  challenges: string[];
+  benefits: string[];
+  cta: {
+    text: string;
+    link: string;
+  };
+}
+
 interface ProjectsSectionProps {
   language: Language;
 }
+
+// Funzione per convertire il markdown in HTML
+const parseContent = (content: string) => {
+  // Converti **testo** in <strong>testo</strong>
+  return content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+};
 
 export default function ProjectsSection({ language }: ProjectsSectionProps) {
   const t = translations[language].projects;
@@ -12,8 +41,7 @@ export default function ProjectsSection({ language }: ProjectsSectionProps) {
   
   // Aggiungiamo gli stati per gestire mostra più/meno e il progetto selezionato
   const [showAll, setShowAll] = useState(false);
-  const [selectedProject, setSelectedProject] = useState<(typeof allProjects)[0] | null>(null);
-
+  const [selectedProject, setSelectedProject] = useState<typeof allProjects[0] | null>(null);
   // Mostra solo 2 progetti o tutti in base allo state showAll
   const displayedProjects = showAll ? allProjects : allProjects.slice(0, 2);
 
@@ -38,9 +66,11 @@ export default function ProjectsSection({ language }: ProjectsSectionProps) {
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute top-4 right-4">
-                  <span className="px-3 py-1 bg-red-600 text-white text-sm rounded-full">
-                    {project.category}
-                  </span>
+                  {project.category && (
+                    <span className="px-3 py-1 bg-red-600 text-white text-sm rounded-full">
+                      {project.category}
+                    </span>
+                  )}
                 </div>
               </div>
               <div className="p-6">
@@ -48,7 +78,7 @@ export default function ProjectsSection({ language }: ProjectsSectionProps) {
                   {project.title}
                 </h3>
                 <p className="text-gray-400 mb-4">
-                  {project.description}
+                  {project.excerpt}
                 </p>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
@@ -106,16 +136,19 @@ export default function ProjectsSection({ language }: ProjectsSectionProps) {
                     <h3 className="text-2xl font-bold text-white mb-2">
                       {selectedProject.title}
                     </h3>
-                    <span className="px-3 py-1 bg-red-600 text-white text-sm rounded-full">
-                      {selectedProject.category}
-                    </span>
+                    {selectedProject.category && (
+                      <span className="px-3 py-1 bg-red-600 text-white text-sm rounded-full">
+                        {selectedProject.category}
+                      </span>
+                    )}
                   </div>
                 </div>
 
                 <div className="prose prose-invert max-w-none">
-                  <div className="text-gray-300 mb-8 whitespace-pre-line">
-                    {selectedProject.longDescription}
-                  </div>
+                  <div 
+                    className="text-gray-300 mb-8"
+                    dangerouslySetInnerHTML={{ __html: parseContent(selectedProject.content.replace(/\n/g, '<br/>')) }}
+                  />
 
                   {selectedProject.challenges && (
                     <div className="mb-6">

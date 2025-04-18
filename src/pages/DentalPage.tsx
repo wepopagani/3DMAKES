@@ -207,7 +207,26 @@ const DentalPage: React.FC = () => {
           <p className="text-center mb-6 text-gray-300">
             Sei interessato a implementare la stampa 3D nel tuo studio o laboratorio? Contattaci per una consulenza.
           </p>
-          <ContactForm />
+          
+          <div className="text-center">
+            <a 
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.href = '/';
+                setTimeout(() => {
+                  const element = document.getElementById('contact');
+                  element?.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+              }}
+              href="/"
+              className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-red-600 hover:bg-red-700 transition-colors duration-200 cursor-pointer"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z" clipRule="evenodd" />
+              </svg>
+              Contattaci!
+            </a>
+          </div>
         </div>
       </div>
     </div>

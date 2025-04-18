@@ -180,46 +180,27 @@ export const blogPosts = {
   it: [
     {
       id: '1',
-      title: 'Il Futuro della Stampa 3D nella Produzione',
-      excerpt: 'Esplorando come la produzione additiva sta rivoluzionando i metodi di produzione tradizionali.',
-      content: `La tecnologia di stampa 3D continua ad evolversi rapidamente, trasformando il panorama manifatturiero. Dalla prototipazione rapida alla produzione di parti per uso finale, le applicazioni sono infinite. Le aziende stanno sempre più adottando queste tecnologie per ridurre i costi, migliorare l'efficienza e creare geometrie complesse che erano precedentemente impossibili con i metodi di produzione tradizionali.
-
-      Vantaggi principali:
-      - Riduzione dei tempi di consegna
-      - Minori costi di attrezzaggio
-      - Libertà di design
-      - Personalizzazione di massa
-      - Produzione sostenibile
-
-      Con l'avanzare della scienza dei materiali e il miglioramento delle capacità delle stampanti, vediamo sempre più industrie abbracciare la stampa 3D come tecnologia di produzione principale.`,
-      imageUrl: '/images/blog/future.png',
-      date: '2024-01-15',
-      author: 'Marco Rossi',
-      category: 'Tecnologia',
-      readTime: '5'
-    },
-    {
-      id: '2',
-      title: 'Stampa 3D Sostenibile: Utilizzo di Materiali Riciclati',
+      title: 'Sustainable 3D Printing: Using Recycled Materials',
+      category: 'Sostenibilità',
       excerpt: 'Come stiamo riducendo l\'impatto ambientale attraverso scelte innovative dei materiali.',
-      content: `La sostenibilità nella stampa 3D sta diventando sempre più importante. Siamo orgogliosi di essere all'avanguardia nell'utilizzo di materiali riciclati nei nostri processi di stampa. Questo non solo riduce i rifiuti ma crea anche nuove possibilità per la produzione eco-sostenibile.
+      content: `Sustainability in 3D printing is becoming increasingly important. We're proud to be at the forefront of using recycled materials in our printing processes. This not only reduces waste but also creates new possibilities for eco-friendly production.
 
-      Le nostre iniziative includono:
-      - Utilizzo di PLA e PETG riciclati
-      - Implementazione di sistemi di materiale a ciclo chiuso
-      - Minimizzazione degli sprechi attraverso impostazioni di stampa ottimali
-      - Offerta di alternative biodegradabili
+      Our initiatives include:
+      - Using recycled PLA and PETG
+      - Implementing closed-loop material systems
+      - Minimizing waste through optimal print settings
+      - Offering biodegradable alternatives
       
       By choosing recycled materials, our clients can reduce their environmental impact while maintaining high-quality results.`,
       imageUrl: '/images/blog/sustainable.png',
       date: '2024-01-10',
       author: 'Sofia Bianchi',
-      category: 'Sostenibilità',
       readTime: '4'
     },
     {
       id: '4',
       title: 'Applicazioni Innovative nella Stampa 3D Aerospaziale',
+      category: 'Aerospaziale',
       excerpt: 'How 3D printing is transforming the aerospace industry with lightweight, complex parts.',
       content: `The aerospace industry is witnessing a revolution in manufacturing thanks to advanced 3D printing technologies. From lightweight brackets to complex turbine components, additive manufacturing is enabling new possibilities in aircraft design and production.
 
@@ -233,12 +214,12 @@ export const blogPosts = {
       imageUrl: 'images/blog/aereo.png',
       date: '2023-12-20',
       author: 'Giacomo Moretti',
-      category: 'Aerospaziale',
       readTime: '6'
     },
     {
       id: '6',
       title: 'Materiali per la Stampa 3D: Una Guida Completa',
+      category: 'Materiali',
       excerpt: 'Esplorando il mondo diversificato dei materiali per la stampa 3D e le loro applicazioni.',
       content: `La stampa 3D sta rivoluzionando l'industria e trasformando il modo in cui creiamo oggetti. Un aspetto cruciale di questa tecnologia è la vasta gamma di materiali disponibili, ognuno con proprietà uniche e applicazioni specifiche. In questa guida esploreremo i materiali per la stampa 3D più comuni e i loro usi.
 
@@ -280,12 +261,12 @@ export const blogPosts = {
       imageUrl: '/images/blog/materials.png',
       date: '2024-02-20',
       author: 'Davide Conti',
-      category: 'Materiali',
       readTime: '8'
     },
     {
       id: '7',
       title: 'Slicing: L\'eroe sconosciuto della stampa 3D',
+      category: 'Tecnologia',
       excerpt: 'Comprendere il ruolo cruciale del software di slicing nella stampa 3D di successo.',
       content: `Lo slicing è un passaggio fondamentale nel processo di stampa 3D che spesso passa inosservato, ma gioca un ruolo importante nel successo delle tue stampe. In questo post, approfondiremo il mondo del software di slicing, spiegandone l'importanza, le caratteristiche chiave e fornendo suggerimenti per ottenere risultati ottimali.
 
@@ -318,12 +299,12 @@ export const blogPosts = {
       imageUrl: '/images/blog/slicing.png',
       date: '2024-02-25',
       author: 'Michele Bruno',
-      category: 'Tecnologia',
       readTime: '6'
     },
     {
       id: '8',
       title: '8 Migliori Siti per Trovare Modelli per la Stampa 3D',
+      category: 'Risorse',
       excerpt: 'Una guida completa alle migliori piattaforme per scaricare modelli stampabili in 3D.',
       content: `La stampa 3D sta diventando sempre più accessibile, e una delle domande più frequenti è: dove posso trovare modelli 3D pronti da stampare?
 
@@ -351,7 +332,6 @@ export const blogPosts = {
       imageUrl: '/images/blog/websites.png',
       date: '2024-03-01',
       author: 'Tommaso Andrei',
-      category: 'Risorse',
       readTime: '7'
     }
   ]
@@ -361,7 +341,7 @@ export const projects = {
   en: [
     {
       id: '0',
-      title: '3D Printing in Dental Technology: A New Era',
+      title: '3D Printing in Dental Technology',
       category: 'Medical',
       excerpt: 'Innovations and practical applications of 3D printing in the dental sector, for dental clinics and laboratories.',
       content: `In recent years, 3D printing has revolutionized the dental industry, bringing innovation, efficiency, and new opportunities for both laboratories and dental practices. But what are the real possibilities offered by this technology? And why are more and more dental professionals choosing it every day?
@@ -681,7 +661,8 @@ The final implementation led to significant cost savings compared to traditional
   it: [
     {
       id: '0',
-      title: 'Stampa 3D in Odontotecnica: Una Nuova Era',
+      title: 'Stampa 3D in Odontotecnica',
+      category: 'Medico',
       excerpt: 'Esplorando come la produzione additiva sta rivoluzionando i metodi di produzione tradizionali.',
       content: `Negli ultimi anni, la stampa 3D ha rivoluzionato il settore odontotecnico, portando innovazione, efficienza e nuove opportunità sia per i laboratori che per gli studi dentistici. Ma quali sono le reali possibilità offerte da questa tecnologia? E perché sempre più professionisti del dentale la scelgono ogni giorno?
 
@@ -743,12 +724,24 @@ info@3dmakes.ch | +41 76 266 03 96`,
     {
       id: '1',
       title: 'Ciotole Personalizzabili',
+      category: 'Accessori per Animali',
       excerpt: 'Collezione di ciotole e accessori per animali domestici realizzati con stampa 3D in materiali selezionati per garantire sicurezza e praticità.',
       content: `La nostra linea di ciotole personalizzabili è stata progettata pensando al benessere degli animali domestici. Offriamo diverse soluzioni adatte alle esigenze specifiche di cani e gatti.
 
+**Ciotole Slow Feeding in PETG**
+
 Le ciotole slow feeding, realizzate in PETG, sono pensate per rallentare l'assunzione di cibo, prevenendo problemi digestivi e obesità. Il PETG è un materiale che trattiene pochissimi batteri ed è estremamente resistente, ideale per il contatto con gli alimenti.
 
-Per chi preferisce le classiche ciotole in acciaio inox, offriamo strutture di supporto in PLA (materiale organico e biodegradabile) in diverse dimensioni: due misure per cani (14 cm e 16 cm di diametro) e una misura standard for cats. Queste strutture possono essere personalizzate con il nome del tuo animale e in diversi colori.
+**Supporti per Ciotole in Acciaio Inox**
+
+Per chi preferisce le classiche ciotole in acciaio inox, offriamo strutture di supporto in PLA (materiale organico e biodegradabile) in diverse dimensioni:
+- **Misura per cani piccoli**: 14 cm di diametro
+- **Misura per cani medi**: 16 cm di diametro
+- **Misura per gatti**: dimensione standard
+
+Queste strutture possono essere personalizzate con il nome del tuo animale e in diversi colori.
+
+**Ciondolo Identificativo NFC**
 
 Completiamo la gamma con il ciondolo NFC in PETG-CF, rinforzato in fibra di carbonio per garantire elevata resistenza pur mantenendo un peso di soli 5g. Il tag NFC integrato contiene tutte le informazioni essenziali del tuo animale e i tuoi dati di contatto, funzionando anche dove non c'è connessione a internet.`,
       imageUrl: '/images/projects/ciotole.png',
@@ -778,16 +771,23 @@ Completiamo la gamma con il ciondolo NFC in PETG-CF, rinforzato in fibra di carb
     {
       id: '2',
       title: 'Cuscinetti in TPU per Ferrature Equine',
+      category: 'Equestrian',
       excerpt: 'Cuscinetti in TPU stampati in 3D su misura per ferrature dei cavalli, progettati per ridurre lo stress articolare e migliorare l\'aderenza su vari terreni.',
       content: `Questo progetto innovativo offre un miglioramento significativo nella tradizionale ferratura dei cavalli incorporando cuscinetti in TPU (Poliuretano Termoplastico) progettati su misura. Questi cuscinetti possono essere installati sia prima che dopo il ferro di cavallo metallico, fornendo molteplici benefici per la salute e le prestazioni del cavallo.
 
+**Materiale Ideale per Applicazioni Equine**
+
 Il TPU è un materiale ideale per questa applicazione grazie alle sue proprietà uniche. Combina l'elasticità della gomma con la durabilità e la lavorabilità dei termoplastici. Il materiale offre eccellenti capacità di assorbimento degli urti mantenendo la resilienza nel tempo, anche sotto lo stress significativo del movimento equino.
 
+**Benefici Funzionali**
+
 I cuscinetti servono a molteplici scopi:
-- Riduzione dello stress da impatto su articolazioni, tendini e legamenti
-- Miglioramento della trazione su varie superfici, compreso il terreno scivoloso o irregolare
-- Attenuazione delle vibrazioni su superfici dure
-- Migliore distribuzione del peso su tutto lo zoccolo
+- **Riduzione dell'impatto**: minor stress su articolazioni, tendini e legamenti
+- **Miglioramento della trazione**: maggiore aderenza su terreni scivolosi o irregolari
+- **Attenuazione delle vibrazioni**: importante su superfici dure
+- **Distribuzione del peso**: migliore distribuzione su tutto lo zoccolo
+
+**Personalizzazione e Precisione**
 
 Ogni cuscinetto è progettato su misura in base alle specifiche misurazioni e necessità del cavallo. Utilizzando la tecnologia di scansione 3D, creiamo modelli precisi che si adattano perfettamente alla forma e alle dimensioni dello zoccolo. Questo livello di personalizzazione permette di affrontare problemi biomeccanici individuali che potrebbero influire sulle prestazioni o sul comfort del cavallo.
 
@@ -820,29 +820,35 @@ L'implementazione ha mostrato risultati notevoli, con cavalieri che riportano pr
     {
       id: '3',
       title: 'Gadget Aziendali NFC Smart',
+      category: 'Business Innovation',
       excerpt: 'Gadget aziendali smart con tecnologia NFC integrata per il networking aziendale moderno e l\'interazione digitale.',
       content: `La nostra innovativa linea di gadget aziendali con tecnologia NFC rappresenta un'importante evoluzione nel networking aziendale e nella promozione del brand. Ogni articolo combina design elegante e funzionalità smart, creando potenti punti di contatto per l'interazione digitale.
 
-      Portachiavi NFC Smart
-      Abbiamo reinventato il tradizionale portachiavi aziendale integrando la tecnologia NFC. Ogni portachiavi diventa un punto di contatto digitale che può:
-      - Condividere biglietti da visita digitali istantaneamente
-      - Indirizzare a siti web aziendali o landing page
-      - Fornire accesso rapido ai profili social
-      - Condividere cataloghi digitali o promozioni
-      Il design mostrato è solo un punto di partenza - personalizziamo ogni aspetto secondo le tue preferenze.
+**Portachiavi NFC Smart**
 
-      Badge Identificativi Intelligenti
-      I nostri badge NFC rappresentano il futuro dell'identificazione aziendale. Oltre alle funzioni di riconoscimento tradizionali, ogni badge contiene:
-      - Profilo professionale completo accessibile via smartphone
-      - Credenziali e certificazioni verificabili
-      - Informazioni di contatto professionale immediate
-      - Integrazione con sistemi di controllo accessi
-      Il modello presentato è indicativo - creiamo design personalizzati su misura per la tua azienda.
+Abbiamo reinventato il tradizionale portachiavi aziendale integrando la tecnologia NFC. Ogni portachiavi diventa un punto di contatto digitale che può:
+- **Condivisione rapida**: biglietti da visita digitali istantanei
+- **Accesso web**: collegamenti diretti a siti aziendali o landing page
+- **Profili social**: accesso rapido ai profili social dell'azienda
+- **Marketing digitale**: condivisione di cataloghi o promozioni
 
-      Soluzioni Espositive
-      Gli espositori da banco si trasformano in punti informativi interattivi. Progettiamo soluzioni ideali per le tue esigenze, personalizzando dimensioni, materiali e stile per valorizzare al meglio la tua offerta commerciale.
+Il design mostrato è solo un punto di partenza - personalizziamo ogni aspetto secondo le tue preferenze.
 
-      Ogni prodotto della nostra gamma rappresenta solo un punto di partenza - la vera forza sta nella personalizzazione completa, che permette di adattare ogni gadget alle tue esigenze specifiche.`,
+**Badge Identificativi Intelligenti**
+
+I nostri badge NFC rappresentano il futuro dell'identificazione aziendale. Oltre alle funzioni di riconoscimento tradizionali, ogni badge contiene:
+- **Profilo professionale**: completo e accessibile via smartphone
+- **Credenziali verificabili**: certificazioni e competenze verificabili
+- **Contatti istantanei**: informazioni di contatto immediate
+- **Controllo accessi**: integrazione con sistemi di sicurezza
+
+Il modello presentato è indicativo - creiamo design personalizzati su misura per la tua azienda.
+
+**Soluzioni Espositive Interattive**
+
+Gli espositori da banco si trasformano in punti informativi interattivi. Progettiamo soluzioni ideali per le tue esigenze, personalizzando dimensioni, materiali e stile per valorizzare al meglio la tua offerta commerciale.
+
+Ogni prodotto della nostra gamma rappresenta solo un punto di partenza - la vera forza sta nella personalizzazione completa, che permette di adattare ogni gadget alle tue esigenze specifiche.`,
       imageUrl: '/images/projects/nfc-gadgets.png',
       details: {
         material: 'PETG, PLA, PETG-CF',
@@ -870,33 +876,37 @@ L'implementazione ha mostrato risultati notevoli, con cavalieri che riportano pr
     {
       id: '4',
       title: 'Collezione Accessori Ristorativi',
+      category: 'Hospitality',
       excerpt: 'Accessori innovativi e personalizzabili per ristoranti, progettati per migliorare l\'esperienza di ristorazione e l\'efficienza operativa.',
       content: `La nostra collezione di accessori per la ristorazione rappresenta una perfetta fusione tra funzionalità e stile, progettata specificamente per i moderni locali di ristorazione. Ogni pezzo è personalizzabile per adattarsi al branding e alle esigenze estetiche del tuo ristorante.
 
-      Cubo QR Menu & WiFi (5x5x5cm)
-      Un elegante accessorio da tavolo che combina più funzioni:
-      - Due facce verticali personalizzabili con il logo del tuo ristorante
-      - Due facce con codici QR per menu digitale e accesso WiFi
-      - Disponibile in vari colori e finiture
-      - Possibilità di integrazione tag NFC
-      - Realizzato in materiale ecologico e resistente ai liquidi
+**Cubo QR Menu & WiFi (5x5x5cm)**
 
-      Sottobicchieri Professionali (9cm)
-      Sottobicchieri di alta qualità in PETG-CF (rinforzato in fibra di carbonio):
-      - Ultra resistenti agli urti e alle alte temperature
-      - Personalizzabili con il logo del ristorante
-      - Disponibili in diverse colorazioni
-      - Finitura in fibra di carbonio per un'eleganza senza tempo
-      - Durabilità superiore per uso intensivo
+Un elegante accessorio da tavolo che combina più funzioni:
+- **Personalizzazione del brand**: due facce verticali con il logo del ristorante
+- **Connettività digitale**: due facce con codici QR per menu e WiFi
+- **Opzioni estetiche**: disponibile in vari colori e finiture
+- **Tecnologia integrata**: possibilità di integrazione tag NFC
+- **Durabilità**: realizzato in materiale ecologico resistente ai liquidi
 
-      Poggia Borse
-      Elegante soluzione da tavolo per le borse degli ospiti:
-      - Mantiene le borse sollevate da terra in modo sicuro
-      - Personalizzabile con il brand del ristorante
-      - Disponibile in diverse finiture e colori
-      - Progettato per integrarsi con l'arredamento
+**Sottobicchieri Professionali (9cm)**
 
-      Ogni elemento della nostra collezione è progettato pensando sia alla praticità che all'estetica, aiutando i ristoranti a creare un ambiente più organizzato e professionale migliorando al contempo l'esperienza del cliente.`,
+Sottobicchieri di alta qualità in PETG-CF (rinforzato in fibra di carbonio):
+- **Alta resistenza**: ultra resistenti agli urti e alle alte temperature
+- **Personalizzabili**: con il logo del ristorante
+- **Opzioni di colore**: disponibili in diverse colorazioni
+- **Design esclusivo**: finitura in fibra di carbonio per un'eleganza senza tempo
+- **Lunga durata**: durabilità superiore per uso intensivo
+
+**Poggia Borse**
+
+Elegante soluzione da tavolo per le borse degli ospiti:
+- **Funzionalità pratica**: mantiene le borse sollevate da terra in modo sicuro
+- **Branding integrato**: personalizzabile con il brand del ristorante
+- **Flessibilità estetica**: disponibile in diverse finiture e colori
+- **Design armonioso**: progettato per integrarsi con l'arredamento
+
+Ogni elemento della nostra collezione è progettato pensando sia alla praticità che all'estetica, aiutando i ristoranti a creare un ambiente più organizzato e professionale migliorando al contempo l'esperienza del cliente.`,
       imageUrl: '/images/projects/restaurant-accessories.png',
       details: {
         material: 'PETG, PETG-CF, PLA',
@@ -925,12 +935,21 @@ L'implementazione ha mostrato risultati notevoli, con cavalieri che riportano pr
     {
       id: '5',
       title: 'Componenti Meccanici Personalizzati',
+      category: 'Industriale',
       excerpt: 'Componenti meccanici di alta precisione stampati in PETG con riempimento rinforzato per applicazioni industriali.',
       content: `Questo progetto ha coinvolto la creazione di componenti meccanici personalizzati per un sistema di automazione industriale. Il cliente necessitava di parti specializzate non disponibili sul mercato e richiedeva tempi di consegna rapidi.
 
+**Progettazione e Materiali Avanzati**
+
 I componenti sono stati progettati con tolleranze specifiche e proprietà meccaniche per resistere all'uso industriale. Abbiamo utilizzato materiale PETG con pattern di riempimento rinforzati per garantire la massima durabilità mantenendo tempi di stampa ragionevoli.
 
-L'implementazione finale ha portato a significativi risparmi sui costi rispetto ai metodi di produzione tradizionali, soddisfacendo tutti i requisiti funzionali.`,
+**Vantaggi Economici e Funzionali**
+
+L'implementazione finale ha portato a significativi risparmi sui costi rispetto ai metodi di produzione tradizionali, soddisfacendo tutti i requisiti funzionali e permettendo al cliente di:
+- **Ridurre i costi**: diminuzione del 60% rispetto ai metodi tradizionali
+- **Accelerare lo sviluppo**: prototipazione e iterazione rapida
+- **Personalizzare completamente**: funzionalità su misura impossibili con altre tecniche
+- **Garantire manutenzione**: disponibilità immediata di parti di ricambio`,
       imageUrl: '/images/projects/comp.png',
       details: {
         material: 'PETG',
@@ -954,22 +973,26 @@ L'implementazione finale ha portato a significativi risparmi sui costi rispetto 
     {
       id: '6',
       title: 'Protesi Mediche Personalizzate',
+      category: 'Medico',
       excerpt: 'Dispositivi protesici personalizzati stampati con materiali biocompatibili per le esigenze individuali dei pazienti.',
       content: `Questo progetto innovativo si concentra sulla creazione di soluzioni protesiche personalizzate utilizzando tecnologie di stampa 3D avanzate. Ogni protesi è progettata su misura per adattarsi alle misure e ai requisiti specifici del paziente.
 
-      Risultati Chiave:
-      - Riduzione del 60% dei tempi di produzione rispetto ai metodi tradizionali
-      - Diminuzione dei costi del 45% mantenendo alta qualità
-      - Miglioramento del comfort del paziente attraverso personalizzazione precisa
-      - Strutture interne leggere integrate
+**Risultati Chiave**
 
-      Specifiche Tecniche:
-      - Materiali biocompatibili certificati per uso medico
-      - Stampa ad alta precisione con altezza dello strato di 50 micron
-      - Strutture di supporto ottimizzate per minima post-elaborazione
-      - Caratteristiche di comfort integrate per uso prolungato
+Grazie all'implementazione delle tecnologie di stampa 3D in ambito medico, abbiamo ottenuto:
+- **Riduzione dei tempi**: diminuzione del 60% dei tempi di produzione rispetto ai metodi tradizionali
+- **Ottimizzazione dei costi**: diminuzione del 45% mantenendo alta qualità
+- **Comfort migliorato**: personalizzazione precisa per le esigenze del paziente
+- **Leggerezza strutturale**: strutture interne ottimizzate per ridurre il peso
 
-      Il progetto ha aiutato con successo decine di pazienti a recuperare mobilità e fiducia, stabilendo nuovi standard per la produzione di protesi.`,
+**Specifiche Tecniche**
+
+- **Materiali biocompatibili**: certificati per uso medico
+- **Alta precisione**: stampa con altezza dello strato di 50 micron
+- **Strutture di supporto ottimizzate**: per una post-elaborazione minima
+- **Caratteristiche di comfort integrate**: per un utilizzo prolungato
+
+Il progetto ha aiutato con successo decine di pazienti a riacquistare mobilità e fiducia, stabilendo al contempo nuovi standard per la produzione di protesi.`,
       imageUrl: '/images/projects/medical.jpg',
       details: {
         material: 'PEEK grado medicale',
@@ -986,7 +1009,7 @@ L'implementazione finale ha portato a significativi risparmi sui costi rispetto 
       benefits: [
         'Soluzioni completamente personalizzate per ogni paziente',
         'Produzione e consegna rapide',
-        'Riduzione significativa dei costi',
+        'Significativa riduzione dei costi',
         'Comfort e funzionalità migliorati'
       ]
     }

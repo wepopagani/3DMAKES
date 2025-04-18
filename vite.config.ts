@@ -3,13 +3,23 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react({
+    babel: {
+      babelrc: false,
+      configFile: false,
+      plugins: []
+    }
+  })],
   server: {
-    port: 3001,
-    strictPort: true,
+    port: 3000,
+    strictPort: false,
     cors: true,
-    host: true,
+    host: '0.0.0.0',
     open: true,
+    hmr: {
+      host: 'localhost',
+      port: 3002
+    },
     // Temporarily disabling proxy for testing
     /* proxy: {
       '/api': {
