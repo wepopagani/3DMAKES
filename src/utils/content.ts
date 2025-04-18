@@ -210,7 +210,7 @@ export const blogPosts = {
       - Minimizzazione degli sprechi attraverso impostazioni di stampa ottimali
       - Offerta di alternative biodegradabili
       
-      Scegliendo materiali riciclati, i nostri clienti possono ridurre il loro impatto ambientale mantenendo risultati di alta qualità.`,
+      By choosing recycled materials, our clients can reduce their environmental impact while maintaining high-quality results.`,
       imageUrl: '/images/blog/sustainable.png',
       date: '2024-01-10',
       author: 'Sofia Bianchi',
@@ -220,16 +220,16 @@ export const blogPosts = {
     {
       id: '4',
       title: 'Applicazioni Innovative nella Stampa 3D Aerospaziale',
-      excerpt: 'Come la stampa 3D sta trasformando l\'industria aerospaziale con parti leggere e complesse.',
-      content: `L'industria aerospaziale sta assistendo a una rivoluzione nella produzione grazie alle tecnologie di stampa 3D avanzate. Dai supporti leggeri ai componenti complessi delle turbine, la produzione additiva sta aprendo nuove possibilità nel design e nella produzione di aeromobili.
+      excerpt: 'How 3D printing is transforming the aerospace industry with lightweight, complex parts.',
+      content: `The aerospace industry is witnessing a revolution in manufacturing thanks to advanced 3D printing technologies. From lightweight brackets to complex turbine components, additive manufacturing is enabling new possibilities in aircraft design and production.
 
-      Innovazioni chiave:
-      - Componenti strutturali ottimizzati topologicamente
-      - Canali di raffreddamento integrati nei componenti del motore
-      - Assemblaggi consolidati che riducono il numero di parti
-      - Riduzione del peso attraverso strutture reticolari
+      Key innovations:
+      - Topology-optimized structural components
+      - Integrated cooling channels in engine parts
+      - Consolidated assemblies reducing part count
+      - Weight reduction through lattice structures
       
-      Questi progressi stanno portando ad aeromobili più efficienti e leggeri con ridotto consumo di carburante e prestazioni migliorate.`,
+      These advancements are leading to more efficient, lighter aircraft with reduced fuel consumption and improved performance.`,
       imageUrl: 'images/blog/aereo.png',
       date: '2023-12-20',
       author: 'Giacomo Moretti',
@@ -242,41 +242,41 @@ export const blogPosts = {
       excerpt: 'Esplorando il mondo diversificato dei materiali per la stampa 3D e le loro applicazioni.',
       content: `La stampa 3D sta rivoluzionando l'industria e trasformando il modo in cui creiamo oggetti. Un aspetto cruciale di questa tecnologia è la vasta gamma di materiali disponibili, ognuno con proprietà uniche e applicazioni specifiche. In questa guida esploreremo i materiali per la stampa 3D più comuni e i loro usi.
 
-      Termoplastici: Versatili e ampiamente utilizzati
+      Thermoplastics: Versatile and Widely Used
 
-      I termoplastici, disponibili in forma di filamento, sono i materiali più comuni per la stampa 3D. Vengono riscaldati fino a diventare fusi, estrusi attraverso un ugello e si solidificano raffreddandosi.
+      Thermoplastics, available in filament form, are the most common materials for 3D printing. They are heated until molten, extruded through a nozzle, and solidify upon cooling.
 
-      PLA (Acido Polilattico): Biodegradabile e facile da stampare, ideale per principianti e prototipi generici.
-      ABS (Acrilonitrile Butadiene Stirene): Più resistente e più tollerante al calore rispetto al PLA, adatto per parti funzionali e applicazioni all'aperto.
-      PETG (Glicole di Polietilene Tereftalato): Combina la resistenza dell'ABS con la facilità di stampa del PLA, rendendolo una scelta versatile.
-      TPU (Poliuretano Termoplastico): Flessibile e resistente, viene utilizzato per oggetti come cover per telefoni, guarnizioni e accessori indossabili.
+      PLA (Polylactic Acid): Biodegradable and easy to print, ideal for beginners and general prototypes.
+      ABS (Acrylonitrile Butadiene Styrene): More durable and heat-tolerant than PLA, suitable for functional parts and outdoor applications.
+      PETG (Polyethylene Terephthalate Glycol): Combines ABS strength with PLA printability, making it a versatile choice.
+      TPU (Thermoplastic Polyurethane): Flexible and durable, used for items like phone cases, gaskets, and wearables.
 
-      Resine: Alta definizione e precisione
+      Resins: High Definition and Precision
 
-      Le resine sono fotopolimeri liquidi che si induriscono quando esposti alla luce UV. Offrono alta risoluzione e sono ideali per dettagli intricati e superfici lisce.
+      Resins are liquid photopolymers that cure when exposed to UV light. They offer high resolution and are ideal for intricate details and smooth surfaces.
 
-      Standard Resins: Utilizzate per la stampa generale, prototipi e creazioni artistiche.
-      Engineering Resins: Offrono proprietà meccaniche migliorate come alta resistenza, resistenza al calore e resistenza chimica.
-      Casting Resins: Progettate per creare stampi per gioielli e modelli per fusione a cera persa.
-      Dental Resins: Formulate specificamente per applicazioni odontoiatriche come corone, ponti e allineatori.
+      Standard Resins: Used for general printing, prototypes, and artistic creations.
+      Engineering Resins: Offer improved mechanical properties like high strength, heat resistance, and chemical resistance.
+      Casting Resins: Designed for jewelry molds and lost-wax casting models.
+      Dental Resins: Specifically formulated for dental applications like crowns, bridges, and aligners.
 
-      Compositi: Proprietà su misura
+      Composites: Tailored Properties
 
-      I compositi combinano più materiali per ottenere proprietà specifiche. Nella stampa 3D, il rinforzo con fibre continue sta guadagnando popolarità per creare parti leggere e resistenti.
+      Composites combine multiple materials to achieve specific properties. In 3D printing, continuous fiber reinforcement is gaining popularity for creating lightweight, strong parts.
 
-      Fibra di Carbonio Rinforzata: Aumenta la resistenza e la rigidità per applicazioni come droni, parti automobilistiche e attrezzature sportive.
-      Fibra di Vetro Rinforzata: Offre un equilibrio tra resistenza e costi per diverse applicazioni.
+      Carbon Fiber Reinforced: Increases strength and stiffness for applications like drones, automotive parts, and sporting equipment.
+      Glass Fiber Reinforced: Offers a balance of strength and cost for various applications.
 
-      Scegliere il materiale giusto
+      Choosing the Right Material
 
-      Il miglior materiale per il tuo progetto di stampa 3D dipende da diversi fattori:
+      The best material for your 3D printing project depends on several factors:
 
-      Proprietà desiderate: Strength, flexibility, heat resistance, biocompatibility, etc.
-      Uso previsto: Prototyping, functional parts, aesthetics, etc.
+      Desired properties: Strength, flexibility, heat resistance, biocompatibility, etc.
+      Intended use: Prototyping, functional parts, aesthetics, etc.
 
-      Sperimentare con diversi materiali è la chiave per sbloccare il pieno potenziale della stampa 3D e creare oggetti davvero innovativi e funzionali.
+      Experimenting with different materials is key to unlocking the full potential of 3D printing and creating truly innovative and functional objects.
 
-      Rimani sintonizzato per ulteriori approfondimenti sul mondo affascinante dei materiali per la stampa 3D!`,
+      Stay tuned for more insights into the fascinating world of 3D printing materials!`,
       imageUrl: '/images/blog/materials.png',
       date: '2024-02-20',
       author: 'Davide Conti',
@@ -295,23 +295,23 @@ export const blogPosts = {
       Perché lo slicing è importante?
       Lo slicing non serve solo a tradurre un modello 3D in istruzioni stampabili. Ti consente anche di regolare una varietà di impostazioni che influiscono significativamente sulla qualità, resistenza e velocità delle tue stampe. Alcuni dei principali parametri che puoi controllare includono:
 
-      Altezza dello strato: Determina lo spessore di ogni strato, influenzando la risoluzione e la finitura superficiale della stampa.
-      Riempimento: La struttura interna della stampa, che influisce sulla resistenza e sull'uso del materiale.
-      Velocità di stampa: Bilanciamento tra velocità e qualità per ottenere il risultato desiderato.
-      Supporti: Generazione di strutture per sostenere le parti in sospensione del modello.
+      Layer Height: Determines the thickness of each layer, affecting print resolution and surface finish.
+      Infill: The internal structure of the print, affecting strength and material usage.
+      Print Speed: Balancing between speed and quality to achieve desired results.
+      Supports: Generation of structures to hold up overhanging parts of the model.
 
-      Caratteristiche principali del software di slicing
-      Il software di slicing moderno offre una vasta gamma di funzionalità per aiutarti a ottenere le migliori stampe possibili. Alcune caratteristiche essenziali includono:
+      Key Features of Slicing Software
+      Modern slicing software offers a wide range of features to help you achieve the best possible prints. Some essential features include:
 
-      - Generazione automatica di supporti: Aggiunge in modo intelligente strutture di supporto dove necessario.
+      - Automatic Support Generation: Intelligently adds support structures where needed.
+      
+      - Adaptive Layer Height: Adjusts layer height based on model geometry.
+      
+      - Print Time Estimation: Provides an estimate of how long the print will take.
+      
+      - Material Profiles: Preset settings for different types of filaments.
 
-      - Altezza dello strato adattiva: Regola l'altezza dello strato in base alla geometria del modello.
-
-      - Stima del tempo di stampa: Fornisce una stima del tempo necessario per la stampa.
-
-      - Profili di materiale: Impostazioni predefinite per diversi tipi di filamenti.
-
-      Conclusione
+      Conclusion
       Lo slicing potrebbe non essere la parte più affascinante della stampa 3D, ma è sicuramente una delle più importanti. Comprendendo il ruolo del slicing e padroneggiando l'uso del software di slicing, puoi sbloccare tutto il potenziale della tua stampante 3D e ottenere risultati sorprendenti.
 
       Condividi nei commenti le tue esperienze con lo slicing e il tuo software preferito!`,
@@ -366,12 +366,12 @@ export const projects = {
       description: 'Innovations and practical applications of 3D printing in the dental sector, for dental clinics and laboratories.',
       longDescription: `In recent years, 3D printing has revolutionized the dental industry, bringing innovation, efficiency, and new opportunities for both laboratories and dental practices. But what are the real possibilities offered by this technology? And why are more and more dental professionals choosing it every day?
 
-### Speed, Precision, and Customization
+**Speed, Precision, and Customization**
 
 3D printing allows transforming a digital scan into a physical model in just a few hours. Whether it's a dental model for treatment planning, a surgical guide for implantology, or a bite for bruxism, rapid execution is one of the most appreciated benefits.  
 Furthermore, the precision achieved by the latest generation printers guarantees reliable and repeatable results, reducing errors and remakes.
 
-### Practical Applications: From Diagnostic Model to Trial Prosthesis
+**Practical Applications: From Diagnostic Model to Trial Prosthesis**
 
 With 3D printing, it is now possible to create:
 - **Dental models**: ideal for diagnosis, patient communication, and planning orthodontic or prosthetic treatments.
@@ -380,14 +380,14 @@ With 3D printing, it is now possible to create:
 - **Individual impression trays**: to obtain more precise and comfortable impressions.
 - **Temporary prostheses, crowns, and trial bridges**: rapid solutions to test aesthetics and functionality before final realization.
 
-### Benefits for Clinics and Laboratories
+**Benefits for Clinics and Laboratories**
 
 - **Reduced delivery times**: internal production or through a specialized service allows obtaining devices in much shorter times compared to traditional methods.
 - **Cost savings**: less material waste, fewer manual steps, fewer errors.
 - **Enhanced communication**: patients can see and touch the final result already at the design stage, increasing their trust and satisfaction.
 - **Flexibility**: possibility to customize each device based on the patient's specific needs.
 
-### The Future is Digital
+**The Future is Digital**
 
 3D printing doesn't replace the dental technician's expertise but enhances it. It allows working in a more digital, precise, and faster way, integrating artisanal tradition with the most advanced technologies.
 
@@ -686,12 +686,12 @@ The final implementation led to significant cost savings compared to traditional
       description: 'Innovazioni e applicazioni pratiche della stampa 3D nel settore odontotecnico, per studi dentistici e laboratori.',
       longDescription: `Negli ultimi anni, la stampa 3D ha rivoluzionato il settore odontotecnico, portando innovazione, efficienza e nuove opportunità sia per i laboratori che per gli studi dentistici. Ma quali sono le reali possibilità offerte da questa tecnologia? E perché sempre più professionisti del dentale la scelgono ogni giorno?
 
-### Velocità, Precisione e Personalizzazione
+**Velocità, Precisione e Personalizzazione**
 
 La stampa 3D permette di trasformare una scansione digitale in un modello fisico in poche ore. Che si tratti di un modello dentale per la pianificazione di un trattamento, di una dima chirurgica per implantologia o di un bite per il bruxismo, la rapidità di esecuzione è uno dei vantaggi più apprezzati.  
 Inoltre, la precisione raggiunta dalle stampanti di ultima generazione garantisce risultati affidabili e ripetibili, riducendo errori e rifacimenti.
 
-### Applicazioni Pratiche: Dal Modello Diagnostico alla Protesi di Prova
+**Applicazioni Pratiche: Dal Modello Diagnostico alla Protesi di Prova**
 
 Con la stampa 3D oggi è possibile realizzare:
 - **Modelli dentali**: ideali per la diagnosi, la comunicazione col paziente e la pianificazione di trattamenti ortodontici o protesici.
@@ -700,14 +700,14 @@ Con la stampa 3D oggi è possibile realizzare:
 - **Vassoi individuali per impronte**: per ottenere impronte più precise e confortevoli.
 - **Protesi provvisorie, corone e ponti di prova**: soluzioni rapide per testare estetica e funzionalità prima della realizzazione definitiva.
 
-### Vantaggi per Studi e Laboratori
+**Vantaggi per Studi e Laboratori**
 
 - **Riduzione dei tempi di consegna**: la produzione interna o tramite un servizio specializzato permette di ottenere i dispositivi in tempi molto più brevi rispetto ai metodi tradizionali.
 - **Risparmio sui costi**: meno sprechi di materiale, meno passaggi manuali, meno errori.
 - **Maggiore comunicazione**: il paziente può vedere e toccare con mano il risultato finale già in fase di progettazione, aumentando la sua fiducia e soddisfazione.
 - **Flessibilità**: possibilità di personalizzare ogni dispositivo in base alle esigenze specifiche del paziente.
 
-### Il Futuro è Digitale
+**Il Futuro è Digitale**
 
 La stampa 3D non sostituisce la competenza dell'odontotecnico, ma la potenzia. Permette di lavorare in modo più digitale, preciso e veloce, integrando la tradizione artigianale con le tecnologie più avanzate.
 
@@ -750,7 +750,7 @@ info@3dmakes.ch | +41 76 266 03 96`,
 
 Le ciotole slow feeding, realizzate in PETG, sono pensate per rallentare l'assunzione di cibo, prevenendo problemi digestivi e obesità. Il PETG è un materiale che trattiene pochissimi batteri ed è estremamente resistente, ideale per il contatto con gli alimenti.
 
-Per chi preferisce le classiche ciotole in acciaio inox, offriamo strutture di supporto in PLA (materiale organico e biodegradabile) in diverse dimensioni: due misure per cani (14 cm e 16 cm di diametro) e una misura standard per gatti. Queste strutture possono essere personalizzate con il nome del tuo animale e in diversi colori.
+Per chi preferisce le classiche ciotole in acciaio inox, offriamo strutture di supporto in PLA (materiale organico e biodegradabile) in diverse dimensioni: due misure per cani (14 cm e 16 cm di diametro) e una misura standard for cats. Queste strutture possono essere personalizzate con il nome del tuo animale e in diversi colori.
 
 Completiamo la gamma con il ciondolo NFC in PETG-CF, rinforzato in fibra di carbonio per garantire elevata resistenza pur mantenendo un peso di soli 5g. Il tag NFC integrato contiene tutte le informazioni essenziali del tuo animale e i tuoi dati di contatto, funzionando anche dove non c'è connessione a internet.`,
       imageUrl: '/images/projects/ciotole.png',
