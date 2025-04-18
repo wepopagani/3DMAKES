@@ -5,9 +5,13 @@ import path from 'path';
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: 5173,
+    port: 3001,
+    strictPort: true,
     cors: true,
-    proxy: {
+    host: true,
+    open: true,
+    // Temporarily disabling proxy for testing
+    /* proxy: {
       '/api': {
         target: 'https://short.3dmakes.ch',
         changeOrigin: true,
@@ -28,7 +32,7 @@ export default defineConfig({
           });
         }
       }
-    }
+    } */
   },
   resolve: {
     alias: {

@@ -28,6 +28,7 @@ import ContactView from './components/ContactView';
 import RicercaFerraturaTpu from './pages/RicercaFerraturaTpu';
 import NfcPetTag from './components/NfcPetTag';
 import PetView from './components/PetView';
+import DentalPage from './pages/DentalPage';
 
 // Componente HomePage con accesso al contesto di autenticazione
 const HomePage = () => {
@@ -272,7 +273,7 @@ const HomePage = () => {
   );
 };
 
-// Aggiungi questo componente nell'App.tsx
+// Aggiungi questo componente nell'
 const LinkShRedirect = () => {
   useEffect(() => {
     window.location.href = 'http://server.3dmakes.ch:3000';
@@ -312,6 +313,8 @@ function App() {
           <Route path="/ricerca-ferratura-tpu" element={<RicercaFerraturaTpu />} />
           <Route path="/nfc" element={<NfcPetTag />} />
           <Route path="/pet-view" element={<PetView />} />
+          <Route path="/3d-printing-dentistry" element={<DentalPage />} />
+          <Route path="/stampa-3d-odontoiatria" element={<DentalPage />} />
         </Routes>
       </Router>
     </AuthProvider>

@@ -253,6 +253,38 @@ export const translations = {
       title: "Research on Equine Horseshoeing with TPU Cushions",
       downloadPdf: "Download PDF",
       backToProject: "Back to Project",
+    },
+
+    dental: {
+      title: "3D Printing in Dentistry",
+      subtitle: "Innovative solutions for dental clinics and laboratories",
+      section1: {
+        title: "Revolutionizing Dental Practice",
+        content: "3D printing technology is transforming dentistry by enabling rapid production of precise, customized dental models, surgical guides, and other dental appliances. This technology offers significant advantages in terms of speed, accuracy, and cost-effectiveness compared to traditional methods."
+      },
+      section2: {
+        title: "Precision and Personalization",
+        content: "Our dental 3D printing services provide superior accuracy and detail, allowing for completely personalized solutions for each patient. Using high-resolution printers and biocompatible materials, we ensure clinically acceptable results that meet all necessary requirements.",
+        imageAlt: "Dental models printed in 3D"
+      },
+      applications: {
+        title: "Applications in Dentistry",
+        items: {
+          1: {
+            title: "Dental Models",
+            description: "High-precision models for diagnosis, treatment planning, and patient communication."
+          },
+          2: {
+            title: "Surgical Guides",
+            description: "Custom guides that increase safety and precision in implantology procedures."
+          },
+          // e così via per gli altri elementi
+        }
+      },
+      contact: {
+        title: "Get in Touch",
+        description: "Interested in implementing 3D printing in your dental practice? Contact us for a consultation."
+      }
     }
   },
 
@@ -500,6 +532,84 @@ export const translations = {
       title: "Ricerca sulla Ferratura Equina con Cuscinetti in TPU",
       downloadPdf: "Scarica PDF",
       backToProject: "Torna al Progetto",
+    },
+
+    dental: {
+      title: "Stampa 3D in Odontotecnica",
+      subtitle: "Soluzioni innovative per studi dentistici e laboratori",
+      service: {
+        title: "Il servizio",
+        content: "Realizziamo modelli dentali completi o parziali, dime chirurgiche, bite da laboratorio e vassoi individuali tramite stampa 3D professionale. Offro rapidità, precisione (fino a 0.01mm) e prezzi competitivi per studi dentistici e laboratori odontotecnici.<br><br>Lavoro su file STL forniti dal cliente e consegno in tempi brevi modelli di alta qualità, ideali per ortodonzia, protesi, pianificazione e comunicazione col paziente."
+      },
+      examples: {
+        title: "Esempi di applicazioni",
+        content: "La stampa 3D permette di ottenere risultati eccellenti in vari ambiti dell'odontoiatria:<br><br>• <strong>Modelli per diagnosi</strong>: precisi e dettagliati per pianificare al meglio i trattamenti<br>• <strong>Guide chirurgiche</strong>: per un posizionamento preciso degli impianti<br>• <strong>Bite e splint</strong>: perfettamente adattati all'anatomia del paziente<br>• <strong>Vassoi individuali</strong>: per impronte precise e confortevoli",
+        imageAlt: "Modelli dentali stampati in 3D"
+      },
+      applications: {
+        title: "Applicazioni Pratiche",
+        items: {
+          1: {
+            title: "Modelli Dentali",
+            description: "Modelli di alta precisione per diagnosi, pianificazione del trattamento e comunicazione col paziente."
+          },
+          2: {
+            title: "Dime Chirurgiche",
+            description: "Guide personalizzate che aumentano sicurezza e precisione negli interventi di implantologia."
+          },
+          3: {
+            title: "Bite e Splint",
+            description: "Dispositivi su misura per il trattamento del bruxismo o per la protezione dentale."
+          },
+          4: {
+            title: "Vassoi Individuali",
+            description: "Per ottenere impronte più precise e confortevoli per il paziente."
+          }
+        }
+      },
+      pricing: {
+        title: "Listino Prezzi",
+        product: "Prodotto",
+        price: "Prezzo (CHF)",
+        items: {
+          1: {
+            name: "Modello dentale arcata singola",
+            price: "25"
+          },
+          2: {
+            name: "Modello dentale completo",
+            price: "45"
+          },
+          3: {
+            name: "Dima/guida chirurgica (prova)",
+            price: "20"
+          },
+          4: {
+            name: "Bite/splint da laboratorio (prova)",
+            price: "25"
+          }
+        }
+      },
+      additionalServices: {
+        title: "Servizi aggiuntivi",
+        items: {
+          1: "Preparazione file STL: 12 CHF (se necessario)",
+          2: "Urgenza (consegna in 12h): +30%",
+          3: "Ritiro gratuito - consegna a domicilio (Lugano): 10 CHF (gratuito sopra 100 CHF di ordine)",
+          4: "Sconti per ordini multipli o collaborazioni continuative"
+        }
+      },
+      notes: {
+        title: "Note",
+        items: {
+          1: "Tutti i modelli sono destinati a uso extraorale, diagnostico o di laboratorio (no dispositivi certificati per uso intraorale definitivo).",
+          2: "Per esigenze particolari o grandi volumi, contattami per un preventivo personalizzato."
+        }
+      },
+      contact: {
+        title: "Contattaci",
+        description: "Sei interessato a implementare la stampa 3D nel tuo studio o laboratorio? Contattaci per una consulenza."
+      }
     }
   }
 };
