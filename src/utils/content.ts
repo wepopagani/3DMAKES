@@ -363,8 +363,8 @@ export const projects = {
       id: '0',
       title: '3D Printing in Dental Technology: A New Era',
       category: 'Medical',
-      description: 'Innovations and practical applications of 3D printing in the dental sector, for dental clinics and laboratories.',
-      longDescription: `In recent years, 3D printing has revolutionized the dental industry, bringing innovation, efficiency, and new opportunities for both laboratories and dental practices. But what are the real possibilities offered by this technology? And why are more and more dental professionals choosing it every day?
+      excerpt: 'Innovations and practical applications of 3D printing in the dental sector, for dental clinics and laboratories.',
+      content: `In recent years, 3D printing has revolutionized the dental industry, bringing innovation, efficiency, and new opportunities for both laboratories and dental practices. But what are the real possibilities offered by this technology? And why are more and more dental professionals choosing it every day?
 
 **Speed, Precision, and Customization**
 
@@ -396,7 +396,7 @@ If you are a dental clinic or laboratory and want to discover how 3D printing ca
 
 **Marco Pagani – 3DMAKES**  
 info@3dmakes.ch | +41 76 266 03 96`,
-      imageUrl: '/images/progetti/dental.png',
+      imageUrl: '/images/projects/dental.png',
       details: {
         material: 'Biocompatible resins, PETG, PLA',
         printTime: 'Varies by application type',
@@ -425,8 +425,8 @@ info@3dmakes.ch | +41 76 266 03 96`,
       id: '1',
       title: 'Customizable Pet Bowls',
       category: 'Pet Accessories',
-      description: 'Collection of bowls and accessories for pets made with 3D printing in carefully selected materials to ensure safety and practicality.',
-      longDescription: `Our line of customizable pet bowls has been designed with animal well-being in mind. We offer different solutions tailored to the specific needs of dogs and cats.
+      excerpt: 'Collection of bowls and accessories for pets made with 3D printing in carefully selected materials to ensure safety and practicality.',
+      content: `Our line of customizable pet bowls has been designed with animal well-being in mind. We offer different solutions tailored to the specific needs of dogs and cats.
 
 The slow feeding bowls, made of PETG, are designed to slow down food consumption, preventing digestive problems and obesity. PETG is a material that retains very few bacteria and is extremely durable, ideal for food contact.
 
@@ -461,8 +461,8 @@ We complete the range with the NFC pendant in PETG-CF, reinforced with carbon fi
       id: '2',
       title: 'TPU Horseshoe Cushions',
       category: 'Equestrian',
-      description: 'Custom 3D printed TPU cushions for horseshoes, designed to reduce joint stress and improve grip on various terrains.',
-      longDescription: `This innovative project offers a significant improvement in traditional horseshoeing by incorporating custom-designed TPU (Thermoplastic Polyurethane) cushions. These cushions can be installed either before or after the metal horseshoe, providing multiple benefits for the horse's health and performance.
+      excerpt: 'Custom 3D printed TPU cushions for horseshoes, designed to reduce joint stress and improve grip on various terrains.',
+      content: `This innovative project offers a significant improvement in traditional horseshoeing by incorporating custom-designed TPU (Thermoplastic Polyurethane) cushions. These cushions can be installed either before or after the metal horseshoe, providing multiple benefits for the horse's health and performance.
 
 TPU is an ideal material for this application due to its unique properties. It combines the elasticity of rubber with the durability and processability of thermoplastics. The material offers excellent shock absorption capabilities while maintaining resilience over time, even under the significant stress of equine movement.
 
@@ -504,8 +504,8 @@ The implementation has shown remarkable results, with riders reporting improved 
       id: '3',
       title: 'Smart NFC Corporate Gadgets',
       category: 'Business Innovation',
-      description: 'Smart corporate gadgets with integrated NFC technology for modern business networking and digital interaction.',
-      longDescription: `Our innovative line of NFC-enabled corporate gadgets represents a significant evolution in business networking and brand promotion. Each item combines elegant design with smart functionality, creating powerful touchpoints for digital interaction.
+      excerpt: 'Smart corporate gadgets with integrated NFC technology for modern business networking and digital interaction.',
+      content: `Our innovative line of NFC-enabled corporate gadgets represents a significant evolution in business networking and brand promotion. Each item combines elegant design with smart functionality, creating powerful touchpoints for digital interaction.
 
       Smart NFC Keychains
       We've reinvented the traditional corporate keychain by integrating NFC technology. Each keychain becomes a digital touchpoint that can:
@@ -555,8 +555,8 @@ The implementation has shown remarkable results, with riders reporting improved 
       id: '4',
       title: 'Restaurant Accessories Collection',
       category: 'Hospitality',
-      description: 'Innovative and customizable restaurant accessories designed to enhance dining experience and operational efficiency.',
-      longDescription: `Our restaurant accessories collection represents a perfect blend of functionality and style, designed specifically for modern dining establishments. Each piece is customizable to match your restaurant's branding and aesthetic needs.
+      excerpt: 'Innovative and customizable restaurant accessories designed to enhance dining experience and operational efficiency.',
+      content: `Our restaurant accessories collection represents a perfect blend of functionality and style, designed specifically for modern dining establishments. Each piece is customizable to match your restaurant's branding and aesthetic needs.
 
       QR Menu & WiFi Cube (5x5x5cm)
       An elegant table accessory that combines multiple functions:
@@ -611,8 +611,8 @@ The implementation has shown remarkable results, with riders reporting improved 
       id: '5',
       title: 'Custom Mechanical Components',
       category: 'Industrial',
-      description: 'High-precision mechanical components printed in PETG with reinforced infill for industrial applications.',
-      longDescription: `This project involved creating custom mechanical components for an industrial automation system. The client needed specialized parts not available on the market and required quick turnaround times.
+      excerpt: 'High-precision mechanical components printed in PETG with reinforced infill for industrial applications.',
+      content: `This project involved creating custom mechanical components for an industrial automation system. The client needed specialized parts not available on the market and required quick turnaround times.
 
 The components were designed with specific tolerances and mechanical properties to withstand industrial use. We used PETG material with reinforced infill patterns to ensure maximum durability while maintaining reasonable print times.
 
@@ -641,8 +641,8 @@ The final implementation led to significant cost savings compared to traditional
       id: '6',
       title: 'Custom Medical Prosthetics',
       category: 'Medical',
-      description: 'Customized prosthetic devices printed with biocompatible materials for individual patient needs.',
-      longDescription: `This groundbreaking project focuses on creating personalized prosthetic solutions using advanced 3D printing technologies. Each prosthetic is custom-designed to match the patient's specific measurements and requirements.
+      excerpt: 'Customized prosthetic devices printed with biocompatible materials for individual patient needs.',
+      content: `This groundbreaking project focuses on creating personalized prosthetic solutions using advanced 3D printing technologies. Each prosthetic is custom-designed to match the patient's specific measurements and requirements.
 
       Key Achievements:
       - Reduced production time by 60% compared to traditional methods
@@ -682,9 +682,8 @@ The final implementation led to significant cost savings compared to traditional
     {
       id: '0',
       title: 'Stampa 3D in Odontotecnica: Una Nuova Era',
-      category: 'Medicale',
-      description: 'Innovazioni e applicazioni pratiche della stampa 3D nel settore odontotecnico, per studi dentistici e laboratori.',
-      longDescription: `Negli ultimi anni, la stampa 3D ha rivoluzionato il settore odontotecnico, portando innovazione, efficienza e nuove opportunità sia per i laboratori che per gli studi dentistici. Ma quali sono le reali possibilità offerte da questa tecnologia? E perché sempre più professionisti del dentale la scelgono ogni giorno?
+      excerpt: 'Esplorando come la produzione additiva sta rivoluzionando i metodi di produzione tradizionali.',
+      content: `Negli ultimi anni, la stampa 3D ha rivoluzionato il settore odontotecnico, portando innovazione, efficienza e nuove opportunità sia per i laboratori che per gli studi dentistici. Ma quali sono le reali possibilità offerte da questa tecnologia? E perché sempre più professionisti del dentale la scelgono ogni giorno?
 
 **Velocità, Precisione e Personalizzazione**
 
@@ -744,9 +743,8 @@ info@3dmakes.ch | +41 76 266 03 96`,
     {
       id: '1',
       title: 'Ciotole Personalizzabili',
-      category: 'Accessori per Animali',
-      description: 'Collezione di ciotole e accessori per animali domestici realizzati con stampa 3D in materiali selezionati per garantire sicurezza e praticità.',
-      longDescription: `La nostra linea di ciotole personalizzabili è stata progettata pensando al benessere degli animali domestici. Offriamo diverse soluzioni adatte alle esigenze specifiche di cani e gatti.
+      excerpt: 'Collezione di ciotole e accessori per animali domestici realizzati con stampa 3D in materiali selezionati per garantire sicurezza e praticità.',
+      content: `La nostra linea di ciotole personalizzabili è stata progettata pensando al benessere degli animali domestici. Offriamo diverse soluzioni adatte alle esigenze specifiche di cani e gatti.
 
 Le ciotole slow feeding, realizzate in PETG, sono pensate per rallentare l'assunzione di cibo, prevenendo problemi digestivi e obesità. Il PETG è un materiale che trattiene pochissimi batteri ed è estremamente resistente, ideale per il contatto con gli alimenti.
 
@@ -780,9 +778,8 @@ Completiamo la gamma con il ciondolo NFC in PETG-CF, rinforzato in fibra di carb
     {
       id: '2',
       title: 'Cuscinetti in TPU per Ferrature Equine',
-      category: 'Equitazione',
-      description: 'Cuscinetti in TPU stampati in 3D su misura per ferrature dei cavalli, progettati per ridurre lo stress articolare e migliorare l\'aderenza su vari terreni.',
-      longDescription: `Questo progetto innovativo offre un miglioramento significativo nella tradizionale ferratura dei cavalli incorporando cuscinetti in TPU (Poliuretano Termoplastico) progettati su misura. Questi cuscinetti possono essere installati sia prima che dopo il ferro di cavallo metallico, fornendo molteplici benefici per la salute e le prestazioni del cavallo.
+      excerpt: 'Cuscinetti in TPU stampati in 3D su misura per ferrature dei cavalli, progettati per ridurre lo stress articolare e migliorare l\'aderenza su vari terreni.',
+      content: `Questo progetto innovativo offre un miglioramento significativo nella tradizionale ferratura dei cavalli incorporando cuscinetti in TPU (Poliuretano Termoplastico) progettati su misura. Questi cuscinetti possono essere installati sia prima che dopo il ferro di cavallo metallico, fornendo molteplici benefici per la salute e le prestazioni del cavallo.
 
 Il TPU è un materiale ideale per questa applicazione grazie alle sue proprietà uniche. Combina l'elasticità della gomma con la durabilità e la lavorabilità dei termoplastici. Il materiale offre eccellenti capacità di assorbimento degli urti mantenendo la resilienza nel tempo, anche sotto lo stress significativo del movimento equino.
 
@@ -823,9 +820,8 @@ L'implementazione ha mostrato risultati notevoli, con cavalieri che riportano pr
     {
       id: '3',
       title: 'Gadget Aziendali NFC Smart',
-      category: 'Innovazione Aziendale',
-      description: 'Gadget aziendali smart con tecnologia NFC integrata per il networking aziendale moderno e l\'interazione digitale.',
-      longDescription: `La nostra innovativa linea di gadget aziendali con tecnologia NFC rappresenta un'importante evoluzione nel networking aziendale e nella promozione del brand. Ogni articolo combina design elegante e funzionalità smart, creando potenti punti di contatto per l'interazione digitale.
+      excerpt: 'Gadget aziendali smart con tecnologia NFC integrata per il networking aziendale moderno e l\'interazione digitale.',
+      content: `La nostra innovativa linea di gadget aziendali con tecnologia NFC rappresenta un'importante evoluzione nel networking aziendale e nella promozione del brand. Ogni articolo combina design elegante e funzionalità smart, creando potenti punti di contatto per l'interazione digitale.
 
       Portachiavi NFC Smart
       Abbiamo reinventato il tradizionale portachiavi aziendale integrando la tecnologia NFC. Ogni portachiavi diventa un punto di contatto digitale che può:
@@ -874,9 +870,8 @@ L'implementazione ha mostrato risultati notevoli, con cavalieri che riportano pr
     {
       id: '4',
       title: 'Collezione Accessori Ristorativi',
-      category: 'Ristorazione',
-      description: 'Accessori innovativi e personalizzabili per ristoranti, progettati per migliorare l\'esperienza di ristorazione e l\'efficienza operativa.',
-      longDescription: `La nostra collezione di accessori per la ristorazione rappresenta una perfetta fusione tra funzionalità e stile, progettata specificamente per i moderni locali di ristorazione. Ogni pezzo è personalizzabile per adattarsi al branding e alle esigenze estetiche del tuo ristorante.
+      excerpt: 'Accessori innovativi e personalizzabili per ristoranti, progettati per migliorare l\'esperienza di ristorazione e l\'efficienza operativa.',
+      content: `La nostra collezione di accessori per la ristorazione rappresenta una perfetta fusione tra funzionalità e stile, progettata specificamente per i moderni locali di ristorazione. Ogni pezzo è personalizzabile per adattarsi al branding e alle esigenze estetiche del tuo ristorante.
 
       Cubo QR Menu & WiFi (5x5x5cm)
       Un elegante accessorio da tavolo che combina più funzioni:
@@ -930,9 +925,8 @@ L'implementazione ha mostrato risultati notevoli, con cavalieri che riportano pr
     {
       id: '5',
       title: 'Componenti Meccanici Personalizzati',
-      category: 'Industriale',
-      description: 'Componenti meccanici di alta precisione stampati in PETG con riempimento rinforzato per applicazioni industriali.',
-      longDescription: `Questo progetto ha coinvolto la creazione di componenti meccanici personalizzati per un sistema di automazione industriale. Il cliente necessitava di parti specializzate non disponibili sul mercato e richiedeva tempi di consegna rapidi.
+      excerpt: 'Componenti meccanici di alta precisione stampati in PETG con riempimento rinforzato per applicazioni industriali.',
+      content: `Questo progetto ha coinvolto la creazione di componenti meccanici personalizzati per un sistema di automazione industriale. Il cliente necessitava di parti specializzate non disponibili sul mercato e richiedeva tempi di consegna rapidi.
 
 I componenti sono stati progettati con tolleranze specifiche e proprietà meccaniche per resistere all'uso industriale. Abbiamo utilizzato materiale PETG con pattern di riempimento rinforzati per garantire la massima durabilità mantenendo tempi di stampa ragionevoli.
 
@@ -960,9 +954,8 @@ L'implementazione finale ha portato a significativi risparmi sui costi rispetto 
     {
       id: '6',
       title: 'Protesi Mediche Personalizzate',
-      category: 'Medicale',
-      description: 'Dispositivi protesici personalizzati stampati con materiali biocompatibili per le esigenze individuali dei pazienti.',
-      longDescription: `Questo progetto innovativo si concentra sulla creazione di soluzioni protesiche personalizzate utilizzando tecnologie di stampa 3D avanzate. Ogni protesi è progettata su misura per adattarsi alle misure e ai requisiti specifici del paziente.
+      excerpt: 'Dispositivi protesici personalizzati stampati con materiali biocompatibili per le esigenze individuali dei pazienti.',
+      content: `Questo progetto innovativo si concentra sulla creazione di soluzioni protesiche personalizzate utilizzando tecnologie di stampa 3D avanzate. Ogni protesi è progettata su misura per adattarsi alle misure e ai requisiti specifici del paziente.
 
       Risultati Chiave:
       - Riduzione del 60% dei tempi di produzione rispetto ai metodi tradizionali
