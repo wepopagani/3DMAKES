@@ -716,7 +716,7 @@ Se sei uno studio dentistico o un laboratorio e vuoi scoprire come la stampa 3D 
 
 **Marco Pagani – 3DMAKES**  
 info@3dmakes.ch | +41 76 266 03 96`,
-      imageUrl: '/images/progetti/dental.png',
+      imageUrl: '/images/projects/dental.png',
       details: {
         material: 'Resine biocompatibili, PETG, PLA',
         printTime: 'Variabile per tipo di applicazione',
