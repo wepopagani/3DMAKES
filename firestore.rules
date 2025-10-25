@@ -53,6 +53,17 @@ service cloud.firestore {
       allow update, delete: if isAdmin();
     }
     
+    // Accesso alle richieste di preventivo
+    match /quoteRequests/{requestId} {
+      // Chiunque può creare una richiesta (anche senza account)
+      allow create: if true;
+      // Solo admin e l'utente proprietario possono leggere
+      allow read: if isAdmin() || 
+        (request.auth != null && resource.data.userId == request.auth.uid);
+      // Solo admin possono modificare
+      allow update, delete: if isAdmin();
+    }
+    
     // Accesso ai passaporti degli animali - COMPLETAMENTE PUBBLICO
     match /petPassports/{passportId} {
       // Lettura pubblica per tutti (per NFC)

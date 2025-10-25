@@ -58,6 +58,7 @@ import { Switch } from "@/components/ui/switch";
 import { Menu, ChevronDown, Home, Package, MessageSquare, FileText, BarChart3, Users, TrendingUp } from "lucide-react";
 import AdminMessagesContainer from "./AdminMessagesContainer";
 import AdminProjectsManager from "./AdminProjectsManager";
+import AdminQuoteRequests from "./AdminQuoteRequests";
 
 interface ExtendedUserData extends UserProfileData {
   id: string;
@@ -467,6 +468,13 @@ const AdminPanel = () => {
                 Ordini
               </DropdownMenuItem>
               <DropdownMenuItem 
+                onClick={() => setActiveTab("quoteRequests")}
+                className="flex items-center gap-2"
+              >
+                <FileText className="h-4 w-4" />
+                Richieste Preventivo
+              </DropdownMenuItem>
+              <DropdownMenuItem 
                 onClick={() => setActiveTab("messages")}
                 className="flex items-center gap-2"
               >
@@ -482,6 +490,7 @@ const AdminPanel = () => {
         <TabsList className="mb-4 hidden md:flex">
           <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
           <TabsTrigger value="projects">Ordini</TabsTrigger>
+          <TabsTrigger value="quoteRequests">Richieste Preventivo</TabsTrigger>
           <TabsTrigger value="messages">Messaggi</TabsTrigger>
         </TabsList>
         
@@ -711,6 +720,11 @@ const AdminPanel = () => {
         <TabsContent value="projects">
           {/* Contenuto per la scheda Ordini */}
           <AdminProjectsManager />
+        </TabsContent>
+        
+        <TabsContent value="quoteRequests">
+          {/* Contenuto per le richieste di preventivo */}
+          <AdminQuoteRequests />
         </TabsContent>
         
         <TabsContent value="messages">

@@ -703,11 +703,23 @@ const Dashboard = () => {
                   <User className="h-4 w-4" />
                   Profilo
                 </DropdownMenuItem>
+                <DropdownMenuItem 
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 text-red-600 hover:text-red-700 hover:bg-red-50"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Logout
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
 
-          <Button variant="ghost" size="sm" onClick={handleLogout} className="flex items-center gap-2">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={handleLogout} 
+            className="flex items-center gap-2 text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
+          >
             <LogOut size={16} />
             <span className="hidden sm:inline">Logout</span>
           </Button>

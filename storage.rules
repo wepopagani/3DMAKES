@@ -33,5 +33,13 @@ service firebase.storage {
         (request.auth.uid == userId || 
          request.auth.token.email == "info@3dmakes.ch");
     }
+    
+    // Regole per le richieste di preventivo - chiunque può caricare
+    match /quote-requests/{fileName} {
+      allow read: if true;  // Accesso pubblico per lettura
+      allow create: if request.resource.size <= 100 * 1024 * 1024;  // Max 100MB
+      allow update, delete: if request.auth != null && 
+        request.auth.token.email == "info@3dmakes.ch";  // Solo admin può modificare/eliminare
+    }
   }
 }
