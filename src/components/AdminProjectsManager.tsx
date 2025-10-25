@@ -211,14 +211,7 @@ const AdminProjectsManager = ({ initialTab = 'projects' }: AdminProjectsManagerP
         updatedAt: Timestamp.now()
       });
       
-      // Update local state
-      if (activeTab === 'quotes') {
-        setQuotes(quotes.map(quote => 
-          quote.id === selectedItem.id 
-            ? { ...quote, totalAmount: amount, updatedAt: new Date() } 
-            : quote
-      ));
-      }
+      // Update local state (quotes section removed)
 
       // Invia email di preventivo pronto al cliente
       try {
@@ -904,8 +897,6 @@ const AdminProjectsManager = ({ initialTab = 'projects' }: AdminProjectsManagerP
                       )}
                     </>
                   )}
-                <>
-              )}
           )}
         </CardContent>
       </Card>
@@ -916,12 +907,10 @@ const AdminProjectsManager = ({ initialTab = 'projects' }: AdminProjectsManagerP
           <DialogHeader>
             <DialogTitle className="flex items-center text-lg md:text-xl">
               <FileText className="h-5 w-5 md:h-6 md:w-6 mr-2" />
-              {activeTab === 'projects' ? 'Dettagli Ordine' : 'Dettagli Preventivo'}
+              Dettagli Ordine
             </DialogTitle>
             <DialogDescription className="text-sm">
-              {activeTab === 'projects' 
-                ? 'Visualizza e gestisci i dettagli dell\'ordine con file e stato di produzione' 
-                : 'Visualizza e gestisci i dettagli del preventivo'}
+              Visualizza e gestisci i dettagli dell'ordine con file e stato di produzione
             </DialogDescription>
           </DialogHeader>
           
@@ -937,7 +926,7 @@ const AdminProjectsManager = ({ initialTab = 'projects' }: AdminProjectsManagerP
                         {projects[selectedItem.projectId]?.name || 
                          selectedItem.orderName || 
                          (selectedItem.items && selectedItem.items.length > 0 && selectedItem.items[0].fileName ? 
-                           `${activeTab === 'projects' ? 'Ordine' : 'Preventivo'} - ${selectedItem.items[0].fileName}` : 
+                           `Ordine - ${selectedItem.items[0].fileName}` : 
                            "Progetto senza nome")}
                       </p>
                   </div>
@@ -956,29 +945,19 @@ const AdminProjectsManager = ({ initialTab = 'projects' }: AdminProjectsManagerP
                       <Label className="text-xs text-gray-500 uppercase tracking-wide">Stato Corrente</Label>
                       <div className="font-medium">
                         <span className={`inline-flex items-center px-2 md:px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          activeTab === 'projects' 
-                            ? (selectedItem.productionStatus === 'non_iniziato' ? 'bg-gray-100 text-gray-800' : 
-                               selectedItem.productionStatus === 'in_corso' ? 'bg-yellow-100 text-yellow-800' : 
-                               selectedItem.productionStatus === 'completato' ? 'bg-green-100 text-green-800' : 
-                               'bg-blue-100 text-blue-800') 
-                            : (selectedItem.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                               selectedItem.status === 'approved' ? 'bg-green-100 text-green-800' :
-                               selectedItem.status === 'rejected' ? 'bg-red-100 text-red-800' :
-                               'bg-gray-100 text-gray-800')
-                  }`}>
-                          {activeTab === 'projects' 
-                            ? (selectedItem.productionStatus === 'non_iniziato' ? 'Da iniziare' : 
-                               selectedItem.productionStatus === 'in_corso' ? 'In produzione' : 
-                               selectedItem.productionStatus === 'completato' ? 'Completato' : 
-                               selectedItem.status || "In attesa") 
-                            : (selectedItem.status === 'pending' ? 'In attesa' :
-                               selectedItem.status === 'approved' ? 'Approvato' :
-                               selectedItem.status === 'rejected' ? 'Rifiutato' :
-                               selectedItem.status || "In attesa")}
+                          selectedItem.productionStatus === 'non_iniziato' ? 'bg-gray-100 text-gray-800' : 
+                          selectedItem.productionStatus === 'in_corso' ? 'bg-yellow-100 text-yellow-800' : 
+                          selectedItem.productionStatus === 'completato' ? 'bg-green-100 text-green-800' : 
+                          'bg-blue-100 text-blue-800'
+                        }`}>
+                          {selectedItem.productionStatus === 'non_iniziato' ? 'Da iniziare' : 
+                           selectedItem.productionStatus === 'in_corso' ? 'In produzione' : 
+                           selectedItem.productionStatus === 'completato' ? 'Completato' : 
+                           selectedItem.status || "In attesa"}
                   </span>
                 </div>
                   </div>
-                    {activeTab === 'projects' && selectedItem.totalAmount > 0 && (
+                  {selectedItem.totalAmount > 0 && (
                   <div>
                         <Label className="text-xs text-gray-500 uppercase tracking-wide">Importo</Label>
                         <div className="font-bold text-lg md:text-xl text-green-600">
@@ -990,32 +969,7 @@ const AdminProjectsManager = ({ initialTab = 'projects' }: AdminProjectsManagerP
                 </div>
               </div>
               
-              {/* Quote Amount Section */}
-              {activeTab === 'quotes' && (
-                <div className="space-y-2 p-4 bg-gray-50 rounded-md">
-                  <Label htmlFor="quoteAmount">Importo preventivo (CHF)</Label>
-                  <div className="flex space-x-2">
-                    <Input 
-                      id="quoteAmount"
-                      type="number"
-                      min="0"
-                      step="0.01"
-                      value={quoteAmount} 
-                      onChange={(e) => setQuoteAmount(e.target.value)}
-                      placeholder="0.00"
-                    />
-                <Button 
-                  onClick={handleSetQuoteAmount}
-                      disabled={updatingStatus[selectedItem.id]}
-                >
-                      {updatingStatus[selectedItem.id] ? 'Salvando...' : 'Salva'}
-                </Button>
-              </div>
-                  <p className="text-xs text-gray-500">
-                    Inserisci l'importo del preventivo in franchi svizzeri.
-                  </p>
-                </div>
-              )}
+              {/* Quote Amount Section - Removed for orders-only view */}
               
               {/* Order Items (if any) */}
               {selectedItem.items && selectedItem.items.length > 0 && (
@@ -1216,18 +1170,7 @@ const AdminProjectsManager = ({ initialTab = 'projects' }: AdminProjectsManagerP
               Chiudi
             </Button>
                 
-                {activeTab === 'quotes' && selectedItem.status === 'pending' && selectedItem.totalAmount > 0 && (
-              <Button 
-                    onClick={() => handleConvertToOrder(selectedItem.id)}
-                    disabled={updatingStatus[selectedItem.id]}
-                    className="order-1 sm:order-2"
-              >
-                    Converti in ordine
-              </Button>
-            )}
-                
-                {activeTab === 'projects' && (
-                  <div className="flex flex-col space-y-3 order-1 sm:order-2">
+                <div className="flex flex-col space-y-3 order-1 sm:order-2">
                     {/* Pulsanti per gli stati */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                         <DropdownMenu>
