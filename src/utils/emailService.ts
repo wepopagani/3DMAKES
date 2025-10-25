@@ -216,18 +216,26 @@ export const sendGenericEmail = async (emailData: EmailData): Promise<boolean> =
 
 // Funzione per inviare email di notifica admin
 export const sendAdminNotificationEmail = async (data: {
-  type: 'new_order' | 'new_user' | 'new_message';
+  type: 'new_order' | 'new_user' | 'new_message' | 'new_quote_request';
   details: string;
   userInfo?: string;
 }): Promise<boolean> => {
   try {
+    const subjectMap = {
+      'new_order': '🛒 Nuovo Ordine',
+      'new_user': '👤 Nuovo Utente Registrato',
+      'new_message': '💬 Nuovo Messaggio',
+      'new_quote_request': '📋 Nuova Richiesta di Preventivo'
+    };
+
     const templateParams: EmailData = {
       email: 'info@3dmakes.ch',
       to_name: 'Admin 3DMAKES',
       from_name: 'Sistema 3DMAKES',
-      subject: `Notifica: ${data.type}`,
+      subject: subjectMap[data.type],
       message: data.details,
-      order_details: data.userInfo
+      order_details: data.userInfo || '',
+      order_id: `NOTIFICA-${Date.now()}`
     };
 
     await emailjs.send(

@@ -50,15 +50,8 @@ const AdminProjectsManager = ({ initialTab = 'projects' }: AdminProjectsManagerP
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [orders, setOrders] = useState<any[]>([]);
-  const [quotes, setQuotes] = useState<any[]>([]);
   const [projects, setProjects] = useState<{[key: string]: any}>({});
-  const [activeTab, setActiveTab] = useState<'projects' | 'quotes'>(initialTab);
   const [searchQuery, setSearchQuery] = useState('');
-  
-  // Update active tab when initialTab changes
-  useEffect(() => {
-    setActiveTab(initialTab);
-  }, [initialTab]);
   
   // Dialog states
   const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
@@ -577,30 +570,8 @@ const AdminProjectsManager = ({ initialTab = 'projects' }: AdminProjectsManagerP
           <div>
             <CardTitle>Gestione Ordini</CardTitle>
             <CardDescription>
-              Gestisci gli ordini e le richieste di preventivo
+              Visualizza e gestisci tutti gli ordini
             </CardDescription>
-          </div>
-          <div className="flex space-x-2">
-            <div className="border rounded-lg overflow-hidden flex">
-              <button 
-                className={`px-3 md:px-4 py-2 text-xs md:text-sm font-medium ${activeTab === 'projects' ? 'bg-blue-100 text-blue-800' : 'bg-white text-gray-700 hover:bg-gray-50'}`}
-                onClick={() => {
-                  console.log('Setting activeTab to projects');
-                  setActiveTab('projects');
-                }}
-              >
-                Ordini
-              </button>
-              <button 
-                className={`px-3 md:px-4 py-2 text-xs md:text-sm font-medium ${activeTab === 'quotes' ? 'bg-blue-100 text-blue-800' : 'bg-white text-gray-700 hover:bg-gray-50'}`}
-                onClick={() => {
-                  console.log('Setting activeTab to quotes');
-                  setActiveTab('quotes');
-                }}
-              >
-                Richieste Preventivo
-              </button>
-            </div>
           </div>
         </CardHeader>
         <CardContent>
@@ -609,7 +580,7 @@ const AdminProjectsManager = ({ initialTab = 'projects' }: AdminProjectsManagerP
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
               <Input
                 type="search"
-                placeholder={activeTab === 'projects' ? "Cerca ordini..." : "Cerca preventivi..."}
+                placeholder="Cerca ordini..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-8"
@@ -622,9 +593,6 @@ const AdminProjectsManager = ({ initialTab = 'projects' }: AdminProjectsManagerP
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-700"></div>
             </div>
               ) : (
-                <>
-              {/* Orders Tab */}
-              {activeTab === 'projects' && (
                     <>
                   {orders.length > 0 ? (
                     <>
@@ -936,255 +904,8 @@ const AdminProjectsManager = ({ initialTab = 'projects' }: AdminProjectsManagerP
                       )}
                     </>
                   )}
-              
-              {/* Quotes Tab */}
-              {activeTab === 'quotes' && (
-                    <>
-                  {quotes.length > 0 ? (
-                    <>
-                      {/* Desktop Table View */}
-                      <div className="hidden md:block rounded-md border">
-                          <Table>
-                            <TableHeader>
-                              <TableRow>
-                              <TableHead>Progetto</TableHead>
-                                <TableHead>Cliente</TableHead>
-                              <TableHead>Data richiesta</TableHead>
-                                <TableHead>Stato</TableHead>
-                              <TableHead>Prezzo</TableHead>
-                              <TableHead>Azioni</TableHead>
-                              </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                            {quotes
-                                                        .filter(quote => 
-                            quote.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            (quote.orderNumber || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            (quote.userEmail || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            (projects[quote.projectId]?.name || "").toLowerCase().includes(searchQuery.toLowerCase())
-                          )
-                              .map((quote) => (
-                                <TableRow 
-                                  key={quote.id} 
-                                  className="cursor-pointer hover:bg-gray-50"
-                                  onClick={() => handleItemClick(quote)}
-                                >
-                                  <TableCell className="font-medium">
-                                    {projects[quote.projectId]?.name || 
-                                     quote.orderName || 
-                                     (quote.items && quote.items.length > 0 && quote.items[0].fileName ? 
-                                       `Preventivo - ${quote.items[0].fileName}` : 
-                                       `#${quote.orderNumber || quote.id.substring(0, 8)}`)}
-                                  </TableCell>
-                                  <TableCell>{getClientEmail(quote)}</TableCell>
-                                  <TableCell>{formatDate(quote.createdAt)}</TableCell>
-                                  <TableCell>
-                                    <span className={`inline-block px-2 py-1 text-xs font-medium rounded-full 
-                                      ${quote.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 
-                                        quote.status === 'approved' ? 'bg-green-100 text-green-800' :
-                                        quote.status === 'rejected' ? 'bg-red-100 text-red-800' :
-                                        'bg-gray-100 text-gray-800'}`}
-                                    >
-                                      {quote.status === 'pending' ? 'In attesa' :
-                                       quote.status === 'approved' ? 'Approvato' :
-                                       quote.status === 'rejected' ? 'Rifiutato' :
-                                       quote.status || "In attesa"}
-                                      </span>
-                                  </TableCell>
-                                  <TableCell>
-                                    {quote.totalAmount > 0 
-                                      ? formatCurrency(quote.totalAmount) 
-                                      : <span className="text-red-500">Da impostare</span>}
-                                  </TableCell>
-                                  <TableCell>
-                                    <DropdownMenu>
-                                      <DropdownMenuTrigger asChild>
-                                        <Button variant="ghost" size="sm">
-                                          <MoreVertical className="h-4 w-4" />
-                                        </Button>
-                                      </DropdownMenuTrigger>
-                                      <DropdownMenuContent align="end">
-                                        <DropdownMenuItem onClick={(e) => {
-                                          e.stopPropagation();
-                                          handleItemClick(quote);
-                                        }}>
-                                          Dettagli
-                                        </DropdownMenuItem>
-                                        <DropdownMenuSeparator />
-                                        <DropdownMenuItem
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleUpdateOrderStatus(quote.id, 'pending');
-                                          }}
-                                        >
-                                          Imposta "In attesa"
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleUpdateOrderStatus(quote.id, 'approved');
-                                          }}
-                                        >
-                                          Approva
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleUpdateOrderStatus(quote.id, 'rejected');
-                                          }}
-                                        >
-                                          Rifiuta
-                                        </DropdownMenuItem>
-                                        <DropdownMenuSeparator />
-                                        <DropdownMenuItem 
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            if (confirm('Sei sicuro di voler eliminare questo preventivo? Questa azione non può essere annullata.')) {
-                                              handleDeleteOrder(quote.id, false);
-                                            }
-                                          }}
-                                          className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                                        >
-                                          Elimina preventivo
-                                        </DropdownMenuItem>
-                                      </DropdownMenuContent>
-                                    </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-              </div>
-              
-                      {/* Mobile Card View */}
-                      <div className="md:hidden space-y-4">
-                        {quotes
-                          .filter(quote => 
-                            quote.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            (quote.orderNumber || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            (quote.userEmail || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            (projects[quote.projectId]?.name || "").toLowerCase().includes(searchQuery.toLowerCase())
-                        )
-                          .map((quote) => (
-                            <Card 
-                              key={quote.id} 
-                              className="cursor-pointer hover:shadow-md transition-shadow"
-                              onClick={() => handleItemClick(quote)}
-                            >
-                              <CardHeader className="pb-3">
-                                <div className="flex justify-between items-start">
-                                  <div className="flex-1 min-w-0">
-                                    <CardTitle className="text-base truncate">
-                                      {projects[quote.projectId]?.name || 
-                                       quote.orderName || 
-                                       (quote.items && quote.items.length > 0 && quote.items[0].fileName ? 
-                                         `Preventivo - ${quote.items[0].fileName}` : 
-                                         `#${quote.orderNumber || quote.id.substring(0, 8)}`)}
-                                    </CardTitle>
-                                    <CardDescription className="text-sm mt-1">
-                                      {getClientEmail(quote)}
-                                    </CardDescription>
-                                </div>
-                                <DropdownMenu>
-                                  <DropdownMenuTrigger asChild>
-                                      <Button variant="ghost" size="sm" onClick={(e) => e.stopPropagation()}>
-                                      <MoreVertical className="h-4 w-4" />
-                                    </Button>
-                                  </DropdownMenuTrigger>
-                                  <DropdownMenuContent align="end">
-                                      <DropdownMenuItem onClick={(e) => {
-                                        e.stopPropagation();
-                                        handleItemClick(quote);
-                                      }}>
-                                        Dettagli
-                                      </DropdownMenuItem>
-                                      <DropdownMenuSeparator />
-                                    <DropdownMenuItem
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                          handleUpdateOrderStatus(quote.id, 'pending');
-                                      }}
-                                    >
-                                        Imposta "In attesa"
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                          handleUpdateOrderStatus(quote.id, 'approved');
-                                      }}
-                                    >
-                                        Approva
-                                    </DropdownMenuItem>
-                                      <DropdownMenuItem
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                          handleUpdateOrderStatus(quote.id, 'rejected');
-                                        }}
-                                      >
-                                        Rifiuta
-                                      </DropdownMenuItem>
-                                      <DropdownMenuSeparator />
-                                      <DropdownMenuItem
-                                        onClick={(e) => {
-                                          e.stopPropagation();
-                                          if (confirm('Sei sicuro di voler eliminare questo preventivo? Questa azione non può essere annullata.')) {
-                                            handleDeleteOrder(quote.id, false);
-                                          }
-                                        }}
-                                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                                      >
-                                        Elimina preventivo
-                                      </DropdownMenuItem>
-                                  </DropdownMenuContent>
-                                </DropdownMenu>
-                </div>
-                              </CardHeader>
-                              <CardContent className="pt-0 space-y-3">
-                                <div className="flex items-center justify-between text-sm">
-                                  <span className="text-gray-500">Data richiesta:</span>
-                                  <span className="font-medium">{formatDate(quote.createdAt)}</span>
-                                </div>
-                                <div className="flex items-center justify-between">
-                                  <span className="text-sm text-gray-500">Stato:</span>
-                                  <span className={`inline-block px-2 py-1 text-xs font-medium rounded-full 
-                                    ${quote.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 
-                                      quote.status === 'approved' ? 'bg-green-100 text-green-800' :
-                                      quote.status === 'rejected' ? 'bg-red-100 text-red-800' :
-                                      'bg-gray-100 text-gray-800'}`}
-                                  >
-                                    {quote.status === 'pending' ? 'In attesa' :
-                                     quote.status === 'approved' ? 'Approvato' :
-                                     quote.status === 'rejected' ? 'Rifiutato' :
-                                     quote.status || "In attesa"}
-                                  </span>
-                                </div>
-                                <div className="flex items-center justify-between">
-                                  <span className="text-sm text-gray-500">Prezzo:</span>
-                                  <span className="font-medium">
-                                    {quote.totalAmount > 0 
-                                      ? formatCurrency(quote.totalAmount) 
-                                      : <span className="text-red-500">Da impostare</span>}
-                                  </span>
-                                </div>
-                              </CardContent>
-                            </Card>
-                          ))}
-                      </div>
-                    </>
-              ) : (
-                <div className="text-center py-10 border rounded-md">
-                  <FileText className="h-10 w-10 mx-auto text-gray-400 mb-2" />
-                    <h3 className="font-medium text-lg mb-2">Nessun preventivo trovato</h3>
-                  <p className="text-gray-500 mb-4">
-                      {searchQuery 
-                        ? "Nessun preventivo corrisponde alla tua ricerca." 
-                        : "Non ci sono richieste di preventivo nel sistema."}
-                  </p>
-                </div>
-                )}
-              </>
+                <>
               )}
-            </>
           )}
         </CardContent>
       </Card>

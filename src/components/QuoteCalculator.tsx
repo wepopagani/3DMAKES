@@ -16,6 +16,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { CheckCircle, Upload, Eye, EyeOff } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useNavigate } from "react-router-dom";
+import { sendAdminNotificationEmail } from "@/utils/emailService";
 
 // Costanti per i limiti e configurazioni
 const MAX_FILE_SIZE = 100 * 1024 * 1024; // 100MB
@@ -257,7 +258,26 @@ const QuoteCalculator = () => {
 
       await addDoc(collection(db, 'quoteRequests'), quoteRequest);
 
-      // 4. Mostra successo
+      // 4. Invia email di notifica all'admin
+      try {
+        await sendAdminNotificationEmail({
+          type: 'new_quote_request',
+          details: `Nuova richiesta di preventivo da ${formData.nome} ${formData.cognome}`,
+          userInfo: `
+            Cliente: ${formData.nome} ${formData.cognome}
+            Email: ${formData.email}
+            Telefono: ${formData.telefono}
+            File: ${file.name}
+            ${userId ? 'Utente con account registrato' : 'Utente senza account'}
+          `
+        });
+        console.log('Email di notifica admin inviata');
+      } catch (emailError) {
+        console.error('Errore invio email admin:', emailError);
+        // Non blocchiamo l'operazione se l'email fallisce
+      }
+
+      // 5. Mostra successo
       setSubmitSuccess(true);
           
           toast({
