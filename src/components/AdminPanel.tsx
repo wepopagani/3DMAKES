@@ -55,10 +55,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import { Menu, ChevronDown, Home, Package, MessageSquare, FileText, BarChart3, Users, TrendingUp } from "lucide-react";
+import { Menu, ChevronDown, Home, Package, MessageSquare, FileText, BarChart3, Users, TrendingUp, ShoppingBag } from "lucide-react";
 import AdminMessagesContainer from "./AdminMessagesContainer";
 import AdminProjectsManager from "./AdminProjectsManager";
 import AdminQuoteRequests from "./AdminQuoteRequests";
+import AdminShopOrders from "./AdminShopOrders";
 
 interface ExtendedUserData extends UserProfileData {
   id: string;
@@ -441,6 +442,8 @@ const AdminPanel = () => {
                 <Menu className="h-4 w-4" />
                 {activeTab === "dashboard" && "Dashboard"}
                 {activeTab === "projects" && "Ordini"}
+                {activeTab === "shopOrders" && "Ordini Shop"}
+                {activeTab === "quoteRequests" && "Preventivi"}
                 {activeTab === "messages" && "Messaggi"}
                 <ChevronDown className="h-4 w-4" />
               </Button>
@@ -468,6 +471,13 @@ const AdminPanel = () => {
                 Ordini
               </DropdownMenuItem>
               <DropdownMenuItem 
+                onClick={() => setActiveTab("shopOrders")}
+                className="flex items-center gap-2"
+              >
+                <ShoppingBag className="h-4 w-4" />
+                Ordini Shop
+              </DropdownMenuItem>
+              <DropdownMenuItem 
                 onClick={() => setActiveTab("quoteRequests")}
                 className="flex items-center gap-2"
               >
@@ -490,6 +500,7 @@ const AdminPanel = () => {
         <TabsList className="mb-4 hidden md:flex">
           <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
           <TabsTrigger value="projects">Ordini</TabsTrigger>
+          <TabsTrigger value="shopOrders">Ordini Shop</TabsTrigger>
           <TabsTrigger value="quoteRequests">Richieste Preventivo</TabsTrigger>
           <TabsTrigger value="messages">Messaggi</TabsTrigger>
         </TabsList>
@@ -720,6 +731,11 @@ const AdminPanel = () => {
         <TabsContent value="projects">
           {/* Contenuto per la scheda Ordini */}
           <AdminProjectsManager />
+        </TabsContent>
+        
+        <TabsContent value="shopOrders">
+          {/* Contenuto per gli ordini shop */}
+          <AdminShopOrders />
         </TabsContent>
         
         <TabsContent value="quoteRequests">

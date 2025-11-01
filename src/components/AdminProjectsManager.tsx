@@ -50,6 +50,7 @@ const AdminProjectsManager = ({ initialTab = 'projects' }: AdminProjectsManagerP
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [orders, setOrders] = useState<any[]>([]);
+  const [quotes, setQuotes] = useState<any[]>([]);
   const [projects, setProjects] = useState<{[key: string]: any}>({});
   const [searchQuery, setSearchQuery] = useState('');
   
@@ -897,7 +898,6 @@ const AdminProjectsManager = ({ initialTab = 'projects' }: AdminProjectsManagerP
                       )}
                     </>
                   )}
-          )}
         </CardContent>
       </Card>
       
@@ -1236,7 +1236,6 @@ const AdminProjectsManager = ({ initialTab = 'projects' }: AdminProjectsManagerP
                         </DropdownMenu>
                     </div>
             </div>
-          )}
               </div>
             </div>
           )}

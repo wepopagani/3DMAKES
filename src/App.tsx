@@ -4,10 +4,17 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/firebase/AuthContext";
+import { CartProvider } from "@/contexts/CartContext";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Mission from "./pages/Mission";
 import Services from "./pages/Services";
+import Shop from "./pages/Shop";
+import ProductDetail from "./pages/ProductDetail";
+import ShopCheckout from "./pages/ShopCheckout";
+import ShopOrderSuccess from "./pages/ShopOrderSuccess";
+import PaymentCallback from "./pages/PaymentCallback";
+import PaymentTest from "./pages/PaymentTest";
 import Blog from "./pages/Blog";
 import BlogPostPage from "./pages/BlogPost";
 import Calculator from "./pages/Calculator";
@@ -44,17 +51,24 @@ const App = () => (
   <BrowserRouter>
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/mission" element={<Mission />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/blog/:id" element={<BlogPostPage />} />
-            <Route path="/calculator" element={<Calculator />} />
+        <CartProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/mission" element={<Mission />} />
+              <Route path="/services" element={<Services />} />
+              <Route path="/shop" element={<Shop />} />
+              <Route path="/shop/:id" element={<ProductDetail />} />
+              <Route path="/shop/checkout" element={<ShopCheckout />} />
+              <Route path="/shop/payment-callback" element={<PaymentCallback />} />
+              <Route path="/shop/payment-test" element={<PaymentTest />} />
+              <Route path="/shop/order-success/:orderId" element={<ShopOrderSuccess />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:id" element={<BlogPostPage />} />
+              <Route path="/calculator" element={<Calculator />} />
             <Route path="/contact-success" element={<ContactSuccess />} />
             
             {/* Authentication routes */}
@@ -96,6 +110,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <OrderForm />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/dashboard/shop-orders" 
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
                 </ProtectedRoute>
               } 
             />
@@ -222,6 +244,7 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
         </TooltipProvider>
+        </CartProvider>
       </AuthProvider>
     </QueryClientProvider>
   </BrowserRouter>
