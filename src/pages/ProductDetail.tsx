@@ -18,7 +18,7 @@ const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-  const isItalian = i18n.language === 'it';
+  const isItalian = i18n.language.startsWith('it'); // Gestisce sia 'it' che 'it-IT'
   const { addItem } = useCart();
   
   const product = getProductById(id || '');
@@ -362,8 +362,7 @@ const ProductDetail = () => {
                 {/* Info aggiuntive */}
                 <div className="border-t pt-6 space-y-3 text-sm text-gray-600">
                   <p>✓ {t('shop.freeShipping')}</p>
-                  <p>✓ {t('shop.returns')}</p>
-                  <p>✓ {t('shop.warranty')}</p>
+
                 </div>
               </div>
             </div>

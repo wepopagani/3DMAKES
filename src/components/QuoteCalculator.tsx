@@ -2,6 +2,7 @@ import React, { useState, useCallback, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { Card, CardContent } from "@/components/ui/card";
 import { ModelViewerPreventivo } from "@/components/ModelViewer";
@@ -43,7 +44,9 @@ const QuoteCalculator = () => {
     email: "",
     telefono: "",
     password: "",
-    wantsAccount: false
+    wantsAccount: false,
+    notes: "",
+    quantity: 1
   });
   
   // Stato per la sottomissione
@@ -131,11 +134,11 @@ const QuoteCalculator = () => {
   }, []);
 
   // Handler per i campi del form
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value, type } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: type === 'number' ? parseInt(value) || 1 : value
     }));
   };
 
@@ -250,6 +253,8 @@ const QuoteCalculator = () => {
         fileUrl: fileUrl,
         fileType: fileType,
         fileDimensions: modelDims,
+        notes: formData.notes,
+        quantity: formData.quantity,
         status: 'pending',
         createdAt: Timestamp.now(),
         userId: userId || null,
@@ -268,6 +273,8 @@ const QuoteCalculator = () => {
             Email: ${formData.email}
             Telefono: ${formData.telefono}
             File: ${file.name}
+            Quantità richiesta: ${formData.quantity}
+            ${formData.notes ? `Note: ${formData.notes}` : ''}
             ${userId ? 'Utente con account registrato' : 'Utente senza account'}
           `
         });
@@ -369,7 +376,9 @@ const QuoteCalculator = () => {
                       email: "",
                       telefono: "",
                       password: "",
-                      wantsAccount: false
+                      wantsAccount: false,
+                      notes: "",
+                      quantity: 1
                     });
                   }}
                   variant="outline"
@@ -524,6 +533,40 @@ const QuoteCalculator = () => {
                   className="mt-1"
                   placeholder="+41 XX XXX XX XX"
                 />
+              </div>
+
+              <div>
+                <Label htmlFor="quantity">Quantità richiesta *</Label>
+                <Input
+                  id="quantity"
+                  name="quantity"
+                  type="number"
+                  min="1"
+                  required
+                  value={formData.quantity}
+                  onChange={handleInputChange}
+                  className="mt-1"
+                  placeholder="Numero di pezzi desiderati"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Indica quanti pezzi desideri realizzare
+                </p>
+              </div>
+
+              <div>
+                <Label htmlFor="notes">Note aggiuntive</Label>
+                <Textarea
+                  id="notes"
+                  name="notes"
+                  value={formData.notes}
+                  onChange={handleInputChange}
+                  className="mt-1"
+                  placeholder="Inserisci eventuali note, richieste specifiche o dettagli aggiuntivi..."
+                  rows={4}
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Specifica colori, materiali preferiti, finiture o altre richieste particolari
+                </p>
               </div>
             </div>
 

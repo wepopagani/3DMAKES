@@ -10,7 +10,7 @@ import { motion } from 'framer-motion';
 
 const Shop = () => {
   const { t, i18n } = useTranslation();
-  const isItalian = i18n.language === 'it';
+  const isItalian = i18n.language.startsWith('it'); // Gestisce sia 'it' che 'it-IT'
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -40,67 +40,71 @@ const Shop = () => {
         <CartButton />
       </div>
 
-      {/* Coming Soon con Tony */}
+      {/* Griglia prodotti */}
       <main className="flex-1 py-12 bg-gray-50">
         <div className="container-custom">
-          <div className="max-w-3xl mx-auto text-center py-20">
-            {/* Tony Video */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-              className="mb-8"
-            >
-              <video 
-                src="/tony si sdraia.mp4" 
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="w-80 h-80 mx-auto object-contain"
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {products.map((product, index) => (
+              <motion.div
+                key={product.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
               >
-                Your browser does not support the video tag.
-              </video>
-            </motion.div>
-
-            {/* Coming Soon */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <h2 className="text-5xl md:text-6xl font-display font-bold text-brand-blue mb-4">
-                {t('shop.comingSoon')}
-              </h2>
-              <p className="text-xl md:text-2xl text-gray-600 mb-8">
-                {t('shop.comingSoonDescription')}
-              </p>
-              <p className="text-lg text-gray-500 mb-12">
-                {t('shop.comingSoonSubtext')}
-              </p>
-              
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button 
-                  asChild 
-                  size="lg"
-                  className="bg-brand-accent hover:bg-brand-accent/90"
-                >
-                  <Link to="/calculator">
-                    {t('nav.requestQuote')}
-                  </Link>
-                </Button>
-                <Button 
-                  asChild 
-                  variant="outline"
-                  size="lg"
-                >
-                  <Link to="/">
-                    {t('notFound.backHome')}
-                  </Link>
-                </Button>
-              </div>
-            </motion.div>
+                <Link to={`/shop/${product.id}`}>
+                  <div className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden group">
+                    {/* Immagine prodotto */}
+                    <div className="aspect-square overflow-hidden bg-gray-100">
+                      <img
+                        src={product.images[0]}
+                        alt={isItalian ? product.name : product.nameEn}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      />
+                    </div>
+                    
+                    {/* Info prodotto */}
+                    <div className="p-4">
+                      <div className="flex items-start justify-between gap-2 mb-2">
+                        <h3 className="font-semibold text-lg line-clamp-2 group-hover:text-brand-accent transition-colors">
+                          {isItalian ? product.name : product.nameEn}
+                        </h3>
+                        {product.customizable && (
+                          <span className="text-xs font-semibold bg-purple-100 text-purple-700 px-2 py-1 rounded whitespace-nowrap">
+                            ✨ Custom
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+                        {isItalian ? product.description : product.descriptionEn}
+                      </p>
+                      
+                      <div className="flex items-center justify-between">
+                        <span className="text-2xl font-bold text-brand-accent">
+                          CHF {product.price.toFixed(2)}
+                        </span>
+                        {product.inStock ? (
+                          <span className="text-xs text-green-600 font-semibold bg-green-50 px-2 py-1 rounded">
+                            {t('shop.inStock')}
+                          </span>
+                        ) : (
+                          <span className="text-xs text-red-600 font-semibold bg-red-50 px-2 py-1 rounded">
+                            {t('shop.outOfStock')}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
           </div>
+
+          {/* Messaggio se non ci sono prodotti */}
+          {products.length === 0 && (
+            <div className="text-center py-20">
+              <p className="text-gray-500 text-lg">{t('shop.noProducts')}</p>
+            </div>
+          )}
         </div>
       </main>
 

@@ -53,9 +53,13 @@ const ForgotPassword = () => {
       <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div className="text-center">
-            <div className="mx-auto h-12 w-12 flex items-center justify-center">
-              <Link to="/" className="text-3xl font-display font-bold text-brand-blue">
-                3D<span className="text-brand-accent">MAKES</span>
+            <div className="mx-auto flex items-center justify-center mb-4">
+              <Link to="/">
+                <img 
+                  src="/logo.png" 
+                  alt="3DMAKES Logo" 
+                  className="h-16 w-auto object-contain"
+                />
               </Link>
             </div>
             <div className="mt-6">

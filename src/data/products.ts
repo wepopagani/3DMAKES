@@ -16,7 +16,7 @@ export interface Product {
 
 // Prodotti personalizzabili (i clienti possono caricare immagini e note)
 export const products: Product[] = [
-  {
+/*  {
     id: 'custom-001',
     name: 'Portachiavi Personalizzato 3D',
     nameEn: 'Custom 3D Keychain',
@@ -131,197 +131,266 @@ export const products: Product[] = [
     category: 'custom',
     inStock: true,
     customizable: true
-  },
+  },*/
   {
     id: 'prod-002',
-    name: 'Supporto per Smartphone',
-    nameEn: 'Smartphone Stand',
-    price: 15.00,
-    description: 'Supporto elegante e funzionale per smartphone, stampato in 3D. Design minimale e moderno, perfetto per scrivania o comodino.',
-    descriptionEn: 'Elegant and functional 3D printed smartphone stand. Minimal and modern design, perfect for desk or nightstand.',
+    name: 'Maschera Black Panther',
+    nameEn: 'Black Panther Mask',
+    price: 250.00,
+    description: 'Riproduzioni realistiche dei tuoi supereroi preferiti, perfette per collezione o cosplay.',
+    descriptionEn: 'Realistic reproductions of your favorite superheroes, perfect for collection or cosplay.',
     features: [
-      'Design ergonomico',
-      'Angolazione regolabile',
-      'Compatibile con tutti gli smartphone',
-      'Base antiscivolo',
-      'Leggero e resistente'
+      '100% Personalizzabile',
+      'Chiusura con magneti',
+      'Occhi a griglia',
+      'Leggera e resistente',
     ],
     featuresEn: [
-      'Ergonomic design',
-      'Adjustable angle',
-      'Compatible with all smartphones',
-      'Non-slip base',
+      '100% Customizable',
+      'Magnet closure',
+      'Grille eyes',
       'Lightweight and durable'
     ],
     images: [
-      '/images/accessori/supporto1.png',
-      '/images/accessori/supporto2.png'
+      '/images/shop/Maschere/bp_1.jpg',
+      '/images/shop/Maschere/bp_2.jpg',
+      '/images/shop/Maschere/bp_3.jpg',
+      '/images/shop/Maschere/bp_4.jpg'
     ],
-    category: 'accessories',
+    category: 'Maschere',
     inStock: true
   },
   {
     id: 'prod-003',
-    name: 'Portachiavi Personalizzato',
-    nameEn: 'Custom Keychain',
-    price: 8.00,
-    description: 'Portachiavi unico stampato in 3D. Personalizzabile con iniziali, logo o design a scelta. Idea regalo perfetta!',
-    descriptionEn: 'Unique 3D printed keychain. Customizable with initials, logo or custom design. Perfect gift idea!',
+    name: 'Maschera Deadpool',
+    nameEn: 'Deadpool Mask',
+    price: 250.00,
+    description: 'Riproduzioni realistiche dei tuoi supereroi preferiti, perfette per collezione o cosplay.',
+    descriptionEn: 'Realistic reproductions of your favorite superheroes, perfect for collection or cosplay.',
     features: [
-      'Personalizzabile',
-      'Materiale resistente',
-      'Design unico',
-      'Leggero',
-      'Disponibile in vari colori'
+      '100% Personalizzabile',
+      'Chiusura con magneti',
+      'Occhi a griglia',
+      'Leggera e resistente',
     ],
     featuresEn: [
       'Customizable',
-      'Durable material',
-      'Unique design',
-      'Lightweight',
-      'Available in various colors'
+      'Magnet closure',
+      'Grille eyes',
+      'Lightweight and durable',
     ],
     images: [
-      '/images/gadget/portachiavi1.png',
-      '/images/gadget/portachiavi2.png'
+      '/images/shop/Maschere/dp_1.jpg',
+      '/images/shop/Maschere/dp_2.jpg',
     ],
-    category: 'gadget',
+    category: 'Maschere',
     inStock: true
   },
   {
     id: 'prod-004',
-    name: 'Vaso Geometrico',
-    nameEn: 'Geometric Planter',
-    price: 30.00,
-    description: 'Vaso dal design geometrico moderno, perfetto per piante grasse e piccole piante. Stampa 3D di alta qualità.',
-    descriptionEn: 'Modern geometric design planter, perfect for succulents and small plants. High quality 3D print.',
+    name: 'Miniatura Dubai',
+    nameEn: 'Dubai Miniature',
+    price: 55.00,
+    description: 'Miniature delle città più iconiche, stampate in 3D con dettagli straordinari.',
+    descriptionEn: 'Miniatures of the most iconic cities, printed in 3D with extraordinary details.',
     features: [
-      'Design moderno',
-      'Dimensioni: 12x12x12cm',
-      'Foro di drenaggio',
-      'Ideale per piante grasse',
-      'Finitura liscia'
+      'Palazzi con altezze variabili',
+      'Dimensioni: 19x14x5 cm',
+      'Mare fotorealistico',
+      'Perfetto per collezione o regalo unico'
     ],
     featuresEn: [
-      'Modern design',
-      'Size: 12x12x12cm',
-      'Drainage hole',
-      'Ideal for succulents',
-      'Smooth finish'
+      'Buildings with variable heights',
+      'Size: 19x14x5 cm',
+      'Factual sea',
+      'Perfect for collection or unique gift'
     ],
     images: [
-      '/placeholder.svg',
-      '/placeholder.svg'
+      'images/shop/città/Dubai1.jpg',
+      'images/shop/città/Dubai2.jpg',
     ],
-    category: 'home',
+    category: 'Miniature',
     inStock: true
   },
   {
-    id: 'prod-005',
-    name: 'Organizer da Scrivania',
-    nameEn: 'Desk Organizer',
-    price: 22.00,
-    description: 'Organizer multifunzionale per scrivania. Scomparti per penne, graffette, post-it e accessori vari.',
-    descriptionEn: 'Multifunctional desk organizer. Compartments for pens, clips, post-its and various accessories.',
+    id: 'Miniatura Monte Carlo',
+    name: 'Miniatura Monte Carlo',
+    nameEn: 'Monte Carlo Miniature',
+    price: 55.00,
+    description: 'Miniature della città di Monte Carlo, stampate in 3D con dettagli straordinari.',
+    descriptionEn: 'Miniatures of Monte Carlo, printed in 3D with extraordinary details.',
     features: [
-      'Design modulare',
-      'Scomparti multipli',
-      'Base stabile',
-      'Facile da pulire',
-      'Dimensioni: 20x15x8cm'
+      'Palazzi con altezze variabili',
+      'Dimensioni: 19x14x5 cm',
+      'Colori variabili',
+      'Perfetto per collezione o regalo unico'
     ],
     featuresEn: [
-      'Modular design',
-      'Multiple compartments',
-      'Stable base',
-      'Easy to clean',
-      'Size: 20x15x8cm'
+      'Buildings with variable heights',
+      'Size: 19x14x5 cm',
+      'Variable colors',
+      'Perfect for collection or unique gift'
     ],
     images: [
-      '/placeholder.svg'
+      'images/shop/città/Monaco1.jpg',
+      'images/shop/città/Monaco2.jpg',
+      'images/shop/città/Monaco3.jpg',
     ],
-    category: 'office',
+    category: 'Miniature',
     inStock: true
   },
   {
-    id: 'prod-006',
-    name: 'Lampada LED Personalizzata',
-    nameEn: 'Custom LED Lamp',
-    price: 45.00,
-    description: 'Lampada LED con base stampata in 3D personalizzabile. Design unico e moderno, perfetta come regalo o per la tua casa.',
-    descriptionEn: 'LED lamp with customizable 3D printed base. Unique and modern design, perfect as a gift or for your home.',
+    id: 'Miniatura Tracciato Nürburgring',
+    name: 'Miniatura Tracciato Nürburgring',
+    nameEn: 'Nürburgring Track Miniature',
+    price: 55.00,
+    description: 'Miniature del tracciato Nürburgring, stampate in 3D con dettagli straordinari.',
+    descriptionEn: 'Miniatures of the Nürburgring track, printed in 3D with extraordinary details.',
     features: [
-      'LED a basso consumo',
-      'Base personalizzabile',
-      'Luce calda o fredda',
-      'Design esclusivo',
-      'Alimentazione USB'
+      'Tracciato con altezze variabili',
+      'Dimensioni: 19x14x5 cm',
+      'Colori variabili',
+      'Perfetto per collezione o regalo unico'
     ],
     featuresEn: [
-      'Low consumption LED',
-      'Customizable base',
-      'Warm or cold light',
-      'Exclusive design',
-      'USB powered'
+      'Track with variable heights',
+      'Size: 19x14x5 cm',
+      'Variable colors',
+      'Perfect for collection or unique gift'
     ],
     images: [
-      '/placeholder.svg',
-      '/placeholder.svg'
+      'images/shop/Track/Nur1.jpg',
+      'images/shop/Track/Nur2.jpg',
     ],
-    category: 'lighting',
+    category: 'Miniature',
     inStock: true
   },
   {
     id: 'prod-007',
-    name: 'Custodia AirPods',
-    nameEn: 'AirPods Case',
-    price: 12.00,
-    description: 'Custodia protettiva per AirPods stampata in 3D. Design originale, protezione completa e aggancio per portachiavi.',
-    descriptionEn: 'Protective 3D printed case for AirPods. Original design, complete protection and keychain attachment.',
+    name: 'Orologio da muro Rolex 1',
+    nameEn: 'Wall Clock Rolex 1',
+    price: 99.90,
+    description: 'Orologio da muro Rolex Daytona con quadrante bianco, stampato in 3D con meccanismo funzionante.',
+    descriptionEn: 'Wall Clock Rolex Daytona with white dial, printed in 3D with working mechanism.',
     features: [
-      'Protezione totale',
-      'Design unico',
-      'Aggancio portachiavi',
-      'Facile accesso alla ricarica',
-      'Leggera e resistente'
+      'Riproduzione fedele',
+      'Dimensioni: 25x25x5 cm',
+      'Colori variabili',
+      'Perfetto per collezione o regalo unico'
     ],
     featuresEn: [
-      'Total protection',
-      'Unique design',
-      'Keychain attachment',
-      'Easy charging access',
-      'Light and durable'
+      'Accurate reproduction',
+      'Size: 25x25x5 cm',
+      'Variable colors',
+      'Perfect for collection or unique gift'
     ],
     images: [
-      '/placeholder.svg'
+      'images/shop/Orologi/daytonaW1.jpg',
+      'images/shop/Orologi/daytonaW2.jpg',
+      'images/shop/Orologi/daytonaW3.jpg',
+      'images/shop/Orologi/daytonaW4.jpg',
     ],
     category: 'accessories',
     inStock: true
   },
   {
     id: 'prod-008',
-    name: 'Miniatura Personalizzata',
-    nameEn: 'Custom Miniature',
-    price: 35.00,
-    description: 'Miniatura 3D personalizzata. Perfetta per collezionisti, giochi da tavolo o come regalo unico. Alta qualità di stampa.',
-    descriptionEn: 'Custom 3D miniature. Perfect for collectors, board games or as a unique gift. High print quality.',
+    name: 'Pikachu 25 cm',
+    nameEn: 'Pikachu 25 cm',
+    price: 235.00,
+    description: 'Pikachu 25 cm, stampato in 3D con dettagli straordinari e finitura in resina',
+    descriptionEn: 'Pikachu 25 cm, printed in 3D with extraordinary details and resin finish.',
     features: [
-      'Alta risoluzione',
-      'Dettagli precisi',
-      'Personalizzabile',
-      'Verniciabile',
-      'Altezza: 5-10cm'
+      'Dimensioni: 25 cm',
+      'finitura lucida in resina',
+      'Perfetto per collezione o regalo unico'
     ],
     featuresEn: [
       'High resolution',
-      'Precise details',
-      'Customizable',
-      'Paintable',
-      'Height: 5-10cm'
+      'Variable colors',
+      'Perfect for collection or unique gift'
     ],
     images: [
-      '/placeholder.svg',
-      '/placeholder.svg'
+      'images/shop/Action/Pikachu1.jpg',
+      'images/shop/Action/Pikachu2.jpg',
+      'images/shop/Action/Pikachu3.jpg',
+    ],
+    category: 'collectibles',
+    inStock: true
+  },
+  {
+    id: 'prod-009',
+    name: 'Supporto per Lego Formula 1',
+    nameEn: 'Lego Formula 1 Support',
+    price: 35.00,
+    description: 'Supporto per Lego Formula 1, ti permette di mantenere in piedi la vettura e il personaggio Lego',
+    descriptionEn: 'Lego Formula 1 Support, allows you to keep the vehicle and Lego character standing.',
+    features: [
+      'Supporto per Lego Formula 1',
+      'Perfetto per collezione o regalo unico'
+    ],
+    featuresEn: [
+      'Lego Formula 1 Support',
+      'Perfect for collection or unique gift'
+    ],
+    images: [
+      'images/shop/Action/ferrari1.jpg',
+      'images/shop/Action/ferrari2.jpg',
+      'images/shop/Action/ferrari3.jpg',
+    ],
+    category: 'collectibles',
+    inStock: true
+  },
+  {
+    id: 'prod-010',
+    name: 'Miniatura Tracciato Villeneuve',
+    nameEn: 'Villeneuve Track Miniature',
+    price: 55.00,
+    description: 'Miniatura del tracciato Villeneuve, stampato in 3D con dettagli straordinari.',
+    descriptionEn: 'Miniature of the Villeneuve track, printed in 3D with extraordinary details.',
+    features: [
+      'Tracciato con altezze variabili',
+      'Dimensioni: 19x14x5 cm',
+      'Colori variabili',
+      'Perfetto per collezione o regalo unico'
+    ],
+    featuresEn: [
+      'Track with variable heights',
+      'Size: 19x14x5 cm',
+      'Variable colors',
+      'Perfect for collection or unique gift'
+    ],
+    images: [
+      'images/shop/Track/V1.JPG',
+      'images/shop/Track/V2.JPG',
+
+    ],
+    category: 'collectibles',
+    inStock: true
+  },
+  {
+    id: 'prod-011',
+    name: 'Miniatura Tracciato Red Bull Ring',
+    nameEn: 'Red Bull Ring Track Miniature',
+    price: 55.00,
+    description: 'Miniatura del tracciato Red Bull Ring, stampato in 3D con dettagli straordinari.',
+    descriptionEn: 'Miniature of the Red Bull Ring track, printed in 3D with extraordinary details.',
+    features: [
+      'Tracciato con altezze variabili',
+      'Dimensioni: 19x14x5 cm',
+      'Colori variabili',
+      'Perfetto per collezione o regalo unico'
+    ],
+    featuresEn: [
+      'Track with variable heights',
+      'Size: 19x14x5 cm',
+      'Variable colors',
+      'Perfect for collection or unique gift'
+    ],
+    images: [
+      'images/shop/Track/RB1.JPG',
+      'images/shop/Track/RB2.JPG',
+
     ],
     category: 'collectibles',
     inStock: true
@@ -349,6 +418,7 @@ export const categories = [
   { id: 'home', nameIt: 'Casa', nameEn: 'Home' },
   { id: 'office', nameIt: 'Ufficio', nameEn: 'Office' },
   { id: 'lighting', nameIt: 'Illuminazione', nameEn: 'Lighting' },
-  { id: 'collectibles', nameIt: 'Collezionabili', nameEn: 'Collectibles' }
+  { id: 'collectibles', nameIt: 'Collezionabili', nameEn: 'Collectibles' },
+  { id: 'Maschere', nameIt: 'Maschere', nameEn: 'Masks' }
 ];
 

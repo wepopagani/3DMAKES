@@ -11,9 +11,11 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <Link to="/" className="inline-block mb-4">
-              <h2 className="text-2xl font-display font-bold">
-                3D<span className="text-brand-accent">MAKES</span>
-              </h2>
+              <img 
+                src="/logo.png" 
+                alt="3DMAKES Logo" 
+                className="h-24 md:h-28 w-auto object-contain brightness-0 invert"
+              />
             </Link>
             <p className="text-gray-300 mb-4">
               {t('footer.description')}
@@ -81,9 +83,16 @@ const Footer = () => {
         </div>
         
         <div className="mt-12 pt-6 border-t border-gray-700">
-          <p className="text-center text-sm text-gray-300">
-            &copy; {currentYear} 3DMAKES. {t('footer.copyright')}.
-          </p>
+          <div className="flex items-center justify-center gap-2">
+            <img 
+              src="/logo.png" 
+              alt="3DMAKES Logo" 
+              className="h-5 w-auto object-contain brightness-0 invert"
+            />
+            <p className="text-center text-sm text-gray-300">
+              &copy; {currentYear} {t('footer.copyright')}.
+            </p>
+          </div>
         </div>
       </div>
     </footer>

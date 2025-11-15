@@ -64,9 +64,16 @@ const Navbar = () => {
       <div className="container-custom flex h-16 items-center justify-between">
         <div className="flex items-center">
           <Link to="/" className="flex items-center space-x-2" onClick={closeMenu}>
-            <span className="text-2xl font-display font-bold text-brand-blue">
-              3D<span className="text-brand-accent">MAKES</span>
-            </span>
+            <img 
+              src="/logo.png" 
+              alt="3DMAKES Logo" 
+              className="h-24 md:h-28 w-auto object-contain"
+              onError={(e) => {
+                // Fallback al logo testuale se l'immagine non carica
+                e.currentTarget.style.display = 'none';
+                e.currentTarget.parentElement!.innerHTML = '<span class="text-2xl font-display font-bold text-brand-blue">3D<span class="text-brand-accent">MAKES</span></span>';
+              }}
+            />
           </Link>
         </div>
         

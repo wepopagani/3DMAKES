@@ -53,6 +53,7 @@ interface QuoteRequest {
   userId?: string;
   hasAccount: boolean;
   notes?: string;
+  quantity?: number;
 }
 
 const AdminQuoteRequests = () => {
@@ -238,6 +239,7 @@ const AdminQuoteRequests = () => {
                     <TableHead>Email</TableHead>
                     <TableHead>Telefono</TableHead>
                     <TableHead>File</TableHead>
+                    <TableHead>Quantità</TableHead>
                     <TableHead>Data</TableHead>
                     <TableHead>Stato</TableHead>
                     <TableHead className="text-right">Azioni</TableHead>
@@ -267,6 +269,9 @@ const AdminQuoteRequests = () => {
                             {request.fileName}
                           </span>
                         </div>
+                      </TableCell>
+                      <TableCell className="text-sm font-medium">
+                        {request.quantity || 1}x
                       </TableCell>
                       <TableCell className="text-sm text-gray-600">
                         {formatDate(request.createdAt)}
@@ -390,6 +395,22 @@ const AdminQuoteRequests = () => {
                     {selectedRequest.fileDimensions.y.toFixed(2)} × 
                     {selectedRequest.fileDimensions.z.toFixed(2)} mm
                   </p>
+                </div>
+              )}
+
+              <div>
+                <Label className="text-sm font-semibold text-gray-600">Quantità richiesta</Label>
+                <p className="mt-1 font-medium">
+                  {selectedRequest.quantity || 1} {selectedRequest.quantity === 1 ? 'pezzo' : 'pezzi'}
+                </p>
+              </div>
+
+              {selectedRequest.notes && (
+                <div>
+                  <Label className="text-sm font-semibold text-gray-600">Note aggiuntive</Label>
+                  <div className="mt-2 p-3 bg-gray-50 rounded-lg">
+                    <p className="text-sm whitespace-pre-wrap">{selectedRequest.notes}</p>
+                  </div>
                 </div>
               )}
 
