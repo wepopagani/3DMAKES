@@ -325,5 +325,16 @@
     "contactTitle": "Kontakt",
     "calculateQuote": "Angebot berechnen",
     "copyright": "Alle Rechte vorbehalten"
+  },
+  "reviews": {
+    "title": "Was unsere Kunden sagen",
+    "ratingLabel": "auf Google",
+    "description": "Die Zufriedenheit unserer Kunden ist unsere Priorität. Lesen Sie, was sie über uns sagen.",
+    "googleReview": "Google Bewertung"
+  },
+  "partners": {
+    "title": "Sie haben 3DMAKES gewählt",
+    "description": "Unternehmen und Institutionen, die unseren 3D-Druckservice vertrauen",
+    "companiesCount": "Kunden"
   }
 } 

@@ -325,5 +325,16 @@
     "contactTitle": "Nous contacter",
     "calculateQuote": "Calculer devis",
     "copyright": "Tous droits réservés"
+  },
+  "reviews": {
+    "title": "Ce que disent nos clients",
+    "ratingLabel": "sur Google",
+    "description": "La satisfaction de nos clients est notre priorité. Lisez ce qu'ils disent de nous.",
+    "googleReview": "Avis Google"
+  },
+  "partners": {
+    "title": "Ils ont choisi 3DMAKES",
+    "description": "Entreprises et institutions qui ont fait confiance à nos services d'impression 3D",
+    "companiesCount": "Clients"
   }
 } 

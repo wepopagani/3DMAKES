@@ -1456,5 +1456,16 @@
     "viewInDashboard": "Vai alla Dashboard",
     "createAccountToTrack": "Crea Account per Tracciare l'Ordine",
     "orderNotFound": "Ordine non trovato"
+  },
+  "reviews": {
+    "title": "Cosa Dicono i Nostri Clienti",
+    "ratingLabel": "su Google",
+    "description": "La soddisfazione dei nostri clienti è la nostra priorità. Leggi cosa hanno da dire su di noi.",
+    "googleReview": "Recensione Google"
+  },
+  "partners": {
+    "title": "Hanno scelto 3DMAKES",
+    "description": "Aziende e istituzioni che si sono affidate ai nostri servizi di stampa 3D",
+    "companiesCount": "Clienti"
   }
 } 

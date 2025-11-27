@@ -5,9 +5,11 @@ import CallToAction from "@/components/CallToAction";
 import ContactForm from "@/components/ContactForm";
 import FAQSection from "@/components/FAQSection";
 import Footer from "@/components/Footer";
+import GoogleReviewsCarousel from "@/components/GoogleReviewsCarousel";
 import Hero from "@/components/Hero";
 import MissionSection from "@/components/MissionSection";
 import Navbar from "@/components/Navbar";
+import PartnersLogos from "@/components/PartnersLogos";
 import SearchSection from "@/components/SearchSection";
 import ServicesSection from "@/components/ServicesSection";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -86,6 +88,8 @@ const Index = () => {
         </section>
         <section className="bg-white py-4 md:py-6"></section>
         <BlogSection />
+        <GoogleReviewsCarousel />
+        <PartnersLogos />
         <FAQSection />
         <ContactForm />
         <CallToAction />
