@@ -38,6 +38,10 @@
     "applications": "Applicazioni",
     "ourProcess": "Il nostro processo",
     "requestQuote": "Richiedi un preventivo",
+    "fdmBasic": {
+      "title": "Stampa 3D FDM",
+      "description": "Tecnologia di stampa a deposizione di materiale fuso, ideale per prototipi e produzioni in vari materiali plastici."
+    },
     "fdm": {
       "title": "Stampa 3D FDM – Stratasys",
       "description": "La tecnologia Fused Deposition Modeling (FDM) Stratasys è ideale per la produzione di prototipi funzionali e parti resistenti. Utilizziamo macchine professionali Fortus per garantire la massima qualità e precisione industriale.",
@@ -270,7 +274,7 @@
       ]
     },
     "laser": {
-      "title": "Taglio Laser",
+      "title": "Incisione Laser",
       "description": "La nostra tecnologia di incisione e taglio laser offre una soluzione avanzata per creare progetti dettagliati e personalizzati. Grazie a un sistema di movimento CoreXY ad alta velocità e a un potente laser da 22W con punto ultra-fine, garantiamo incisioni e tagli precisi su un'ampia gamma di materiali. L'area di lavoro di 400 × 415 mm consente di gestire progetti di diverse dimensioni, mantenendo sempre una qualità elevata.",
       "features": [
         "Precisione: Movimento con accuratezza di 0,01 mm per dettagli nitidi",
@@ -298,6 +302,18 @@
           "description": "Produzione di elementi per modellismo e hobbistica con dettagli millimetrici."
         }
       ]
+    },
+    "repair": {
+      "title": "Riparazione Stampanti 3D",
+      "description": "Offriamo un servizio completo di riparazione e manutenzione per stampanti 3D di tutte le marche e modelli. Il nostro team di tecnici specializzati diagnostica e risolve problemi meccanici, elettronici e di calibrazione.",
+      "features": [
+        "Diagnosi completa: Analisi approfondita di componenti meccanici, elettronici e software",
+        "Riparazioni specializzate: Sostituzione di estrusori, piatti di stampa, motori stepper e schede elettroniche",
+        "Supporto multi-tecnologia: FDM, SLA, SLS e altre tecnologie professionali",
+        "Manutenzione preventiva: Servizi di calibrazione e ottimizzazione",
+        "Assistenza tecnica: Consulenza per ottimizzare le performance della tua stampante"
+      ],
+      "materials": []
     },
     "largePrint": {
       "title": "Riparazione Stampanti 3D",
@@ -631,7 +647,7 @@
         "polyjet": "Stampa 3D POLYJET – Stratasys",
         "slm": "Stampa 3D SLM – SLM Solutions/Renishaw",
         "sls": "Stampa 3D SLS",
-        "laser": "Taglio Laser",
+        "laser": "Incisione Laser",
         "largePrint": "Riparazione Stampanti 3D",
         "scanning": "Scansione 3D",
         "prototyping": "Prototipazione",
@@ -1371,6 +1387,7 @@
     "fdmDescription": "Prototipi funzionali e parti resistenti con ampia gamma di materiali",
     "slaDescription": "Dettagli precisi e superfici lisce con resine specializzate",
     "laserDescription": "Incisioni e tagli di precisione con laser da 22W e tecnologia CoreXY",
+    "repairDescription": "Riparazione e manutenzione di stampanti 3D di tutte le marche",
     "largePrintDescription": "Riparazione e manutenzione di stampanti 3D di tutte le marche",
     "scanningDescription": "Digitalizzazione precisa per reverse engineering e conservazione",
     "prototypingDescription": "Dalle idee agli oggetti reali con supporto completo"

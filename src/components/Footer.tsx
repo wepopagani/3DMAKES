@@ -63,7 +63,7 @@ const Footer = () => {
             <ul className="space-y-3">
               <li><Link to="/services#fdm" className="text-gray-300 hover:text-white">{t('services.fdm.title')}</Link></li>
               <li><Link to="/services#sla" className="text-gray-300 hover:text-white">{t('services.sla.title')}</Link></li>
-              <li><Link to="/services#taglio-laser" className="text-gray-300 hover:text-white">{t('services.laser.title')}</Link></li>
+              <li><Link to="/services#incisione-laser" className="text-gray-300 hover:text-white">{t('services.laser.title')}</Link></li>
               <li><Link to="/services#riparazione-stampanti-3d" className="text-gray-300 hover:text-white">{t('services.largePrint.title')}</Link></li>
               <li><Link to="/services#scansione" className="text-gray-300 hover:text-white">{t('services.scanning.title')}</Link></li>
               <li><Link to="/services#prototipazione" className="text-gray-300 hover:text-white">{t('services.prototyping.title')}</Link></li>

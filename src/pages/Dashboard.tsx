@@ -31,9 +31,8 @@ import { Label } from "@/components/ui/label";
 import { FileInfo } from "@/types/user";
 import { ModelViewerPreventivo } from "@/components/ModelViewer";
 import MessagesContainer from "@/components/MessagesContainer";
-import { LogOut, File, MessageSquare, User, FolderOpen, Menu, ChevronDown, Home, ShoppingBag } from "lucide-react";
+import { LogOut, File, MessageSquare, User, FolderOpen, Menu, ChevronDown, Home } from "lucide-react";
 import UserProjectsManager from "@/components/UserProjectsManager";
-import UserShopOrders from "@/components/UserShopOrders";
 
 const Dashboard = () => {
   const { toast } = useToast();
@@ -87,8 +86,6 @@ const Dashboard = () => {
       setActiveTab("files");
     } else if (path.includes("/dashboard/ordini")) {
       setActiveTab("projects");
-    } else if (path.includes("/dashboard/shop-orders")) {
-      setActiveTab("shopOrders");
     } else if (path.includes("/dashboard/messaggi")) {
       setActiveTab("messages");
     } else if (path.includes("/dashboard/profilo")) {
@@ -638,15 +635,6 @@ const Dashboard = () => {
               Ordini
             </Button>
             <Button 
-              variant={activeTab === "shopOrders" ? "default" : "ghost"} 
-              size="sm" 
-              onClick={() => navigate("/dashboard/shop-orders")}
-              className="flex items-center gap-2"
-            >
-              <ShoppingBag className="h-4 w-4 mr-1" />
-              Ordini Shop
-            </Button>
-            <Button 
               variant={activeTab === "messages" ? "default" : "ghost"} 
               size="sm" 
               onClick={() => navigate("/dashboard/messaggi")}
@@ -674,7 +662,6 @@ const Dashboard = () => {
                   <Menu className="h-4 w-4" />
                   {activeTab === "files" && "I miei file"}
                   {activeTab === "projects" && "Ordini"}
-                  {activeTab === "shopOrders" && "Ordini Shop"}
                   {activeTab === "messages" && "Messaggi"}
                   {activeTab === "profile" && "Profilo"}
                   <ChevronDown className="h-4 w-4" />
@@ -701,13 +688,6 @@ const Dashboard = () => {
                 >
                   <FolderOpen className="h-4 w-4" />
                   Ordini
-                </DropdownMenuItem>
-                <DropdownMenuItem 
-                  onClick={() => navigate("/dashboard/shop-orders")}
-                  className="flex items-center gap-2"
-                >
-                  <ShoppingBag className="h-4 w-4" />
-                  Ordini Shop
                 </DropdownMenuItem>
                 <DropdownMenuItem 
                   onClick={() => navigate("/dashboard/messaggi")}
@@ -755,7 +735,6 @@ const Dashboard = () => {
                 <TabsList>
                   <TabsTrigger value="files">I miei file</TabsTrigger>
                   <TabsTrigger value="projects">Ordini</TabsTrigger>
-                  <TabsTrigger value="shopOrders">Ordini Shop</TabsTrigger>
                   <TabsTrigger value="messages">Messaggi</TabsTrigger>
                   <TabsTrigger value="profile">Profilo</TabsTrigger>
                 </TabsList>
@@ -887,13 +866,6 @@ const Dashboard = () => {
                   </Button>
                 </div>
                 <UserProjectsManager />
-              </div>
-            )}
-            
-            {/* Shop Orders Tab */}
-            {activeTab === "shopOrders" && (
-              <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden p-6">
-                <UserShopOrders />
               </div>
             )}
             

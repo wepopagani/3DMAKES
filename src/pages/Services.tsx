@@ -100,7 +100,7 @@ const Services = () => {
         : []
     },
     {
-      id: "taglio-laser",
+      id: "incisione-laser",
       title: t('services.laser.title'),
       description: t('services.laser.description'),
       image: "/taglio laser logo.png",
