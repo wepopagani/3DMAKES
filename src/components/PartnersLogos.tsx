@@ -19,27 +19,33 @@ interface Partner {
 const partners: Partner[] = [
   {
     id: 1,
-    name: "Kesmon",
-    logo: "/partner/kesmon.png",
-    website: "https://www.kesmon.ch",
+    name: "TRC",
+    logo: "/partner/trc.png",
+    website: "https://www.trc2038.com/en-eu",
   },
   {
     id: 2,
     name: "Securitas",
     logo: "/partner/securitas.png",
-    website: "https://www.securitas.ch",
+    website: "https://www.securitas.ch/it/",
   },
   {
     id: 3,
     name: "Studio MN",
     logo: "/partner/studiomn.png",
-    website: "https://www.studiomn.ch",
+    website: "https://studiomn.ch",
   },
   {
     id: 4,
     name: "USI",
     logo: "/partner/usi.png",
-    website: "https://www.usi.ch",
+    website: "https://www.usi.ch/it",
+  },
+  {
+    id: 5,
+    name: "UAV",
+    logo: "/partner/uav.png",
+    website: "",
   },
 ];
 
@@ -54,7 +60,7 @@ const PartnersLogos = () => {
   }, [api]);
 
   return (
-    <section className="py-12 md:py-20 bg-white border-t border-b border-gray-200">
+    <section className="py-12 md:py-20 border-t border-b border-gray-200" style={{backgroundColor: '#E5DDD3'}}>
       <div className="container-custom">
         <div className="text-center mb-12">
           <h2 className="heading-2 mb-4">{t('partners.title')}</h2>
@@ -84,11 +90,11 @@ const PartnersLogos = () => {
               {partners.map((partner) => (
                 <CarouselItem 
                   key={partner.id} 
-                  className="pl-2 md:pl-4 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5"
+                  className="pl-2 md:pl-4 basis-1/2 md:basis-1/3 lg:basis-1/4"
                 >
-                  <div className="p-4">
+                  <div className="p-8">
                     <div 
-                      className="bg-white rounded-lg border border-gray-200 p-6 h-32 flex items-center justify-center hover:shadow-lg transition-all duration-300 hover:scale-105 cursor-pointer group"
+                      className="rounded-lg p-12 h-80 flex items-center justify-center transition-all duration-300 hover:scale-105 cursor-pointer group"
                       onClick={() => partner.website && window.open(partner.website, '_blank')}
                     >
                       <img
@@ -133,7 +139,7 @@ const PartnersLogos = () => {
               />
             </svg>
             <span className="text-brand-blue font-semibold">
-              {partners.length}+ {t('partners.companiesCount')}
+              150+ Clienti
             </span>
           </div>
         </div>

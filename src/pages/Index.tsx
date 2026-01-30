@@ -3,7 +3,6 @@ import Banner from "@/components/Banner";
 import BlogSection from "@/components/BlogSection";
 import CallToAction from "@/components/CallToAction";
 import ContactForm from "@/components/ContactForm";
-import FAQSection from "@/components/FAQSection";
 import Footer from "@/components/Footer";
 import GoogleReviewsCarousel from "@/components/GoogleReviewsCarousel";
 import Hero from "@/components/Hero";
@@ -90,7 +89,6 @@ const Index = () => {
         <BlogSection />
         <GoogleReviewsCarousel />
         <PartnersLogos />
-        <FAQSection />
         <ContactForm />
         <CallToAction />
       </main>
