@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -18,6 +18,12 @@ const gtag = typeof window !== 'undefined' ? window.gtag : undefined;
 const ContactForm = () => {
   const { t } = useTranslation();
   const [isSubmitted, setIsSubmitted] = useState(false);
+  
+  // Stato per espandere il form
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [showExtra, setShowExtra] = useState(false);
 
   if (isSubmitted) {
     return (
@@ -212,6 +218,8 @@ const ContactForm = () => {
                       name="firstName" 
                       type="text" 
                       required 
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
                       placeholder={t('contact.form.namePlaceholder')}
                     />
                   </div>
@@ -222,6 +230,8 @@ const ContactForm = () => {
                       name="lastName" 
                       type="text" 
                       required 
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
                       placeholder={t('contact.form.surnamePlaceholder')}
                     />
                   </div>
@@ -234,6 +244,8 @@ const ContactForm = () => {
                     name="email" 
                     type="email" 
                     required 
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     placeholder={t('contact.form.emailPlaceholder')}
                   />
                 </div>
@@ -245,56 +257,64 @@ const ContactForm = () => {
                     name="phone" 
                     type="tel" 
                     placeholder={t('contact.form.phonePlaceholder')}
+                    onFocus={() => setShowExtra(true)}
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="subject">{t('contact.form.subject')} *</Label>
-                  <Input 
-                    id="subject" 
-                    name="subject" 
-                    type="text" 
-                    required 
-                    placeholder={t('contact.form.subjectPlaceholder')}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="message">{t('contact.form.message')} *</Label>
-                  <Textarea 
-                    id="message" 
-                    name="message" 
-                    required 
-                    rows={5}
-                    placeholder={t('contact.form.messagePlaceholder')}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="service">{t('contact.form.serviceOfInterest')}</Label>
-                  <select 
-                    id="service" 
-                    name="service"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-accent focus:border-transparent"
-                  >
-                    <option value="">{t('contact.form.selectService')}</option>
-                    <option value="stampa-3d-fdm">{t('contact.form.services.fdm')}</option>
-                    <option value="stampa-3d-sla">{t('contact.form.services.sla')}</option>
-                    <option value="taglio-laser">{t('contact.form.services.laser')}</option>
-                    <option value="riparazione-stampanti-3d">{t('contact.form.services.largePrint')}</option>
-                    <option value="scansione-3d">{t('contact.form.services.scanning')}</option>
-                    <option value="prototipazione">{t('contact.form.services.prototyping')}</option>
-                    <option value="altro">{t('contact.form.services.other')}</option>
-                  </select>
-                </div>
-
-                <Button 
-                  type="submit" 
-                  className="w-full bg-brand-accent hover:bg-brand-accent/90"
+                {/* Campi extra che appaiono quando si tocca il telefono */}
+                <div 
+                  className={`space-y-6 transition-all duration-500 ease-in-out overflow-hidden ${
+                    showExtra ? 'max-h-[800px] opacity-100' : 'max-h-0 opacity-0'
+                  }`}
                 >
-                  <Send className="w-4 h-4 mr-2" />
-                  {t('contact.form.send')}
-                </Button>
+                  <div className="space-y-2">
+                    <Label htmlFor="subject">{t('contact.form.subject')} *</Label>
+                    <Input 
+                      id="subject" 
+                      name="subject" 
+                      type="text" 
+                      required 
+                      placeholder={t('contact.form.subjectPlaceholder')}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="message">{t('contact.form.message')} *</Label>
+                    <Textarea 
+                      id="message" 
+                      name="message" 
+                      required 
+                      rows={5}
+                      placeholder={t('contact.form.messagePlaceholder')}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="service">{t('contact.form.serviceOfInterest')}</Label>
+                    <select 
+                      id="service" 
+                      name="service"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-accent focus:border-transparent"
+                    >
+                      <option value="">{t('contact.form.selectService')}</option>
+                      <option value="stampa-3d-fdm">{t('contact.form.services.fdm')}</option>
+                      <option value="stampa-3d-sla">{t('contact.form.services.sla')}</option>
+                      <option value="taglio-laser">{t('contact.form.services.laser')}</option>
+                      <option value="riparazione-stampanti-3d">{t('contact.form.services.largePrint')}</option>
+                      <option value="scansione-3d">{t('contact.form.services.scanning')}</option>
+                      <option value="prototipazione">{t('contact.form.services.prototyping')}</option>
+                      <option value="altro">{t('contact.form.services.other')}</option>
+                    </select>
+                  </div>
+
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-brand-accent hover:bg-brand-accent/90"
+                  >
+                    <Send className="w-4 h-4 mr-2" />
+                    {t('contact.form.send')}
+                  </Button>
+                </div>
               </form>
             </CardContent>
           </Card>

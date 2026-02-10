@@ -55,11 +55,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import { Menu, ChevronDown, Home, Package, MessageSquare, FileText, BarChart3, Users, TrendingUp, ShoppingBag, GraduationCap } from "lucide-react";
+import { Menu, ChevronDown, Home, Package, MessageSquare, FileText, BarChart3, Users, TrendingUp, GraduationCap } from "lucide-react";
 import AdminMessagesContainer from "./AdminMessagesContainer";
 import AdminProjectsManager from "./AdminProjectsManager";
 import AdminQuoteRequests from "./AdminQuoteRequests";
-import AdminShopOrders from "./AdminShopOrders";
 import AdminCourseRegistrations from "./AdminCourseRegistrations";
 
 interface ExtendedUserData extends UserProfileData {
@@ -472,13 +471,6 @@ const AdminPanel = () => {
                 Ordini
               </DropdownMenuItem>
               <DropdownMenuItem 
-                onClick={() => setActiveTab("shopOrders")}
-                className="flex items-center gap-2"
-              >
-                <ShoppingBag className="h-4 w-4" />
-                Ordini Shop
-              </DropdownMenuItem>
-              <DropdownMenuItem 
                 onClick={() => setActiveTab("quoteRequests")}
                 className="flex items-center gap-2"
               >
@@ -508,7 +500,6 @@ const AdminPanel = () => {
         <TabsList className="mb-4 hidden md:flex">
           <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
           <TabsTrigger value="projects">Ordini</TabsTrigger>
-          <TabsTrigger value="shopOrders">Ordini Shop</TabsTrigger>
           <TabsTrigger value="quoteRequests">Richieste Preventivo</TabsTrigger>
           <TabsTrigger value="courses">Corsi</TabsTrigger>
           <TabsTrigger value="messages">Messaggi</TabsTrigger>
@@ -740,11 +731,6 @@ const AdminPanel = () => {
         <TabsContent value="projects">
           {/* Contenuto per la scheda Ordini */}
           <AdminProjectsManager />
-        </TabsContent>
-        
-        <TabsContent value="shopOrders">
-          {/* Contenuto per gli ordini shop */}
-          <AdminShopOrders />
         </TabsContent>
         
         <TabsContent value="quoteRequests">

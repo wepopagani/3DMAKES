@@ -92,15 +92,15 @@ const PartnersLogos = () => {
                   key={partner.id} 
                   className="pl-2 md:pl-4 basis-1/2 md:basis-1/3 lg:basis-1/4"
                 >
-                  <div className="p-8">
+                  <div className="p-4">
                     <div 
-                      className="rounded-lg p-12 h-80 flex items-center justify-center transition-all duration-300 hover:scale-105 cursor-pointer group"
+                      className="rounded-lg p-6 h-40 md:h-48 flex items-center justify-center transition-all duration-300 hover:scale-105 cursor-pointer group"
                       onClick={() => partner.website && window.open(partner.website, '_blank')}
                     >
                       <img
                         src={partner.logo}
                         alt={partner.name}
-                        className="max-w-full max-h-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
+                        className="w-52 md:w-64 h-auto object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
                         onError={(e) => {
                           // Fallback: mostra il nome se l'immagine non viene caricata
                           const target = e.currentTarget;
