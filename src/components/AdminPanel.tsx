@@ -55,11 +55,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import { Menu, ChevronDown, Home, Package, MessageSquare, FileText, BarChart3, Users, TrendingUp, ShoppingBag } from "lucide-react";
+import { Menu, ChevronDown, Home, Package, MessageSquare, FileText, BarChart3, Users, TrendingUp, ShoppingBag, GraduationCap } from "lucide-react";
 import AdminMessagesContainer from "./AdminMessagesContainer";
 import AdminProjectsManager from "./AdminProjectsManager";
 import AdminQuoteRequests from "./AdminQuoteRequests";
 import AdminShopOrders from "./AdminShopOrders";
+import AdminCourseRegistrations from "./AdminCourseRegistrations";
 
 interface ExtendedUserData extends UserProfileData {
   id: string;
@@ -485,6 +486,13 @@ const AdminPanel = () => {
                 Richieste Preventivo
               </DropdownMenuItem>
               <DropdownMenuItem 
+                onClick={() => setActiveTab("courses")}
+                className="flex items-center gap-2"
+              >
+                <GraduationCap className="h-4 w-4" />
+                Corsi
+              </DropdownMenuItem>
+              <DropdownMenuItem 
                 onClick={() => setActiveTab("messages")}
                 className="flex items-center gap-2"
               >
@@ -502,6 +510,7 @@ const AdminPanel = () => {
           <TabsTrigger value="projects">Ordini</TabsTrigger>
           <TabsTrigger value="shopOrders">Ordini Shop</TabsTrigger>
           <TabsTrigger value="quoteRequests">Richieste Preventivo</TabsTrigger>
+          <TabsTrigger value="courses">Corsi</TabsTrigger>
           <TabsTrigger value="messages">Messaggi</TabsTrigger>
         </TabsList>
         
@@ -741,6 +750,11 @@ const AdminPanel = () => {
         <TabsContent value="quoteRequests">
           {/* Contenuto per le richieste di preventivo */}
           <AdminQuoteRequests />
+        </TabsContent>
+        
+        <TabsContent value="courses">
+          {/* Contenuto per le Iscrizioni ai Corsi */}
+          <AdminCourseRegistrations />
         </TabsContent>
         
         <TabsContent value="messages">

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Iscrizione Corsi - 3DMakes</title>
+</head>
+<body>
+  <!-- Questo file aiuta Netlify a riconoscere il form di iscrizione ai corsi -->
+  <form name="iscrizione-corsi" netlify netlify-honeypot="bot-field" hidden>
+    <input type="text" name="firstName" />
+    <input type="text" name="lastName" />
+    <input type="email" name="email" />
+    <input type="tel" name="phone" />
+    <select name="timeSlot">
+      <option value="">Seleziona uno slot</option>
+      <option value="6-7-marzo">6-7 Marzo 2025 (Giovedì-Venerdì) - 17:30 - 21:30</option>
+      <option value="13-14-marzo">13-14 Marzo 2025 (Giovedì-Venerdì) - 17:30 - 21:30</option>
+      <option value="20-21-marzo">20-21 Marzo 2025 (Giovedì-Venerdì) - 17:30 - 21:30</option>
+      <option value="27-28-marzo">27-28 Marzo 2025 (Giovedì-Venerdì) - 17:30 - 21:30</option>
+    </select>
+    <input type="text" name="company" />
+    <textarea name="message"></textarea>
+    <input type="checkbox" name="privacy" />
+  </form>
+</body>
+</html>

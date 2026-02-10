@@ -37,6 +37,7 @@ import PetRegistrationPublic from "./pages/PetRegistrationPublic";
 import PetAdmin from "./pages/PetAdmin";
 import PetPassportSimple from "./pages/PetPassportSimple";
 import TestPetPassport from "./pages/TestPetPassport";
+import IscrizioneCorsi from "./pages/IscrizioneCorsi";
 
 const queryClient = new QueryClient();
 
@@ -217,6 +218,9 @@ const App = () => (
             <Route path="/pets-admin" element={<PetAdmin />} />
             <Route path="/pets-test" element={<TestPetPassport />} />
             <Route path="/pets/:passportNumber" element={<PetPassportSimple />} />
+            
+            {/* Course Registration */}
+            <Route path="/iscrizione-corsi" element={<IscrizioneCorsi />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

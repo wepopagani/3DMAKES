@@ -55,6 +55,7 @@ const Navbar = () => {
     { name: t('nav.mission'), path: '/mission' },
     { name: t('nav.services'), path: '/services' },
     { name: t('nav.blog'), path: '/blog' },
+    { name: t('nav.courses'), path: '/iscrizione-corsi' },
     { name: t('nav.contact'), path: '/#contact', isContact: true },
   ];
 

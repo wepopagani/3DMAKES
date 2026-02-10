@@ -85,5 +85,13 @@ service cloud.firestore {
       // Solo admin possono modificare ed eliminare
       allow update, delete: if isAdmin();
     }
+    
+    // Accesso alle iscrizioni ai corsi
+    match /courseRegistrations/{registrationId} {
+      // Chiunque può creare un'iscrizione (anche senza account)
+      allow create: if true;
+      // Solo admin possono leggere, modificare ed eliminare
+      allow read, update, delete: if isAdmin();
+    }
   }
 } 
