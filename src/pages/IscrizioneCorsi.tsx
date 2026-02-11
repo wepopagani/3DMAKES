@@ -220,38 +220,47 @@ const IscrizioneCorsi = () => {
                     const lastName = formData.get('lastName') as string;
                     const email = formData.get('email') as string;
                     const phone = formData.get('phone') as string;
-                      const timeSlot = formData.get('timeSlot') as string;
-                      const message = formData.get('message') as string;
+                    const timeSlot = formData.get('timeSlot') as string;
+                    const message = formData.get('message') as string;
                     
                     try {
-                      try {
-                        await addCourseRegistration({
-                          firstName,
-                          lastName,
-                          email,
-                          phone,
-                          timeSlot,
-                          message: message || undefined,
-                          status: 'pending',
-                        });
-                        console.log('✓ Salvato in Firestore');
-                      } catch (firestoreError) {
-                        console.warn('⚠️ Firestore non disponibile, solo Netlify:', firestoreError);
-                      }
+                      console.log('📝 Tentativo di salvataggio in Firestore...');
+                      console.log('Dati da salvare:', { firstName, lastName, email, phone, timeSlot });
                       
-                      await fetch("/", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                        body: new URLSearchParams(formData as any).toString()
+                      // Salva in Firestore - questo è il salvataggio principale
+                      const registrationId = await addCourseRegistration({
+                        firstName,
+                        lastName,
+                        email,
+                        phone,
+                        timeSlot,
+                        message: message || undefined,
+                        status: 'pending',
                       });
+                      
+                      console.log('✅ Salvato in Firestore con ID:', registrationId);
+                      
+                      // Invia anche a Netlify Forms come backup (solo in produzione)
+                      // In locale questo fallirà con 404, ma non è un problema
+                      try {
+                        await fetch("/", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                          body: new URLSearchParams(formData as any).toString()
+                        });
+                        console.log('✅ Inviato anche a Netlify Forms');
+                      } catch (netlifyError) {
+                        console.log('⚠️ Netlify Forms non disponibile (normale in locale):', netlifyError);
+                        // Non è un errore critico, continuiamo comunque
+                      }
                       
                       setIsSubmitted(true);
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     } catch (error) {
-                      console.error('Error:', error);
+                      console.error('❌ Errore completo:', error);
                       toast({
-                        title: "Errore",
-                        description: "Si è verificato un errore durante l'invio. Riprova.",
+                        title: "Errore durante l'iscrizione",
+                        description: error instanceof Error ? error.message : "Si è verificato un errore durante l'invio. Riprova o contattaci direttamente.",
                         variant: "destructive",
                       });
                     } finally {

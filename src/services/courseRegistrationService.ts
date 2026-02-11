@@ -18,14 +18,28 @@ export interface CourseRegistration {
 // Aggiungi una nuova iscrizione
 export const addCourseRegistration = async (registration: Omit<CourseRegistration, 'id' | 'createdAt' | 'updatedAt'>): Promise<string> => {
   try {
+    console.log('🔥 Firebase DB object:', db);
+    console.log('📦 Collection name: courseRegistrations');
+    console.log('📋 Data to save:', registration);
+    
+    if (!db) {
+      throw new Error('Firestore non è inizializzato correttamente. Controlla la configurazione Firebase.');
+    }
+    
     const docRef = await addDoc(collection(db, 'courseRegistrations'), {
       ...registration,
       createdAt: Timestamp.now(),
       updatedAt: Timestamp.now(),
     });
+    
+    console.log('✅ Document salvato con ID:', docRef.id);
     return docRef.id;
   } catch (error) {
-    console.error('Errore durante l\'aggiunta dell\'iscrizione:', error);
+    console.error('❌ Errore durante l\'aggiunta dell\'iscrizione:', error);
+    if (error instanceof Error) {
+      console.error('❌ Messaggio errore:', error.message);
+      console.error('❌ Stack trace:', error.stack);
+    }
     throw error;
   }
 };
