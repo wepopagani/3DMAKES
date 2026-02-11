@@ -227,16 +227,23 @@ const IscrizioneCorsi = () => {
                       console.log('📝 Tentativo di salvataggio in Firestore...');
                       console.log('Dati da salvare:', { firstName, lastName, email, phone, timeSlot });
                       
-                      // Salva in Firestore - questo è il salvataggio principale
-                      const registrationId = await addCourseRegistration({
+                      // Prepara i dati - Firestore non accetta valori undefined
+                      const registrationData: any = {
                         firstName,
                         lastName,
                         email,
                         phone,
                         timeSlot,
-                        message: message || undefined,
                         status: 'pending',
-                      });
+                      };
+                      
+                      // Aggiungi message solo se non è vuoto
+                      if (message && message.trim()) {
+                        registrationData.message = message.trim();
+                      }
+                      
+                      // Salva in Firestore - questo è il salvataggio principale
+                      const registrationId = await addCourseRegistration(registrationData);
                       
                       console.log('✅ Salvato in Firestore con ID:', registrationId);
                       

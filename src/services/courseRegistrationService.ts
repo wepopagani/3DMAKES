@@ -26,11 +26,23 @@ export const addCourseRegistration = async (registration: Omit<CourseRegistratio
       throw new Error('Firestore non è inizializzato correttamente. Controlla la configurazione Firebase.');
     }
     
-    const docRef = await addDoc(collection(db, 'courseRegistrations'), {
-      ...registration,
+    // Rimuovi campi undefined (Firestore non li accetta)
+    const cleanData: any = {
       createdAt: Timestamp.now(),
       updatedAt: Timestamp.now(),
+    };
+    
+    // Copia solo i campi con valori definiti
+    Object.keys(registration).forEach(key => {
+      const value = (registration as any)[key];
+      if (value !== undefined && value !== null && value !== '') {
+        cleanData[key] = value;
+      }
     });
+    
+    console.log('🧹 Dati puliti (senza undefined):', cleanData);
+    
+    const docRef = await addDoc(collection(db, 'courseRegistrations'), cleanData);
     
     console.log('✅ Document salvato con ID:', docRef.id);
     return docRef.id;
