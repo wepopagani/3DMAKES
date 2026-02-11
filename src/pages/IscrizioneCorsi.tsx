@@ -16,7 +16,6 @@ const IscrizioneCorsi = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showExtra, setShowExtra] = useState(false);
 
   // Slot disponibili - Giovedì e Venerdì dalle 17:30 alle 21:30 (2 giorni consecutivi)
   const timeSlots = [
@@ -189,6 +188,31 @@ const IscrizioneCorsi = () => {
                   </ul>
                 </div>
 
+                {/* Banner Offerta Limitata */}
+                <div className="my-6 relative">
+                  <div className="absolute -top-3 left-4 bg-red-600 text-white px-4 py-1 rounded-full text-xs font-bold uppercase shadow-md z-10">
+                    Solo primi 12 posti
+                  </div>
+                  <div className="border-2 border-brand-accent rounded-lg p-5 bg-white shadow-md">
+                    <div className="text-center mb-3 pt-2">
+                      <p className="text-gray-600 text-sm font-semibold mb-2">Prezzo Early Bird</p>
+                      <div className="flex items-center justify-center gap-3">
+                        <span className="text-gray-400 line-through text-2xl font-bold">550</span>
+                        <span className="text-brand-accent text-5xl font-black">450</span>
+                        <span className="text-gray-700 text-xl font-bold">CHF</span>
+                      </div>
+                      <p className="text-green-600 font-semibold text-sm mt-2">
+                        💰 Risparmi 100 CHF
+                      </p>
+                    </div>
+                    <div className="border-t border-gray-200 pt-3 text-center">
+                      <p className="text-xs text-gray-500">
+                        ⚡ Posti limitati - Iscriviti ora!
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
                 {/* Contatti */}
                 <div className="mt-6 text-gray-600 text-sm">
                   <p>
@@ -329,7 +353,7 @@ const IscrizioneCorsi = () => {
                     </div>
                   </div>
 
-                  {/* Slot Orario - trigger per espandere */}
+                  {/* Slot Orario */}
                   <div className="space-y-2">
                     <Label htmlFor="timeSlot" className="text-gray-700">Seleziona Date e Orario *</Label>
                     <select
@@ -337,8 +361,7 @@ const IscrizioneCorsi = () => {
                       name="timeSlot"
                       required
                       value={selectedSlot}
-                      onChange={(e) => { setSelectedSlot(e.target.value); setShowExtra(true); }}
-                      onFocus={() => setShowExtra(true)}
+                      onChange={(e) => setSelectedSlot(e.target.value)}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-accent focus:border-transparent"
                     >
                       <option value="">Seleziona uno slot disponibile</option>
@@ -353,53 +376,46 @@ const IscrizioneCorsi = () => {
                     </p>
                   </div>
 
-                  {/* Campi extra che appaiono quando si tocca lo slot */}
-                  <div 
-                    className={`space-y-5 transition-all duration-500 ease-in-out overflow-hidden ${
-                      showExtra ? 'max-h-[800px] opacity-100' : 'max-h-0 opacity-0'
-                    }`}
-                  >
-                    {/* Note */}
-                    <div className="space-y-2">
-                      <Label htmlFor="message" className="text-gray-700">Note / Domande (opzionale)</Label>
-                      <Textarea 
-                        id="message" 
-                        name="message" 
-                        rows={3}
-                        placeholder="Hai domande specifiche sul corso?"
-                      />
-                    </div>
-
-                    {/* Privacy */}
-                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                      <div className="flex items-start space-x-3">
-                        <input 
-                          type="checkbox" 
-                          id="privacy" 
-                          name="privacy" 
-                          required
-                          className="mt-1 accent-brand-accent"
-                        />
-                        <Label htmlFor="privacy" className="text-sm text-gray-600 cursor-pointer">
-                          Acconsento al trattamento dei miei dati personali secondo la Privacy Policy di 3D Makes *
-                        </Label>
-                      </div>
-                    </div>
-
-                    {/* Submit */}
-                    <Button 
-                      type="submit" 
-                      className="w-full bg-brand-accent hover:bg-brand-accent/80 text-white text-lg py-6"
-                      disabled={isSubmitting}
-                    >
-                      <Send className="w-5 h-5 mr-2" />
-                      {isSubmitting ? "Invio in corso..." : "Invia Richiesta di Iscrizione"}
-                    </Button>
-
-                    <p className="text-xs text-center text-gray-500">
-                      * Campi obbligatori
-                    </p>
+                  {/* Note */}
+                  <div className="space-y-2">
+                    <Label htmlFor="message" className="text-gray-700">Note / Domande (opzionale)</Label>
+                    <Textarea 
+                      id="message" 
+                      name="message" 
+                      rows={3}
+                      placeholder="Hai domande specifiche sul corso?"
+                    />
                   </div>
+
+                  {/* Privacy */}
+                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <div className="flex items-start space-x-3">
+                      <input 
+                        type="checkbox" 
+                        id="privacy" 
+                        name="privacy" 
+                        required
+                        className="mt-1 accent-brand-accent"
+                      />
+                      <Label htmlFor="privacy" className="text-sm text-gray-600 cursor-pointer">
+                        Acconsento al trattamento dei miei dati personali secondo la Privacy Policy di 3D Makes *
+                      </Label>
+                    </div>
+                  </div>
+
+                  {/* Submit */}
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-brand-accent hover:bg-brand-accent/80 text-white text-lg py-6"
+                    disabled={isSubmitting}
+                  >
+                    <Send className="w-5 h-5 mr-2" />
+                    {isSubmitting ? "Invio in corso..." : "Invia Richiesta di Iscrizione"}
+                  </Button>
+
+                  <p className="text-xs text-center text-gray-500">
+                    * Campi obbligatori
+                  </p>
                 </form>
               </div>
             </div>
