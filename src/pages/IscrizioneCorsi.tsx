@@ -120,119 +120,194 @@ const IscrizioneCorsi = () => {
           </div>
         </section>
 
-        {/* Sezione COSA IMPARERAI + Form - Sfondo chiaro */}
-        <section className="py-16 md:py-24" style={{ backgroundColor: '#E5DDD3' }}>
+        {/* Sezione Programma del Corso - Full Width */}
+        <section className="py-16" style={{ backgroundColor: '#E5DDD3' }}>
           <div className="container-custom">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto items-start">
+            <div className="max-w-6xl mx-auto">
+              <h2 className="text-3xl md:text-4xl font-black text-brand-blue mb-3 text-center">
+                PROGRAMMA DEL CORSO
+              </h2>
+              <p className="text-gray-600 mb-10 italic text-center text-lg">
+                Dal setup alla stampa: metodo pratico, esempi reali.
+              </p>
               
-              {/* Colonna sinistra - Info sul corso */}
-              <div>
-                <h2 className="text-3xl md:text-4xl font-black text-brand-blue mb-6">
-                  COSA IMPARERAI
-                </h2>
-                <div className="space-y-4 mb-8">
-                  <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-brand-accent/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-brand-accent text-sm font-bold">1</span>
+              {/* 4 Moduli in Griglia 2x2 */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-12">
+                
+                {/* Modulo 1 - Sicurezza */}
+                <div className="bg-white rounded-lg p-5 shadow-sm border border-gray-200">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-12 h-12 rounded-full bg-brand-accent flex items-center justify-center flex-shrink-0">
+                      <span className="text-white text-lg font-bold">1h</span>
                     </div>
-                    <p className="text-gray-700">Introduzione alle tecnologie di stampa 3D (FDM, SLA)</p>
+                    <h3 className="text-lg font-bold text-brand-blue">Sicurezza & DPI</h3>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-brand-accent/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-brand-accent text-sm font-bold">2</span>
-                    </div>
-                    <p className="text-gray-700">Basi di modellazione 3D e preparazione file</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-brand-accent/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-brand-accent text-sm font-bold">3</span>
-                    </div>
-                    <p className="text-gray-700">Configurazione slicer e parametri di stampa</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-brand-accent/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-brand-accent text-sm font-bold">4</span>
-                    </div>
-                    <p className="text-gray-700">Stampa pratica: dalla calibrazione al prodotto finito</p>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-brand-accent/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-brand-accent text-sm font-bold">5</span>
-                    </div>
-                    <p className="text-gray-700">Post-produzione e finitura dei pezzi</p>
-                  </div>
-                </div>
-
-                {/* Info lista */}
-                <div>
-                  <h3 className="font-bold text-brand-blue mb-3">Dettagli</h3>
-                  <ul className="space-y-2 text-sm text-gray-700">
-                    <li className="flex items-center gap-2">
-                      <span className="text-brand-accent font-bold">✓</span> Durata: 8 ore su 2 sere
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="text-brand-accent font-bold">✓</span> Orario: 17:30 - 21:30
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="text-brand-accent font-bold">✓</span> Adatto a principianti
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="text-brand-accent font-bold">✓</span> Materiale didattico incluso
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="text-brand-accent font-bold">✓</span> Attestato di partecipazione
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <span className="text-brand-accent font-bold">✓</span> Corsi personalizzati per aziende
-                    </li>
+                  <ul className="space-y-1.5 text-sm text-gray-700">
+                    <li>• Rischi FDM/SLA e contatto materiali</li>
+                    <li>• DPI: guanti, occhiali, mascherine</li>
+                    <li>• Setup postazione sicura</li>
                   </ul>
                 </div>
 
+                {/* Modulo 2 - FDM */}
+                <div className="bg-white rounded-lg p-5 shadow-sm border border-gray-200">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-12 h-12 rounded-full bg-brand-accent flex items-center justify-center flex-shrink-0">
+                      <span className="text-white text-lg font-bold">3h</span>
+                    </div>
+                    <h3 className="text-lg font-bold text-brand-blue">Stampa FDM</h3>
+                  </div>
+                  <ul className="space-y-1.5 text-sm text-gray-700">
+                    <li>• Materiali: PLA, PETG, TPU, ASA/ABS</li>
+                    <li>• Hardware: nozzle, piatto, calibrazioni</li>
+                    <li>• Slicing e supports</li>
+                    <li>• Troubleshooting completo</li>
+                  </ul>
+                </div>
+
+                {/* Modulo 3 - SLA */}
+                <div className="bg-white rounded-lg p-5 shadow-sm border border-gray-200">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-12 h-12 rounded-full bg-brand-accent flex items-center justify-center flex-shrink-0">
+                      <span className="text-white text-lg font-bold">3h</span>
+                    </div>
+                    <h3 className="text-lg font-bold text-brand-blue">Stampa SLA</h3>
+                  </div>
+                  <ul className="space-y-1.5 text-sm text-gray-700">
+                    <li>• Resine: standard/tough/flexible</li>
+                    <li>• Parametri: temperatura, esposizione</li>
+                    <li>• Orientamento e supports</li>
+                    <li>• Wash & cure workflow</li>
+                  </ul>
+                </div>
+
+                {/* Modulo 4 - Tecniche */}
+                <div className="bg-white rounded-lg p-5 shadow-sm border border-gray-200">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-12 h-12 rounded-full bg-brand-accent flex items-center justify-center flex-shrink-0">
+                      <span className="text-white text-lg font-bold">1h</span>
+                    </div>
+                    <h3 className="text-lg font-bold text-brand-blue">Tecniche & Consigli</h3>
+                  </div>
+                  <ul className="space-y-1.5 text-sm text-gray-700">
+                    <li>• FDM vs SLA: quando usare cosa</li>
+                    <li>• Finiture e post-produzione</li>
+                    <li>• Tolleranze e accoppiamenti</li>
+                    <li>• Q&A pezzi reali</li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* Dettagli Corso - Lista compatta */}
+              <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+                <h3 className="font-bold text-brand-blue mb-4 text-lg">📋 Cosa Include</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2 text-sm text-gray-700">
+                  <div className="flex items-center gap-2">
+                    <span className="text-brand-accent font-bold">✓</span> Durata: 8 ore su 2 sere
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-brand-accent font-bold">✓</span> Orario: 17:30 - 21:30
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-brand-accent font-bold">✓</span> Max 6 partecipanti
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-brand-accent font-bold">✓</span> Adatto a principianti
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-brand-accent font-bold">✓</span> Materiale didattico incluso
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-brand-accent font-bold">✓</span> Attestato di partecipazione
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Sezione Prezzo e Form - Su sfondo chiaro */}
+        <section className="py-16 md:py-20" style={{ backgroundColor: '#E5DDD3' }}>
+          <div className="container-custom">
+            <div className="max-w-5xl mx-auto">
+              
+              {/* Prezzo e Microcrediti in riga */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                
                 {/* Banner Offerta Limitata */}
-                <div className="my-6 relative">
+                <div className="relative">
                   <div className="absolute -top-3 left-4 bg-red-600 text-white px-4 py-1 rounded-full text-xs font-bold uppercase shadow-md z-10">
                     Solo primi 12 posti
                   </div>
-                  <div className="border-2 border-brand-accent rounded-lg p-5 bg-white shadow-md">
-                    <div className="text-center mb-3 pt-2">
-                      <p className="text-gray-600 text-sm font-semibold mb-2">Prezzo Early Bird</p>
-                      <div className="flex items-center justify-center gap-3">
+                  <div className="border-2 border-brand-accent rounded-lg p-6 bg-white shadow-md h-full">
+                    <div className="text-center">
+                      <p className="text-gray-600 text-sm font-semibold mb-3 mt-2">Prezzo Early Bird</p>
+                      <div className="flex items-center justify-center gap-3 mb-3">
                         <span className="text-gray-400 line-through text-2xl font-bold">550</span>
                         <span className="text-brand-accent text-5xl font-black">450</span>
                         <span className="text-gray-700 text-xl font-bold">CHF</span>
                       </div>
-                      <p className="text-green-600 font-semibold text-sm mt-2">
+                      <p className="text-green-600 font-semibold text-sm mb-3">
                         💰 Risparmi 100 CHF
                       </p>
-                    </div>
-                    <div className="border-t border-gray-200 pt-3 text-center">
-                      <p className="text-xs text-gray-500">
-                        ⚡ Posti limitati - Iscriviti ora!
-                      </p>
+                      <div className="border-t border-gray-200 pt-3">
+                        <p className="text-xs text-gray-500">
+                          ⚡ Posti limitati - Iscriviti ora!
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Contatti */}
-                <div className="mt-6 text-gray-600 text-sm">
-                  <p>
-                    Domande? Contattaci al{" "}
-                    <a href="tel:+41762660396" className="text-brand-accent hover:underline font-semibold">+41 76 266 03 96</a>
-                    {" "}o via email a{" "}
-                    <a href="mailto:info@3dmakes.ch" className="text-brand-accent hover:underline font-semibold">info@3dmakes.ch</a>
+                {/* Sezione Microcrediti */}
+                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-lg p-6 shadow-md">
+                  <div className="flex items-start gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0">
+                      <span className="text-white text-xl">💳</span>
+                    </div>
+                    <div>
+                      <h4 className="text-base font-bold text-brand-blue mb-1">Difficoltà a pagare?</h4>
+                      <p className="text-xs text-gray-700">
+                        Offriamo pagamento rateale
+                      </p>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2 text-sm text-gray-700">
+                    <div className="flex items-start gap-2">
+                      <span className="text-blue-500 mt-0.5 font-bold">✓</span>
+                      <span><strong>Fino a 9 rate mensili</strong> senza interessi</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="text-blue-500 mt-0.5 font-bold">✓</span>
+                      <span>Approvazione rapida (24-48 ore)</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="text-blue-500 mt-0.5 font-bold">✓</span>
+                      <span>Partnership con banche svizzere</span>
+                    </div>
+                  </div>
+                  
+                  <p className="text-xs text-gray-600 italic mt-3 bg-white/60 rounded p-2">
+                    💡 Indica la tua preferenza nel form di iscrizione
                   </p>
                 </div>
               </div>
 
-              {/* Colonna destra - Form */}
-              <div className="bg-white rounded-lg shadow-lg p-6 md:p-8 lg:mt-14">
-                <h3 className="text-2xl font-bold text-brand-blue mb-6">Iscriviti Ora</h3>
+              {/* Form Iscrizione - Full Width */}
+              <div className="bg-white rounded-lg shadow-lg p-6 md:p-8">
+                <div className="text-center mb-8">
+                  <h3 className="text-3xl font-bold text-brand-blue mb-2">Iscriviti Ora</h3>
+                  <p className="text-gray-600 text-sm">
+                    Compila il form e ti contatteremo entro 24-48 ore per confermare la tua partecipazione
+                  </p>
+                </div>
                 <form 
                   name="iscrizione-corsi" 
                   method="POST"
                   data-netlify="true" 
                   data-netlify-honeypot="bot-field"
-                  className="space-y-5"
+                  className="space-y-4"
                   onSubmit={async (e) => {
                     e.preventDefault();
                     
@@ -245,11 +320,12 @@ const IscrizioneCorsi = () => {
                     const email = formData.get('email') as string;
                     const phone = formData.get('phone') as string;
                     const timeSlot = formData.get('timeSlot') as string;
+                    const paymentOption = formData.get('paymentOption') as string;
                     const message = formData.get('message') as string;
                     
                     try {
                       console.log('📝 Tentativo di salvataggio in Firestore...');
-                      console.log('Dati da salvare:', { firstName, lastName, email, phone, timeSlot });
+                      console.log('Dati da salvare:', { firstName, lastName, email, phone, timeSlot, paymentOption });
                       
                       // Prepara i dati - Firestore non accetta valori undefined
                       const registrationData: any = {
@@ -258,6 +334,7 @@ const IscrizioneCorsi = () => {
                         email,
                         phone,
                         timeSlot,
+                        paymentOption: paymentOption || 'full',
                         status: 'pending',
                       };
                       
@@ -376,6 +453,22 @@ const IscrizioneCorsi = () => {
                     </p>
                   </div>
 
+                  {/* Opzione Pagamento Rateale */}
+                  <div className="space-y-2">
+                    <Label htmlFor="paymentOption" className="text-gray-700">Modalità di Pagamento</Label>
+                    <select
+                      id="paymentOption"
+                      name="paymentOption"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-accent focus:border-transparent"
+                    >
+                      <option value="full">Pagamento completo</option>
+                      <option value="installments">Sono interessato al pagamento rateale (fino a 9 rate)</option>
+                    </select>
+                    <p className="text-xs text-gray-500">
+                      💳 Se selezioni il pagamento rateale, ti contatteremo con i dettagli sui microcrediti.
+                    </p>
+                  </div>
+
                   {/* Note */}
                   <div className="space-y-2">
                     <Label htmlFor="message" className="text-gray-700">Note / Domande (opzionale)</Label>
@@ -418,8 +511,18 @@ const IscrizioneCorsi = () => {
                   </p>
                 </form>
               </div>
-            </div>
 
+              {/* Contatti */}
+              <div className="mt-8 text-center text-gray-600 text-sm bg-white/50 rounded-lg p-4">
+                <p className="font-semibold text-brand-blue mb-1">Hai domande?</p>
+                <p>
+                  Contattaci al{" "}
+                  <a href="tel:+41762660396" className="text-brand-accent hover:underline font-semibold">+41 76 266 03 96</a>
+                  {" "}o via email{" "}
+                  <a href="mailto:info@3dmakes.ch" className="text-brand-accent hover:underline font-semibold">info@3dmakes.ch</a>
+                </p>
+              </div>
+            </div>
           </div>
         </section>
       </main>
