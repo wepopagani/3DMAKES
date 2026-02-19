@@ -121,7 +121,7 @@ const IscrizioneCorsi = () => {
         </section>
 
         {/* Sezione Programma del Corso - Full Width */}
-        <section className="py-16" style={{ backgroundColor: '#E5DDD3' }}>
+        <section className="py-16 md:py-6" style={{ backgroundColor: '#E5DDD3' }}>
           <div className="container-custom">
             <div className="max-w-6xl mx-auto">
               <h2 className="text-3xl md:text-4xl font-black text-brand-blue mb-3 text-center">
@@ -132,7 +132,7 @@ const IscrizioneCorsi = () => {
               </p>
               
               {/* 4 Moduli in Griglia 2x2 */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-12">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
                 
                 {/* Modulo 1 - Sicurezza */}
                 <div className="bg-white rounded-lg p-5 shadow-sm border border-gray-200">
@@ -276,7 +276,7 @@ const IscrizioneCorsi = () => {
                   <div className="space-y-2 text-sm text-gray-700">
                     <div className="flex items-start gap-2">
                       <span className="text-blue-500 mt-0.5 font-bold">✓</span>
-                      <span><strong>Fino a 9 rate mensili</strong> senza interessi</span>
+                      <span><strong>Fino a 9 rate mensili</strong></span>
                     </div>
                     <div className="flex items-start gap-2">
                       <span className="text-blue-500 mt-0.5 font-bold">✓</span>
