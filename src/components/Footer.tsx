@@ -100,7 +100,7 @@ const Footer = () => {
             <img 
               src="/logo.png" 
               alt="3DMAKES Logo" 
-              className="h-5 w-auto object-contain brightness-0 invert"
+              className="h-4 w-auto object-contain brightness-0 invert"
             />
             <p className="text-center text-sm text-gray-300">
               &copy; {currentYear} {t('footer.copyright')}.
