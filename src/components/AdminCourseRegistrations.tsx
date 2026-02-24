@@ -50,10 +50,18 @@ const AdminCourseRegistrations = () => {
 
   // Slot disponibili
   const timeSlots = [
-    { value: "6-7-marzo", label: "6-7 Marzo 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
-    { value: "13-14-marzo", label: "13-14 Marzo 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
-    { value: "20-21-marzo", label: "20-21 Marzo 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
-    { value: "27-28-marzo", label: "27-28 Marzo 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "5-6-marzo", label: "5-6 Marzo 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "12-13-marzo", label: "12-13 Marzo 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "26-27-marzo", label: "26-27 Marzo 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "2-3-aprile", label: "2-3 Aprile 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "9-10-aprile", label: "9-10 Aprile 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "16-17-aprile", label: "16-17 Aprile 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "23-24-aprile", label: "23-24 Aprile 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "30-1-aprile", label: "30-1 Aprile 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "7-8-maggio", label: "7-8 Maggio 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "14-15-maggio", label: "14-15 Maggio 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "21-22-maggio", label: "21-22 Maggio 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "28-29-maggio", label: "28-29 Maggio 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
   ];
 
   // Carica le iscrizioni
@@ -97,7 +105,6 @@ const AdminCourseRegistrations = () => {
         phone: editData.phone,
         company: editData.company,
         timeSlot: editData.timeSlot,
-        paymentOption: editData.paymentOption,
         message: editData.message,
         status: editData.status,
       });
@@ -177,11 +184,6 @@ const AdminCourseRegistrations = () => {
     return registrations.filter(r => r.timeSlot === slotValue && r.status !== 'cancelled').length;
   };
 
-  // Conta iscrizioni con pagamento rateale
-  const getInstallmentsCount = () => {
-    return registrations.filter(r => r.paymentOption === 'installments' && r.status !== 'cancelled').length;
-  };
-
   if (loading) {
     return (
       <div className="flex justify-center items-center py-12">
@@ -204,8 +206,8 @@ const AdminCourseRegistrations = () => {
         </Button>
       </div>
 
-      {/* Card con statistiche slot e pagamenti */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+      {/* Card con statistiche slot */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {timeSlots.map((slot) => {
           const count = getSlotCount(slot.value);
           const isFull = count >= 6;
@@ -228,24 +230,6 @@ const AdminCourseRegistrations = () => {
             </Card>
           );
         })}
-        
-        {/* Card Pagamenti Rateali */}
-        <Card className="bg-blue-50 border-blue-200">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-blue-700 flex items-center gap-1">
-              💳 Pagamento Rateale
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-baseline space-x-2">
-              <span className="text-3xl font-bold text-blue-600">
-                {getInstallmentsCount()}
-              </span>
-              <span className="text-gray-600">richieste</span>
-            </div>
-            <p className="text-xs text-gray-600 mt-2">Interessati a 9 rate</p>
-          </CardContent>
-        </Card>
       </div>
 
       {/* Tabella iscrizioni */}
@@ -270,7 +254,6 @@ const AdminCourseRegistrations = () => {
                     <TableHead>Contatti</TableHead>
                     <TableHead>Azienda</TableHead>
                     <TableHead>Slot Selezionato</TableHead>
-                    <TableHead>Pagamento</TableHead>
                     <TableHead>Stato</TableHead>
                     <TableHead>Data Iscrizione</TableHead>
                     <TableHead className="text-right">Azioni</TableHead>
@@ -315,17 +298,8 @@ const AdminCourseRegistrations = () => {
                         </div>
                       </TableCell>
                       <TableCell>
-                        {registration.paymentOption === 'installments' ? (
-                          <Badge className="bg-blue-500 hover:bg-blue-600">
-                            💳 Rate (9x)
-                          </Badge>
-                        ) : (
-                          <Badge variant="secondary">
-                            Completo
-                          </Badge>
-                        )}
+                        {getStatusBadge(registration.status)}
                       </TableCell>
-                      <TableCell>{getStatusBadge(registration.status)}</TableCell>
                       <TableCell className="text-sm text-gray-600">
                         {formatDate(registration.createdAt)}
                       </TableCell>
@@ -432,29 +406,6 @@ const AdminCourseRegistrations = () => {
                     ))}
                   </SelectContent>
                 </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="edit-paymentOption">Modalità di Pagamento</Label>
-                <Select
-                  value={editData.paymentOption || 'full'}
-                  onValueChange={(value: 'full' | 'installments') => setEditData({ ...editData, paymentOption: value })}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="full">Pagamento completo</SelectItem>
-                    <SelectItem value="installments">💳 Pagamento rateale (9 rate)</SelectItem>
-                  </SelectContent>
-                </Select>
-                {editData.paymentOption === 'installments' && (
-                  <div className="bg-blue-50 border border-blue-200 rounded-md p-3 mt-2">
-                    <p className="text-sm text-blue-800">
-                      <strong>⚠️ Azione richiesta:</strong> Contattare questo partecipante per fornire i dettagli sui microcrediti e completare la pratica di finanziamento.
-                    </p>
-                  </div>
-                )}
               </div>
 
               <div className="space-y-2">

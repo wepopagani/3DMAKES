@@ -9,7 +9,6 @@ export interface CourseRegistration {
   phone: string;
   company?: string;
   timeSlot: string;
-  paymentOption?: 'full' | 'installments';
   message?: string;
   status: 'pending' | 'confirmed' | 'cancelled';
   createdAt: Date | Timestamp;
@@ -74,7 +73,6 @@ export const getAllCourseRegistrations = async (): Promise<CourseRegistration[]>
         phone: data.phone,
         company: data.company,
         timeSlot: data.timeSlot,
-        paymentOption: data.paymentOption,
         message: data.message,
         status: data.status || 'pending',
         createdAt: data.createdAt,

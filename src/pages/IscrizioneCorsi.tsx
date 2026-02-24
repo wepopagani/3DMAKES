@@ -19,12 +19,19 @@ const IscrizioneCorsi = () => {
 
   // Slot disponibili - Giovedì e Venerdì dalle 17:30 alle 21:30 (2 giorni consecutivi)
   const timeSlots = [
-    { value: "6-7-marzo", label: "6-7 Marzo 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
-    { value: "13-14-marzo", label: "13-14 Marzo 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
-    { value: "20-21-marzo", label: "20-21 Marzo 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
-    { value: "27-28-marzo", label: "27-28 Marzo 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "5-6-marzo", label: "5-6 Marzo 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "12-13-marzo", label: "12-13 Marzo 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "26-27-marzo", label: "26-27 Marzo 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "2-3-aprile", label: "2-3 Aprile 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "9-10-aprile", label: "9-10 Aprile 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "16-17-aprile", label: "16-17 Aprile 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "23-24-aprile", label: "23-24 Aprile 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "30-1-aprile", label: "30-1 Aprile 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "7-8-maggio", label: "7-8 Maggio 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "14-15-maggio", label: "14-15 Maggio 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "21-22-maggio", label: "21-22 Maggio 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "28-29-maggio", label: "28-29 Maggio 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
   ];
-
   if (isSubmitted) {
     return (
       <div className="min-h-screen flex flex-col">
@@ -231,8 +238,8 @@ const IscrizioneCorsi = () => {
           <div className="container-custom">
             <div className="max-w-5xl mx-auto">
               
-              {/* Prezzo e Microcrediti in riga */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+              {/* Prezzo in evidenza */}
+              <div className="grid grid-cols-1 gap-6 mb-10">
                 
                 {/* Banner Offerta Limitata */}
                 <div className="relative">
@@ -259,39 +266,6 @@ const IscrizioneCorsi = () => {
                   </div>
                 </div>
 
-                {/* Sezione Microcrediti */}
-                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-lg p-6 shadow-md">
-                  <div className="flex items-start gap-3 mb-3">
-                    <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0">
-                      <span className="text-white text-xl">💳</span>
-                    </div>
-                    <div>
-                      <h4 className="text-base font-bold text-brand-blue mb-1">Difficoltà a pagare?</h4>
-                      <p className="text-xs text-gray-700">
-                        Offriamo pagamento rateale
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2 text-sm text-gray-700">
-                    <div className="flex items-start gap-2">
-                      <span className="text-blue-500 mt-0.5 font-bold">✓</span>
-                      <span><strong>Fino a 9 rate mensili</strong></span>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <span className="text-blue-500 mt-0.5 font-bold">✓</span>
-                      <span>Approvazione rapida (24-48 ore)</span>
-                    </div>
-                    <div className="flex items-start gap-2">
-                      <span className="text-blue-500 mt-0.5 font-bold">✓</span>
-                      <span>Partnership con banche svizzere</span>
-                    </div>
-                  </div>
-                  
-                  <p className="text-xs text-gray-600 italic mt-3 bg-white/60 rounded p-2">
-                    💡 Indica la tua preferenza nel form di iscrizione
-                  </p>
-                </div>
               </div>
 
               {/* Form Iscrizione - Full Width */}
@@ -320,12 +294,11 @@ const IscrizioneCorsi = () => {
                     const email = formData.get('email') as string;
                     const phone = formData.get('phone') as string;
                     const timeSlot = formData.get('timeSlot') as string;
-                    const paymentOption = formData.get('paymentOption') as string;
                     const message = formData.get('message') as string;
                     
                     try {
                       console.log('📝 Tentativo di salvataggio in Firestore...');
-                      console.log('Dati da salvare:', { firstName, lastName, email, phone, timeSlot, paymentOption });
+                      console.log('Dati da salvare:', { firstName, lastName, email, phone, timeSlot });
                       
                       // Prepara i dati - Firestore non accetta valori undefined
                       const registrationData: any = {
@@ -334,7 +307,6 @@ const IscrizioneCorsi = () => {
                         email,
                         phone,
                         timeSlot,
-                        paymentOption: paymentOption || 'full',
                         status: 'pending',
                       };
                       
@@ -450,22 +422,6 @@ const IscrizioneCorsi = () => {
                     </select>
                     <p className="text-xs text-gray-500">
                       2 giorni consecutivi (8 ore totali). Posti limitati a 6 partecipanti.
-                    </p>
-                  </div>
-
-                  {/* Opzione Pagamento Rateale */}
-                  <div className="space-y-2">
-                    <Label htmlFor="paymentOption" className="text-gray-700">Modalità di Pagamento</Label>
-                    <select
-                      id="paymentOption"
-                      name="paymentOption"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-accent focus:border-transparent"
-                    >
-                      <option value="full">Pagamento completo</option>
-                      <option value="installments">Sono interessato al pagamento rateale (fino a 9 rate)</option>
-                    </select>
-                    <p className="text-xs text-gray-500">
-                      💳 Se selezioni il pagamento rateale, ti contatteremo con i dettagli sui microcrediti.
                     </p>
                   </div>
 

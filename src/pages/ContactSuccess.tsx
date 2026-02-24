@@ -80,8 +80,18 @@ const ContactSuccess = () => {
                     <Mail className="w-6 h-6 text-brand-accent" />
                   </div>
                   <h3 className="font-semibold mb-2">{t('contactSuccess.contacts')}</h3>
-                  <p className="text-brand-gray text-sm mb-2">📧 info@3dmakes.ch</p>
-                  <p className="text-brand-gray text-sm">📞 +41 76 266 03 96</p>
+                  <p className="text-brand-gray text-sm mb-2">
+                    📧{" "}
+                    <a href="mailto:info@3dmakes.ch" className="hover:underline">
+                      info@3dmakes.ch
+                    </a>
+                  </p>
+                  <p className="text-brand-gray text-sm">
+                    📞{" "}
+                    <a href="tel:+41762660396" className="hover:underline">
+                      +41 76 266 03 96
+                    </a>
+                  </p>
                 </div>
 
                 <div className="text-center p-6 bg-gray-50 rounded-xl">

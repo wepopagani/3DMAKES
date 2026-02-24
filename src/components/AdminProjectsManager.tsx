@@ -1125,9 +1125,17 @@ const AdminProjectsManager = ({ initialTab = 'projects' }: AdminProjectsManagerP
                               <h4 className="font-medium text-blue-800 mb-2">📍 Indirizzo Laboratorio</h4>
                               <p className="text-blue-700 text-sm">
                                 3DMakes<br/>
-                                                Via Cantonale 15<br/>
-                6918 Lugano, Svizzera<br/>
-                                Tel: +41 76 266 03 96
+                                <a
+                                  href="https://www.google.com/maps/search/?api=1&query=Via+Cantonale+15%2C+6918+Figino%2C+Svizzera"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="hover:underline"
+                                >
+                                  Via Cantonale 15<br/>
+                                  6918 Figino, Svizzera
+                                </a>
+                                <br/>
+                                Tel: <a href="tel:+41762660396" className="hover:underline">+41 76 266 03 96</a>
                               </p>
                 </div>
                             <div className="text-sm text-gray-700">

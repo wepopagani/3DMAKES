@@ -240,8 +240,15 @@ const About = () => {
                       <p className="text-brand-gray mb-1">
                         <span className="font-medium">{t('contact.info.address')}:</span>
                       </p>
-                                      <p className="text-brand-gray">Via Cantonale 15</p>
-                <p className="text-brand-gray">6918 Lugano, Svizzera</p>
+                      <a
+                        href="https://www.google.com/maps/search/?api=1&query=Via+Cantonale+15%2C+6918+Figino%2C+Svizzera"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-brand-accent hover:text-brand-blue transition-colors"
+                      >
+                        Via Cantonale 15<br />
+                        6918 Figino, Svizzera
+                      </a>
                     </div>
                   </div>
                   

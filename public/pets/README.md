@@ -54,7 +54,7 @@ Trova la sezione `<script id="pet-data">` e aggiorna i parametri:
 | `breed` | Razza dell'animale | "Golden Retriever" |
 | `ownerName` | Nome completo del proprietario | "Mario Rossi" |
 | `phone` | Numero di telefono (formato internazionale) | "+41791234567" |
-| `address` | Indirizzo completo per Maps | "Via Example 123, 6918Lugano, CH" |
+| `address` | Indirizzo completo per Maps | "Via Example 123, 6918 Figino, CH" |
 | `petPhoto` | Percorso foto animale (opzionale) | "/images/pets/buddy.jpg" |
 | `vcardFilename` | Nome file vCard generato | "buddy_contatto.vcf" |
 

@@ -47,6 +47,12 @@ const partners: Partner[] = [
     logo: "/partner/uav.png",
     website: "",
   },
+  {
+    id: 6,
+    name: "Verzasca",
+    logo: "/partner/verzasca.png",
+    website: "",
+  },
 ];
 
 const PartnersLogos = () => {
@@ -100,7 +106,9 @@ const PartnersLogos = () => {
                       <img
                         src={partner.logo}
                         alt={partner.name}
-                        className="w-52 md:w-64 h-auto object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
+                        className={`w-52 md:w-64 h-auto object-contain transition-all duration-300 ${
+                          partner.name === "Securitas" ? "" : "filter grayscale group-hover:grayscale-0"
+                        }`}
                         onError={(e) => {
                           // Fallback: mostra il nome se l'immagine non viene caricata
                           const target = e.currentTarget;

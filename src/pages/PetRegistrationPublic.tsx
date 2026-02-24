@@ -349,7 +349,7 @@ const PetRegistrationPublic = () => {
                     name="address"
                     value={formData.address}
                     onChange={handleInputChange}
-                    placeholder="es. Via Example 123, 6918Lugano, Svizzera"
+                    placeholder="es. Via Example 123, 6918 Figino, Svizzera"
                     rows={3}
                     required
                     style={{

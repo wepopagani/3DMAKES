@@ -107,9 +107,20 @@ const ShopOrderSuccess = () => {
                       {t('checkout.pickup')}
                     </div>
                     <p className="text-sm text-blue-600">
-                      Via Cantonale 15<br />
-                      6918 Figino, Svizzera<br />
-                      Tel: +41 76 266 03 96
+                      <a
+                        href="https://www.google.com/maps/search/?api=1&query=Via+Cantonale+15%2C+6918+Figino%2C+Svizzera"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:underline"
+                      >
+                        Via Cantonale 15<br />
+                        6918 Figino, Svizzera
+                      </a>
+                      <br />
+                      Tel:{" "}
+                      <a href="tel:+41762660396" className="hover:underline">
+                        +41 76 266 03 96
+                      </a>
                     </p>
                     <p className="text-sm text-blue-700 mt-2 font-medium">
                       {t('checkout.pickupReady')}

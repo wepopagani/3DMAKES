@@ -18,7 +18,7 @@ const mockData: Record<string, Pet> = {
     breed: "Pastore Tedesco", 
     ownerName: "Marco Pagani",
     phone: "+41791234567",
-    address: "Via Example 123, 6918Lugano, Svizzera"
+    address: "Via Example 123, 6918 Figino, Svizzera"
   },
   "123456": {
     animalName: "Luna",

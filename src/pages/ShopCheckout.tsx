@@ -307,7 +307,14 @@ const ShopCheckout = () => {
                             <div className="font-semibold">{t('checkout.pickup')}</div>
                             <div className="text-sm text-gray-500">{t('checkout.pickupDescription')}</div>
                             <div className="text-xs text-gray-600 mt-1">
-                              Via Cantonale 15, 6918 Figino, Svizzera
+                              <a
+                                href="https://www.google.com/maps/search/?api=1&query=Via+Cantonale+15%2C+6918+Figino%2C+Svizzera"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="hover:underline"
+                              >
+                                Via Cantonale 15, 6918 Figino, Svizzera
+                              </a>
                             </div>
                           </div>
                         </div>

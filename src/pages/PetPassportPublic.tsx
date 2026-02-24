@@ -9,7 +9,7 @@ const mockPassports: Record<string, any> = {
     breed: "Pastore Tedesco",
     ownerName: "Marco Pagani",
     phone: "+41791234567",
-    address: "Via Example 123, 6918Lugano, Svizzera",
+    address: "Via Example 123, 6918 Figino, Svizzera",
     vcardFilename: "tony_marco_contatto.vcf"
   },
   "123456": {

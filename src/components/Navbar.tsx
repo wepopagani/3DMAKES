@@ -61,13 +61,13 @@ const Navbar = () => {
 
   return (
     <header className="sticky top-0 z-40 w-full bg-background/80 backdrop-blur-md border-b border-border">
-      <div className="container-custom flex h-16 items-center justify-between">
+      <div className="container-custom h-16 flex items-center md:grid md:grid-cols-[auto_1fr_auto]">
         <div className="flex items-center">
           <Link to="/" className="flex items-center space-x-2" onClick={closeMenu}>
             <img 
               src="/logo.png" 
               alt="3DMAKES Logo" 
-              className="h-24 md:h-28 w-auto object-contain"
+              className="h-7 md:h-9 max-w-[150px] md:max-w-[190px] w-auto object-contain"
               onError={(e) => {
                 // Fallback al logo testuale se l'immagine non carica
                 e.currentTarget.style.display = 'none';
@@ -78,7 +78,7 @@ const Navbar = () => {
         </div>
         
         {/* Desktop navigation */}
-        <nav className="hidden md:flex items-center space-x-6">
+        <nav className="hidden md:flex items-center justify-center space-x-6">
           {navItems.map((item) => (
             item.isContact ? (
               <button
@@ -102,33 +102,35 @@ const Navbar = () => {
               </Link>
             )
           ))}
-          <div className="flex items-center space-x-4">
-            <LanguageSelector />
-            <Button asChild variant="outline">
-              <Link to="/calculator">{t('nav.requestQuote')}</Link>
-            </Button>
-            
-            {/* Mostra Area Clienti solo se non siamo nell'AdminPanel */}
-            {!isAdminPanel && (
-              <Button asChild>
-                <Link to={currentUser ? "/dashboard" : "/login"}>
-                  <User className="h-4 w-4 mr-2" />
-                  {t('nav.clientArea')}
-                </Link>
-              </Button>
-            )}
-            
-            {/* Mostra Admin solo se l'utente è admin e non siamo già nell'AdminPanel */}
-            {isAdmin && !isAdminPanel && (
-              <Button asChild variant="outline" className="border-brand-accent text-brand-accent hover:bg-brand-accent/10">
-                <Link to="/admin">{t('nav.admin')}</Link>
-              </Button>
-            )}
-          </div>
         </nav>
+
+        {/* Desktop actions on the right */}
+        <div className="hidden md:flex items-center justify-self-end space-x-4">
+          <LanguageSelector />
+          <Button asChild variant="outline">
+            <Link to="/calculator">{t('nav.requestQuote')}</Link>
+          </Button>
+          
+          {/* Mostra Area Clienti solo se non siamo nell'AdminPanel */}
+          {!isAdminPanel && (
+            <Button asChild>
+              <Link to={currentUser ? "/dashboard" : "/login"}>
+                <User className="h-4 w-4 mr-2" />
+                {t('nav.clientArea')}
+              </Link>
+            </Button>
+          )}
+          
+          {/* Mostra Admin solo se l'utente è admin e non siamo già nell'AdminPanel */}
+          {isAdmin && !isAdminPanel && (
+            <Button asChild variant="outline" className="border-brand-accent text-brand-accent hover:bg-brand-accent/10">
+              <Link to="/admin">{t('nav.admin')}</Link>
+            </Button>
+          )}
+        </div>
         
         {/* Mobile controls */}
-        <div className="md:hidden flex items-center space-x-2">
+        <div className="md:hidden flex items-center space-x-2 ml-auto">
           {/* Language selector sempre visibile su mobile */}
           <div className="scale-90">
             <LanguageSelector />

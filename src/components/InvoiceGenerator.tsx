@@ -79,7 +79,7 @@ const InvoiceGenerator: React.FC<{
       pdf.setFontSize(12);
       pdf.text('3DMakes', 20, 75);
           pdf.text('Via Cantonale 15', 20, 85);
-    pdf.text('6918 Lugano', 20, 95);
+    pdf.text('6918 Figino', 20, 95);
       pdf.text('Svizzera', 20, 105);
       
       // Dati del cliente
