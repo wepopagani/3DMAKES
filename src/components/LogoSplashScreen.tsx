@@ -15,8 +15,7 @@ const LogoSplashScreen = () => {
       <img
         src="/logo 2.png"
         alt="3DMakes logo"
-        className="w-60 h-auto md:w-80 animate-pulse"
-        style={{ transform: "scale(1.5)" }}
+        className="w-60 h-auto md:w-80"
       />
     </div>
   );
