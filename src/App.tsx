@@ -38,6 +38,7 @@ import PetAdmin from "./pages/PetAdmin";
 import PetPassportSimple from "./pages/PetPassportSimple";
 import TestPetPassport from "./pages/TestPetPassport";
 import IscrizioneCorsi from "./pages/IscrizioneCorsi";
+import LogoSplashScreen from "./components/LogoSplashScreen";
 
 const queryClient = new QueryClient();
 
@@ -46,6 +47,7 @@ const App = () => (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <TooltipProvider>
+          <LogoSplashScreen />
           <Toaster />
           <Sonner />
           <Routes>

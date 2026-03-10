@@ -23,6 +23,7 @@ const Index = () => {
         <Banner />
         <Hero />
         <AboutSection />
+        <GoogleReviewsCarousel />
         <ServicesSection />
         <MissionSection />
         <section className="bg-white py-16 md:py-24">
@@ -87,7 +88,6 @@ const Index = () => {
         </section>
         <section className="bg-white py-4 md:py-6"></section>
         <BlogSection />
-        <GoogleReviewsCarousel />
         <PartnersLogos />
         <ContactForm />
         <CallToAction />
