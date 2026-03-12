@@ -9,6 +9,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { addCourseRegistration } from "@/services/courseRegistrationService";
 import { useToast } from "@/components/ui/use-toast";
+import { sendAdminNotificationEmail, sendCourseRegistrationConfirmationEmail } from "@/utils/emailService";
 
 const IscrizioneCorsi = () => {
   const { t } = useTranslation();
@@ -17,20 +18,20 @@ const IscrizioneCorsi = () => {
   const [selectedSlot, setSelectedSlot] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Slot disponibili - Giovedì e Venerdì dalle 17:30 alle 21:30 (2 giorni consecutivi)
+  // Keep stable values for backend while localizing labels.
   const timeSlots = [
-    { value: "5-6-marzo", label: "5-6 Marzo 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
-    { value: "12-13-marzo", label: "12-13 Marzo 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
-    { value: "26-27-marzo", label: "26-27 Marzo 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
-    { value: "2-3-aprile", label: "2-3 Aprile 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
-    { value: "9-10-aprile", label: "9-10 Aprile 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
-    { value: "16-17-aprile", label: "16-17 Aprile 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
-    { value: "23-24-aprile", label: "23-24 Aprile 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
-    { value: "30-1-aprile", label: "30-1 Aprile 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
-    { value: "7-8-maggio", label: "7-8 Maggio 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
-    { value: "14-15-maggio", label: "14-15 Maggio 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
-    { value: "21-22-maggio", label: "21-22 Maggio 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
-    { value: "28-29-maggio", label: "28-29 Maggio 2025 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "5-6-marzo", label: t("courseRegistration.timeSlots.slot1") },
+    { value: "12-13-marzo", label: t("courseRegistration.timeSlots.slot2") },
+    { value: "26-27-marzo", label: t("courseRegistration.timeSlots.slot3") },
+    { value: "2-3-aprile", label: t("courseRegistration.timeSlots.slot4") },
+    { value: "9-10-aprile", label: t("courseRegistration.timeSlots.slot5") },
+    { value: "16-17-aprile", label: t("courseRegistration.timeSlots.slot6") },
+    { value: "23-24-aprile", label: t("courseRegistration.timeSlots.slot7") },
+    { value: "30-1-aprile", label: t("courseRegistration.timeSlots.slot8") },
+    { value: "7-8-maggio", label: t("courseRegistration.timeSlots.slot9") },
+    { value: "14-15-maggio", label: t("courseRegistration.timeSlots.slot10") },
+    { value: "21-22-maggio", label: t("courseRegistration.timeSlots.slot11") },
+    { value: "28-29-maggio", label: t("courseRegistration.timeSlots.slot12") },
   ];
   if (isSubmitted) {
     return (
@@ -43,25 +44,23 @@ const IscrizioneCorsi = () => {
                 <div className="inline-flex items-center justify-center w-20 h-20 bg-green-500/20 rounded-full mb-6 animate-bounce">
                   <CheckCircle className="w-10 h-10 text-green-400" />
                 </div>
-                <h1 className="text-4xl md:text-5xl font-black text-white mb-4">Iscrizione Ricevuta!</h1>
+                <h1 className="text-4xl md:text-5xl font-black text-white mb-4">{t("courseRegistration.success.title")}</h1>
                 <p className="text-gray-300 text-lg mb-8">
-                  Grazie per il tuo interesse! Abbiamo ricevuto la tua richiesta di iscrizione al Corso Base di Stampa 3D.
-                  Ti contatteremo entro 24-48 ore per confermare la tua partecipazione allo slot selezionato e fornirti
-                  tutti i dettagli necessari.
+                  {t("courseRegistration.success.description")}
                 </p>
                 <div className="bg-white/5 border border-white/10 rounded-lg p-6 mb-8 backdrop-blur-sm">
                   <p className="text-sm text-gray-300">
-                    <strong className="text-white">Cosa succede ora?</strong><br />
-                    1. Riceverai un'email di conferma<br />
-                    2. Ti contatteremo per confermare data e orario<br />
-                    3. Ti invieremo il materiale preparatorio
+                    <strong className="text-white">{t("courseRegistration.success.nextStepsTitle")}</strong><br />
+                    {t("courseRegistration.success.step1")}<br />
+                    {t("courseRegistration.success.step2")}<br />
+                    {t("courseRegistration.success.step3")}
                   </p>
                 </div>
                 <Button 
                   onClick={() => window.location.href = '/'}
                   variant="secondary"
                 >
-                  Torna alla Home
+                  {t("courseRegistration.success.backHome")}
                 </Button>
               </div>
             </div>
@@ -86,10 +85,10 @@ const IscrizioneCorsi = () => {
                 <GraduationCap className="w-8 h-8 text-brand-accent" />
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4">
-                CORSO BASE STAMPA 3D
+                {t("courseRegistration.hero.title")}
               </h1>
               <p className="text-lg md:text-xl text-gray-300">
-                Impara le basi della stampa 3D, dalla modellazione alla stampa finale con esperti del settore
+                {t("courseRegistration.hero.subtitle")}
               </p>
             </div>
 
@@ -99,27 +98,27 @@ const IscrizioneCorsi = () => {
                 <div className="inline-flex items-center justify-center w-14 h-14 bg-brand-accent/20 rounded-full mb-4">
                   <Users className="w-7 h-7 text-brand-accent" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">PICCOLI GRUPPI</h3>
+                <h3 className="text-xl font-bold text-white mb-2">{t("courseRegistration.features.smallGroups.title")}</h3>
                 <p className="text-gray-400 text-sm text-center">
-                  Max 6 partecipanti per garantire attenzione personalizzata
+                  {t("courseRegistration.features.smallGroups.description")}
                 </p>
               </div>
               <div className="bg-white/5 p-6 rounded-lg border border-white/10 backdrop-blur-sm flex flex-col items-center justify-center min-h-[200px]">
                 <div className="inline-flex items-center justify-center w-14 h-14 bg-brand-accent/20 rounded-full mb-4">
                   <BookOpen className="w-7 h-7 text-brand-accent" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">PRATICA E TEORIA</h3>
+                <h3 className="text-xl font-bold text-white mb-2">{t("courseRegistration.features.practiceTheory.title")}</h3>
                 <p className="text-gray-400 text-sm text-center">
-                  Approccio hands-on con progetti reali e materiale didattico
+                  {t("courseRegistration.features.practiceTheory.description")}
                 </p>
               </div>
               <div className="bg-white/5 p-6 rounded-lg border border-white/10 backdrop-blur-sm flex flex-col items-center justify-center min-h-[200px]">
                 <div className="inline-flex items-center justify-center w-14 h-14 bg-brand-accent/20 rounded-full mb-4">
                   <Clock className="w-7 h-7 text-brand-accent" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">2 SERE CONSECUTIVE</h3>
+                <h3 className="text-xl font-bold text-white mb-2">{t("courseRegistration.features.twoEvenings.title")}</h3>
                 <p className="text-gray-400 text-sm text-center">
-                  8 ore totali su Giovedì e Venerdì sera (17:30 - 21:30)
+                  {t("courseRegistration.features.twoEvenings.description")}
                 </p>
               </div>
             </div>
@@ -132,10 +131,10 @@ const IscrizioneCorsi = () => {
           <div className="container-custom">
             <div className="max-w-6xl mx-auto">
               <h2 className="text-3xl md:text-4xl font-black text-brand-blue mb-3 text-center">
-                PROGRAMMA DEL CORSO
+                {t("courseRegistration.program.title")}
               </h2>
               <p className="text-gray-600 mb-10 italic text-center text-lg">
-                Dal setup alla stampa: metodo pratico, esempi reali.
+                {t("courseRegistration.program.subtitle")}
               </p>
               
               {/* 4 Moduli in Griglia 2x2 */}
@@ -147,12 +146,12 @@ const IscrizioneCorsi = () => {
                     <div className="w-12 h-12 rounded-full bg-brand-accent flex items-center justify-center flex-shrink-0">
                       <span className="text-white text-lg font-bold">1h</span>
                     </div>
-                    <h3 className="text-lg font-bold text-brand-blue">Sicurezza & DPI</h3>
+                    <h3 className="text-lg font-bold text-brand-blue">{t("courseRegistration.program.modules.safety.title")}</h3>
                   </div>
                   <ul className="space-y-1.5 text-sm text-gray-700">
-                    <li>• Rischi FDM/SLA e contatto materiali</li>
-                    <li>• DPI: guanti, occhiali, mascherine</li>
-                    <li>• Setup postazione sicura</li>
+                    <li>• {t("courseRegistration.program.modules.safety.item1")}</li>
+                    <li>• {t("courseRegistration.program.modules.safety.item2")}</li>
+                    <li>• {t("courseRegistration.program.modules.safety.item3")}</li>
                   </ul>
                 </div>
 
@@ -162,13 +161,13 @@ const IscrizioneCorsi = () => {
                     <div className="w-12 h-12 rounded-full bg-brand-accent flex items-center justify-center flex-shrink-0">
                       <span className="text-white text-lg font-bold">3h</span>
                     </div>
-                    <h3 className="text-lg font-bold text-brand-blue">Stampa FDM</h3>
+                    <h3 className="text-lg font-bold text-brand-blue">{t("courseRegistration.program.modules.fdm.title")}</h3>
                   </div>
                   <ul className="space-y-1.5 text-sm text-gray-700">
-                    <li>• Materiali: PLA, PETG, TPU, ASA/ABS</li>
-                    <li>• Hardware: nozzle, piatto, calibrazioni</li>
-                    <li>• Slicing e supports</li>
-                    <li>• Troubleshooting completo</li>
+                    <li>• {t("courseRegistration.program.modules.fdm.item1")}</li>
+                    <li>• {t("courseRegistration.program.modules.fdm.item2")}</li>
+                    <li>• {t("courseRegistration.program.modules.fdm.item3")}</li>
+                    <li>• {t("courseRegistration.program.modules.fdm.item4")}</li>
                   </ul>
                 </div>
 
@@ -178,13 +177,13 @@ const IscrizioneCorsi = () => {
                     <div className="w-12 h-12 rounded-full bg-brand-accent flex items-center justify-center flex-shrink-0">
                       <span className="text-white text-lg font-bold">3h</span>
                     </div>
-                    <h3 className="text-lg font-bold text-brand-blue">Stampa SLA</h3>
+                    <h3 className="text-lg font-bold text-brand-blue">{t("courseRegistration.program.modules.sla.title")}</h3>
                   </div>
                   <ul className="space-y-1.5 text-sm text-gray-700">
-                    <li>• Resine: standard/tough/flexible</li>
-                    <li>• Parametri: temperatura, esposizione</li>
-                    <li>• Orientamento e supports</li>
-                    <li>• Wash & cure workflow</li>
+                    <li>• {t("courseRegistration.program.modules.sla.item1")}</li>
+                    <li>• {t("courseRegistration.program.modules.sla.item2")}</li>
+                    <li>• {t("courseRegistration.program.modules.sla.item3")}</li>
+                    <li>• {t("courseRegistration.program.modules.sla.item4")}</li>
                   </ul>
                 </div>
 
@@ -194,38 +193,38 @@ const IscrizioneCorsi = () => {
                     <div className="w-12 h-12 rounded-full bg-brand-accent flex items-center justify-center flex-shrink-0">
                       <span className="text-white text-lg font-bold">1h</span>
                     </div>
-                    <h3 className="text-lg font-bold text-brand-blue">Tecniche & Consigli</h3>
+                    <h3 className="text-lg font-bold text-brand-blue">{t("courseRegistration.program.modules.techniques.title")}</h3>
                   </div>
                   <ul className="space-y-1.5 text-sm text-gray-700">
-                    <li>• FDM vs SLA: quando usare cosa</li>
-                    <li>• Finiture e post-produzione</li>
-                    <li>• Tolleranze e accoppiamenti</li>
-                    <li>• Q&A pezzi reali</li>
+                    <li>• {t("courseRegistration.program.modules.techniques.item1")}</li>
+                    <li>• {t("courseRegistration.program.modules.techniques.item2")}</li>
+                    <li>• {t("courseRegistration.program.modules.techniques.item3")}</li>
+                    <li>• {t("courseRegistration.program.modules.techniques.item4")}</li>
                   </ul>
                 </div>
               </div>
 
               {/* Dettagli Corso - Lista compatta */}
               <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
-                <h3 className="font-bold text-brand-blue mb-4 text-lg">📋 Cosa Include</h3>
+                <h3 className="font-bold text-brand-blue mb-4 text-lg">{t("courseRegistration.includes.title")}</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2 text-sm text-gray-700">
                   <div className="flex items-center gap-2">
-                    <span className="text-brand-accent font-bold">✓</span> Durata: 8 ore su 2 sere
+                    <span className="text-brand-accent font-bold">✓</span> {t("courseRegistration.includes.item1")}
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-brand-accent font-bold">✓</span> Orario: 17:30 - 21:30
+                    <span className="text-brand-accent font-bold">✓</span> {t("courseRegistration.includes.item2")}
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-brand-accent font-bold">✓</span> Max 6 partecipanti
+                    <span className="text-brand-accent font-bold">✓</span> {t("courseRegistration.includes.item3")}
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-brand-accent font-bold">✓</span> Adatto a principianti
+                    <span className="text-brand-accent font-bold">✓</span> {t("courseRegistration.includes.item4")}
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-brand-accent font-bold">✓</span> Materiale didattico incluso
+                    <span className="text-brand-accent font-bold">✓</span> {t("courseRegistration.includes.item5")}
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-brand-accent font-bold">✓</span> Attestato di partecipazione
+                    <span className="text-brand-accent font-bold">✓</span> {t("courseRegistration.includes.item6")}
                   </div>
                 </div>
               </div>
@@ -244,22 +243,22 @@ const IscrizioneCorsi = () => {
                 {/* Banner Offerta Limitata */}
                 <div className="relative">
                   <div className="absolute -top-3 left-4 bg-red-600 text-white px-4 py-1 rounded-full text-xs font-bold uppercase shadow-md z-10">
-                    Solo primi 12 posti
+                    {t("courseRegistration.pricing.limitedSpots")}
                   </div>
                   <div className="border-2 border-brand-accent rounded-lg p-6 bg-white shadow-md h-full">
                     <div className="text-center">
-                      <p className="text-gray-600 text-sm font-semibold mb-3 mt-2">Prezzo Early Bird</p>
+                      <p className="text-gray-600 text-sm font-semibold mb-3 mt-2">{t("courseRegistration.pricing.earlyBird")}</p>
                       <div className="flex items-center justify-center gap-3 mb-3">
                         <span className="text-gray-400 line-through text-2xl font-bold">550</span>
                         <span className="text-brand-accent text-5xl font-black">450</span>
                         <span className="text-gray-700 text-xl font-bold">CHF</span>
                       </div>
                       <p className="text-green-600 font-semibold text-sm mb-3">
-                        💰 Risparmi 100 CHF
+                        {t("courseRegistration.pricing.savings")}
                       </p>
                       <div className="border-t border-gray-200 pt-3">
                         <p className="text-xs text-gray-500">
-                          ⚡ Posti limitati - Iscriviti ora!
+                          {t("courseRegistration.pricing.cta")}
                         </p>
                       </div>
                     </div>
@@ -271,9 +270,9 @@ const IscrizioneCorsi = () => {
               {/* Form Iscrizione - Full Width */}
               <div className="bg-white rounded-lg shadow-lg p-6 md:p-8">
                 <div className="text-center mb-8">
-                  <h3 className="text-3xl font-bold text-brand-blue mb-2">Iscriviti Ora</h3>
+                  <h3 className="text-3xl font-bold text-brand-blue mb-2">{t("courseRegistration.form.title")}</h3>
                   <p className="text-gray-600 text-sm">
-                    Compila il form e ti contatteremo entro 24-48 ore per confermare la tua partecipazione
+                    {t("courseRegistration.form.description")}
                   </p>
                 </div>
                 <form 
@@ -294,6 +293,7 @@ const IscrizioneCorsi = () => {
                     const email = formData.get('email') as string;
                     const phone = formData.get('phone') as string;
                     const timeSlot = formData.get('timeSlot') as string;
+                    const paymentMethod = formData.get('paymentMethod') as string;
                     const message = formData.get('message') as string;
                     
                     try {
@@ -301,12 +301,22 @@ const IscrizioneCorsi = () => {
                       console.log('Dati da salvare:', { firstName, lastName, email, phone, timeSlot });
                       
                       // Prepara i dati - Firestore non accetta valori undefined
-                      const registrationData: any = {
+                      const registrationData: {
+                        firstName: string;
+                        lastName: string;
+                        email: string;
+                        phone: string;
+                        timeSlot: string;
+                        paymentMethod: string;
+                        status: "pending";
+                        message?: string;
+                      } = {
                         firstName,
                         lastName,
                         email,
                         phone,
                         timeSlot,
+                        paymentMethod,
                         status: 'pending',
                       };
                       
@@ -319,6 +329,40 @@ const IscrizioneCorsi = () => {
                       const registrationId = await addCourseRegistration(registrationData);
                       
                       console.log('✅ Salvato in Firestore con ID:', registrationId);
+
+                      // Invia in automatico email al cliente + notifica admin
+                      const selectedSlotLabel = timeSlots.find((slot) => slot.value === timeSlot)?.label || timeSlot;
+                      const [userEmailSent, adminEmailSent] = await Promise.all([
+                        sendCourseRegistrationConfirmationEmail({
+                          userEmail: email,
+                          firstName,
+                          lastName,
+                          timeSlot: selectedSlotLabel,
+                          paymentMethod,
+                          registrationId,
+                        }),
+                        sendAdminNotificationEmail({
+                          type: 'new_course_registration',
+                          details: `Nuova iscrizione corso da ${firstName} ${lastName}`,
+                          userInfo:
+                            `Email: ${email}\n` +
+                            `Telefono: ${phone}\n` +
+                            `Slot: ${selectedSlotLabel}\n` +
+                            `Pagamento: ${paymentMethod}\n` +
+                            `${message?.trim() ? `Note: ${message.trim()}\n` : ''}` +
+                            `ID Iscrizione: ${registrationId}`,
+                        }),
+                      ]);
+
+                      if (!userEmailSent || !adminEmailSent) {
+                        toast({
+                          title: "Iscrizione salvata, ma invio email incompleto",
+                          description: "Una o piu email automatiche non sono partite. Puoi reinviare la conferma dal pannello admin.",
+                          variant: "destructive",
+                        });
+                      } else {
+                        console.log('✅ Email automatiche inviate (cliente + admin)');
+                      }
                       
                       // Invia anche a Netlify Forms come backup (solo in produzione)
                       // In locale questo fallirà con 404, ma non è un problema
@@ -326,7 +370,9 @@ const IscrizioneCorsi = () => {
                         await fetch("/", {
                           method: "POST",
                           headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                          body: new URLSearchParams(formData as any).toString()
+                          body: new URLSearchParams(
+                            Array.from(formData.entries()).map(([key, value]) => [key, String(value)])
+                          ).toString()
                         });
                         console.log('✅ Inviato anche a Netlify Forms');
                       } catch (netlifyError) {
@@ -339,8 +385,8 @@ const IscrizioneCorsi = () => {
                     } catch (error) {
                       console.error('❌ Errore completo:', error);
                       toast({
-                        title: "Errore durante l'iscrizione",
-                        description: error instanceof Error ? error.message : "Si è verificato un errore durante l'invio. Riprova o contattaci direttamente.",
+                        title: t("courseRegistration.form.errorTitle"),
+                        description: error instanceof Error ? error.message : t("courseRegistration.form.errorDescription"),
                         variant: "destructive",
                       });
                     } finally {
@@ -350,30 +396,30 @@ const IscrizioneCorsi = () => {
                 >
                   <input type="hidden" name="form-name" value="iscrizione-corsi" />
                   <div className="hidden">
-                    <Label htmlFor="bot-field">Non compilare questo campo</Label>
+                    <Label htmlFor="bot-field">{t("courseRegistration.form.botFieldLabel")}</Label>
                     <Input id="bot-field" name="bot-field" />
                   </div>
 
                   {/* Nome e Cognome */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="firstName" className="text-gray-700">Nome *</Label>
+                      <Label htmlFor="firstName" className="text-gray-700">{t("courseRegistration.form.firstNameLabel")}</Label>
                       <Input 
                         id="firstName" 
                         name="firstName" 
                         type="text" 
                         required 
-                        placeholder="Il tuo nome"
+                        placeholder={t("courseRegistration.form.firstNamePlaceholder")}
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="lastName" className="text-gray-700">Cognome *</Label>
+                      <Label htmlFor="lastName" className="text-gray-700">{t("courseRegistration.form.lastNameLabel")}</Label>
                       <Input 
                         id="lastName" 
                         name="lastName" 
                         type="text" 
                         required 
-                        placeholder="Il tuo cognome"
+                        placeholder={t("courseRegistration.form.lastNamePlaceholder")}
                       />
                     </div>
                   </div>
@@ -381,30 +427,30 @@ const IscrizioneCorsi = () => {
                   {/* Email e Telefono */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="email" className="text-gray-700">Email *</Label>
+                      <Label htmlFor="email" className="text-gray-700">{t("courseRegistration.form.emailLabel")}</Label>
                       <Input 
                         id="email" 
                         name="email" 
                         type="email" 
                         required 
-                        placeholder="tuoemail@esempio.com"
+                        placeholder={t("courseRegistration.form.emailPlaceholder")}
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="phone" className="text-gray-700">Telefono *</Label>
+                      <Label htmlFor="phone" className="text-gray-700">{t("courseRegistration.form.phoneLabel")}</Label>
                       <Input 
                         id="phone" 
                         name="phone" 
                         type="tel" 
                         required 
-                        placeholder="+41 XX XXX XX XX"
+                        placeholder={t("courseRegistration.form.phonePlaceholder")}
                       />
                     </div>
                   </div>
 
                   {/* Slot Orario */}
                   <div className="space-y-2">
-                    <Label htmlFor="timeSlot" className="text-gray-700">Seleziona Date e Orario *</Label>
+                    <Label htmlFor="timeSlot" className="text-gray-700">{t("courseRegistration.form.timeSlotLabel")}</Label>
                     <select
                       id="timeSlot"
                       name="timeSlot"
@@ -413,7 +459,7 @@ const IscrizioneCorsi = () => {
                       onChange={(e) => setSelectedSlot(e.target.value)}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-accent focus:border-transparent"
                     >
-                      <option value="">Seleziona uno slot disponibile</option>
+                      <option value="">{t("courseRegistration.form.timeSlotPlaceholder")}</option>
                       {timeSlots.map((slot) => (
                         <option key={slot.value} value={slot.value}>
                           {slot.label}
@@ -421,18 +467,35 @@ const IscrizioneCorsi = () => {
                       ))}
                     </select>
                     <p className="text-xs text-gray-500">
-                      2 giorni consecutivi (8 ore totali). Posti limitati a 6 partecipanti.
+                      {t("courseRegistration.form.timeSlotHelper")}
                     </p>
+                  </div>
+
+                  {/* Metodo di Pagamento */}
+                  <div className="space-y-2">
+                    <Label htmlFor="paymentMethod" className="text-gray-700">{t("courseRegistration.form.paymentMethodLabel")}</Label>
+                    <select
+                      id="paymentMethod"
+                      name="paymentMethod"
+                      required
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-accent focus:border-transparent"
+                      defaultValue=""
+                    >
+                      <option value="" disabled>{t("courseRegistration.form.paymentMethodPlaceholder")}</option>
+                      <option value="Bonifico bancario">{t("courseRegistration.form.paymentMethods.bankTransfer")}</option>
+                      <option value="TWINT">{t("courseRegistration.form.paymentMethods.twint")}</option>
+                      <option value="Contanti in sede">{t("courseRegistration.form.paymentMethods.cashOnSite")}</option>
+                    </select>
                   </div>
 
                   {/* Note */}
                   <div className="space-y-2">
-                    <Label htmlFor="message" className="text-gray-700">Note / Domande (opzionale)</Label>
+                    <Label htmlFor="message" className="text-gray-700">{t("courseRegistration.form.messageLabel")}</Label>
                     <Textarea 
                       id="message" 
                       name="message" 
                       rows={3}
-                      placeholder="Hai domande specifiche sul corso?"
+                      placeholder={t("courseRegistration.form.messagePlaceholder")}
                     />
                   </div>
 
@@ -447,7 +510,7 @@ const IscrizioneCorsi = () => {
                         className="mt-1 accent-brand-accent"
                       />
                       <Label htmlFor="privacy" className="text-sm text-gray-600 cursor-pointer">
-                        Acconsento al trattamento dei miei dati personali secondo la Privacy Policy di 3D Makes *
+                        {t("courseRegistration.form.privacyConsent")}
                       </Label>
                     </div>
                   </div>
@@ -459,22 +522,22 @@ const IscrizioneCorsi = () => {
                     disabled={isSubmitting}
                   >
                     <Send className="w-5 h-5 mr-2" />
-                    {isSubmitting ? "Invio in corso..." : "Invia Richiesta di Iscrizione"}
+                    {isSubmitting ? t("courseRegistration.form.submitting") : t("courseRegistration.form.submit")}
                   </Button>
 
                   <p className="text-xs text-center text-gray-500">
-                    * Campi obbligatori
+                    {t("courseRegistration.form.requiredFields")}
                   </p>
                 </form>
               </div>
 
               {/* Contatti */}
               <div className="mt-8 text-center text-gray-600 text-sm bg-white/50 rounded-lg p-4">
-                <p className="font-semibold text-brand-blue mb-1">Hai domande?</p>
+                <p className="font-semibold text-brand-blue mb-1">{t("courseRegistration.contact.title")}</p>
                 <p>
-                  Contattaci al{" "}
+                  {t("courseRegistration.contact.prompt")}{" "}
                   <a href="tel:+41762660396" className="text-brand-accent hover:underline font-semibold">+41 76 266 03 96</a>
-                  {" "}o via email{" "}
+                  {" "}{t("courseRegistration.contact.orEmail")}{" "}
                   <a href="mailto:info@3dmakes.ch" className="text-brand-accent hover:underline font-semibold">info@3dmakes.ch</a>
                 </p>
               </div>

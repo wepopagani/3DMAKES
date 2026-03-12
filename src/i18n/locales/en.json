@@ -24,6 +24,15 @@
       "precision": "Guaranteed precision"
     }
   },
+  "index": {
+    "videoUnsupported": "Your browser does not support the video tag.",
+    "tonyVideoAlt": "Tony lies down",
+    "tonyVideoFallbackText": "Tony Video",
+    "iniziamoAlt": "Let's begin",
+    "iniziamoFallbackText": "Let's begin",
+    "haiIdeaAlt": "Do you have an idea?",
+    "haiIdeaFallbackText": "Do you have an idea?"
+  },
   "services": {
     "title": "Our Services",
     "subtitle": "Our 3D solutions",
@@ -39,6 +48,10 @@
     "applications": "Applications",
     "ourProcess": "Our process",
     "requestQuote": "Request a quote",
+    "fdmBasic": {
+      "title": "FDM 3D Printing",
+      "description": "Fused deposition modeling technology, ideal for prototypes and production in various plastic materials."
+    },
     "fdm": {
       "title": "FDM 3D Printing – Stratasys",
       "description": "Stratasys Fused Deposition Modeling (FDM) technology is ideal for producing functional prototypes and resistant parts. We use professional Fortus machines to ensure maximum quality and industrial precision.",
@@ -299,6 +312,18 @@
           "description": "Produzione di elementi per modellismo e hobbistica con dettagli millimetrici."
         }
       ]
+    },
+    "repair": {
+      "title": "3D Printer Repair",
+      "description": "We offer a complete repair and maintenance service for 3D printers of all brands and models. Our team of specialized technicians diagnoses and resolves mechanical, electronic, and calibration issues.",
+      "features": [
+        "Complete diagnosis: In-depth analysis of mechanical, electronic, and software components",
+        "Specialized repairs: Replacement of extruders, print beds, stepper motors, and electronic boards",
+        "Multi-technology support: FDM, SLA, SLS, and other professional technologies",
+        "Preventive maintenance: Calibration and optimization services",
+        "Technical support: Consulting to optimize your printer performance"
+      ],
+      "materials": []
     },
     "largePrint": {
       "title": "3D Printer Repair",
@@ -1372,6 +1397,7 @@
     "fdmDescription": "Functional prototypes and resistant parts with wide range of materials",
     "slaDescription": "Precise details and smooth surfaces with specialized resins",
     "laserDescription": "Precision engraving and cutting with 22W laser and CoreXY technology",
+    "repairDescription": "Repair and maintenance of 3D printers of all brands",
     "largePrintDescription": "Repair and maintenance of 3D printers of all brands",
     "scanningDescription": "Precise digitization for reverse engineering and preservation",
     "prototypingDescription": "From ideas to real objects with complete support"
@@ -1463,6 +1489,133 @@
     "ratingLabel": "on Google",
     "description": "Customer satisfaction is our priority. Read what they have to say about us.",
     "googleReview": "Google Review"
+  },
+  "courseRegistration": {
+    "hero": {
+      "title": "3D PRINTING BASIC COURSE",
+      "subtitle": "Learn the fundamentals of 3D printing, from modeling to final print, with industry experts"
+    },
+    "features": {
+      "smallGroups": {
+        "title": "SMALL GROUPS",
+        "description": "Max 6 participants to ensure personalized attention"
+      },
+      "practiceTheory": {
+        "title": "PRACTICE AND THEORY",
+        "description": "Hands-on approach with real projects and training material"
+      },
+      "twoEvenings": {
+        "title": "2 CONSECUTIVE EVENINGS",
+        "description": "8 total hours on Thursday and Friday evening (17:30 - 21:30)"
+      }
+    },
+    "program": {
+      "title": "COURSE PROGRAM",
+      "subtitle": "From setup to final print: practical method, real examples.",
+      "modules": {
+        "safety": {
+          "title": "Safety & PPE",
+          "item1": "FDM/SLA risks and material handling",
+          "item2": "PPE: gloves, goggles, masks",
+          "item3": "Safe workstation setup"
+        },
+        "fdm": {
+          "title": "FDM Printing",
+          "item1": "Materials: PLA, PETG, TPU, ASA/ABS",
+          "item2": "Hardware: nozzle, bed, calibrations",
+          "item3": "Slicing and supports",
+          "item4": "Complete troubleshooting"
+        },
+        "sla": {
+          "title": "SLA Printing",
+          "item1": "Resins: standard/tough/flexible",
+          "item2": "Parameters: temperature, exposure",
+          "item3": "Orientation and supports",
+          "item4": "Wash & cure workflow"
+        },
+        "techniques": {
+          "title": "Techniques & Tips",
+          "item1": "FDM vs SLA: when to use which",
+          "item2": "Finishing and post-processing",
+          "item3": "Tolerances and fit",
+          "item4": "Q&A on real parts"
+        }
+      }
+    },
+    "includes": {
+      "title": "What's Included",
+      "item1": "Duration: 8 hours over 2 evenings",
+      "item2": "Schedule: 17:30 - 21:30",
+      "item3": "Max 6 participants",
+      "item4": "Beginner friendly",
+      "item5": "Training materials included",
+      "item6": "Certificate of participation"
+    },
+    "pricing": {
+      "limitedSpots": "Only first 12 spots",
+      "earlyBird": "Early Bird Price",
+      "savings": "💰 Save 100 CHF",
+      "cta": "⚡ Limited seats - Enroll now!"
+    },
+    "form": {
+      "title": "Enroll Now",
+      "description": "Fill out the form and we will contact you within 24-48 hours to confirm your participation",
+      "botFieldLabel": "Do not fill in this field",
+      "firstNameLabel": "First name *",
+      "firstNamePlaceholder": "Your first name",
+      "lastNameLabel": "Last name *",
+      "lastNamePlaceholder": "Your last name",
+      "emailLabel": "Email *",
+      "emailPlaceholder": "your.email@example.com",
+      "phoneLabel": "Phone *",
+      "phonePlaceholder": "+41 XX XXX XX XX",
+      "timeSlotLabel": "Select dates and time *",
+      "timeSlotPlaceholder": "Select an available slot",
+      "timeSlotHelper": "2 consecutive days (8 total hours). Seats limited to 6 participants.",
+      "paymentMethodLabel": "Payment method *",
+      "paymentMethodPlaceholder": "Select a payment method",
+      "paymentMethods": {
+        "bankTransfer": "Bank transfer",
+        "twint": "TWINT",
+        "cashOnSite": "Cash on site"
+      },
+      "messageLabel": "Notes / Questions (optional)",
+      "messagePlaceholder": "Do you have specific questions about the course?",
+      "privacyConsent": "I consent to the processing of my personal data according to the 3DMAKES Privacy Policy *",
+      "submit": "Send Registration Request",
+      "submitting": "Sending...",
+      "requiredFields": "* Required fields",
+      "errorTitle": "Registration error",
+      "errorDescription": "An error occurred while sending. Please try again or contact us directly."
+    },
+    "success": {
+      "title": "Registration Received!",
+      "description": "Thanks for your interest! We received your registration request for the 3D Printing Basic Course. We will contact you within 24-48 hours to confirm your participation in the selected slot and provide all necessary details.",
+      "nextStepsTitle": "What happens next?",
+      "step1": "1. You will receive a confirmation email",
+      "step2": "2. We will contact you to confirm date and time",
+      "step3": "3. We will send you the preparatory material",
+      "backHome": "Back to Home"
+    },
+    "contact": {
+      "title": "Any questions?",
+      "prompt": "Contact us at",
+      "orEmail": "or by email"
+    },
+    "timeSlots": {
+      "slot1": "March 5-6, 2025 (Thursday-Friday) - 17:30 - 21:30",
+      "slot2": "March 12-13, 2025 (Thursday-Friday) - 17:30 - 21:30",
+      "slot3": "March 26-27, 2025 (Thursday-Friday) - 17:30 - 21:30",
+      "slot4": "April 2-3, 2025 (Thursday-Friday) - 17:30 - 21:30",
+      "slot5": "April 9-10, 2025 (Thursday-Friday) - 17:30 - 21:30",
+      "slot6": "April 16-17, 2025 (Thursday-Friday) - 17:30 - 21:30",
+      "slot7": "April 23-24, 2025 (Thursday-Friday) - 17:30 - 21:30",
+      "slot8": "April 30-May 1, 2025 (Thursday-Friday) - 17:30 - 21:30",
+      "slot9": "May 7-8, 2025 (Thursday-Friday) - 17:30 - 21:30",
+      "slot10": "May 14-15, 2025 (Thursday-Friday) - 17:30 - 21:30",
+      "slot11": "May 21-22, 2025 (Thursday-Friday) - 17:30 - 21:30",
+      "slot12": "May 28-29, 2025 (Thursday-Friday) - 17:30 - 21:30"
+    }
   },
   "partners": {
     "title": "They Chose 3DMAKES",

@@ -3,7 +3,11 @@ import { useAuth } from '@/firebase/AuthContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useTranslation } from 'react-i18next';
-import { sendWelcomeEmail, sendOrderConfirmationEmail, sendAdminNotificationEmail, sendQuoteReadyEmail } from '@/utils/emailService';
+import {
+  sendWelcomeEmail,
+  sendAdminNotificationEmail,
+  sendCourseRegistrationConfirmationEmail
+} from '@/utils/emailService';
 import emailjs from '@emailjs/browser';
 
 const FirebaseTest = () => {
@@ -33,30 +37,6 @@ const FirebaseTest = () => {
     }
   };
 
-    const testOrderEmail = async () => {
-    if (!currentUser || !userData) return;
-    
-    setEmailLoading(true);
-    setEmailStatus('Invio email di conferma ordine...');
-    
-    try {
-      const success = await sendOrderConfirmationEmail({
-        userEmail: currentUser.email || '',
-        userName: `${userData.nome || ''} ${userData.cognome || ''}`.trim(),
-        orderId: 'TEST_ORDER_123',
-        orderDetails: 'Test Order - PLA Bianco - Quantità: 1',
-        totalPrice: 25.50,
-        estimatedDelivery: '3-5 giorni lavorativi'
-      });
-      
-      setEmailStatus(success ? '✅ Email di conferma ordine inviata con successo!' : '❌ Errore nell\'invio dell\'email di conferma ordine');
-    } catch (error) {
-      setEmailStatus(`❌ Errore: ${error}`);
-    } finally {
-      setEmailLoading(false);
-    }
-  };
-
   const testAdminEmail = async () => {
     setEmailLoading(true);
     setEmailStatus('Invio notifica admin...');
@@ -76,22 +56,23 @@ const FirebaseTest = () => {
     }
   };
 
-  const testQuoteEmail = async () => {
+  const testCourseRegistrationEmail = async () => {
     if (!currentUser || !userData) return;
-    
+
     setEmailLoading(true);
-    setEmailStatus('Invio email preventivo pronto...');
-    
+    setEmailStatus('Invio email conferma iscrizione corso...');
+
     try {
-      const success = await sendQuoteReadyEmail({
+      const success = await sendCourseRegistrationConfirmationEmail({
         userEmail: currentUser.email || '',
-        userName: `${userData.nome || ''} ${userData.cognome || ''}`.trim(),
-        projectName: 'Test Progetto 3D',
-        quotePrice: 45.90,
-        validUntil: '7 giorni'
+        firstName: userData.nome || 'Test',
+        lastName: userData.cognome || 'User',
+        timeSlot: '12-13 Marzo 2026 (Giovedi-Venerdi) - 17:30 - 21:30',
+        paymentMethod: 'TWINT',
+        registrationId: `test-course-${Date.now()}`
       });
-      
-      setEmailStatus(success ? '✅ Email preventivo pronto inviata con successo!' : '❌ Errore nell\'invio dell\'email preventivo');
+
+      setEmailStatus(success ? '✅ Email conferma iscrizione corso inviata con successo!' : '❌ Errore nell\'invio email conferma iscrizione corso');
     } catch (error) {
       setEmailStatus(`❌ Errore: ${error}`);
     } finally {
@@ -110,7 +91,7 @@ const FirebaseTest = () => {
       // Test molto semplice con il template Order Confirmation
       const result = await emailjs.send(
         'service_z5mjon2',
-        'template_90n08kw', 
+        'template_rg7rn3i', 
         {
           email: 'info@3dmakes.ch',
           to_name: 'Test User',
@@ -210,13 +191,6 @@ const FirebaseTest = () => {
                   Test Email Benvenuto
                 </Button>
                 <Button 
-                  onClick={testOrderEmail} 
-                  disabled={emailLoading || !currentUser || !userData}
-                  variant="outline"
-                >
-                  Test Email Ordine
-                </Button>
-                <Button 
                   onClick={testAdminEmail} 
                   disabled={emailLoading}
                   variant="outline"
@@ -224,11 +198,11 @@ const FirebaseTest = () => {
                   Test Notifica Admin
                 </Button>
                 <Button 
-                  onClick={testQuoteEmail} 
+                  onClick={testCourseRegistrationEmail}
                   disabled={emailLoading || !currentUser || !userData}
                   variant="outline"
                 >
-                  Test Email Preventivo
+                  Test Conferma Iscrizione Corso
                 </Button>
                 <Button 
                   onClick={testSimpleEmail} 
@@ -253,8 +227,8 @@ const FirebaseTest = () => {
               
               <div className="text-xs text-gray-500 space-y-1">
                 <p><strong>Service ID:</strong> service_z5mjon2</p>
-                <p><strong>Template Welcome:</strong> template_xq74z9h</p>
-                <p><strong>Template Order:</strong> template_90n08kw</p>
+                <p><strong>Template Welcome:</strong> template_xq7429h</p>
+                <p><strong>Template Corso:</strong> template_rg7rn3i</p>
                 <p><strong>Public Key:</strong>y0Ulz-qSVjiET74Lx</p>
               </div>
             </div>

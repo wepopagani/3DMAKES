@@ -13,9 +13,15 @@ import SearchSection from "@/components/SearchSection";
 import ServicesSection from "@/components/ServicesSection";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 const Index = () => {
+  const { t } = useTranslation();
+  const tonyVideoFallbackText = encodeURIComponent(t("index.tonyVideoFallbackText"));
+  const iniziamoFallbackText = encodeURIComponent(t("index.iniziamoFallbackText"));
+  const haiIdeaFallbackText = encodeURIComponent(t("index.haiIdeaFallbackText"));
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -44,22 +50,22 @@ const Index = () => {
                   onError={(e) => {
                     // Fallback to image if video fails
                     const img = document.createElement('img');
-                    img.src = "https://placehold.co/600x400/ffffff/333333?text=Tony+Video";
+                    img.src = `https://placehold.co/600x400/ffffff/333333?text=${tonyVideoFallbackText}`;
                     img.className = "w-full h-auto";
-                    img.alt = "Tony si sdraia";
+                    img.alt = t("index.tonyVideoAlt");
                     e.currentTarget.parentNode?.replaceChild(img, e.currentTarget);
                   }}
                 >
-                  Il tuo browser non supporta il tag video.
+                  {t("index.videoUnsupported")}
                 </video>
               </div>
               <div className="max-w-2xl w-full">
                 <img 
                   src="/iniziamo.png" 
-                  alt="Iniziamo"
+                  alt={t("index.iniziamoAlt")}
                   className="w-full h-auto"
                   onError={(e) => {
-                    e.currentTarget.src = "https://placehold.co/1000x400/ffffff/333333?text=Iniziamo";
+                    e.currentTarget.src = `https://placehold.co/1000x400/ffffff/333333?text=${iniziamoFallbackText}`;
                   }}
                 />
               </div>
@@ -73,15 +79,15 @@ const Index = () => {
               <div className="mb-8 -mt-8">
                 <img 
                   src="/hai idea.png" 
-                  alt="Hai Idea"
+                  alt={t("index.haiIdeaAlt")}
                   className="w-full h-auto max-w-3xl mx-auto scale-75 md:scale-100"
                   onError={(e) => {
-                    e.currentTarget.src = "https://placehold.co/1000x400/d1d5db/333333?text=Hai+Idea";
+                    e.currentTarget.src = `https://placehold.co/1000x400/d1d5db/333333?text=${haiIdeaFallbackText}`;
                   }}
                 />
               </div>
               <Button asChild size="lg" className="bg-brand-blue text-white hover:bg-brand-blue/90 font-semibold px-8 md:px-12 py-4 md:py-5 text-lg md:text-xl scale-100 md:scale-140">
-                <Link to="/calculator">Richiedi Preventivo</Link>
+                <Link to="/calculator">{t("nav.requestQuote")}</Link>
               </Button>
             </div>
           </div>

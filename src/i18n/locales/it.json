@@ -24,6 +24,15 @@
       "precision": "Precisione garantita"
     }
   },
+  "index": {
+    "videoUnsupported": "Il tuo browser non supporta il tag video.",
+    "tonyVideoAlt": "Tony si sdraia",
+    "tonyVideoFallbackText": "Tony Video",
+    "iniziamoAlt": "Iniziamo",
+    "iniziamoFallbackText": "Iniziamo",
+    "haiIdeaAlt": "Hai Idea",
+    "haiIdeaFallbackText": "Hai Idea"
+  },
   "services": {
     "title": "I Nostri Servizi",
     "subtitle": "Le nostre soluzioni 3D",
@@ -1480,6 +1489,133 @@
     "ratingLabel": "su Google",
     "description": "La soddisfazione dei nostri clienti è la nostra priorità. Leggi cosa hanno da dire su di noi.",
     "googleReview": "Recensione Google"
+  },
+  "courseRegistration": {
+    "hero": {
+      "title": "CORSO BASE STAMPA 3D",
+      "subtitle": "Impara le basi della stampa 3D, dalla modellazione alla stampa finale con esperti del settore"
+    },
+    "features": {
+      "smallGroups": {
+        "title": "PICCOLI GRUPPI",
+        "description": "Max 6 partecipanti per garantire attenzione personalizzata"
+      },
+      "practiceTheory": {
+        "title": "PRATICA E TEORIA",
+        "description": "Approccio hands-on con progetti reali e materiale didattico"
+      },
+      "twoEvenings": {
+        "title": "2 SERE CONSECUTIVE",
+        "description": "8 ore totali su Giovedi e Venerdi sera (17:30 - 21:30)"
+      }
+    },
+    "program": {
+      "title": "PROGRAMMA DEL CORSO",
+      "subtitle": "Dal setup alla stampa: metodo pratico, esempi reali.",
+      "modules": {
+        "safety": {
+          "title": "Sicurezza & DPI",
+          "item1": "Rischi FDM/SLA e contatto materiali",
+          "item2": "DPI: guanti, occhiali, mascherine",
+          "item3": "Setup postazione sicura"
+        },
+        "fdm": {
+          "title": "Stampa FDM",
+          "item1": "Materiali: PLA, PETG, TPU, ASA/ABS",
+          "item2": "Hardware: nozzle, piatto, calibrazioni",
+          "item3": "Slicing e supports",
+          "item4": "Troubleshooting completo"
+        },
+        "sla": {
+          "title": "Stampa SLA",
+          "item1": "Resine: standard/tough/flexible",
+          "item2": "Parametri: temperatura, esposizione",
+          "item3": "Orientamento e supports",
+          "item4": "Wash & cure workflow"
+        },
+        "techniques": {
+          "title": "Tecniche & Consigli",
+          "item1": "FDM vs SLA: quando usare cosa",
+          "item2": "Finiture e post-produzione",
+          "item3": "Tolleranze e accoppiamenti",
+          "item4": "Q&A pezzi reali"
+        }
+      }
+    },
+    "includes": {
+      "title": "Cosa Include",
+      "item1": "Durata: 8 ore su 2 sere",
+      "item2": "Orario: 17:30 - 21:30",
+      "item3": "Max 6 partecipanti",
+      "item4": "Adatto a principianti",
+      "item5": "Materiale didattico incluso",
+      "item6": "Attestato di partecipazione"
+    },
+    "pricing": {
+      "limitedSpots": "Solo primi 12 posti",
+      "earlyBird": "Prezzo Early Bird",
+      "savings": "💰 Risparmi 100 CHF",
+      "cta": "⚡ Posti limitati - Iscriviti ora!"
+    },
+    "form": {
+      "title": "Iscriviti Ora",
+      "description": "Compila il form e ti contatteremo entro 24-48 ore per confermare la tua partecipazione",
+      "botFieldLabel": "Non compilare questo campo",
+      "firstNameLabel": "Nome *",
+      "firstNamePlaceholder": "Il tuo nome",
+      "lastNameLabel": "Cognome *",
+      "lastNamePlaceholder": "Il tuo cognome",
+      "emailLabel": "Email *",
+      "emailPlaceholder": "tuoemail@esempio.com",
+      "phoneLabel": "Telefono *",
+      "phonePlaceholder": "+41 XX XXX XX XX",
+      "timeSlotLabel": "Seleziona Date e Orario *",
+      "timeSlotPlaceholder": "Seleziona uno slot disponibile",
+      "timeSlotHelper": "2 giorni consecutivi (8 ore totali). Posti limitati a 6 partecipanti.",
+      "paymentMethodLabel": "Modalita di Pagamento *",
+      "paymentMethodPlaceholder": "Seleziona una modalita",
+      "paymentMethods": {
+        "bankTransfer": "Bonifico bancario",
+        "twint": "TWINT",
+        "cashOnSite": "Contanti in sede"
+      },
+      "messageLabel": "Note / Domande (opzionale)",
+      "messagePlaceholder": "Hai domande specifiche sul corso?",
+      "privacyConsent": "Acconsento al trattamento dei miei dati personali secondo la Privacy Policy di 3DMAKES *",
+      "submit": "Invia Richiesta di Iscrizione",
+      "submitting": "Invio in corso...",
+      "requiredFields": "* Campi obbligatori",
+      "errorTitle": "Errore durante l'iscrizione",
+      "errorDescription": "Si e verificato un errore durante l'invio. Riprova o contattaci direttamente."
+    },
+    "success": {
+      "title": "Iscrizione Ricevuta!",
+      "description": "Grazie per il tuo interesse! Abbiamo ricevuto la tua richiesta di iscrizione al Corso Base di Stampa 3D. Ti contatteremo entro 24-48 ore per confermare la tua partecipazione allo slot selezionato e fornirti tutti i dettagli necessari.",
+      "nextStepsTitle": "Cosa succede ora?",
+      "step1": "1. Riceverai un'email di conferma",
+      "step2": "2. Ti contatteremo per confermare data e orario",
+      "step3": "3. Ti invieremo il materiale preparatorio",
+      "backHome": "Torna alla Home"
+    },
+    "contact": {
+      "title": "Hai domande?",
+      "prompt": "Contattaci al",
+      "orEmail": "o via email"
+    },
+    "timeSlots": {
+      "slot1": "5-6 Marzo 2025 (Giovedi-Venerdi) - 17:30 - 21:30",
+      "slot2": "12-13 Marzo 2025 (Giovedi-Venerdi) - 17:30 - 21:30",
+      "slot3": "26-27 Marzo 2025 (Giovedi-Venerdi) - 17:30 - 21:30",
+      "slot4": "2-3 Aprile 2025 (Giovedi-Venerdi) - 17:30 - 21:30",
+      "slot5": "9-10 Aprile 2025 (Giovedi-Venerdi) - 17:30 - 21:30",
+      "slot6": "16-17 Aprile 2025 (Giovedi-Venerdi) - 17:30 - 21:30",
+      "slot7": "23-24 Aprile 2025 (Giovedi-Venerdi) - 17:30 - 21:30",
+      "slot8": "30-1 Aprile 2025 (Giovedi-Venerdi) - 17:30 - 21:30",
+      "slot9": "7-8 Maggio 2025 (Giovedi-Venerdi) - 17:30 - 21:30",
+      "slot10": "14-15 Maggio 2025 (Giovedi-Venerdi) - 17:30 - 21:30",
+      "slot11": "21-22 Maggio 2025 (Giovedi-Venerdi) - 17:30 - 21:30",
+      "slot12": "28-29 Maggio 2025 (Giovedi-Venerdi) - 17:30 - 21:30"
+    }
   },
   "partners": {
     "title": "Hanno scelto 3DMAKES",

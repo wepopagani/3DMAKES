@@ -147,7 +147,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       await sendAdminNotificationEmail({
         type: 'new_user',
         details: `Nuovo utente registrato: ${userData.nome} ${userData.cognome}`,
-        userInfo: `Email: ${userData.email}, Telefono: ${userData.telefono}`
+        userInfo:
+          `Email: ${userData.email}\n` +
+          `Telefono: ${userData.telefono || 'N/D'}\n` +
+          `Citta: ${userData.citta || 'N/D'}\n` +
+          `Indirizzo: ${userData.indirizzo || 'N/D'}`
       });
     } catch (emailError) {
       console.error('Errore nell\'invio dell\'email di benvenuto:', emailError);
@@ -230,7 +234,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         await sendAdminNotificationEmail({
           type: 'new_user',
           details: `Nuovo utente registrato con Google: ${firstName} ${lastName}`,
-          userInfo: `Email: ${email}`
+          userInfo:
+            `Email: ${email}\n` +
+            `Provider: Google`
         });
       } catch (emailError) {
         console.error('Errore nell\'invio dell\'email di benvenuto Google:', emailError);

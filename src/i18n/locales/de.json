@@ -3,6 +3,7 @@
     "about": "Über uns",
     "mission": "Mission",
     "services": "Dienstleistungen",
+    "shop": "Shop",
     "blog": "Blog",
     "courses": "Kurse",
     "contact": "Kontakt",
@@ -23,6 +24,15 @@
       "precision": "Garantierte Präzision"
     }
   },
+  "index": {
+    "videoUnsupported": "Ihr Browser unterstuetzt das Video-Tag nicht.",
+    "tonyVideoAlt": "Tony legt sich hin",
+    "tonyVideoFallbackText": "Tony Video",
+    "iniziamoAlt": "Legen wir los",
+    "iniziamoFallbackText": "Legen wir los",
+    "haiIdeaAlt": "Hast du eine Idee?",
+    "haiIdeaFallbackText": "Hast du eine Idee?"
+  },
   "services": {
     "title": "Unsere Dienstleistungen",
     "subtitle": "Unsere 3D-Lösungen",
@@ -38,9 +48,18 @@
     "applications": "Anwendungen",
     "ourProcess": "Unser Prozess",
     "requestQuote": "Angebot anfordern",
+    "fdmBasic": {
+      "title": "FDM-3D-Druck",
+      "description": "Drucktechnologie mit geschmolzenem Material, ideal für Prototypen und Produktionen aus verschiedenen Kunststoffmaterialien."
+    },
     "fdm": {
       "title": "FDM 3D-Druck",
       "description": "Die Fused Deposition Modeling (FDM) Technologie ist ideal für die Produktion funktionaler Prototypen und widerstandsfähiger Teile. Wir verwenden professionelle 3D-Drucker für maximale Qualität und Präzision.",
+      "machines": [
+        "Fortus 900",
+        "Fortus 450",
+        "Fortus 370"
+      ],
       "features": [
         "Breite Palette verfügbarer Materialien (PLA, ABS, PETG, TPU, Nylon, etc.)",
         "Druckdimensionen bis zu 300x300x300mm",
@@ -71,9 +90,118 @@
         }
       ]
     },
+    "cff": {
+      "title": "CFF 3D-Druck – Markforged",
+      "description": "Die Continuous Fiber Fabrication (CFF)-Technologie von Markforged revolutioniert den 3D-Druck mit kontinuierlichen Carbon-, Kevlar- und Glasfasern für leistungsstarke Strukturteile.",
+      "machines": [
+        "Markus II",
+        "X7"
+      ],
+      "features": [
+        "Durchgehende Carbon-, Kevlar- und Glasfasern",
+        "Mechanische Beständigkeit überlegen gegenüber Metallen",
+        "Geringes Gewicht bei maximaler Festigkeit",
+        "Komplexe Geometrien sind mit herkömmlicher Fertigung nicht möglich",
+        "Fortschrittliche Verbundwerkstoffe"
+      ],
+      "materials": [
+        {
+          "name": "Onyx",
+          "features": "Verstärkte Nylonbasis",
+          "applications": "Strukturteile, mechanische Komponenten"
+        },
+        {
+          "name": "Nylon",
+          "features": "Strapazierfähiges Grundmaterial",
+          "applications": "Funktionsprototypen, mechanische Teile"
+        },
+        {
+          "name": "Durchgehende Kohlefaser",
+          "features": "Durchgehende Kohlefaser",
+          "applications": "Hochleistungsstrukturteile"
+        },
+        {
+          "name": "Kevlar",
+          "features": "Strapazierfähige Aramidfaser",
+          "applications": "Anwendungen, die Schlagfestigkeit erfordern"
+        },
+        {
+          "name": "Glasverstärkt",
+          "features": "Glasfaserverstärkung",
+          "applications": "Strukturteile, elektrische Isolierung"
+        }
+      ]
+    },
+    "lsam": {
+      "title": "LSAM 3D-Druck – Caracol",
+      "description": "Die Large Scale Additive Manufacturing (LSAM)-Technologie von Caracol ermöglicht die Herstellung großer Teile aus Verbundwerkstoffen und Polymeren, sogar im Pelletformat.",
+      "machines": [
+        "Reiher 300"
+      ],
+      "features": [
+        "Fertigung großer Teile",
+        "Verbundwerkstoffe und Polymerpellets",
+        "Vielseitigkeit für industrielle Anwendungen",
+        "Effizienz in der Serienproduktion",
+        "Gleichbleibende Qualität über große Mengen hinweg"
+      ],
+      "materials": [
+        {
+          "name": "Standardpolymere",
+          "features": "Grundlegende thermoplastische Materialien",
+          "applications": "Große Prototypen, Strukturteile"
+        },
+        {
+          "name": "Verbundwerkstoffe",
+          "features": "Mit Fasern verstärkt",
+          "applications": "Hochleistungsstrukturteile"
+        },
+        {
+          "name": "Pelletmaterialien",
+          "features": "Pelletformat für kontinuierliche Produktion",
+          "applications": "Industrielle Fertigung, große Teile"
+        }
+      ]
+    },
+    "mjf": {
+      "title": "MJF 3D-Druck – HP",
+      "description": "Die Multi Jet Fusion (MJF)-Technologie von HP ermöglicht eine Hochgeschwindigkeitsproduktion mit gleichbleibender Qualität, ideal für kleine bis mittlere Produktionsläufe.",
+      "machines": [
+        "5210",
+        "4200"
+      ],
+      "features": [
+        "Hochgeschwindigkeitsproduktion",
+        "Gleichbleibende und reproduzierbare Qualität",
+        "Keine Unterstützung erforderlich",
+        "Ideal für kleine und mittlere Serien",
+        "Optimierte Energieeffizienz"
+      ],
+      "materials": [
+        {
+          "name": "PA 12",
+          "features": "Hochleistungsnylon",
+          "applications": "Funktionsteile, mechanische Komponenten"
+        },
+        {
+          "name": "PA 11",
+          "features": "Biokompatibles Nylon",
+          "applications": "Medizinische Geräte, Automobil"
+        },
+        {
+          "name": "TPU",
+          "features": "Elastisch, flexibel",
+          "applications": "Dichtungen, flexible Teile"
+        }
+      ]
+    },
     "sla": {
       "title": "SLA 3D-Druck",
       "description": "Die Stereolithographie (SLA) Technologie nutzt Photopolymerisation, um Objekte mit unglaublich präzisen Details und glatten Oberflächen zu erstellen. Perfekt für detaillierte Modelle, Schmuck und medizinische Anwendungen.",
+      "machines": [
+        "LC Magna",
+        "M3 max"
+      ],
       "features": [
         "Ultra-feine Auflösung bis zu 10 Mikron für unglaublich präzise Details",
         "Glatte Oberflächen mit minimaler Nachbearbeitung",
@@ -96,6 +224,32 @@
           "name": "Transparentes Harz",
           "features": "Hohe Transparenz, polierbar",
           "applications": "Transparente Prototypen, optische Komponenten"
+        }
+      ]
+    },
+    "polyjet": {
+      "title": "POLYJET 3D-Druck – Stratasys",
+      "description": "Die Stratasys PolyJet-Technologie nutzt Jet-Lichthärtung, um Teile mit unglaublich feinen Details und glatten Oberflächen zu erstellen, ideal für ästhetische Prototypen und Präsentationsmodelle.",
+      "machines": [
+        "J55"
+      ],
+      "features": [
+        "Ultrafeine Auflösung für präzise Details",
+        "Glatte Oberflächen ohne Nachbearbeitung",
+        "Mehrfarbige Materialien in einem einzigen Druck",
+        "Ideal für ästhetische Prototypen und Präsentationsmodelle",
+        "Fotoqualität für visuelle Anwendungen"
+      ],
+      "materials": [
+        {
+          "name": "Durchscheinend",
+          "features": "Transparentes Harz",
+          "applications": "Transparente Prototypen, optische Komponenten"
+        },
+        {
+          "name": "Farbige Harze",
+          "features": "Farbige Harze",
+          "applications": "Bunte Prototypen, Präsentationsvorlagen"
         }
       ]
     },
@@ -124,6 +278,18 @@
           "description": "Herstellung von Dekorationen und handwerklichen Artikeln maßgeschneidert für jeden Bedarf."
         }
       ]
+    },
+    "repair": {
+      "title": "Reparatur von 3D-Druckern",
+      "description": "Wir bieten einen umfassenden Reparatur- und Wartungsservice für 3D-Drucker aller Marken und Modelle. Unser Team aus spezialisierten Technikern diagnostiziert und löst mechanische, elektronische und Kalibrierungsprobleme.",
+      "features": [
+        "Vollständige Diagnose: Eingehende Analyse mechanischer, elektronischer und Softwarekomponenten",
+        "Spezialreparaturen: Austausch von Extrudern, Druckplatten, Schrittmotoren und Elektronikplatinen",
+        "Unterstützung mehrerer Technologien: FDM, SLA, SLS und andere professionelle Technologien",
+        "Vorbeugende Wartung: Kalibrierungs- und Optimierungsdienste",
+        "Technische Unterstützung: Beratung zur Optimierung der Leistung Ihres Druckers"
+      ],
+      "materials": []
     },
     "largePrint": {
       "title": "3D-Drucker Reparatur",
@@ -196,13 +362,92 @@
           "description": "Funktionale und ästhetische Validierung des Prototyps."
         }
       ]
+    },
+    "design": {
+      "title": "Design",
+      "description": "CAD-Designdienstleistungen zur Optimierung Ihrer Modelle für den 3D-Druck."
+    },
+    "postProcessing": {
+      "title": "Nachbearbeitung",
+      "description": "Endbearbeitung, Lackierung und Montage für professionelle Ergebnisse."
+    },
+    "qualityControl": {
+      "title": "Qualitätskontrolle",
+      "description": "Wir vergleichen das gefertigte Teil mit dem Original-CAD-Modell."
+    },
+    "slm": {
+      "title": "SLM 3D-Druck – SLM Solutions / Renishaw",
+      "description": "Professionelle 3D-Drucktechnologie mit selektivem Laserschmelzen für Metalle. Ideal für hochpräzise Komponenten und hervorragende mechanische Beständigkeit.",
+      "machines": [
+        "SLM 800 + Hub",
+        "SLM 500",
+        "SLM 280",
+        "AM400"
+      ],
+      "features": [
+        "Selektives Laserschmelzen von Metallpulvern",
+        "Hohe Maßgenauigkeit (±0,1 mm)",
+        "Mechanische Beständigkeit, die herkömmlicher Metalle überlegen ist",
+        "Komplexe Geometrien sind mit herkömmlicher Fertigung nicht möglich",
+        "Modernste SLM-Lösungen und Renishaw-Technologie"
+      ],
+      "materials": [
+        {
+          "name": "AlSi10Mg",
+          "features": "Aluminium-Silizium-Magnesium, leicht",
+          "applications": "Automobil, Luft- und Raumfahrt, Kühlkörper"
+        },
+        {
+          "name": "316L-Stahl",
+          "features": "Edelstahl, korrosionsbeständig",
+          "applications": "Medizinische Komponenten, Schiffsteile, Lebensmittelindustrie"
+        },
+        {
+          "name": "Inconel 625–718",
+          "features": "Hitzebeständige Superlegierung",
+          "applications": "Luft- und Raumfahrt, Turbinen, Hochtemperaturanwendungen"
+        },
+        {
+          "name": "Titan Ti6Al4V",
+          "features": "Titan Grad 5, leicht und widerstandsfähig",
+          "applications": "Luft- und Raumfahrt, Medizin, Automobil"
+        }
+      ]
+    },
+    "sls": {
+      "title": "SLS-3D-Druck",
+      "description": "Selektives Lasersintern zur Herstellung komplexer Teile aus Kunststoff und Verbundwerkstoffen. Perfekt für funktionale Prototypen und Kleinserien.",
+      "features": [
+        "Selektives Lasersintern von Kunststoffpulvern",
+        "Beim Drucken ist keine Unterstützung erforderlich",
+        "Komplexe Geometrien und bewegliche Teile in einem einzigen Druck",
+        "Hervorragende Oberflächengüte",
+        "Materialien: Nylon PA12, PA11, TPU, Verbundwerkstoffe"
+      ],
+      "materials": [
+        {
+          "name": "Nylon PA12",
+          "features": "Robust, flexibel, langlebig",
+          "applications": "Funktionsprototypen, mechanische Teile, Scharniere"
+        },
+        {
+          "name": "Nylon PA11",
+          "features": "Biokompatibel, beständig gegen chemische Mittel",
+          "applications": "Medizinische Geräte, Automobil, Luft- und Raumfahrt"
+        },
+        {
+          "name": "TPU",
+          "features": "Elastisch, flexibel, abriebfest",
+          "applications": "Dichtungen, Stoßdämpfer, flexible Teile"
+        }
+      ]
     }
   },
   "about": {
     "title": "Über uns",
     "subtitle": "Unsere Leidenschaft für Innovation und 3D-Technologie",
-    "heroSubtitle": "Ein Team leidenschaftlicher 3D-Druck-Experten, die sich der Verwandlung Ihrer Ideen in die Realität widmen.",
     "description": "Wir sind ein Team von 3D-Druck-Spezialisten mit jahrelanger Erfahrung in der Branche. Unsere Mission ist es, Ihre Ideen durch fortschrittliche Technologien und erstklassigen Service in die Realität umzusetzen.",
+    "heroSubtitle": "Ein Team leidenschaftlicher 3D-Druck-Experten, die sich der Verwandlung Ihrer Ideen in die Realität widmen.",
     "ourStory": "Unsere Geschichte",
     "fromDreamToReality": "Vom Traum zur Realität",
     "storyParagraph1": "3DMAKES entstand 2022 aus der Intuition von Marco Pagani, 20 Jahre alt mit einer starken Leidenschaft für Informatik, insbesondere 3D-Druck. Ausgehend von einem kleinen Raum mit zwei 3D-Druckern ist das Unternehmen gewachsen und zu einer etablierten Realität im Bereich der additiven Fertigung geworden.",
@@ -226,6 +471,33 @@
       "qualityDescription": "Qualität steht im Mittelpunkt von allem, was wir tun. Wir verwenden nur ausgewählte Materialien und strenge Produktionsprozesse, um sicherzustellen, dass jedes von uns produzierte Stück den höchsten Qualitätsstandards entspricht.",
       "precision": "Präzision",
       "service": "Service"
+    },
+    "team": {
+      "marco": {
+        "name": "Marco Pagani",
+        "role": "Gründer",
+        "bio": "Informatiker mit Leidenschaft für 3D-Druck, immer auf der Suche nach innovativen Lösungen für sein Unternehmen"
+      },
+      "matteo": {
+        "name": "Matteo Verdicchio",
+        "role": "3D-Entwickler",
+        "bio": "Spezialisiert auf die Entwicklung und Optimierung von 3D-Modellen für den Druck"
+      },
+      "manuel": {
+        "name": "Manuel Gösteris",
+        "role": "Kommerziell",
+        "bio": "Verwaltet Kundenbeziehungen und den kommerziellen Beratungsprozess"
+      },
+      "alessandro": {
+        "name": "Alessandro Genovesi",
+        "role": "Kommerziell",
+        "bio": "Experte für Kundenmanagement und Geschäftsentwicklung"
+      },
+      "alessandro2": {
+        "name": "Alessandro Belino",
+        "role": "Kommerziell",
+        "bio": "Spezialisiert auf kommerzielle Beratung und Kundenbetreuung"
+      }
     }
   },
   "mission": {
@@ -247,24 +519,70 @@
     "visionParagraph3": "Das ist die Vision, die uns jeden Tag leitet und uns dazu antreibt, ständig zu innovieren, neue Möglichkeiten zu erkunden und unser Wissen mit der Welt zu teilen.",
     "discoverVision": "Entdecken Sie, wie wir diese Vision verwirklichen",
     "eventsWorkshops": "Veranstaltungen und Workshops",
-    "learnWithUs": "Lernen Sie mit uns die Technologie der Zukunft"
+    "learnWithUs": "Lernen Sie mit uns die Technologie der Zukunft",
+    "eventsDescription": "Wir veranstalten regelmäßig Schulungsveranstaltungen und Praxisworkshops, um immer mehr Menschen die Welt des 3D-Drucks näher zu bringen.",
+    "monthly": "Monatlich",
+    "quarterly": "Vierteljährlich",
+    "yearly": "Jährlich",
+    "forBeginners": "Für Anfänger",
+    "intermediateLevel": "Mittelstufe",
+    "advancedLevel": "Fortgeschrittenes Niveau",
+    "introWorkshop": "Einführungsworkshop zum 3D-Druck",
+    "introWorkshopDesc": "Ein dreistündiger praktischer Workshop zum Kennenlernen der Grundlagen des 3D-Drucks, von der Modellierung bis zum endgültigen Druck.",
+    "discoverDates": "Informieren Sie sich über die Termine",
+    "advancedCourse": "Fortgeschrittener 3D-Modellierungskurs",
+    "advancedCourseDesc": "Ein vollständiger Kurs mit 5 Lektionen zur Vertiefung der 3D-Modellierungstechniken mit professioneller Software.",
+    "enrollCourse": "Melden Sie sich für den Kurs an",
+    "masterclass": "Professioneller 3D-Druck-Meisterkurs",
+    "masterclassDesc": "Ein intensiver zweitägiger Meisterkurs für Profis, die fortgeschrittene Techniken beherrschen möchten.",
+    "waitingList": "Warteliste",
+    "knowledge": {
+      "title": "Wissensvermittlung",
+      "description": "Wir organisieren Workshops, Webinare und Schulungen, um das Wissen über den 3D-Druck und seine möglichen Anwendungen zu verbreiten."
+    },
+    "innovation": {
+      "title": "Zugängliche Innovation",
+      "description": "Wir sind bestrebt, 3D-Drucktechnologien für alle zugänglich zu machen und bieten Dienstleistungen zu wettbewerbsfähigen Preisen und skalierbare Lösungen an."
+    },
+    "sustainability": {
+      "title": "Umweltverträglichkeit",
+      "description": "Wir fördern die Verwendung ökologisch nachhaltiger Materialien und Produktionsprozesse mit geringer Umweltbelastung, um zu einer grüneren Zukunft beizutragen."
+    },
+    "community": {
+      "title": "Zusammenarbeit und Gemeinschaft",
+      "description": "Wir glauben an die Kraft der Zusammenarbeit und des Teilens. Wir arbeiten daran, eine Community von 3D-Druck-Enthusiasten und -Profis aufzubauen."
+    }
   },
   "contact": {
     "title": "Kontakt",
     "subtitle": "Bereit für Ihr nächstes Projekt? Lassen Sie uns darüber sprechen",
+    "messageSentSuccess": "Nachricht erfolgreich gesendet!",
+    "thankYouMessage": "Vielen Dank, dass Sie uns kontaktiert haben. Wir werden Ihnen so schnell wie möglich antworten.",
+    "sendAnotherMessage": "Senden Sie eine weitere Nachricht",
     "helpRealizeIdeas": "Wir sind hier, um Ihnen bei der Realisierung Ihrer Ideen zu helfen. Kontaktieren Sie uns, um Ihr Projekt zu besprechen oder weitere Informationen über unsere Dienstleistungen zu erhalten.",
     "contactInfo": "Kontaktinformationen",
+    "chatWithUs": "Chatten Sie mit uns",
     "fullAddress": "Via Cantonale 15\n6918 Figino, Schweiz",
+    "mondayFriday": "Montag - Freitag",
+    "saturday": "Samstag",
+    "sunday": "Sonntag",
+    "closed": "Geschlossen",
     "sendMessage": "Nachricht senden",
     "form": {
       "name": "Name",
-      "surname": "Vorname",
       "email": "E-Mail",
       "phone": "Telefon",
-      "subject": "Betreff",
+      "company": "Agentur",
       "message": "Nachricht",
+      "service": "Service",
+      "selectService": "Wählen Sie einen Dienst aus",
       "send": "Nachricht senden",
+      "sending": "Senden...",
+      "surname": "Nachname",
+      "subject": "Betreff",
+      "serviceOfInterest": "Interessanter Service",
       "description": "Füllen Sie das Formular aus und wir antworten innerhalb von 24 Stunden",
+      "botFieldLabel": "Füllen Sie dieses Feld nicht aus, wenn Sie ein Mensch sind:",
       "namePlaceholder": "Ihr Name",
       "surnamePlaceholder": "Ihr Vorname",
       "emailPlaceholder": "ihre-email@beispiel.com",
@@ -273,43 +591,500 @@
       "messagePlaceholder": "Beschreiben Sie Ihr Projekt oder Ihre Anfrage...",
       "services": {
         "fdm": "FDM 3D-Druck",
+        "cff": "CFF 3D-Druck – Markforged",
+        "lsam": "LSAM 3D-Druck – Caracol",
+        "mjf": "MJF 3D-Druck – HP",
         "sla": "SLA 3D-Druck",
+        "polyjet": "POLYJET 3D-Druck – Stratasys",
+        "slm": "SLM 3D-Druck – SLM Solutions/Renishaw",
+        "sls": "SLS-3D-Druck",
         "laser": "Laserschneiden",
         "largePrint": "3D-Drucker Reparatur",
         "scanning": "3D-Scanning",
         "prototyping": "Prototyping",
         "other": "Andere"
       }
+    },
+    "info": {
+      "address": "Adresse",
+      "phone": "Telefon",
+      "email": "E-Mail",
+      "hours": "Öffnungszeiten",
+      "byPublicTransport": "Mit öffentlichen Verkehrsmitteln: Erreichbar mit den Buslinien 2, 3 und 4, Haltestelle „Centro“."
     }
   },
-  "blog": {
-    "title": "Blog",
-    "subtitle": "Bleiben Sie auf dem Laufenden mit den neuesten Innovationen und Fallstudien in der Welt des 3D-Drucks und industriellen Prototypings.",
-    "readMore": "Mehr lesen",
-    "publishedOn": "Veröffentlicht am",
-    "by": "von",
-    "projectInMind": "Haben Sie ein Projekt im Kopf?",
-    "contactDescription": "Kontaktieren Sie uns für eine kostenlose Beratung und entdecken Sie, wie wir Ihre Ideen zum Leben erwecken können.",
-    "categories": {
-      "innovation": "Innovation",
-      "technology": "Technologie",
-      "casestudy": "Fallstudie",
-      "tutorial": "Tutorial"
-    }
+  "auth": {
+    "login": "Einloggen",
+    "register": "Registrieren",
+    "logout": "Du gehst raus",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "confirmPassword": "Passwort bestätigen",
+    "surname": "Nachname",
+    "forgotPassword": "Passwort vergessen?",
+    "noAccount": "Sie haben noch kein Konto?",
+    "hasAccount": "Sie haben bereits ein Konto?",
+    "loginSuccess": "Erfolgreich angemeldet!",
+    "registerSuccess": "Registrierung erfolgreich abgeschlossen!",
+    "loginError": "Fehler beim Anmelden",
+    "registerError": "Fehler bei der Registrierung",
+    "tooManyAttempts": "Zu viele gescheiterte Versuche. Bitte versuchen Sie es später noch einmal.",
+    "emailInUse": "E-Mail wird bereits verwendet. Versuchen Sie, sich einzuloggen.",
+    "invalidEmail": "Ungültiges E-Mail-Format.",
+    "registrationComplete": "Registrierung abgeschlossen",
+    "accountCreated": "Ihr Konto wurde erfolgreich erstellt.",
+    "confirmPasswordError": "Die Passwörter stimmen nicht überein",
+    "passwordMinLength": "Das Passwort muss mindestens 6 Zeichen enthalten",
+    "requiredFields": "Vor- und Nachname sowie E-Mail sind erforderlich",
+    "showPassword": "Passwort anzeigen",
+    "hidePassword": "Passwort verbergen",
+    "resetPassword": "Passwort zurücksetzen",
+    "resetPasswordTitle": "Setzen Sie Ihr Passwort zurück",
+    "resetPasswordDesc": "Geben Sie Ihre E-Mail-Adresse ein, um Anweisungen zum Zurücksetzen Ihres Passworts zu erhalten",
+    "sendResetEmail": "Senden Sie eine Reset-E-Mail",
+    "resetEmailSent": "Gesendete E-Mail zurücksetzen",
+    "resetEmailSentDesc": "Sehen Sie in Ihren E-Mails nach, wie Sie Ihr Passwort zurücksetzen können",
+    "loginWithGoogle": "Melden Sie sich mit Google an",
+    "registerWithGoogle": "Registrieren Sie sich bei Google",
+    "backToLogin": "Zurück zum Login",
+    "accountCreatedSuccess": "Konto erfolgreich erstellt!"
   },
-  "faq": {
-    "title": "Häufig gestellte Fragen",
-    "subtitle": "Antworten auf die häufigsten Fragen zu unseren Dienstleistungen",
-    "fdmMaterials": "Welche Materialien bieten Sie für 3D-Druck an?",
-    "fdmMaterialsAnswer": "Wir bieten eine breite Palette von Materialien einschließlich PLA, PETG, ABS, TPU, Nylon und carbonfaserverstärkte Filamente. Für hochpräzise Anwendungen bieten wir auch Harz-Druckdienste.",
-    "deliveryTimes": "Wie lange dauert eine 3D-Druck-Bestellung?",
-    "deliveryTimesAnswer": "Lieferzeiten hängen von verschiedenen Faktoren wie Größe, Komplexität und Stückzahl ab. Standard-Bestellungen werden in 2-5 Werktagen fertiggestellt. Express-Services sind für prioritäre Projekte verfügbar.",
-    "maxSize": "Was ist die maximale Druckgröße?",
-    "maxSizeAnswer": "Unsere FDM-Drucker können Teile bis zu 350×350×400mm in einem Stück erstellen. Größere Objekte können in Abschnitten gedruckt und montiert werden.",
-    "scanningPrecision": "Wie präzise ist Ihr 3D-Scanning-Service?",
-    "scanningPrecisionAnswer": "Unsere professionellen Scanner erreichen Präzision bis zu 0,1mm basierend auf Objektgröße und Komplexität. Wir können sowohl Geometrie- als auch Texturinformationen erfassen.",
-    "priceCalculation": "Wie berechnen Sie die Preise?",
-    "priceCalculationAnswer": "Preise basieren auf Materialvolumen, Druckzeit und Komplexität. Faktoren umfassen Materialtyp, Qualitätseinstellungen und Nachbearbeitungsanforderungen. Nutzen Sie unseren Online-Rechner für sofortige Angebote."
+  "dashboard": {
+    "title": "Dashboards",
+    "welcome": "Willkommen",
+    "projects": "Meine Projekte",
+    "orders": "Meine Bestellungen",
+    "messages": "Nachrichten",
+    "profile": "Profil",
+    "files": "Datei",
+    "newProject": "Neues Projekt",
+    "newOrder": "Neue Ordnung",
+    "viewAll": "Alle anzeigen"
+  },
+  "projects": {
+    "title": "Projekte",
+    "newProject": "Neues Projekt",
+    "projectDetails": "Projektdetails",
+    "projectCreated": "Projekt erstellt",
+    "projectCreatedSuccess": "Ihr Projekt wurde erfolgreich erstellt.",
+    "projectNotFound": "Projekt nicht gefunden",
+    "status": "Zustand",
+    "created": "Erstellt",
+    "updated": "Aktualisiert",
+    "description": "Beschreibung",
+    "descriptionPlaceholder": "Beschreiben Sie Ihr Projekt...",
+    "descriptionUpdated": "Aktualisierte Beschreibung",
+    "descriptionUpdatedSuccess": "Die Projektbeschreibung wurde erfolgreich aktualisiert.",
+    "files": "Datei",
+    "notes": "Notizen",
+    "notesAdditional": "Zusätzliche Hinweise",
+    "notesPlaceholder": "Zusätzliche Hinweise oder Anweisungen...",
+    "notesUpdated": "Notizen aktualisiert",
+    "notesUpdatedSuccess": "Die Projektnotizen wurden erfolgreich aktualisiert.",
+    "noDescription": "Keine Beschreibung verfügbar.",
+    "noNotes": "Keine Notizen verfügbar.",
+    "actions": "Aktionen",
+    "selectStatus": "Wählen Sie einen Staat aus",
+    "fileUploaded": "Datei hochgeladen",
+    "fileUploadedSuccess": "Die Datei wurde erfolgreich hochgeladen.",
+    "filesUploaded": "Dateien hochgeladen",
+    "unableToLoadFiles": "Ihre Dateien können nicht hochgeladen werden:",
+    "insertNewName": "Geben Sie den neuen Namen ein",
+    "insertProjectDescription": "Geben Sie die Projektbeschreibung ein",
+    "insertProjectNotes": "Geben Sie Notizen für das Projekt ein",
+    "uploadFiles": "Datei hochladen",
+    "nameUpdated": "Name aktualisiert",
+    "nameUpdatedSuccess": "Der Bestellname wurde erfolgreich aktualisiert.",
+    "statusUpdated": "Status aktualisiert",
+    "updating": "Aktualisieren...",
+    "updateStatus": "Aktualisierungsstatus",
+    "updatePayment": "Zahlung aktualisieren",
+    "notSpecified": "Nicht angegeben"
+  },
+  "orders": {
+    "title": "Bestellungen",
+    "newOrder": "Neue Ordnung",
+    "orderDetails": "Bestelldetails",
+    "orderNumber": "Bestellnummer",
+    "status": "Zustand",
+    "total": "Gesamt",
+    "created": "Erstellt",
+    "delivery": "Lieferung",
+    "payment": "Zahlung",
+    "paymentUpdated": "Zahlung aktualisiert",
+    "selectPaymentStatus": "Zahlungsstatus auswählen",
+    "quoteAccepted": "Angebot angenommen",
+    "quoteAcceptedSuccess": "Sie haben das Angebot angenommen. Ihre Bestellung wurde bestätigt.",
+    "quoteRejected": "Angebot abgelehnt",
+    "quoteRejectedSuccess": "Sie haben das Angebot abgelehnt.",
+    "noPermissionToView": "Sie haben keine Berechtigung, diese Bestellung anzuzeigen",
+    "errorLoadingDetails": "Beim Laden Ihrer Bestelldaten ist ein Fehler aufgetreten",
+    "errorAcceptingQuote": "Beim Annehmen des Angebots ist ein Fehler aufgetreten",
+    "errorRejectingQuote": "Beim Ablehnen des Angebots ist ein Fehler aufgetreten",
+    "projectOrders": "Projektaufträge",
+    "manageProjectOrders": "Verwalten Sie Bestellungen für dieses Projekt",
+    "client": "Kunde",
+    "noOrdersFound": "Keine Bestellungen gefunden",
+    "noOrdersDescription": "Sie haben für dieses Projekt noch keine Aufträge erstellt.",
+    "createNewOrder": "Neue Bestellung erstellen",
+    "createOrderDescription": "Erstellen Sie einen neuen Auftrag für das Projekt",
+    "itemsToPrint": "Artikel zum Ausdrucken",
+    "stlFile": "STL-Dateien",
+    "color": "Farbe",
+    "resolution": "Auflösung",
+    "priceCHF": "Preis (CHF)",
+    "noStlFiles": "Für dieses Projekt sind keine STL-Dateien verfügbar.",
+    "addProductionNotes": "Fügen Sie Notizen für die Produktion hinzu",
+    "createOrder": "Auftrag erstellen",
+    "orderCreated": "Auftrag erstellt",
+    "orderCreatedSuccess": "Bestellung erfolgreich erstellt",
+    "errorCreatingOrder": "Beim Erstellen der Bestellung ist ein Fehler aufgetreten",
+    "missingDataError": "Fehlende Daten zur Auftragserstellung"
+  },
+  "payment": {
+    "title": "Zahlungsmethode",
+    "selectMethod": "Wählen Sie Zahlungsmethode",
+    "choosePayment": "Wählen Sie, wie Sie Ihre Bestellung bezahlen möchten",
+    "twint": "Twint",
+    "twintDescription": "Bezahlen Sie mit der Twint-App über den QR-Code",
+    "card": "Kredit-/Debitkarte",
+    "cardDescription": "Zahlung per Karte über SumUp",
+    "pickup": "Zahlung bei Abholung",
+    "pickupDescription": "Bezahlen Sie bei der Abholung bar oder mit Karte",
+    "twintPayment": "Twint-Zahlung",
+    "scanQR": "Zum Bezahlen scannen Sie den QR-Code mit der Twint-App",
+    "qrCode": "QR-Code Twint",
+    "amount": "Menge",
+    "howToPay": "So bezahlen Sie:",
+    "step1": "1. Öffnen Sie die Twint-App auf Ihrem Telefon",
+    "step2": "2. Wählen Sie „QR scannen“",
+    "step3": "3. Rahmen Sie den QR-Code oben ein",
+    "step4": "4. Bestätigen Sie die Zahlung von",
+    "cancel": "Stornieren",
+    "paidWithTwint": "Ich habe mit Twint bezahlt",
+    "confirming": "Bestätigen...",
+    "twintConfirmed": "Twint-Zahlung bestätigt",
+    "twintSuccess": "Die Zahlung per Twint wurde erfolgreich registriert.",
+    "cardPayment": "Zahlung per Karte",
+    "sumupImplementing": "SumUp-Funktionalität wird implementiert. Kontaktieren Sie den Support, um fortzufahren.",
+    "pickupSelected": "Zahlung bei ausgewählter Abholung",
+    "pickupSuccess": "Sie können bei der Abholung bar oder mit Karte bezahlen.",
+    "error": "Bei der Auswahl Ihrer Zahlungsmethode ist ein Fehler aufgetreten.",
+    "paymentMethod": "Zahlungsmethode",
+    "preferredPaymentMethod": "Bevorzugte Zahlungsmethode"
+  },
+  "calculator": {
+    "title": "Angebotsrechner",
+    "subtitle": "Erhalten Sie sofort ein Angebot für Ihr Projekt",
+    "uploadFile": "Datei hochladen",
+    "dragDrop": "Ziehen Sie Ihre STL-Datei hierher oder klicken Sie zur Auswahl",
+    "selectPrintType": "Wählen Sie den Drucktyp aus",
+    "selectQuality": "Qualität auswählen",
+    "quantity": "Menge",
+    "calculate": "Kostenvoranschlag berechnen",
+    "recalculate": "Schätzung neu berechnen",
+    "calculating": "Berechnen...",
+    "result": "Ergebnis",
+    "price": "Preis",
+    "deliveryTime": "Lieferzeit",
+    "material": "Material",
+    "volume": "Volumen",
+    "howItWorks": "Unser Rechner verwendet einen Algorithmus, der verschiedene Faktoren wie Artikelgröße, ausgewähltes Material, Druckqualität und -menge berücksichtigt, um eine schnelle Kostenschätzung zu erstellen.",
+    "accuracy": "Bei dem erstellten Angebot handelt es sich um eine Richtschätzung, die um ±15 % von den Endkosten abweichen kann. Die Genauigkeit hängt von der Komplexität des Objekts, den spezifischen Eigenschaften und der erforderlichen Nachbearbeitung ab.",
+    "fileFormats": "Wir akzeptieren die gängigsten Dateiformate für den 3D-Druck, einschließlich STL, OBJ, STEP und 3MF. Wenn Sie ein anderes Format haben, kontaktieren Sie uns bitte, um zu prüfen, ob wir es verarbeiten können oder um Unterstützung bei der Konvertierung zu erhalten.",
+    "deliveryTimes": "Die Lieferzeiten variieren je nach Komplexität des Objekts, gewähltem Material und Menge. Für Standarddrucke beträgt die durchschnittliche Zeit 3–5 Werktage, während es bei komplexeren Projekten 7–10 Tage dauern kann.",
+    "modelModification": "Ja, wir bieten Dienstleistungen zur Optimierung und Bearbeitung von 3D-Dateien an. Wenn Ihr Modell Korrekturen, Mindestdicken, Stützungen oder andere Änderungen benötigt, um einen erfolgreichen Druck zu gewährleisten, können wir eingreifen, um es zu optimieren.",
+    "fileUploaded": "Datei hochgeladen!",
+    "fileUploadedSuccess": "Die Datei {fileName} wurde erfolgreich hochgeladen.",
+    "fileTooBig": "Datei zu groß (maximal {maxSize}MB). Für größere Dateien kontaktieren Sie uns bitte.",
+    "unsupportedFormat": "Nicht unterstütztes Dateiformat. Verwenden Sie STL, OBJ oder 3MF.",
+    "unsupportedFormatForType": "Nicht unterstütztes Dateiformat für {printType}. Verwendung: {Formate}.",
+    "laserInfo": {
+      "title": "Laserinformationen",
+      "workArea": "Arbeitsbereich: 400 × 415 mm",
+      "precision": "Genauigkeit: 0,01 mm",
+      "fileFormats": "Formate: SVG, DXF, AI, PDF",
+      "delivery": "Lieferung: 2-4 Werktage"
+    },
+    "printTypes": {
+      "fdm": "FDM (Drahtdruck)",
+      "sla": "SLA (Harz)",
+      "laser": "Laser (Gravieren/Schneiden)"
+    },
+    "materials": {
+      "pla": {
+        "label": "PLA",
+        "desc": "Biologisch abbaubar, leicht zu bedrucken, steif"
+      },
+      "petg": {
+        "label": "PETG",
+        "desc": "Langlebig, flexibel, wasserdicht"
+      },
+      "abs": {
+        "label": "ABS",
+        "desc": "Hitzebeständig, robust, bearbeitbar"
+      },
+      "tpu": {
+        "label": "TPU",
+        "desc": "Flexibel, elastisch, verschleißfest"
+      },
+      "petg_cf": {
+        "label": "PETG-CF",
+        "desc": "Stark, leicht, langlebig mit Kohlefaser"
+      },
+      "pc": {
+        "label": "Polycarbonat",
+        "desc": "Robust, langlebig, leicht"
+      },
+      "nylon": {
+        "label": "Nylon",
+        "desc": "Langlebig, flexibel, wasserdicht"
+      },
+      "standard": {
+        "label": "Standardharz",
+        "desc": "Präzise Details, glatte Oberfläche"
+      },
+      "tough": {
+        "label": "Beständiges Harz",
+        "desc": "Langlebig, schlagfest"
+      },
+      "flexible": {
+        "label": "Flexibles Harz",
+        "desc": "Elastisch, biegefest"
+      },
+      "dental": {
+        "label": "Zahnharz",
+        "desc": "Biokompatibel, zertifiziert für den medizinischen Gebrauch"
+      },
+      "wood_1mm": {
+        "label": "Holz 1mm",
+        "desc": "Dünnes Birkensperrholz, für heikle Projekte"
+      },
+      "wood_2mm": {
+        "label": "Holz 2mm",
+        "desc": "Feines Birkensperrholz, ideal für Detailarbeiten"
+      },
+      "wood_3mm": {
+        "label": "3mm Holz",
+        "desc": "Birkensperrholz, ideal für präzise Gravuren und Schnitte"
+      },
+      "wood_4mm": {
+        "label": "4mm Holz",
+        "desc": "Mittelgroßes Birkensperrholz, vielseitig für viele Verwendungszwecke"
+      },
+      "wood_5mm": {
+        "label": "5mm Holz",
+        "desc": "Robustes Birkensperrholz, für mittelgroße Projekte"
+      },
+      "wood_6mm": {
+        "label": "6mm Holz",
+        "desc": "Dickes Birkensperrholz für Strukturprojekte"
+      },
+      "wood_7mm": {
+        "label": "7mm Holz",
+        "desc": "Strapazierfähiges Birkensperrholz für robuste Projekte"
+      },
+      "wood_8mm": {
+        "label": "8mm Holz",
+        "desc": "Sehr dickes Birkensperrholz, hohe Festigkeit"
+      },
+      "wood_9mm": {
+        "label": "9mm Holz",
+        "desc": "Extra dickes, hochbelastbares Birkensperrholz"
+      },
+      "wood_10mm": {
+        "label": "Holz 10mm",
+        "desc": "Birkensperrholz maximale Dicke, maximale Widerstandsfähigkeit"
+      },
+      "mdf_1mm": {
+        "label": "MDF 1mm",
+        "desc": "Dünne Faserplatte für Präzisionsarbeiten"
+      },
+      "mdf_2mm": {
+        "label": "MDF 2mm",
+        "desc": "Feine Faserplatte, glatte Oberfläche für Details"
+      },
+      "mdf_3mm": {
+        "label": "MDF 3mm",
+        "desc": "Faserplatte, glatte Oberfläche für detaillierte Gravur"
+      },
+      "mdf_4mm": {
+        "label": "MDF 4mm",
+        "desc": "Mittlere, vielseitige und gleichmäßige Holzfaser"
+      },
+      "mdf_5mm": {
+        "label": "MDF 5mm",
+        "desc": "Stabile Faserplatte, für mittelgroße Projekte"
+      },
+      "mdf_6mm": {
+        "label": "6 mm MDF",
+        "desc": "Dicke, langlebige und vielseitige Faserplatte"
+      },
+      "mdf_7mm": {
+        "label": "7 mm MDF",
+        "desc": "Strapazierfähige Faserplatte für robuste Projekte"
+      },
+      "mdf_8mm": {
+        "label": "8 mm MDF",
+        "desc": "Sehr dicke Faserplatte, hohe Festigkeit"
+      },
+      "mdf_9mm": {
+        "label": "MDF 9mm",
+        "desc": "Extra dicke, strapazierfähige Faserplatte"
+      },
+      "mdf_10mm": {
+        "label": "MDF 10 mm",
+        "desc": "Maximale Dicke der Holzfaser, maximale Widerstandsfähigkeit"
+      },
+      "acrylic_opaque": {
+        "label": "Mattes Acryl",
+        "desc": "Farbig, undurchsichtig, zum Schneiden und Gravieren"
+      },
+      "acrylic_transparent": {
+        "label": "Transparentes Acryl",
+        "desc": "Kristallklar, nur zum Gravieren"
+      },
+      "cork": {
+        "label": "Kork",
+        "desc": "Natürlich und nachhaltig, perfekt zum Gravieren"
+      },
+      "slate": {
+        "label": "Schiefer",
+        "desc": "Naturstein, elegant für eine individuelle Gravur"
+      },
+      "cardboard": {
+        "label": "Karton",
+        "desc": "Wirtschaftlich, perfekt für Prototypen und temporäre Modelle"
+      },
+      "leather": {
+        "label": "Haut",
+        "desc": "Naturleder, für Accessoires und Individualisierungen"
+      },
+      "fabric": {
+        "label": "Gewebe",
+        "desc": "Natürliche und synthetische Stoffe für Dekorationen und Anwendungen"
+      }
+    },
+    "qualities": {
+      "fdm": {
+        "0.3": {
+          "label": "Tiefgang (0,3 mm)",
+          "desc": "Schneller Druck, sichtbare Druckschichten, wirtschaftlich."
+        },
+        "0.2": {
+          "label": "Standard (0,2 mm)",
+          "desc": "Balance zwischen Qualität und Geschwindigkeit, für den allgemeinen Gebrauch."
+        },
+        "0.1": {
+          "label": "Hoch (0,1 mm)",
+          "desc": "Mehr Details, weniger sichtbare Ebenen, langsamer."
+        },
+        "0.05": {
+          "label": "Ultrahoch (0,05 mm)",
+          "desc": "Höchste Qualität, sehr lange Zeiten."
+        }
+      },
+      "sla": {
+        "100": {
+          "label": "Schnell (100 μm)",
+          "desc": "Schneller Druck, gute Gesamtqualität."
+        },
+        "50": {
+          "label": "Standard (50μm)",
+          "desc": "Standardqualität für die meisten Anwendungen."
+        },
+        "25": {
+          "label": "Hoch (25μm)",
+          "desc": "Hohe Qualität mit feineren Details."
+        },
+        "10": {
+          "label": "Ultra (10μm)",
+          "desc": "Höchste Qualität möglich, perfekt für kleine Details."
+        }
+      },
+      "laser": {
+        "cutting": {
+          "label": "Nur geschnitten",
+          "desc": "Sauberes und präzises Schneiden des Materials, versiegelte Kanten"
+        },
+        "engraving_light": {
+          "label": "Leichte Gravur",
+          "desc": "Oberflächengravur, ideal für Texte und Dekorationen"
+        },
+        "engraving_deep": {
+          "label": "Tiefe Gravur",
+          "desc": "Markierte Gravur für dreidimensionale Effekte"
+        },
+        "cutting_engraving": {
+          "label": "Schneiden + Gravieren",
+          "desc": "Kombination von Schneiden und Gravieren im selben Projekt"
+        }
+      }
+    },
+    "hollowed": {
+      "no": {
+        "label": "NEIN",
+        "desc": "Vollflächiger Druck"
+      },
+      "vuoto": {
+        "label": "Ja leer",
+        "desc": "Leerer Druck innen, um Harz zu sparen"
+      },
+      "riempimento": {
+        "label": "Ja mit Füllung",
+        "desc": "Blankodruck mit internen Stützen"
+      }
+    },
+    "processing": "Verarbeitung...",
+    "infill": "Füllung",
+    "selectProcessType": "Art der Verarbeitung auswählen",
+    "costBreakdown": "Kostenaufschlüsselung",
+    "materialCost": "Materialkosten",
+    "electricityCost": "Stromkosten",
+    "depreciationCost": "Abschreibung",
+    "discount": "Rabatt",
+    "totalCost": "Gesamtkosten",
+    "pricePerPiece": "Preis pro Stück",
+    "loginToOrder": "Melden Sie sich an, um zu bestellen",
+    "registerToOrder": "Registrieren Sie sich, um zu bestellen",
+    "minOrderError": "Der Mindestpreis für eine Bestellung beträgt {minPrice}€. Erhöhen Sie die Menge oder kontaktieren Sie uns für kleinere Bestellungen.",
+    "estimatedQuote": "Geschätztes Angebot:",
+    "singlePieceCost": "Die Kosten pro Einzelstück sind geringer, es gilt jedoch ein Mindestpreis von {minPrice} CHF pro Bestellung.",
+    "goToProfile": "Gehen Sie zum Profil",
+    "aiCalculator": "💡 Automatischer KI-Rechner",
+    "aiCalculatorDesc": "Hierbei handelt es sich um einen automatischen KI-Rechner, der ständig lernt, immer genauere Preisangaben zu liefern. Der generierte Preis ist relativ und kann je nach automatischer Dateianordnung, optimalen Druckeinstellungen und anderen technischen Faktoren variieren.",
+    "howItWorksTitle": "Wie es funktioniert",
+    "step1Title": "Laden Sie Ihr 3D-Modell hoch",
+    "step1Desc": "Laden Sie Ihre 3D-Datei im STL-, OBJ- oder 3MF-Format hoch. Unser Viewer zeigt Ihnen eine Vorschau und erkennt automatisch die Größe.",
+    "step2Title": "Wählen Sie Druckeinstellungen",
+    "step2Desc": "Wählen Sie zwischen FDM- oder SLA-Druck, wählen Sie Qualität, Material und Füllanteil entsprechend Ihren Anforderungen aus.",
+    "step3Title": "Erhalten Sie eine automatische KI-Schätzung",
+    "step3Desc": "Unser KI-Algorithmus berechnet automatisch eine grobe Schätzung basierend auf Größe, Material und Qualität. Dies ist nur eine vorläufige Schätzung.",
+    "step4Title": "Für ein genaues Angebot",
+    "step4Desc": "Rufen Sie den Kundenbereich auf, laden Sie die gewünschte Datei hoch und fordern Sie ein Angebot an. In weniger als 24 Stunden erhalten Sie das genaue Angebot, das Sie annehmen oder ablehnen können."
+  },
+  "admin": {
+    "title": "Administrator-Panel",
+    "projects": "Projekte",
+    "users": "Benutzer",
+    "orders": "Bestellungen",
+    "settings": "Einstellungen",
+    "analytics": "Analytik",
+    "backToProjects": "Zurück zu Projekten",
+    "databaseSeeding": "Datenbank füllen",
+    "databasePopulated": "Datenbank erfolgreich gefüllt",
+    "sampleDataCreated": "Die Beispieldaten wurden in der Datenbank erstellt.",
+    "errorSeeding": "Fehler beim Seeding der Datenbank:",
+    "errorSeedingDescription": "Beim Seeding der Datenbank ist ein Fehler aufgetreten."
+  },
+  "userPanel": {
+    "title": "Benutzerbereich",
+    "welcome": "Willkommen in Ihrem persönlichen Panel",
+    "profile": "Profil",
+    "myProjects": "Meine Projekte",
+    "myOrders": "Meine Bestellungen",
+    "messages": "Nachrichten",
+    "settings": "Einstellungen"
   },
   "common": {
     "loading": "Laden...",
@@ -317,7 +1092,60 @@
     "success": "Erfolg",
     "save": "Speichern",
     "cancel": "Abbrechen",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "confirm": "Er bestätigt",
+    "yes": "Ja",
+    "no": "NEIN",
+    "close": "Schließen",
+    "open": "Offen",
+    "view": "Sicht",
+    "download": "Herunterladen",
+    "upload": "Laden",
+    "send": "Schicken",
+    "back": "Rückwärts",
+    "next": "Nach Ihnen",
+    "previous": "Vorherige",
+    "home": "Heim",
+    "welcome": "Willkommen",
+    "logout": "Abmelden",
+    "login": "Einloggen",
+    "register": "Registrieren",
+    "profile": "Profil",
+    "settings": "Einstellungen",
+    "search": "Nahe",
+    "filter": "Filter",
+    "sort": "Befehl",
+    "all": "Alle",
+    "none": "Niemand",
+    "other": "Andere",
+    "more": "Andere",
+    "less": "Weniger",
+    "show": "Zeigen",
+    "hide": "Verstecken",
+    "expand": "Expandieren",
+    "collapse": "Reduzieren",
     "discoverMore": "Mehr entdecken"
+  },
+  "status": {
+    "pending": "Ausstehend",
+    "processing": "Im Gange",
+    "inProgress": "Im Gange",
+    "completed": "Vollendet",
+    "cancelled": "Abgesagt",
+    "draft": "Entwurf",
+    "published": "Veröffentlicht",
+    "planning": "Planung"
+  },
+  "quality": {
+    "draft": "Entwurf",
+    "normal": "Normal",
+    "high": "Hoch",
+    "ultra": "Ultra"
+  },
+  "printType": {
+    "fdm": "FDM",
+    "sla": "ALS"
   },
   "footer": {
     "description": "Wir verwandeln Ihre Ideen durch 3D-Drucktechnologie in reale Objekte.",
@@ -327,15 +1155,405 @@
     "calculateQuote": "Angebot berechnen",
     "copyright": "Alle Rechte vorbehalten"
   },
+  "faq": {
+    "title": "Häufig gestellte Fragen",
+    "subtitle": "Antworten auf die häufigsten Fragen zu unseren Dienstleistungen",
+    "howItWorks": "Wie funktioniert der Rechner?",
+    "accuracy": "Wie genau ist das erstellte Angebot?",
+    "fileFormats": "Welche Dateiformate akzeptieren Sie für den 3D-Druck?",
+    "deliveryTimes": "Wie lange dauert eine 3D-Druck-Bestellung?",
+    "modelModification": "Ist es möglich, mein 3D-Modell vor dem Drucken zu bearbeiten?",
+    "pricing": "Preise",
+    "quality": "Qualität",
+    "fdmMaterials": "Welche Materialien bieten Sie für 3D-Druck an?",
+    "fdmMaterialsAnswer": "Wir bieten eine breite Palette von Materialien einschließlich PLA, PETG, ABS, TPU, Nylon und carbonfaserverstärkte Filamente. Für hochpräzise Anwendungen bieten wir auch Harz-Druckdienste.",
+    "deliveryTimesAnswer": "Lieferzeiten hängen von verschiedenen Faktoren wie Größe, Komplexität und Stückzahl ab. Standard-Bestellungen werden in 2-5 Werktagen fertiggestellt. Express-Services sind für prioritäre Projekte verfügbar.",
+    "maxSize": "Was ist die maximale Druckgröße?",
+    "maxSizeAnswer": "Unsere FDM-Drucker können Teile bis zu 350×350×400mm in einem Stück erstellen. Größere Objekte können in Abschnitten gedruckt und montiert werden.",
+    "scanningPrecision": "Wie präzise ist Ihr 3D-Scanning-Service?",
+    "scanningPrecisionAnswer": "Unsere professionellen Scanner erreichen Präzision bis zu 0,1mm basierend auf Objektgröße und Komplexität. Wir können sowohl Geometrie- als auch Texturinformationen erfassen.",
+    "largeObjects": "Können Sie große Objekte scannen?",
+    "largeObjectsAnswer": "Ja, wir können Objekte unterschiedlicher Größe scannen. Bei großen Objekten verwenden wir mehrere Scans, die dann zu einem einzigen 3D-Modell kombiniert werden.",
+    "priceCalculation": "Wie berechnen Sie die Preise?",
+    "priceCalculationAnswer": "Preise basieren auf Materialvolumen, Druckzeit und Komplexität. Faktoren umfassen Materialtyp, Qualitätseinstellungen und Nachbearbeitungsanforderungen. Nutzen Sie unseren Online-Rechner für sofortige Angebote.",
+    "bulkDiscounts": "Bieten Sie Rabatte für Großbestellungen an?",
+    "bulkDiscountsAnswer": "Ja, wir bieten Rabatte für Großbestellungen an. Ab 5 Stück erhalten Sie 10 % Rabatt und ab 10 Stück erhalten Sie 15 % Rabatt. Kontaktieren Sie uns für individuelle Angebote für Großaufträge.",
+    "qualityControl": "Welche Qualitätskontrollmaßnahmen ergreifen Sie?",
+    "qualityControlAnswer": "Jeder Druck wird strengen Qualitätsprüfungen unterzogen, einschließlich Maßprüfung und Sichtprüfung. Wir erstellen Probedrucke für kritische Anwendungen und halten strenge Qualitätskontrollstandards ein.",
+    "designAssistance": "Bieten Sie Designunterstützung?",
+    "designAssistanceAnswer": "Ja, unser Team kann bei der Optimierung von Designs für den 3D-Druck helfen, geeignete Materialien vorschlagen und während des gesamten Projekts technische Beratung leisten."
+  },
+  "search": {
+    "title": "Suchen Sie nach 3D-Modellen",
+    "findModels": "Finden Sie 3D-druckbare Modelle",
+    "description": "Nutzen Sie unsere Suchmaschine, um online druckfertige 3D-Modelle aus öffentlichen Sammlungen zu finden",
+    "instructions": "Geben Sie den Namen des gesuchten Artikels ein, z. B. „Vase“, „Smartphone-Halter“ oder „Dekoration“."
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Bleiben Sie auf dem Laufenden mit den neuesten Innovationen und Fallstudien in der Welt des 3D-Drucks und industriellen Prototypings.",
+    "readMore": "Mehr lesen",
+    "publishedOn": "Veröffentlicht am",
+    "by": "von",
+    "author": "Autor",
+    "technicalDetails": "Technische Details",
+    "challenges": "Herausforderungen",
+    "benefits": "Vorteile",
+    "relatedPosts": "Verwandte Beiträge",
+    "projectInMind": "Haben Sie ein Projekt im Kopf?",
+    "contactDescription": "Kontaktieren Sie uns für eine kostenlose Beratung und entdecken Sie, wie wir Ihre Ideen zum Leben erwecken können.",
+    "noPostsFound": "Keine Beiträge gefunden",
+    "allArticles": "Alle Artikel",
+    "noArticlesFound": "Keine Artikel gefunden",
+    "articlesCategory": "Artikel in {{category}}",
+    "moreServicesTitle": "Erfahren Sie mehr über unsere Leistungen",
+    "moreServicesDescription": "Möchten Sie mehr wissen? Entdecken Sie unsere Dienstleistungen oder kontaktieren Sie uns für eine persönliche Beratung.",
+    "categories": {
+      "innovation": "Innovation",
+      "technology": "Technologie",
+      "casestudy": "Fallstudie",
+      "tutorial": "Tutorial"
+    }
+  },
+  "notFound": {
+    "title": "Seite nicht gefunden",
+    "description": "Die gesuchte Seite existiert nicht.",
+    "backHome": "Zurück nach Hause"
+  },
+  "firebaseTest": {
+    "developerNotes": "Hinweise für Entwickler",
+    "firestoreRules": "Firestore-Regeln ermöglichen allen authentifizierten Benutzern das Lesen von Dokumenten, jedoch nur das Ändern ihrer eigenen.",
+    "adminEmail": "Nur die Admin-E-Mail (info@3dmakes.ch) kann überall schreiben.",
+    "storageRules": "Mit Speicherregeln können Benutzer ihre Dateien hochladen und verwalten.",
+    "authStatus": "Authentifizierungsstatus",
+    "currentAuthState": "Aktueller Authentifizierungsstatus",
+    "displayName": "Anzeigename",
+    "emailVerified": "Bestätigte E-Mail",
+    "notAuthenticated": "Nicht authentifiziert",
+    "firestoreData": "Firestore-Daten",
+    "userDataFromFirestore": "Benutzerdaten von Firestore",
+    "noUserData": "Keine Benutzerdaten verfügbar"
+  },
+  "blogPosts": {
+    "dental": {
+      "title": "3D-Druck in der Dentaltechnik",
+      "excerpt": "Entdecken Sie, wie die additive Fertigung traditionelle Fertigungsmethoden in der Dentalindustrie revolutioniert."
+    },
+    "petBowls": {
+      "title": "Anpassbare Schüsseln für Haustiere",
+      "excerpt": "Kollektion von Näpfen und Zubehör für Haustiere, hergestellt im 3D-Druck aus ausgewählten Materialien, um Sicherheit und Zweckmäßigkeit zu gewährleisten."
+    },
+    "horseshoe": {
+      "title": "TPU-Pads für den Hufbeschlag von Pferden",
+      "excerpt": "Maßgeschneiderte 3D-gedruckte TPU-Pads für den Hufbeschlag, die die Belastung der Gelenke reduzieren und den Halt verbessern sollen."
+    },
+    "nfcGadgets": {
+      "title": "NFC-Smart-Business-Gadgets",
+      "excerpt": "Smarte Business-Gadgets mit integrierter NFC-Technologie für moderne Business-Vernetzung und digitale Interaktion."
+    },
+    "restaurant": {
+      "title": "Kollektion von Catering-Zubehör",
+      "excerpt": "Innovatives und anpassbares Zubehör für Restaurants, das das Restauranterlebnis und die betriebliche Effizienz verbessern soll."
+    },
+    "mechanical": {
+      "title": "Kundenspezifische mechanische Komponenten",
+      "excerpt": "Hochpräzise mechanische Komponenten aus PETG mit verstärkter Füllung für spezifische Industrieanwendungen."
+    },
+    "prosthetics": {
+      "title": "Personalisierte medizinische Prothesen",
+      "excerpt": "Maßgeschneiderte Prothesen aus biokompatiblen Materialien für individuelle Patientenbedürfnisse."
+    },
+    "how3dWorks": {
+      "title": "Wie 3D-Druck wirklich funktioniert: Vollständiger Leitfaden",
+      "excerpt": "Eine ausführliche Erläuterung der Funktionsprinzipien des 3D-Drucks, von den gängigsten Technologien bis hin zu den verwendbaren Materialien."
+    },
+    "materials": {
+      "title": "Die besten Materialien für den 3D-Druck im Jahr 2023",
+      "excerpt": "Vergleich zwischen PLA, ABS, PETG und Harzen: Eigenschaften, Vorteile und ideale Anwendungen für jedes Druckmaterial."
+    },
+    "rapidPrototyping": {
+      "title": "Rapid Prototyping: Produktentwicklung beschleunigen",
+      "excerpt": "Wie der 3D-Druck den Produktentwicklungsprozess dank schnellem und iterativem Prototyping revolutioniert."
+    },
+    "creativeApplications": {
+      "title": "Kreative Anwendungen des 3D-Drucks im Design",
+      "excerpt": "Entdecken Sie die unendlichen kreativen Möglichkeiten, die der 3D-Druck im Bereich Design und Möbel bietet."
+    },
+    "printerComparison": {
+      "title": "Die besten 3D-Drucker für den professionellen Einsatz",
+      "excerpt": "Vergleichende Analyse der derzeit besten professionellen 3D-Drucker auf dem Markt: Spezifikationen, Preise und Leistung."
+    }
+  },
+  "userFiles": {
+    "title": "{{userName}} Dateien",
+    "description": "Vom Benutzer hochgeladene Dateien anzeigen",
+    "uploadedFiles": "Dateien hochgeladen",
+    "viewUploadedFiles": "Vom Benutzer hochgeladene Dateien anzeigen",
+    "noFiles": "Keine Dateien",
+    "noFilesDescription": "Dieser Benutzer hat noch keine Dateien hochgeladen.",
+    "userNotFound": "Benutzer nicht gefunden",
+    "unableToLoadData": "Benutzerdaten können nicht geladen werden",
+    "backToUserList": "Zurück zur Benutzerliste",
+    "totalFiles": "Gesamt: {{count}} Dateien",
+    "fileTypes": {
+      "image": "Bild",
+      "model3d": "3D-Modell",
+      "document": "Dokumentieren"
+    },
+    "table": {
+      "fileName": "Dateiname",
+      "type": "Typ",
+      "uploadDate": "Upload-Datum",
+      "actions": "Aktionen"
+    },
+    "actions": {
+      "download": "Herunterladen",
+      "preview": "Vorschau"
+    }
+  },
+  "contactSuccess": {
+    "thankYouDetailed": "Vielen Dank für Ihre Kontaktaufnahme! Wir haben Ihre Nachricht erhalten und werden Ihnen innerhalb von 24 Arbeitsstunden antworten.",
+    "backToHome": "Zurück zur Homepage",
+    "discoverServices": "Entdecken Sie die Dienste",
+    "howToFindUs": "In der Zwischenzeit erfahren Sie hier, wie Sie uns finden können",
+    "urgentContact": "Wenn Sie einen Notfall haben oder uns lieber direkt kontaktieren möchten, finden Sie hier alle unsere Kontaktdaten.",
+    "contacts": "Kontakte",
+    "hours": "Std",
+    "schedule": "Mo-Fr: 9:00-18:00 Uhr\nSa: 9-13 Uhr",
+    "whatHappensNow": "Was passiert jetzt?",
+    "step1Title": "Wir verstehen die Botschaft",
+    "step1Description": "Ihre Nachricht landet direkt in unserem Posteingang",
+    "step2Title": "Lassen Sie uns die Anfrage analysieren",
+    "step2Description": "Unsere Experten bewerten das Projekt und bereiten eine detaillierte Antwort vor",
+    "step3Title": "Wir werden Sie kontaktieren",
+    "step3Description": "Innerhalb von 24 Stunden erhalten Sie unsere Antwort mit Angebot und Details",
+    "exploreServices": "Entdecken Sie unsere Dienstleistungen",
+    "fdmDescription": "Funktionelle Prototypen und langlebige Teile mit einer breiten Materialauswahl",
+    "slaDescription": "Präzise Details und glatte Oberflächen mit Spezialharzen",
+    "laserDescription": "Präzise Gravuren und Schnitte mit 22-W-Laser und CoreXY-Technologie",
+    "repairDescription": "Reparatur und Wartung von 3D-Druckern aller Marken",
+    "largePrintDescription": "Reparatur und Wartung von 3D-Druckern aller Marken",
+    "scanningDescription": "Präzise Digitalisierung für Reverse Engineering und Konservierung",
+    "prototypingDescription": "Von der Idee zum realen Objekt mit voller Unterstützung"
+  },
+  "shop": {
+    "title": "Geschäft",
+    "subtitle": "Entdecken Sie unsere 3D-gedruckten Produkte",
+    "comingSoon": "Demnächst verfügbar",
+    "comingSoonDescription": "Unser Shop kommt! Wir bereiten erstaunliche Produkte für Sie vor.",
+    "comingSoonSubtext": "In der Zwischenzeit können Sie ein individuelles Angebot anfordern.",
+    "cart": "Warenkorb",
+    "emptyCart": "Ihr Warenkorb ist leer",
+    "clearCart": "Leerer Warenkorb",
+    "addToCart": "In den Warenkorb legen",
+    "addedToCart": "Zum Warenkorb hinzugefügt",
+    "removeFromCart": "Aus dem Warenkorb entfernen",
+    "total": "Gesamt",
+    "checkout": "Fahren Sie mit der Zahlung fort",
+    "checkoutComingSoon": "Die Zahlung folgt bald! Kontaktieren Sie uns, um Ihre Bestellung abzuschließen.",
+    "inStock": "Verfügbar",
+    "outOfStock": "Abgenutzt",
+    "noProducts": "Zur Zeit sind keine Produkte verfügbar",
+    "productNotFound": "Produkt nicht gefunden",
+    "backToShop": "Zurück zum Shop",
+    "description": "Beschreibung",
+    "features": "Eigenschaften",
+    "freeShipping": "Kostenloser Versand ab CHF 50",
+    "returns": "Kostenlose Rücksendung innerhalb von 14 Tagen",
+    "warranty": "1 Jahr Garantie",
+    "continueShopping": "Weiter einkaufen",
+    "customization": "Anpassung",
+    "referenceImages": "Referenzbilder",
+    "uploadImages": "Bilder hochladen",
+    "uploadImagesDescription": "Laden Sie Fotos, Logos oder Designs hoch, die Sie reproduzieren möchten (maximal 5 MB pro Bild).",
+    "customizationNotes": "Personalisierung von Notizen",
+    "customizationNotesDescription": "Beschreiben Sie, wie Sie das Produkt anpassen möchten (Farbe, Text, Größe usw.).",
+    "customizationNotesPlaceholder": "Beispiel: Ich möchte den Namen „Marco“ eingravieren lassen, Farbe Blau, Größe 6 cm ..."
+  },
+  "checkout": {
+    "title": "Kasse",
+    "personalData": "Persönliche Daten",
+    "firstName": "Name",
+    "lastName": "Nachname",
+    "phone": "Telefon",
+    "address": "Adresse",
+    "city": "Stadt",
+    "postalCode": "KAPPE",
+    "deliveryMethod": "Versandart",
+    "pickup": "Abholung im Laden",
+    "pickupDescription": "Holen Sie Ihre Bestellung kostenlos in unserem Labor ab",
+    "shipping": "Lieferung nach Hause",
+    "shippingDescription": "Erhalten Sie Ihre Bestellung bequem zu Hause (CHF 9.90)",
+    "notes": "Zusätzliche Hinweise",
+    "optional": "optional",
+    "notesPlaceholder": "Geben Sie Anmerkungen zu Ihrer Bestellung ein...",
+    "createAccount": "Ein Konto erstellen",
+    "createAccountDescription": "Erstellen Sie ein Konto, um Ihre Bestellungen zu verfolgen und Angebote zu verwalten",
+    "orderSummary": "Bestellübersicht",
+    "subtotal": "Zwischensumme",
+    "free": "Frei",
+    "total": "Gesamt",
+    "confirmOrder": "Bestellung bestätigen",
+    "proceedToPayment": "Weiter zur Zahlung",
+    "processing": "Verarbeitung...",
+    "fillAllFields": "Füllen Sie alle Pflichtfelder aus",
+    "fillShippingAddress": "Geben Sie Ihre vollständige Lieferadresse ein",
+    "orderCreated": "Bestellung erfolgreich erstellt!",
+    "orderError": "Fehler beim Erstellen der Bestellung",
+    "paymentInfo": "Sie werden kontaktiert, um die Zahlung abzuschließen",
+    "orderSuccess": "Bestellung bestätigt!",
+    "orderSuccessDescription": "Vielen Dank für Ihre Bestellung. Sie erhalten in Kürze eine Bestätigungs-E-Mail.",
+    "orderNumber": "Bestellnummer",
+    "confirmationEmail": "Bestätigungs-E-Mail",
+    "confirmationEmailDescription": "Wir haben Ihnen eine E-Mail mit Ihren Bestelldaten gesendet",
+    "pickupReady": "Wir werden Sie kontaktieren, sobald Ihre Bestellung zur Abholung bereitsteht",
+    "shippingEstimate": "Geschätzte Lieferzeit: 3-5 Werktage",
+    "orderedItems": "Bestellte Produkte",
+    "paymentPending": "Zahlungsstatus: Ausstehend",
+    "nextSteps": "Nächste Schritte",
+    "step1": "Sie erhalten eine Bestätigungs-E-Mail mit Ihren Bestelldaten",
+    "step2": "Wir werden Sie kontaktieren, um die Zahlung abzuschließen und die Lieferung zu arrangieren",
+    "step3": "Wir bereiten Ihre Bestellung vor und informieren Sie über den Status",
+    "viewInDashboard": "Gehen Sie zum Dashboard",
+    "createAccountToTrack": "Erstellen Sie ein Konto, um die Bestellung zu verfolgen",
+    "orderNotFound": "Bestellung nicht gefunden"
+  },
   "reviews": {
     "title": "Was unsere Kunden sagen",
     "ratingLabel": "auf Google",
     "description": "Die Zufriedenheit unserer Kunden ist unsere Priorität. Lesen Sie, was sie über uns sagen.",
     "googleReview": "Google Bewertung"
   },
+  "courseRegistration": {
+    "hero": {
+      "title": "3D-DRUCK GRUNDKURS",
+      "subtitle": "Lerne die Grundlagen des 3D-Drucks, von der Modellierung bis zum fertigen Druck, mit Experten aus der Branche"
+    },
+    "features": {
+      "smallGroups": {
+        "title": "KLEINE GRUPPEN",
+        "description": "Maximal 6 Teilnehmer fuer individuelle Betreuung"
+      },
+      "practiceTheory": {
+        "title": "PRAXIS UND THEORIE",
+        "description": "Praxisnaher Ansatz mit realen Projekten und Schulungsunterlagen"
+      },
+      "twoEvenings": {
+        "title": "2 AUFEINANDERFOLGENDE ABENDE",
+        "description": "8 Stunden insgesamt am Donnerstag und Freitagabend (17:30 - 21:30)"
+      }
+    },
+    "program": {
+      "title": "KURSPROGRAMM",
+      "subtitle": "Vom Setup bis zum Druck: praxisorientierte Methode mit echten Beispielen.",
+      "modules": {
+        "safety": {
+          "title": "Sicherheit & PSA",
+          "item1": "FDM/SLA-Risiken und Materialkontakt",
+          "item2": "PSA: Handschuhe, Schutzbrille, Masken",
+          "item3": "Sicheres Arbeitsplatz-Setup"
+        },
+        "fdm": {
+          "title": "FDM-Druck",
+          "item1": "Materialien: PLA, PETG, TPU, ASA/ABS",
+          "item2": "Hardware: Duesen, Druckbett, Kalibrierungen",
+          "item3": "Slicing und Supports",
+          "item4": "Komplettes Troubleshooting"
+        },
+        "sla": {
+          "title": "SLA-Druck",
+          "item1": "Harze: standard/tough/flexible",
+          "item2": "Parameter: Temperatur, Belichtung",
+          "item3": "Ausrichtung und Supports",
+          "item4": "Wash & cure Workflow"
+        },
+        "techniques": {
+          "title": "Techniken & Tipps",
+          "item1": "FDM vs SLA: wann was sinnvoll ist",
+          "item2": "Finish und Nachbearbeitung",
+          "item3": "Toleranzen und Passungen",
+          "item4": "Q&A zu realen Bauteilen"
+        }
+      }
+    },
+    "includes": {
+      "title": "Das Ist Enthalten",
+      "item1": "Dauer: 8 Stunden auf 2 Abende",
+      "item2": "Uhrzeit: 17:30 - 21:30",
+      "item3": "Max. 6 Teilnehmer",
+      "item4": "Fuer Einsteiger geeignet",
+      "item5": "Schulungsunterlagen inklusive",
+      "item6": "Teilnahmebestaetigung"
+    },
+    "pricing": {
+      "limitedSpots": "Nur die ersten 12 Plaetze",
+      "earlyBird": "Early-Bird-Preis",
+      "savings": "💰 Sie sparen 100 CHF",
+      "cta": "⚡ Begrenzte Plaetze - Jetzt anmelden!"
+    },
+    "form": {
+      "title": "Jetzt Anmelden",
+      "description": "Fuelle das Formular aus. Wir melden uns innerhalb von 24-48 Stunden zur Bestaetigung deiner Teilnahme",
+      "botFieldLabel": "Dieses Feld nicht ausfuellen",
+      "firstNameLabel": "Vorname *",
+      "firstNamePlaceholder": "Dein Vorname",
+      "lastNameLabel": "Nachname *",
+      "lastNamePlaceholder": "Dein Nachname",
+      "emailLabel": "E-Mail *",
+      "emailPlaceholder": "deine.email@beispiel.com",
+      "phoneLabel": "Telefon *",
+      "phonePlaceholder": "+41 XX XXX XX XX",
+      "timeSlotLabel": "Datum und Uhrzeit waehlen *",
+      "timeSlotPlaceholder": "Verfuegbaren Slot waehlen",
+      "timeSlotHelper": "2 aufeinanderfolgende Tage (8 Stunden gesamt). Plaetze sind auf 6 Teilnehmer begrenzt.",
+      "paymentMethodLabel": "Zahlungsmethode *",
+      "paymentMethodPlaceholder": "Zahlungsmethode waehlen",
+      "paymentMethods": {
+        "bankTransfer": "Bankueberweisung",
+        "twint": "TWINT",
+        "cashOnSite": "Barzahlung vor Ort"
+      },
+      "messageLabel": "Notizen / Fragen (optional)",
+      "messagePlaceholder": "Hast du konkrete Fragen zum Kurs?",
+      "privacyConsent": "Ich stimme der Verarbeitung meiner personenbezogenen Daten gemaess der Datenschutzrichtlinie von 3DMAKES zu *",
+      "submit": "Anfrage zur Anmeldung senden",
+      "submitting": "Wird gesendet...",
+      "requiredFields": "* Pflichtfelder",
+      "errorTitle": "Fehler bei der Anmeldung",
+      "errorDescription": "Beim Senden ist ein Fehler aufgetreten. Bitte versuche es erneut oder kontaktiere uns direkt."
+    },
+    "success": {
+      "title": "Anmeldung Eingegangen!",
+      "description": "Danke fuer dein Interesse! Wir haben deine Anfrage fuer den 3D-Druck Grundkurs erhalten. Wir kontaktieren dich innerhalb von 24-48 Stunden, um deine Teilnahme im ausgewaehlten Slot zu bestaetigen und dir alle wichtigen Details zu senden.",
+      "nextStepsTitle": "Wie geht es jetzt weiter?",
+      "step1": "1. Du erhaeltst eine Bestaetigungs-E-Mail",
+      "step2": "2. Wir kontaktieren dich zur Bestaetigung von Datum und Uhrzeit",
+      "step3": "3. Wir senden dir das Vorbereitungsmaterial",
+      "backHome": "Zur Startseite"
+    },
+    "contact": {
+      "title": "Hast du Fragen?",
+      "prompt": "Kontaktiere uns unter",
+      "orEmail": "oder per E-Mail"
+    },
+    "timeSlots": {
+      "slot1": "5.-6. Maerz 2025 (Donnerstag-Freitag) - 17:30 - 21:30",
+      "slot2": "12.-13. Maerz 2025 (Donnerstag-Freitag) - 17:30 - 21:30",
+      "slot3": "26.-27. Maerz 2025 (Donnerstag-Freitag) - 17:30 - 21:30",
+      "slot4": "2.-3. April 2025 (Donnerstag-Freitag) - 17:30 - 21:30",
+      "slot5": "9.-10. April 2025 (Donnerstag-Freitag) - 17:30 - 21:30",
+      "slot6": "16.-17. April 2025 (Donnerstag-Freitag) - 17:30 - 21:30",
+      "slot7": "23.-24. April 2025 (Donnerstag-Freitag) - 17:30 - 21:30",
+      "slot8": "30. April-1. Mai 2025 (Donnerstag-Freitag) - 17:30 - 21:30",
+      "slot9": "7.-8. Mai 2025 (Donnerstag-Freitag) - 17:30 - 21:30",
+      "slot10": "14.-15. Mai 2025 (Donnerstag-Freitag) - 17:30 - 21:30",
+      "slot11": "21.-22. Mai 2025 (Donnerstag-Freitag) - 17:30 - 21:30",
+      "slot12": "28.-29. Mai 2025 (Donnerstag-Freitag) - 17:30 - 21:30"
+    }
+  },
   "partners": {
     "title": "Sie haben 3DMAKES gewählt",
     "description": "Unternehmen und Institutionen, die unseren 3D-Druckservice vertrauen",
     "companiesCount": "Kunden"
   }
-} 
+}

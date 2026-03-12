@@ -3,10 +3,12 @@ import emailjs from '@emailjs/browser';
 // Configurazione EmailJS
 const EMAILJS_SERVICE_ID = 'service_z5mjon2'; // Il tuo Service ID da EmailJS
 // Sostituisci questi ID con quelli reali che ti darà EmailJS dopo aver creato i template
-const EMAILJS_TEMPLATE_ID_WELCOME = 'template_xq74z9h'; // ID del template Welcome
-const EMAILJS_TEMPLATE_ID_ORDER_CONFIRMATION = 'template_90n08kw'; // ID del template Order Confirmation
-const EMAILJS_TEMPLATE_ID_ORDER_UPDATE = 'template_90n08kw'; // Usa template Order Confirmation per aggiornamenti
-const EMAILJS_TEMPLATE_ID_QUOTE_READY = 'template_90n08kw'; // Usa template Order Confirmation per preventivi
+const EMAILJS_TEMPLATE_ID_WELCOME = 'template_xq7429h'; // ID del template Welcome
+const EMAILJS_TEMPLATE_ID_COURSE_REGISTRATION = 'template_rg7rn3i'; // Template Course Subscription
+// Manteniamo compatibilita con i flussi legacy usando il template corso
+const EMAILJS_TEMPLATE_ID_GENERAL = EMAILJS_TEMPLATE_ID_COURSE_REGISTRATION;
+const EMAILJS_TEMPLATE_ID_WELCOME_LEGACY = 'template_xq74z9h'; // Fallback per vecchio ID welcome
+const EMAILJS_TEMPLATE_ID_COURSE_LEGACY = 'template_90n08kw'; // Fallback storico template corso/ordine
 const EMAILJS_PUBLIC_KEY = 'y0Ulz-qSVjiET74Lx'; // La tua Public Key da EmailJS
 
 // Inizializza EmailJS
@@ -25,6 +27,10 @@ export interface EmailData {
   [key: string]: any; // Permette proprietà aggiuntive per EmailJS
 }
 
+const BRAND_BLUE = '#1A2A4A';
+const BRAND_CYAN = '#3D9DFF';
+const BRAND_CYAN_HOVER = '#2B8BEA';
+
 // Template email di benvenuto
 export const sendWelcomeEmail = async (userData: {
   email: string;
@@ -32,6 +38,16 @@ export const sendWelcomeEmail = async (userData: {
   cognome: string;
 }): Promise<boolean> => {
   try {
+    const brandedHtml = createEmailTemplate(
+      'Benvenuto in 3DMAKES!',
+      `
+        <p>Ciao <strong>${userData.nome}</strong>, grazie per esserti registrato su 3DMAKES.</p>
+        <p>Da ora puoi gestire i tuoi progetti 3D, richiedere preventivi e monitorare i tuoi ordini in un unico posto.</p>
+      `,
+      'Esplora i Servizi',
+      'https://3dmakes.ch/services'
+    );
+
     const templateParams: EmailData = {
       email: userData.email,
       to_name: `${userData.nome} ${userData.cognome}`,
@@ -39,14 +55,32 @@ export const sendWelcomeEmail = async (userData: {
       order_id: 'BENVENUTO',
       order_details: `Benvenuto ${userData.nome}! Grazie per esserti registrato su 3DMAKES.`,
       quote_price: '0.00 CHF',
-      delivery_date: 'Immediata'
+      delivery_date: 'Immediata',
+      html_content: brandedHtml
     };
 
-    await emailjs.send(
-      EMAILJS_SERVICE_ID,
+    const welcomeTemplateCandidates = [
       EMAILJS_TEMPLATE_ID_WELCOME,
-      templateParams
-    );
+      EMAILJS_TEMPLATE_ID_WELCOME_LEGACY,
+      EMAILJS_TEMPLATE_ID_COURSE_REGISTRATION,
+    ];
+
+    let sent = false;
+    let lastError: unknown = null;
+
+    for (const templateId of welcomeTemplateCandidates) {
+      try {
+        await emailjs.send(EMAILJS_SERVICE_ID, templateId, templateParams);
+        sent = true;
+        break;
+      } catch (error) {
+        lastError = error;
+      }
+    }
+
+    if (!sent) {
+      throw lastError || new Error('Nessun template EmailJS disponibile per il welcome');
+    }
 
     console.log('Email di benvenuto inviata con successo');
     return true;
@@ -66,6 +100,18 @@ export const sendOrderConfirmationEmail = async (orderData: {
   estimatedDelivery: string;
 }): Promise<boolean> => {
   try {
+    const brandedHtml = createEmailTemplate(
+      `Conferma Ordine #${orderData.orderId}`,
+      `
+        <p>Ciao <strong>${orderData.userName}</strong>, abbiamo ricevuto il tuo ordine.</p>
+        <p><strong>Dettagli:</strong> ${orderData.orderDetails}</p>
+        <p><strong>Totale:</strong> ${orderData.totalPrice.toFixed(2)} CHF</p>
+        <p><strong>Consegna stimata:</strong> ${orderData.estimatedDelivery}</p>
+      `,
+      'Vai alla Dashboard',
+      'https://3dmakes.ch/dashboard'
+    );
+
     const templateParams: EmailData = {
       email: orderData.userEmail,
       to_name: orderData.userName,
@@ -74,12 +120,13 @@ export const sendOrderConfirmationEmail = async (orderData: {
       order_id: orderData.orderId,
       order_details: orderData.orderDetails,
       quote_price: `${orderData.totalPrice.toFixed(2)} CHF`,
-      delivery_date: orderData.estimatedDelivery
+      delivery_date: orderData.estimatedDelivery,
+      html_content: brandedHtml
     };
 
     await emailjs.send(
       EMAILJS_SERVICE_ID,
-      EMAILJS_TEMPLATE_ID_ORDER_CONFIRMATION,
+      EMAILJS_TEMPLATE_ID_GENERAL,
       templateParams
     );
 
@@ -87,6 +134,83 @@ export const sendOrderConfirmationEmail = async (orderData: {
     return true;
   } catch (error) {
     console.error('Errore nell\'invio dell\'email di conferma ordine:', error);
+    return false;
+  }
+};
+
+// Template email di conferma iscrizione corso
+export const sendCourseRegistrationConfirmationEmail = async (registrationData: {
+  userEmail: string;
+  firstName: string;
+  lastName: string;
+  timeSlot: string;
+  paymentMethod: string;
+  registrationId: string;
+}): Promise<boolean> => {
+  try {
+    const fullName = `${registrationData.firstName} ${registrationData.lastName}`.trim();
+    const brandedHtml = createEmailTemplate(
+      'Iscrizione Corso Ricevuta',
+      `
+        <p>Ciao <strong>${registrationData.firstName}</strong>, abbiamo ricevuto la tua richiesta di iscrizione al corso.</p>
+        <h3 style="margin: 20px 0 10px; color: #1f2937;">Riepilogo Iscrizione Corso</h3>
+        <p><strong>Studente:</strong> ${fullName}</p>
+        <p><strong>Data del corso:</strong> ${registrationData.timeSlot}</p>
+        <p><strong>Modalita di pagamento:</strong> ${registrationData.paymentMethod}</p>
+        <p style="margin-top: 16px;">Ti contatteremo entro <strong>24-48 ore</strong> per confermare definitivamente il posto e inviarti i prossimi passaggi.</p>
+      `,
+      'Contattaci su WhatsApp',
+      'https://wa.me/41762660396'
+    );
+
+    const templateParams: EmailData = {
+      email: registrationData.userEmail,
+      to_name: fullName,
+      from_name: '3DMAKES Team',
+      subject: 'Conferma richiesta iscrizione - Corso Base Stampa 3D',
+      order_id: registrationData.registrationId.slice(0, 8).toUpperCase(),
+      order_details: `Conferma iscrizione al corso - Studente: ${fullName}`,
+      delivery_date: registrationData.timeSlot,
+      message: `Pagamento selezionato: ${registrationData.paymentMethod}. Ti contatteremo entro 24-48 ore per la conferma finale.`,
+      payment_method: registrationData.paymentMethod,
+      // Campi pronti per template EmailJS dedicato corso
+      email_title: 'Conferma Iscrizione al Corso',
+      section_title: 'Riepilogo Iscrizione Corso',
+      course_title: 'Corso Base Stampa 3D',
+      student_name: fullName,
+      course_date: registrationData.timeSlot,
+      registration_code: registrationData.registrationId.slice(0, 8).toUpperCase(),
+      cta_label: 'Contattaci su WhatsApp',
+      cta_url: 'https://wa.me/41762660396',
+      html_content: brandedHtml
+    };
+
+    const templateCandidates = [
+      EMAILJS_TEMPLATE_ID_COURSE_REGISTRATION,
+      EMAILJS_TEMPLATE_ID_GENERAL,
+      EMAILJS_TEMPLATE_ID_COURSE_LEGACY,
+    ];
+    let sent = false;
+    let lastError: unknown = null;
+
+    for (const templateId of templateCandidates) {
+      try {
+        await emailjs.send(EMAILJS_SERVICE_ID, templateId, templateParams);
+        sent = true;
+        break;
+      } catch (error) {
+        lastError = error;
+      }
+    }
+
+    if (!sent) {
+      throw lastError || new Error('Nessun template EmailJS disponibile per conferma corso');
+    }
+
+    console.log('Email di conferma iscrizione corso inviata con successo');
+    return true;
+  } catch (error) {
+    console.error('Errore nell\'invio dell\'email di conferma iscrizione corso:', error);
     return false;
   }
 };
@@ -100,18 +224,29 @@ export const sendOrderUpdateEmail = async (orderData: {
   message: string;
 }): Promise<boolean> => {
   try {
+    const brandedHtml = createEmailTemplate(
+      `Aggiornamento Ordine #${orderData.orderId}`,
+      `
+        <p>Ciao <strong>${orderData.userName}</strong>, ci sono novita sul tuo ordine.</p>
+        <p>${orderData.message}</p>
+      `,
+      'Controlla lo stato ordine',
+      'https://3dmakes.ch/dashboard/ordini'
+    );
+
     const templateParams: EmailData = {
       email: orderData.userEmail,
       to_name: orderData.userName,
       from_name: '3DMAKES Team',
       subject: `Aggiornamento Ordine #${orderData.orderId}`,
       order_id: orderData.orderId,
-      message: orderData.message
+      message: orderData.message,
+      html_content: brandedHtml
     };
 
     await emailjs.send(
       EMAILJS_SERVICE_ID,
-      EMAILJS_TEMPLATE_ID_ORDER_UPDATE,
+      EMAILJS_TEMPLATE_ID_GENERAL,
       templateParams
     );
 
@@ -132,6 +267,18 @@ export const sendQuoteReadyEmail = async (quoteData: {
   validUntil: string;
 }): Promise<boolean> => {
   try {
+    const brandedHtml = createEmailTemplate(
+      `Preventivo pronto: ${quoteData.projectName}`,
+      `
+        <p>Ciao <strong>${quoteData.userName}</strong>, il tuo preventivo e pronto.</p>
+        <p><strong>Progetto:</strong> ${quoteData.projectName}</p>
+        <p><strong>Importo:</strong> ${quoteData.quotePrice.toFixed(2)} CHF</p>
+        <p><strong>Validita:</strong> ${quoteData.validUntil}</p>
+      `,
+      'Visualizza preventivo',
+      'https://3dmakes.ch/dashboard/progetti'
+    );
+
     const templateParams: EmailData = {
       email: quoteData.userEmail,
       to_name: quoteData.userName,
@@ -141,12 +288,13 @@ export const sendQuoteReadyEmail = async (quoteData: {
       order_details: `Il tuo preventivo per "${quoteData.projectName}" è pronto!`,
       quote_price: `${quoteData.quotePrice.toFixed(2)} CHF`,
       delivery_date: `Valido per ${quoteData.validUntil}`,
-      message: `Ciao ${quoteData.userName}! Il tuo preventivo è pronto. Puoi procedere con l'ordine accedendo alla tua area clienti.`
+      message: `Ciao ${quoteData.userName}! Il tuo preventivo è pronto. Puoi procedere con l'ordine accedendo alla tua area clienti.`,
+      html_content: brandedHtml
     };
 
     await emailjs.send(
       EMAILJS_SERVICE_ID,
-      EMAILJS_TEMPLATE_ID_QUOTE_READY,
+      EMAILJS_TEMPLATE_ID_GENERAL,
       templateParams
     );
 
@@ -170,6 +318,17 @@ export const sendCustomQuoteEmail = async (quoteData: {
   notes?: string;
 }): Promise<boolean> => {
   try {
+    const brandedHtml = createEmailTemplate(
+      `Preventivo Personalizzato #${quoteData.quoteId}`,
+      `
+        <p>Ciao <strong>${quoteData.clientName}</strong>, abbiamo preparato il tuo preventivo personalizzato.</p>
+        <p><strong>Descrizione:</strong> ${quoteData.description}</p>
+        <p><strong>Importo:</strong> ${quoteData.amount.toFixed(2)} CHF</p>
+      `,
+      quoteData.pdfUrl ? 'Apri Preventivo PDF' : undefined,
+      quoteData.pdfUrl
+    );
+
     const templateParams: EmailData = {
       email: quoteData.clientEmail,
       to_name: quoteData.clientName,
@@ -180,12 +339,13 @@ export const sendCustomQuoteEmail = async (quoteData: {
       quote_price: `${quoteData.amount.toFixed(2)} CHF`,
       quote_pdf_url: quoteData.pdfUrl || '',
       quote_valid_until: quoteData.validUntil ? quoteData.validUntil.toLocaleDateString('it-IT') : '',
-      quote_notes: quoteData.notes || ''
+      quote_notes: quoteData.notes || '',
+      html_content: brandedHtml
     };
 
     await emailjs.send(
       EMAILJS_SERVICE_ID,
-      EMAILJS_TEMPLATE_ID_QUOTE_READY,
+      EMAILJS_TEMPLATE_ID_GENERAL,
       templateParams
     );
 
@@ -200,10 +360,20 @@ export const sendCustomQuoteEmail = async (quoteData: {
 // Email generica
 export const sendGenericEmail = async (emailData: EmailData): Promise<boolean> => {
   try {
+    const mergedData: EmailData = {
+      ...emailData,
+      html_content:
+        emailData.html_content ||
+        createEmailTemplate(
+          emailData.subject || 'Comunicazione 3DMAKES',
+          `<p>${emailData.message || 'Hai ricevuto una nuova comunicazione da 3DMAKES.'}</p>`
+        )
+    };
+
     await emailjs.send(
       EMAILJS_SERVICE_ID,
-      EMAILJS_TEMPLATE_ID_ORDER_CONFIRMATION,
-      emailData
+      EMAILJS_TEMPLATE_ID_GENERAL,
+      mergedData
     );
 
     console.log('Email generica inviata con successo');
@@ -216,7 +386,7 @@ export const sendGenericEmail = async (emailData: EmailData): Promise<boolean> =
 
 // Funzione per inviare email di notifica admin
 export const sendAdminNotificationEmail = async (data: {
-  type: 'new_order' | 'new_user' | 'new_message' | 'new_quote_request';
+  type: 'new_order' | 'new_user' | 'new_message' | 'new_quote_request' | 'new_course_registration';
   details: string;
   userInfo?: string;
 }): Promise<boolean> => {
@@ -225,8 +395,17 @@ export const sendAdminNotificationEmail = async (data: {
       'new_order': '🛒 Nuovo Ordine',
       'new_user': '👤 Nuovo Utente Registrato',
       'new_message': '💬 Nuovo Messaggio',
-      'new_quote_request': '📋 Nuova Richiesta di Preventivo'
+      'new_quote_request': '📋 Nuova Richiesta di Preventivo',
+      'new_course_registration': '🎓 Nuova Iscrizione Corso'
     };
+
+    const brandedHtml = createEmailTemplate(
+      subjectMap[data.type],
+      `
+        <p>${data.details}</p>
+        ${data.userInfo ? `<p><strong>Dettagli:</strong> ${data.userInfo}</p>` : ''}
+      `
+    );
 
     const templateParams: EmailData = {
       email: 'info@3dmakes.ch',
@@ -235,12 +414,13 @@ export const sendAdminNotificationEmail = async (data: {
       subject: subjectMap[data.type],
       message: data.details,
       order_details: data.userInfo || '',
-      order_id: `NOTIFICA-${Date.now()}`
+      order_id: `NOTIFICA-${Date.now()}`,
+      html_content: brandedHtml
     };
 
     await emailjs.send(
       EMAILJS_SERVICE_ID,
-      EMAILJS_TEMPLATE_ID_ORDER_CONFIRMATION,
+      EMAILJS_TEMPLATE_ID_GENERAL,
       templateParams
     );
 
@@ -277,7 +457,7 @@ export const createEmailTemplate = (
           background-color: #f8fafc;
         }
         .header {
-          background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+          background: ${BRAND_BLUE};
           color: white;
           padding: 30px;
           text-align: center;
@@ -296,7 +476,7 @@ export const createEmailTemplate = (
         }
         .button {
           display: inline-block;
-          background: #f97316;
+          background: ${BRAND_CYAN};
           color: white;
           padding: 12px 24px;
           text-decoration: none;
@@ -306,7 +486,7 @@ export const createEmailTemplate = (
           transition: background-color 0.3s;
         }
         .button:hover {
-          background: #ea580c;
+          background: ${BRAND_CYAN_HOVER};
         }
         .footer {
           text-align: center;
@@ -324,7 +504,7 @@ export const createEmailTemplate = (
     </head>
     <body>
       <div class="header">
-        <div class="logo">3D<span style="color: #f97316;">MAKES</span></div>
+        <div class="logo"><span style="color: #ffffff;">3D</span><span style="color: ${BRAND_CYAN};">MAKES</span></div>
         <p style="margin: 0; opacity: 0.9;">Innovazione nella Stampa 3D</p>
       </div>
       
