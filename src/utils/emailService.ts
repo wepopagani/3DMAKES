@@ -389,6 +389,13 @@ export const sendAdminNotificationEmail = async (data: {
   type: 'new_order' | 'new_user' | 'new_message' | 'new_quote_request' | 'new_course_registration';
   details: string;
   userInfo?: string;
+  courseData?: {
+    participantName: string;
+    courseTitle: string;
+    courseDate: string;
+    paymentMethod: string;
+    registrationCode: string;
+  };
 }): Promise<boolean> => {
   try {
     const subjectMap = {
@@ -403,7 +410,7 @@ export const sendAdminNotificationEmail = async (data: {
       subjectMap[data.type],
       `
         <p>${data.details}</p>
-        ${data.userInfo ? `<p><strong>Dettagli:</strong> ${data.userInfo}</p>` : ''}
+        ${data.userInfo ? `<p><strong>Dettagli:</strong> ${data.userInfo.replace(/\n/g, '<br>')}</p>` : ''}
       `
     );
 
@@ -417,6 +424,20 @@ export const sendAdminNotificationEmail = async (data: {
       order_id: `NOTIFICA-${Date.now()}`,
       html_content: brandedHtml
     };
+
+    // Se usiamo il template corso anche per le notifiche admin, valorizziamo i placeholder dedicati
+    if (data.type === 'new_course_registration' && data.courseData) {
+      templateParams.to_name = '3DMAKES';
+      templateParams.email_title = 'Nuova Prenotazione Corso';
+      templateParams.section_title = 'Dati Partecipante';
+      templateParams.student_name = '3DMAKES';
+      templateParams.course_title = `${data.courseData.courseTitle} - ${data.courseData.participantName}`;
+      templateParams.course_date = data.courseData.courseDate;
+      templateParams.payment_method = data.courseData.paymentMethod;
+      templateParams.registration_code = data.courseData.registrationCode;
+      templateParams.cta_label = 'Apri pannello admin';
+      templateParams.cta_url = 'https://3dmakes.ch/admin';
+    }
 
     await emailjs.send(
       EMAILJS_SERVICE_ID,

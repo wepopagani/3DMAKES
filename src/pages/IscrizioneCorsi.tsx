@@ -351,6 +351,13 @@ const IscrizioneCorsi = () => {
                             `Pagamento: ${paymentMethod}\n` +
                             `${message?.trim() ? `Note: ${message.trim()}\n` : ''}` +
                             `ID Iscrizione: ${registrationId}`,
+                          courseData: {
+                            participantName: `${firstName} ${lastName}`,
+                            courseTitle: 'Corso Base Stampa 3D',
+                            courseDate: selectedSlotLabel,
+                            paymentMethod,
+                            registrationCode: registrationId.slice(0, 8).toUpperCase(),
+                          },
                         }),
                       ]);
 
