@@ -84,7 +84,7 @@ const ServicesSection = () => {
           <div className="flex justify-center">
             <img 
               src="/COSA OFFRIAMO.png" 
-              alt="Cosa Offriamo"
+              alt="Servizi 3DMAKES — stampa 3D FDM e SLA, scansione 3D, taglio laser e prototipazione — Lugano"
               className="w-full h-auto max-w-4xl"
               onError={(e) => {
                 e.currentTarget.src = "https://placehold.co/1000x400/ffffff/333333?text=Cosa+Offriamo";

@@ -27,7 +27,7 @@ const Banner = () => {
       <div className="container-custom flex flex-col lg:flex-row justify-between items-center gap-8">
         <div className="max-w-2xl w-full flex items-center justify-center">
           {/* Versione Desktop - tutto su una riga (solo schermi grandi) */}
-          <h1 className="hidden lg:block text-5xl lg:text-6xl font-black text-brand-blue text-center leading-tight" style={{fontFamily: 'Gotham Black, Arial Black, sans-serif'}}>
+          <h2 className="hidden lg:block text-5xl lg:text-6xl font-black text-brand-blue text-center leading-tight" style={{fontFamily: 'Gotham Black, Arial Black, sans-serif'}}>
             {text.split('').map((char, index) => (
               <span
                 key={index}
@@ -44,18 +44,18 @@ const Banner = () => {
                 {char === ' ' ? '\u00A0' : char}
               </span>
             ))}
-          </h1>
+          </h2>
           
           {/* Versione Mobile/Tablet - "PRENDE FORMA" a capo */}
-          <h1 className="block lg:hidden text-4xl md:text-5xl font-black text-brand-blue text-center leading-tight" style={{fontFamily: 'Gotham Black, Arial Black, sans-serif'}}>
+          <h2 className="block lg:hidden text-4xl md:text-5xl font-black text-brand-blue text-center leading-tight" style={{fontFamily: 'Gotham Black, Arial Black, sans-serif'}}>
             <span className="block">DOVE OGNI IDEA</span>
             <span className="block">PRENDE FORMA</span>
-          </h1>
+          </h2>
         </div>
         <div className="max-w-2xl w-full hidden lg:block">
           <img 
             src="/TONY HD CON OMBRA copia.png" 
-            alt="Tony HD con ombra"
+            alt="Mascotte Tony 3DMAKES — stampa 3D professionale Lugano e Ticino"
             className="w-full h-auto block"
             onError={(e) => {
               e.currentTarget.src = "https://placehold.co/600x300/ffffff/333333?text=Tony+HD";

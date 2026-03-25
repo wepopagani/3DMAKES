@@ -12,7 +12,7 @@ const MissionSection = () => {
         <div className="text-center mb-16 -mt-16">
           <img
             src="/valori.png"
-            alt="Valori"
+            alt="Valori 3DMAKES — qualità, innovazione e servizio clienti nella stampa 3D professionale"
             className="w-full h-auto max-w-3xl mx-auto mb-8"
             onError={(e) => {
               e.currentTarget.src = "https://placehold.co/700x250/ffffff/333333?text=Valori";
@@ -64,7 +64,7 @@ const MissionSection = () => {
           <div className="mb-6">
             <img
               src="/la nostra mission copia.png"
-              alt="La Nostra Mission"
+              alt="Mission 3DMAKES — democratizzare la stampa 3D in Ticino e Lombardia"
               className="w-full h-auto max-w-2xl"
               onError={(e) => {
                 e.currentTarget.src = "https://placehold.co/600x300/ffffff/333333?text=La+Nostra+Mission";

@@ -15,7 +15,7 @@ const WhatsAppButton = () => {
     >
       <img 
         src="/images/WhatsApp.png" 
-        alt="WhatsApp" 
+        alt="Scrivi a 3DMAKES su WhatsApp per preventivo stampa 3D" 
         className="w-6 h-6 group-hover:animate-pulse"
       />
       

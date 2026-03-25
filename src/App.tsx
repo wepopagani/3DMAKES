@@ -39,6 +39,7 @@ import PetPassportSimple from "./pages/PetPassportSimple";
 import TestPetPassport from "./pages/TestPetPassport";
 import IscrizioneCorsi from "./pages/IscrizioneCorsi";
 import LogoSplashScreen from "./components/LogoSplashScreen";
+import SeoManager from "./components/SeoManager";
 
 const queryClient = new QueryClient();
 
@@ -50,6 +51,7 @@ const App = () => (
           <LogoSplashScreen />
           <Toaster />
           <Sonner />
+          <SeoManager />
           <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/about" element={<About />} />

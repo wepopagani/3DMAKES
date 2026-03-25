@@ -20,7 +20,7 @@ const BlogSection = () => {
           <div className="mb-6 -mt-8">
             <img 
               src="/curioso.png" 
-              alt="Curioso"
+              alt="Blog stampa 3D 3DMAKES — guide, casi studio e novità da Lugano"
               className="w-full h-auto max-w-2xl mx-auto scale-75"
               onError={(e) => {
                 e.currentTarget.src = "https://placehold.co/800x300/ffffff/333333?text=Curioso";

@@ -66,7 +66,7 @@ const Navbar = () => {
           <Link to="/" className="flex items-center space-x-2" onClick={closeMenu}>
             <img 
               src="/logo.png" 
-              alt="3DMAKES Logo" 
+              alt="Logo 3DMAKES — servizi stampa 3D Lugano" 
               className="h-7 md:h-9 max-w-[150px] md:max-w-[190px] w-auto object-contain"
               onError={(e) => {
                 // Fallback al logo testuale se l'immagine non carica

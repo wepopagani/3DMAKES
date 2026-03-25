@@ -106,7 +106,7 @@ const About = () => {
                 <div className="bg-brand-accent/10 absolute -left-6 -top-6 w-32 h-32 rounded-lg"></div>
                 <img
                   src="https://images.unsplash.com/photo-1581094288338-2314dddb7ece?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                  alt="Our workshop"
+                  alt="Laboratorio e produzione additiva — stampa 3D professionale 3DMAKES"
                   className="rounded-lg w-full h-auto object-cover shadow-lg relative z-10"
                 />
               </div>

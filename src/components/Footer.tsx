@@ -13,7 +13,7 @@ const Footer = () => {
             <Link to="/" className="inline-block mb-4">
               <img 
                 src="/logo.png" 
-                alt="3DMAKES Logo" 
+                alt="Logo 3DMAKES — stampa 3D professionale Lugano e Ticino" 
                 className="h-24 md:h-28 w-auto object-contain brightness-0 invert"
               />
             </Link>
@@ -99,7 +99,7 @@ const Footer = () => {
           <div className="flex items-center justify-center gap-2">
             <img 
               src="/logo.png" 
-              alt="3DMAKES Logo" 
+              alt="Logo 3DMAKES — stampa 3D professionale Lugano e Ticino" 
               className="h-4 w-auto object-contain brightness-0 invert"
             />
             <p className="text-center text-sm text-gray-300">

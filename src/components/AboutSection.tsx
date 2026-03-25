@@ -134,7 +134,7 @@ const AboutSection = () => {
           <div className="flex justify-center">
             <img 
               src="/chi siamo.png" 
-              alt="Chi Siamo"
+              alt="3DMAKES Chi siamo — laboratorio stampa 3D e prototipazione a Lugano, Ticino"
               className="w-full h-auto max-w-3xl"
               onError={(e) => {
                 e.currentTarget.src = "https://placehold.co/800x300/ffffff/333333?text=Chi+Siamo";
@@ -154,7 +154,7 @@ const AboutSection = () => {
               <div className="bg-brand-accent/10 absolute -right-5 -bottom-5 w-32 h-32 rounded-lg"></div>
               <img
                 src="/ragazzi.png"
-                alt="Team 3DMAKES"
+                alt="Team 3DMAKES — esperti stampa 3D, FDM e SLA a Lugano"
                 className="rounded-lg w-full h-auto object-cover shadow-lg relative z-10"
                 onError={(e) => {
                   e.currentTarget.src = "https://placehold.co/600x400/ffffff/333333?text=Team+Ragazzi";

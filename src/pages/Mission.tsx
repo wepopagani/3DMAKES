@@ -79,7 +79,7 @@ const Mission = () => {
                   <div className="bg-brand-accent/10 absolute -right-6 -bottom-6 w-32 h-32 rounded-lg"></div>
                   <img
                     src="/CIBOO.png"
-                    alt="Our mission"
+                    alt="Missione 3DMAKES — innovazione e stampa 3D per professionisti e aziende"
                     className="rounded-lg w-full h-auto object-cover shadow-lg relative z-10"
                     onError={(e) => {
                       e.currentTarget.src = "https://placehold.co/800x600/ffffff/333333?text=CIBOO";
@@ -195,7 +195,7 @@ const Mission = () => {
                   <div className="relative bg-gradient-to-br from-gray-100 to-white rounded-2xl p-1 backdrop-blur-sm border border-gray-200 shadow-xl">
                     <img 
                       src="https://images.unsplash.com/photo-1615286922420-c6b348ffbd62?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
-                      alt="Our vision for 3D printing" 
+                      alt="Visione stampa 3D — prototipazione e materiali avanzati con 3DMAKES" 
                       className="w-full h-auto rounded-xl object-cover"
                     />
                   </div>

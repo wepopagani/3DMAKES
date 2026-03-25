@@ -56,7 +56,7 @@ const ContactForm = () => {
         <div className="text-center mb-20">
           <img
             src="/contatto.png"
-            alt="Contatto"
+            alt="Contatta 3DMAKES per preventivo stampa 3D, scansione e taglio laser — Lugano"
             className="w-full h-auto max-w-6xl mx-auto"
             onError={(e) => {
               e.currentTarget.src = "https://placehold.co/1000x400/ffffff/333333?text=Contatto";
