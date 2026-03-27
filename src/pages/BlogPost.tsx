@@ -36,7 +36,7 @@ const BlogPostPage = () => {
   useEffect(() => {
     if (!post) return;
 
-    const CANONICAL_BASE_URL = "https://www.3dmakes.ch";
+    const CANONICAL_BASE_URL = "https://3dmakes.ch";
     const pageUrl = `${CANONICAL_BASE_URL}/blog/${post.id}`;
 
     const monthMap: Record<string, number> = {

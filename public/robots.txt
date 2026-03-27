@@ -14,7 +14,7 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://www.3dmakes.ch/sitemap.xml
+Sitemap: https://3dmakes.ch/sitemap.xml
 
 # Specific crawl directives for better SEO
 Crawl-delay: 1

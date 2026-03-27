@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { getBlogPosts } from "@/data/blogContent";
 
-const CANONICAL_BASE_URL = "https://www.3dmakes.ch";
+const CANONICAL_BASE_URL = "https://3dmakes.ch";
 
 /**
  * SPA SEO helper:
