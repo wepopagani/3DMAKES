@@ -213,14 +213,14 @@ const About = () => {
               {/* Mappa */}
               <div className="rounded-lg overflow-hidden shadow-lg h-[400px]">
                 <iframe 
-                  src="https://maps.google.com/maps?q=Via+Cantonale+15,+6918+Figino,+Switzerland&hl=it&z=15&output=embed"
+                  src="https://maps.google.com/maps?q=Via+Cantonale+15,+6918+Lamone,+Switzerland&hl=it&z=15&output=embed"
                   width="100%" 
                   height="400" 
                   style={{border: 0}} 
                   allowFullScreen 
                   loading="lazy" 
                   referrerPolicy="no-referrer-when-downgrade"
-                  title="Mappa di 3DMAKES - Via Cantonale 15, 6918 Figino, Ticino"
+                  title="Mappa di 3DMAKES - Via Cantonale 15, 6918 Lamone, Ticino"
                 ></iframe>
               </div>
               
@@ -241,13 +241,13 @@ const About = () => {
                         <span className="font-medium">{t('contact.info.address')}:</span>
                       </p>
                       <a
-                        href="https://www.google.com/maps/search/?api=1&query=Via+Cantonale+15%2C+6918+Figino%2C+Svizzera"
+                        href="https://www.google.com/maps/search/?api=1&query=Via+Cantonale+15%2C+6918+Lamone%2C+Svizzera"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-brand-accent hover:text-brand-blue transition-colors"
                       >
                         Via Cantonale 15<br />
-                        6918 Figino, Svizzera
+                        6918 Lamone, Svizzera
                       </a>
                     </div>
                   </div>

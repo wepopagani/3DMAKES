@@ -55,12 +55,15 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">{t('footer.servicesTitle')}</h3>
             <ul className="space-y-3">
-              <li><Link to="/services#fdm" className="text-gray-300 hover:text-white">{t('services.fdm.title')}</Link></li>
-              <li><Link to="/services#sla" className="text-gray-300 hover:text-white">{t('services.sla.title')}</Link></li>
-              <li><Link to="/services#incisione-laser" className="text-gray-300 hover:text-white">{t('services.laser.title')}</Link></li>
-              <li><Link to="/services#riparazione-stampanti-3d" className="text-gray-300 hover:text-white">{t('services.largePrint.title')}</Link></li>
-              <li><Link to="/services#scansione" className="text-gray-300 hover:text-white">{t('services.scanning.title')}</Link></li>
-              <li><Link to="/services#prototipazione" className="text-gray-300 hover:text-white">{t('services.prototyping.title')}</Link></li>
+              <li><Link to="/services/fdm" className="text-gray-300 hover:text-white">{t('services.fdm.title')}</Link></li>
+              <li><Link to="/services/sla" className="text-gray-300 hover:text-white">{t('services.sla.title')}</Link></li>
+              <li><Link to="/services/laser" className="text-gray-300 hover:text-white">{t('services.laser.title')}</Link></li>
+              <li><Link to="/services/riparazione-stampanti" className="text-gray-300 hover:text-white">{t('services.largePrint.title')}</Link></li>
+              <li><Link to="/services/scansione" className="text-gray-300 hover:text-white">{t('services.scanning.title')}</Link></li>
+              <li><Link to="/services/prototipazione" className="text-gray-300 hover:text-white">{t('services.prototyping.title')}</Link></li>
+              <li><Link to="/services/sls" className="text-gray-300 hover:text-white">{t('services.sls.title')}</Link></li>
+              <li><Link to="/services/slm" className="text-gray-300 hover:text-white">{t('services.slm.title')}</Link></li>
+              <li><Link to="/services/mjf" className="text-gray-300 hover:text-white">{t('services.mjf.title')}</Link></li>
               <li><Link to="/calculator" className="text-gray-300 hover:text-white">{t('footer.calculateQuote')}</Link></li>
             </ul>
           </div>
@@ -70,13 +73,13 @@ const Footer = () => {
             <address className="not-italic text-gray-300">
               <p className="mb-2">
                 <a
-                  href="https://www.google.com/maps/search/?api=1&query=Via+Cantonale+15%2C+6918+Figino%2C+Svizzera"
+                  href="https://www.google.com/maps/search/?api=1&query=Via+Cantonale+15%2C+6918+Lamone%2C+Svizzera"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-white hover:underline"
                 >
                   Via Cantonale 15<br />
-                  6918 Figino, Svizzera
+                  6918 Lamone, Svizzera
                 </a>
               </p>
               <p className="mb-2">

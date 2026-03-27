@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface FAQCategory {
@@ -10,7 +10,7 @@ interface FAQCategory {
 }
 
 export default function FAQSection() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const faqCategories: FAQCategory[] = [
     {
@@ -83,9 +83,36 @@ export default function FAQSection() {
     setOpenFAQ(openFAQ === index ? null : index);
   };
 
+  const faqPageSchema = useMemo(() => {
+    const questions = faqCategories.flatMap((category) =>
+      category.faqs.map((faq) => ({
+        question: faq.question,
+        answer: faq.answer,
+      }))
+    );
+
+    return {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: questions.map((q) => ({
+        "@type": "Question",
+        name: q.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: q.answer,
+        },
+      })),
+    };
+  }, [i18n.language]); // faqCategories dipende da t() e quindi dalla lingua
+
   return (
     <section className="py-16" style={{backgroundColor: '#E5DDD3'}}>
       <div className="container-custom">
+        <script
+          type="application/ld+json"
+          // Inseriamo lo schema direttamente nell'HTML renderizzato per supportare anche crawler senza JS.
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageSchema) }}
+        />
         <div className="text-center max-w-3xl mx-auto mb-12">
           <div className="inline-block px-3 py-1 text-sm font-medium rounded-full bg-brand-accent/10 text-brand-accent mb-4">
             FAQ

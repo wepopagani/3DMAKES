@@ -16,7 +16,7 @@ const ServicesSection = () => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" />
         </svg>
       ),
-      link: "/services#prototipazione"
+      link: "/services/prototipazione"
     },
     {
       title: t('services.scanning.title'),
@@ -27,7 +27,7 @@ const ServicesSection = () => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
         </svg>
       ),
-      link: "/services#scansione"
+      link: "/services/scansione"
     },
     {
       title: t('services.repair.title'),
@@ -39,7 +39,7 @@ const ServicesSection = () => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
       ),
-      link: "/services#riparazione-stampanti-3d"
+      link: "/services/riparazione-stampanti"
     },
     {
       title: t('services.sla.title'),
@@ -50,7 +50,7 @@ const ServicesSection = () => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
         </svg>
       ),
-      link: "/services#sla"
+      link: "/services/sla"
     },
     {
       title: t('services.fdmBasic.title'),
@@ -61,7 +61,7 @@ const ServicesSection = () => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
         </svg>
       ),
-      link: "/services#fdm"
+      link: "/services/fdm"
     },
     {
       title: t('services.laser.title'),
@@ -72,7 +72,7 @@ const ServicesSection = () => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
         </svg>
       ),
-      link: "/services#incisione-laser"
+      link: "/services/laser"
     }
   ];
   

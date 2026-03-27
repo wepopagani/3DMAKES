@@ -1,8 +1,7 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
-import ProcessTimeline from "@/components/ProcessTimeline";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 
@@ -36,19 +35,7 @@ interface Service {
 
 const Services = () => {
   const { t } = useTranslation();
-
-  // Effect to handle scrolling to specific service sections
-  useEffect(() => {
-    const hash = window.location.hash;
-    if (hash) {
-      setTimeout(() => {
-        const element = document.getElementById(hash.substring(1));
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 100);
-    }
-  }, []);
+  const navigate = useNavigate();
 
   const services: Service[] = [
     {
@@ -197,6 +184,27 @@ const Services = () => {
     }
   ];
 
+  // Compatibility: vecchi link tipo "/services#fdm" => redirect alla nuova pagina servizio.
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (!hash) return;
+
+    const rawServiceId = hash.substring(1);
+    if (!rawServiceId) return;
+
+    const canonicalServiceId =
+      rawServiceId === "incisione-laser"
+        ? "laser"
+        : rawServiceId === "riparazione-stampanti-3d"
+          ? "riparazione-stampanti"
+          : rawServiceId;
+
+    // Evita loop: se siamo già sulla pagina servizio, non reindirizzare.
+    if (window.location.pathname !== "/services") return;
+
+    navigate(`/services/${canonicalServiceId}`, { replace: true });
+  }, [navigate]);
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -217,7 +225,7 @@ const Services = () => {
         <section className="py-16 md:py-20 bg-white">
           <div className="container-custom">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {services.map((service, index) => (
+              {services.map((service) => (
                 <div 
                   key={service.id}
                   className="bg-white rounded-xl shadow-sm border border-gray-100 transition-all hover:shadow-md overflow-hidden"
@@ -233,106 +241,22 @@ const Services = () => {
                     <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
                     <p className="text-brand-gray mb-5 line-clamp-3">{service.description}</p>
                     <Button asChild variant="outline" size="sm">
-                      <a href={`#${service.id}`}>{t('common.discoverMore')}</a>
+                      <Link
+                        to={`/services/${
+                          service.id === "incisione-laser"
+                            ? "laser"
+                            : service.id === "riparazione-stampanti-3d"
+                              ? "riparazione-stampanti"
+                              : service.id
+                        }`}
+                      >
+                        {t('common.discoverMore')}
+                      </Link>
                     </Button>
                   </div>
                 </div>
               ))}
             </div>
-          </div>
-        </section>
-
-        {/* Individual Services */}
-        {services.map((service, index) => (
-          <section key={service.id} id={service.id} className={`py-16 md:py-20 ${index % 2 === 0 ? '' : 'bg-white'}`} style={index % 2 === 0 ? {backgroundColor: '#E4DDD4'} : {}}>
-            <div className="container-custom">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div className={index % 2 === 0 ? "order-1" : "order-1 lg:order-2"}>
-                  <img 
-                    src={service.image} 
-                    alt={service.title} 
-                    className="w-full h-auto rounded-lg shadow-lg"
-                  />
-                </div>
-                
-                <div className={index % 2 === 0 ? "order-1 lg:order-2" : "order-1"}>
-                  <h2 className="heading-2 mb-6">{service.title}</h2>
-                  <p className="body-text mb-8">{service.description}</p>
-                  
-                  <div className="mb-8">
-                    <h3 className="text-lg font-semibold mb-4">{t('services.characteristics')}</h3>
-                    <ul className="space-y-3">
-                      {service.features && service.features.map((feature, idx) => (
-                        <li key={idx} className="flex items-start">
-                          <svg className="h-5 w-5 text-brand-accent mr-2 mt-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                          </svg>
-                          <span className="text-brand-gray">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  
-                  {/* Conditional button based on service type */}
-                  {service.id === 'fdm' || service.id === 'sla' ? (
-                    <Button asChild>
-                      <Link to="/calculator">{t('services.requestQuote')}</Link>
-                    </Button>
-                  ) : (
-                    <Button asChild>
-                      <Link to="/#contact">{t('services.requestQuote')}</Link>
-                    </Button>
-                  )}
-                </div>
-              </div>
-              
-              {/* Materials or Applications based on service type */}
-              <div className="mt-16">
-                {service.materials && service.materials.length > 0 && (
-                  <>
-                    <h3 className="text-2xl font-semibold mb-8 text-center">{t('services.availableMaterials')}</h3>
-                    <div className="flex justify-center">
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl">
-                        {service.materials.map((material, idx) => (
-                          <div key={idx} className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                            <h4 className="text-xl font-semibold mb-2">{material.name}</h4>
-                            <p className="text-brand-gray mb-3"><span className="font-medium">{t('services.characteristics')}:</span> {material.features}</p>
-                            <p className="text-brand-gray"><span className="font-medium">{t('services.applications')}:</span> {material.applications}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </>
-                )}
-                
-                {service.applications && service.applications.length > 0 && (
-                  <>
-                    <h3 className="text-2xl font-semibold mb-8 text-center">{t('services.applications')}</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {service.applications.map((app, idx) => (
-                        <div key={idx} className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                          <h4 className="text-xl font-semibold mb-2">{app.name}</h4>
-                          <p className="text-brand-gray">{app.description}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </>
-                )}
-                
-              </div>
-            </div>
-          </section>
-        ))}
-
-        {/* Process Section - Shown after SLS service */}
-        <section className="py-16 md:py-20" style={{backgroundColor: '#E4DDD4'}}>
-          <div className="container-custom">
-            <h3 className="text-2xl font-semibold mb-8 text-center">{t('services.ourProcess')}</h3>
-            <ProcessTimeline steps={
-              Array.isArray(t('services.prototyping.process', { returnObjects: true }))
-                ? t('services.prototyping.process', { returnObjects: true }) as ProcessStep[]
-                : []
-            } />
           </div>
         </section>
 

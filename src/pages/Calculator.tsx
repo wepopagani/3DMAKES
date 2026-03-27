@@ -2,9 +2,10 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import QuoteCalculator from "@/components/QuoteCalculator";
 import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
 
 const Calculator = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   // Sample FAQ data
   const faqs = [
@@ -29,6 +30,43 @@ const Calculator = () => {
       answer: t('calculator.modelModification')
     }
   ];
+
+  // FAQPage structured data (Schema.org)
+  useEffect(() => {
+    const FAQ_SCHEMA_ID = "faqpage-schema-calculator";
+
+    const faqPageSchema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqs.map((faq) => ({
+        "@type": "Question",
+        name: faq.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: faq.answer,
+        },
+      })),
+    };
+
+    const existing = document.getElementById(FAQ_SCHEMA_ID) as HTMLScriptElement | null;
+    const json = JSON.stringify(faqPageSchema);
+
+    if (existing) {
+      existing.textContent = json;
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.id = FAQ_SCHEMA_ID;
+    script.type = "application/ld+json";
+    script.textContent = json;
+    document.head.appendChild(script);
+
+    return () => {
+      const el = document.getElementById(FAQ_SCHEMA_ID);
+      el?.remove();
+    };
+  }, [i18n.language]); // ricalcola quando cambia lingua
 
   return (
     <div className="min-h-screen flex flex-col">

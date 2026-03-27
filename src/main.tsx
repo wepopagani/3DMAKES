@@ -4,8 +4,9 @@ import App from "./App.tsx";
 import "./index.css";
 import './i18n';
 
-// Disabilita temporaneamente StrictMode per debugging
-createRoot(document.getElementById("root")!).render(
+const rootEl = document.getElementById("root")!;
+
+createRoot(rootEl).render(
   <StrictMode>
     <App />
   </StrictMode>,

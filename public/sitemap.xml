@@ -76,45 +76,66 @@
 
   <!-- Servizi specifici -->
   <url>
-    <loc>https://www.3dmakes.ch/services#fdm</loc>
+    <loc>https://www.3dmakes.ch/services/fdm</loc>
     <lastmod>2024-12-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://www.3dmakes.ch/services#sla</loc>
+    <loc>https://www.3dmakes.ch/services/sla</loc>
     <lastmod>2024-12-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://www.3dmakes.ch/services#incisione-laser</loc>
+    <loc>https://www.3dmakes.ch/services/laser</loc>
     <lastmod>2024-12-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://www.3dmakes.ch/services#riparazione-stampanti-3d</loc>
+    <loc>https://www.3dmakes.ch/services/riparazione-stampanti</loc>
     <lastmod>2024-12-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://www.3dmakes.ch/services#scansione</loc>
+    <loc>https://www.3dmakes.ch/services/scansione</loc>
     <lastmod>2024-12-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://www.3dmakes.ch/services#prototipazione</loc>
+    <loc>https://www.3dmakes.ch/services/prototipazione</loc>
     <lastmod>2024-12-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.3dmakes.ch/services/sls</loc>
+    <lastmod>2024-12-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://www.3dmakes.ch/services/slm</loc>
+    <lastmod>2024-12-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://www.3dmakes.ch/services/mjf</loc>
+    <lastmod>2024-12-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 
   <!-- Post del blog principali -->

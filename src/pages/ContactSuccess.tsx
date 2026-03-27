@@ -184,7 +184,7 @@ const ContactSuccess = () => {
                     <p className="text-brand-gray text-sm mb-4">{t('contactSuccess.fdmDescription')}</p>
                   </div>
                   <Button asChild variant="outline" size="sm">
-                    <Link to="/services#fdm">{t('common.discoverMore')}</Link>
+                    <Link to="/services/fdm">{t('common.discoverMore')}</Link>
                   </Button>
                 </div>
 
@@ -199,7 +199,7 @@ const ContactSuccess = () => {
                     <p className="text-brand-gray text-sm mb-4">{t('contactSuccess.slaDescription')}</p>
                   </div>
                   <Button asChild variant="outline" size="sm">
-                    <Link to="/services#sla">{t('common.discoverMore')}</Link>
+                    <Link to="/services/sla">{t('common.discoverMore')}</Link>
                   </Button>
                 </div>
 
@@ -214,7 +214,7 @@ const ContactSuccess = () => {
                     <p className="text-brand-gray text-sm mb-4">{t('contactSuccess.laserDescription')}</p>
                   </div>
                   <Button asChild variant="outline" size="sm">
-                    <Link to="/services#incisione-laser">{t('common.discoverMore')}</Link>
+                    <Link to="/services/laser">{t('common.discoverMore')}</Link>
                   </Button>
                 </div>
 
@@ -229,7 +229,7 @@ const ContactSuccess = () => {
                     <p className="text-brand-gray text-sm mb-4">{t('contactSuccess.largePrintDescription')}</p>
                   </div>
                   <Button asChild variant="outline" size="sm">
-                    <Link to="/services#riparazione-stampanti-3d">{t('common.discoverMore')}</Link>
+                    <Link to="/services/riparazione-stampanti">{t('common.discoverMore')}</Link>
                   </Button>
                 </div>
 
@@ -245,7 +245,7 @@ const ContactSuccess = () => {
                     <p className="text-brand-gray text-sm mb-4">{t('contactSuccess.scanningDescription')}</p>
                   </div>
                   <Button asChild variant="outline" size="sm">
-                    <Link to="/services#scansione">{t('common.discoverMore')}</Link>
+                    <Link to="/services/scansione">{t('common.discoverMore')}</Link>
                   </Button>
                 </div>
 
@@ -260,7 +260,7 @@ const ContactSuccess = () => {
                     <p className="text-brand-gray text-sm mb-4">{t('contactSuccess.prototypingDescription')}</p>
                   </div>
                   <Button asChild variant="outline" size="sm">
-                    <Link to="/services#prototipazione">{t('common.discoverMore')}</Link>
+                    <Link to="/services/prototipazione">{t('common.discoverMore')}</Link>
                   </Button>
                 </div>
               </div>

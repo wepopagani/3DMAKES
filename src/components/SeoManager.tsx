@@ -100,7 +100,107 @@ export default function SeoManager() {
       setTwitterDescription(description);
     };
 
+    const upsertJsonLd = (scriptId: string, json: unknown) => {
+      const jsonStr = JSON.stringify(json);
+      const existing = document.getElementById(scriptId) as HTMLScriptElement | null;
+      if (existing) {
+        existing.textContent = jsonStr;
+        return;
+      }
+      const script = document.createElement("script");
+      script.id = scriptId;
+      script.type = "application/ld+json";
+      script.textContent = jsonStr;
+      document.head.appendChild(script);
+    };
+
+    const removeJsonLd = (scriptId: string) => {
+      const existing = document.getElementById(scriptId);
+      existing?.remove();
+    };
+
+    const isServicesRoute = pathname === "/services" || pathname.startsWith("/services/");
+
+    if (isServicesRoute) {
+      const serviceDefs: Array<{
+        translationKey: string;
+        slug: string;
+        serviceType: string;
+      }> = [
+        { translationKey: "fdm", slug: "fdm", serviceType: "3D Printing" },
+        { translationKey: "cff", slug: "cff", serviceType: "3D Printing" },
+        { translationKey: "sla", slug: "sla", serviceType: "3D Printing" },
+        { translationKey: "polyjet", slug: "polyjet", serviceType: "3D Printing" },
+        { translationKey: "laser", slug: "laser", serviceType: "Laser Cutting" },
+        { translationKey: "largePrint", slug: "riparazione-stampanti", serviceType: "3D Printing Repair" },
+        { translationKey: "scanning", slug: "scansione", serviceType: "3D Scanning" },
+        { translationKey: "prototyping", slug: "prototipazione", serviceType: "Rapid Prototyping" },
+        { translationKey: "lsam", slug: "lsam", serviceType: "3D Printing" },
+        { translationKey: "mjf", slug: "mjf", serviceType: "3D Printing" },
+        { translationKey: "slm", slug: "slm", serviceType: "3D Printing" },
+        { translationKey: "sls", slug: "sls", serviceType: "3D Printing" },
+      ];
+
+      const serviceGraph = serviceDefs
+        .map((def) => {
+          const title = t(`services.${def.translationKey}.title`);
+          const description = t(`services.${def.translationKey}.description`);
+
+          if (!title || !description || title === `services.${def.translationKey}.title`) return null;
+
+          const serviceUrl = `${CANONICAL_BASE_URL}/services/${def.slug}`;
+
+          return {
+            "@type": "Service",
+            "@id": `${serviceUrl}#service`,
+            name: title,
+            description,
+            serviceType: def.serviceType,
+            provider: {
+              "@type": "Organization",
+              name: "3DMAKES",
+            },
+            areaServed: ["Lugano", "Ticino"],
+          };
+        })
+        .filter(Boolean);
+
+      upsertJsonLd("service-schema-jsonld", {
+        "@context": "https://schema.org",
+        "@graph": serviceGraph,
+      });
+    } else {
+      removeJsonLd("service-schema-jsonld");
+    }
+
     // --- Route-based Title/Description ---
+    if (pathname.startsWith("/services/")) {
+      const serviceId = pathname.split("/")[2] ?? "";
+
+      const resolveServiceKey = () => {
+        // Alias per supportare gli URL “puliti” usati nelle nuove pagine:
+        // /services/laser => services.laser.*
+        // /services/riparazione-stampanti => services.largePrint.*
+        if (serviceId === "laser") return "laser";
+        if (serviceId === "incisione-laser") return "laser";
+        if (serviceId === "riparazione-stampanti") return "largePrint";
+        if (serviceId === "riparazione-stampanti-3d") return "largePrint";
+        if (serviceId === "prototipazione") return "prototyping";
+        if (serviceId === "scansione") return "scanning";
+        return serviceId;
+      };
+
+      const key = resolveServiceKey();
+
+      const title = t(`services.${key}.title`);
+      const description = t(`services.${key}.description`);
+
+      if (title && description) {
+        setAll(`${title} | 3DMAKES Lugano`, description);
+        return;
+      }
+    }
+
     if (pathname === "/services") {
       setAll(
         "Servizi Stampa 3D | FDM, SLA, Scansione, Laser | 3DMAKES Lugano",

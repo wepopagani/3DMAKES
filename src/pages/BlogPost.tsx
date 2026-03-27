@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useTranslation } from 'react-i18next';
 
 const BlogPostPage = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   
@@ -32,6 +32,96 @@ const BlogPostPage = () => {
     window.scrollTo(0, 0);
   }, [id]);
   
+  // Article + Author structured data (Schema.org)
+  useEffect(() => {
+    if (!post) return;
+
+    const CANONICAL_BASE_URL = "https://www.3dmakes.ch";
+    const pageUrl = `${CANONICAL_BASE_URL}/blog/${post.id}`;
+
+    const monthMap: Record<string, number> = {
+      Jan: 0,
+      Feb: 1,
+      Mar: 2,
+      Apr: 3,
+      May: 4,
+      Jun: 5,
+      Jul: 6,
+      Aug: 7,
+      Sep: 8,
+      Oct: 9,
+      Nov: 10,
+      Dec: 11,
+    };
+
+    const parseBlogDate = (dateStr: string) => {
+      // formato atteso: "20 Apr 2023"
+      const parts = dateStr.split(" ");
+      if (parts.length !== 3) return null;
+      const day = Number(parts[0]);
+      const month = monthMap[parts[1]];
+      const year = Number(parts[2]);
+      if (Number.isNaN(day) || month === undefined || Number.isNaN(year)) return null;
+      const d = new Date(Date.UTC(year, month, day));
+      return d.toISOString();
+    };
+
+    const isoDate = parseBlogDate(post.date);
+    const imageUrl = post.imageSrc.startsWith("http")
+      ? post.imageSrc
+      : `${CANONICAL_BASE_URL}${post.imageSrc.startsWith("/") ? post.imageSrc : `/${post.imageSrc}`}`;
+
+    const authorPerson = {
+      "@type": "Person",
+      name: post.author,
+    };
+
+    const articleSchema = {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Article",
+          "@id": `${pageUrl}#article`,
+          headline: post.title,
+          description: post.excerpt,
+          image: [imageUrl],
+          datePublished: isoDate ?? undefined,
+          dateModified: isoDate ?? undefined,
+          author: authorPerson,
+          publisher: {
+            "@type": "Organization",
+            name: "3DMAKES",
+          },
+          mainEntityOfPage: {
+            "@type": "WebPage",
+            "@id": pageUrl,
+          },
+          inLanguage: i18n.language,
+        },
+        authorPerson,
+      ],
+    };
+
+    const ARTICLE_SCHEMA_ID = "article-author-schema-blogpost";
+    const existing = document.getElementById(ARTICLE_SCHEMA_ID) as HTMLScriptElement | null;
+    const json = JSON.stringify(articleSchema);
+
+    if (existing) {
+      existing.textContent = json;
+    } else {
+      const script = document.createElement("script");
+      script.id = ARTICLE_SCHEMA_ID;
+      script.type = "application/ld+json";
+      script.textContent = json;
+      document.head.appendChild(script);
+    }
+
+    return () => {
+      const el = document.getElementById(ARTICLE_SCHEMA_ID);
+      el?.remove();
+    };
+  }, [post, i18n.language]);
+
   // Ottieni 3 post correlati (escludi il post corrente)
   const relatedPosts = blogPosts
     .filter(p => p.id !== id)
