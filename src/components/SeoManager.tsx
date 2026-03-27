@@ -5,6 +5,8 @@ import { getBlogPosts } from "@/data/blogContent";
 
 const CANONICAL_BASE_URL = "https://3dmakes.ch";
 
+const HREFLANG_CODES = ["it", "en", "fr", "de"] as const;
+
 /**
  * SPA SEO helper:
  * aggiorna canonical/og:url quando ci troviamo sulle pagine del blog.
@@ -18,9 +20,13 @@ export default function SeoManager() {
 
   useEffect(() => {
     const pathname = location.pathname;
-    const isBlogRoute = pathname === "/blog" || pathname.startsWith("/blog/");
-
-    const canonicalUrl = `${CANONICAL_BASE_URL}${pathname}`;
+    // Netlify risponde 200 su URL con slash finale; canonical deve evitare 301.
+    const pathNorm = pathname.replace(/\/$/, "") || "/";
+    const canonicalPathForNetlify = (p: string) => {
+      if (p === "/" || p === "") return "/";
+      return p.endsWith("/") ? p : `${p}/`;
+    };
+    const canonicalUrl = `${CANONICAL_BASE_URL}${canonicalPathForNetlify(pathname)}`;
 
     const canonicalLinks = Array.from(document.querySelectorAll<HTMLLinkElement>('link[rel="canonical"]'));
 
@@ -36,6 +42,26 @@ export default function SeoManager() {
       'meta[property="og:url"]'
     );
     if (ogUrlMeta) ogUrlMeta.content = canonicalUrl;
+
+    // Hreflang completo per route (autoreferenziale + alternate): richiesto da Google / audit SEO.
+    document.querySelectorAll('link[rel="alternate"][hreflang]').forEach((el) => el.remove());
+    const localizedUrl = (lang: string) => {
+      if (pathNorm === "/") return `${CANONICAL_BASE_URL}/?lang=${lang}`;
+      return `${CANONICAL_BASE_URL}${pathNorm}/?lang=${lang}`;
+    };
+    const xDefaultHref = canonicalUrl;
+    HREFLANG_CODES.forEach((code) => {
+      const link = document.createElement("link");
+      link.rel = "alternate";
+      link.hreflang = code;
+      link.href = localizedUrl(code);
+      document.head.appendChild(link);
+    });
+    const xDefault = document.createElement("link");
+    xDefault.rel = "alternate";
+    xDefault.hreflang = "x-default";
+    xDefault.href = xDefaultHref;
+    document.head.appendChild(xDefault);
 
     const ensureMetaTag = (selector: string, create: () => HTMLElement) => {
       const existing = document.querySelector(selector);
@@ -119,7 +145,7 @@ export default function SeoManager() {
       existing?.remove();
     };
 
-    const isServicesRoute = pathname === "/services" || pathname.startsWith("/services/");
+    const isServicesRoute = pathNorm === "/services" || pathNorm.startsWith("/services/");
 
     if (isServicesRoute) {
       const serviceDefs: Array<{
@@ -148,7 +174,7 @@ export default function SeoManager() {
 
           if (!title || !description || title === `services.${def.translationKey}.title`) return null;
 
-          const serviceUrl = `${CANONICAL_BASE_URL}/services/${def.slug}`;
+          const serviceUrl = `${CANONICAL_BASE_URL}/services/${def.slug}/`;
 
           return {
             "@type": "Service",
@@ -174,8 +200,8 @@ export default function SeoManager() {
     }
 
     // --- Route-based Title/Description ---
-    if (pathname.startsWith("/services/")) {
-      const serviceId = pathname.split("/")[2] ?? "";
+    if (pathNorm.startsWith("/services/")) {
+      const serviceId = pathNorm.split("/")[2] ?? "";
 
       const resolveServiceKey = () => {
         // Alias per supportare gli URL “puliti” usati nelle nuove pagine:
@@ -201,7 +227,7 @@ export default function SeoManager() {
       }
     }
 
-    if (pathname === "/services") {
+    if (pathNorm === "/services") {
       setAll(
         "Servizi Stampa 3D | FDM, SLA, Scansione, Laser | 3DMAKES Lugano",
         "Servizi di stampa 3D professionale: FDM, SLA, scansione 3D, taglio/incisione laser e prototipazione rapida a Lugano (Ticino) e Lombardia."
@@ -209,7 +235,7 @@ export default function SeoManager() {
       return;
     }
 
-    if (pathname === "/about") {
+    if (pathNorm === "/about") {
       setAll(
         `Chi Siamo | 3DMAKES Lugano`,
         "Scopri 3DMAKES: il team, la mission e l’esperienza nella stampa 3D professionale, prototipazione rapida e produzione di qualità."
@@ -217,7 +243,7 @@ export default function SeoManager() {
       return;
     }
 
-    if (pathname === "/blog") {
+    if (pathNorm === "/blog") {
       setAll(
         `${t("blog.title")} | 3DMAKES`,
         `${t("blog.subtitle")}`
@@ -225,8 +251,8 @@ export default function SeoManager() {
       return;
     }
 
-    if (pathname.startsWith("/blog/")) {
-      const id = pathname.split("/")[2] ?? "";
+    if (pathNorm.startsWith("/blog/")) {
+      const id = pathNorm.split("/")[2] ?? "";
       const posts = getBlogPosts();
       const post = posts.find((p) => p.id === id);
       if (post) {
@@ -237,7 +263,7 @@ export default function SeoManager() {
       return;
     }
 
-    if (pathname === "/") {
+    if (pathNorm === "/") {
       setAll(
         "3DMAKES | Servizi di Stampa 3D Professionale a Lugano, Ticino e Lombardia",
         "Servizi di stampa 3D di alta qualità a Lugano, Ticino e Lombardia. Prototipazione rapida, modellazione 3D e produzione con tecnologie FDM e SLA."

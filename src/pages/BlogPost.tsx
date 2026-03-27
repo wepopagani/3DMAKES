@@ -37,7 +37,7 @@ const BlogPostPage = () => {
     if (!post) return;
 
     const CANONICAL_BASE_URL = "https://3dmakes.ch";
-    const pageUrl = `${CANONICAL_BASE_URL}/blog/${post.id}`;
+    const pageUrl = `${CANONICAL_BASE_URL}/blog/${post.id}/`;
 
     const monthMap: Record<string, number> = {
       Jan: 0,

@@ -82,6 +82,8 @@ export default defineConfig(({ mode }) => ({
     include: ['react', 'react-dom', 'react-router-dom'],
   },
   build: {
+    // Evita modulepreload aggressivo di tutti i chunk (three, pdf, …) sulla prima richiesta.
+    modulePreload: false,
     // Prerender (@prerenderer/renderer-puppeteer → puppeteer 1.x → Chromium ~78) non supporta
     // sintassi ES2020+ (es. optional chaining) nel bundle. Allineiamo l'output a ES2019.
     target: "es2019",
@@ -89,11 +91,19 @@ export default defineConfig(({ mode }) => ({
     outDir: 'dist',
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom', 'react-router-dom'],
-          firebase: ['firebase/app', 'firebase/auth', 'firebase/firestore', 'firebase/storage']
-        }
-      }
-    }
+        manualChunks(id) {
+          if (!id.includes("node_modules")) return;
+          if (id.includes("firebase")) return "firebase";
+          if (id.includes("three") || id.includes("@react-three")) return "three";
+          if (id.includes("recharts")) return "recharts";
+          if (id.includes("@radix-ui")) return "radix-ui";
+          if (id.includes("framer-motion")) return "framer-motion";
+          if (id.includes("lucide-react")) return "icons";
+          if (id.includes("html2canvas") || id.includes("jspdf") || id.includes("purify")) return "pdf-export";
+          if (id.includes("i18next") || id.includes("react-i18next")) return "i18n";
+          return "vendor";
+        },
+      },
+    },
   }
 }));
