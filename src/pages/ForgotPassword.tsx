@@ -68,9 +68,9 @@ const ForgotPassword = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                 </svg>
               </div>
-              <h2 className="mt-4 text-center text-3xl font-extrabold text-gray-900">
+              <h1 className="mt-4 text-center text-3xl font-extrabold text-gray-900">
                 {t('auth.resetEmailSent')}
-              </h2>
+              </h1>
               <p className="mt-2 text-center text-sm text-gray-600">
                 {t('auth.resetEmailSentDesc')}
               </p>
@@ -100,9 +100,9 @@ const ForgotPassword = () => {
               3D<span className="text-brand-accent">MAKES</span>
             </Link>
           </div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          <h1 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             {t('auth.resetPasswordTitle')}
-          </h2>
+          </h1>
           <p className="mt-2 text-center text-sm text-gray-600">
             {t('auth.resetPasswordDesc')}
           </p>

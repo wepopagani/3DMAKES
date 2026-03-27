@@ -94,7 +94,7 @@ export default defineConfig(({ mode }) => ({
         manualChunks(id) {
           if (!id.includes("node_modules")) return;
           if (id.includes("firebase")) return "firebase";
-          if (id.includes("three") || id.includes("@react-three")) return "three";
+          // NON separare three / @react-three: in un chunk dedicato React risulta undefined (useLayoutEffect crash → schermo bianco).
           if (id.includes("recharts")) return "recharts";
           if (id.includes("@radix-ui")) return "radix-ui";
           if (id.includes("framer-motion")) return "framer-motion";

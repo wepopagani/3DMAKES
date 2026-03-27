@@ -726,6 +726,7 @@ const Dashboard = () => {
         </div>
       </div>
       <main className="flex-1">
+        <h1 className="sr-only">Area cliente — 3DMAKES</h1>
         {/* Dashboard Content */}
         <section className={`${activeTab === "messages" ? "" : "py-8 md:py-10"}`} style={activeTab !== "messages" ? {backgroundColor: '#E4DDD4'} : {}}>
           <div className="container-custom">
