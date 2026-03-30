@@ -73,13 +73,13 @@ const Footer = () => {
             <address className="not-italic text-gray-300">
               <p className="mb-2">
                 <a
-                  href="https://www.google.com/maps/search/?api=1&query=Via+Cantonale+15%2C+6918+Lamone%2C+Svizzera"
+                  href="https://www.google.com/maps/search/?api=1&query=Via+Cantonale+15%2C+6918+Figino%2C+Svizzera"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-white hover:underline"
                 >
                   Via Cantonale 15<br />
-                  6918 Lamone, Svizzera
+                  6918 Figino, Svizzera
                 </a>
               </p>
               <p className="mb-2">

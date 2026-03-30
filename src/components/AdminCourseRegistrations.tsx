@@ -52,18 +52,22 @@ const AdminCourseRegistrations = () => {
 
   // Slot disponibili
   const timeSlots = [
-    { value: "5-6-marzo", label: "5-6 Marzo 2026 (Giovedì-Venerdì) - 17:30 - 21:30" },
-    { value: "12-13-marzo", label: "12-13 Marzo 2026 (Giovedì-Venerdì) - 17:30 - 21:30" },
-    { value: "26-27-marzo", label: "26-27 Marzo 2026 (Giovedì-Venerdì) - 17:30 - 21:30" },
-    { value: "2-3-aprile", label: "2-3 Aprile 2026 (Giovedì-Venerdì) - 17:30 - 21:30" },
-    { value: "9-10-aprile", label: "9-10 Aprile 2026 (Giovedì-Venerdì) - 17:30 - 21:30" },
     { value: "16-17-aprile", label: "16-17 Aprile 2026 (Giovedì-Venerdì) - 17:30 - 21:30" },
     { value: "23-24-aprile", label: "23-24 Aprile 2026 (Giovedì-Venerdì) - 17:30 - 21:30" },
-    { value: "30-1-aprile", label: "30 Aprile-1 Maggio 2026 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "30-1-maggio", label: "30 Aprile-1 Maggio 2026 (Giovedì-Venerdì) - 17:30 - 21:30" },
     { value: "7-8-maggio", label: "7-8 Maggio 2026 (Giovedì-Venerdì) - 17:30 - 21:30" },
     { value: "14-15-maggio", label: "14-15 Maggio 2026 (Giovedì-Venerdì) - 17:30 - 21:30" },
     { value: "21-22-maggio", label: "21-22 Maggio 2026 (Giovedì-Venerdì) - 17:30 - 21:30" },
     { value: "28-29-maggio", label: "28-29 Maggio 2026 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "4-5-giugno", label: "4-5 Giugno 2026 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "11-12-giugno", label: "11-12 Giugno 2026 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "18-19-giugno", label: "18-19 Giugno 2026 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "25-26-giugno", label: "25-26 Giugno 2026 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "2-3-luglio", label: "2-3 Luglio 2026 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "9-10-luglio", label: "9-10 Luglio 2026 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "16-17-luglio", label: "16-17 Luglio 2026 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "23-24-luglio", label: "23-24 Luglio 2026 (Giovedì-Venerdì) - 17:30 - 21:30" },
+    { value: "30-31-luglio", label: "30-31 Luglio 2026 (Giovedì-Venerdì) - 17:30 - 21:30" },
   ];
 
   const paymentOptions = [

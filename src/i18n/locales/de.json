@@ -562,7 +562,7 @@
     "helpRealizeIdeas": "Wir sind hier, um Ihnen bei der Realisierung Ihrer Ideen zu helfen. Kontaktieren Sie uns, um Ihr Projekt zu besprechen oder weitere Informationen über unsere Dienstleistungen zu erhalten.",
     "contactInfo": "Kontaktinformationen",
     "chatWithUs": "Chatten Sie mit uns",
-    "fullAddress": "Via Cantonale 15\n6918 Lamone, Schweiz",
+    "fullAddress": "Via Cantonale 15\n6918 Figino, Schweiz",
     "mondayFriday": "Montag - Freitag",
     "saturday": "Samstag",
     "sunday": "Sonntag",
@@ -1537,18 +1537,22 @@
       "orEmail": "oder per E-Mail"
     },
     "timeSlots": {
-      "slot1": "5.-6. Maerz 2026 (Donnerstag-Freitag) - 17:30 - 21:30",
-      "slot2": "12.-13. Maerz 2026 (Donnerstag-Freitag) - 17:30 - 21:30",
-      "slot3": "26.-27. Maerz 2026 (Donnerstag-Freitag) - 17:30 - 21:30",
-      "slot4": "2.-3. April 2026 (Donnerstag-Freitag) - 17:30 - 21:30",
-      "slot5": "9.-10. April 2026 (Donnerstag-Freitag) - 17:30 - 21:30",
-      "slot6": "16.-17. April 2026 (Donnerstag-Freitag) - 17:30 - 21:30",
-      "slot7": "23.-24. April 2026 (Donnerstag-Freitag) - 17:30 - 21:30",
-      "slot8": "30. April-1. Mai 2026 (Donnerstag-Freitag) - 17:30 - 21:30",
-      "slot9": "7.-8. Mai 2026 (Donnerstag-Freitag) - 17:30 - 21:30",
-      "slot10": "14.-15. Mai 2026 (Donnerstag-Freitag) - 17:30 - 21:30",
-      "slot11": "21.-22. Mai 2026 (Donnerstag-Freitag) - 17:30 - 21:30",
-      "slot12": "28.-29. Mai 2026 (Donnerstag-Freitag) - 17:30 - 21:30"
+      "slot1": "16.-17. April 2026 (Donnerstag-Freitag) - 17:30 - 21:30",
+      "slot2": "23.-24. April 2026 (Donnerstag-Freitag) - 17:30 - 21:30",
+      "slot3": "30. April-1. Mai 2026 (Donnerstag-Freitag) - 17:30 - 21:30",
+      "slot4": "7.-8. Mai 2026 (Donnerstag-Freitag) - 17:30 - 21:30",
+      "slot5": "14.-15. Mai 2026 (Donnerstag-Freitag) - 17:30 - 21:30",
+      "slot6": "21.-22. Mai 2026 (Donnerstag-Freitag) - 17:30 - 21:30",
+      "slot7": "28.-29. Mai 2026 (Donnerstag-Freitag) - 17:30 - 21:30",
+      "slot8": "4.-5. Juni 2026 (Donnerstag-Freitag) - 17:30 - 21:30",
+      "slot9": "11.-12. Juni 2026 (Donnerstag-Freitag) - 17:30 - 21:30",
+      "slot10": "18.-19. Juni 2026 (Donnerstag-Freitag) - 17:30 - 21:30",
+      "slot11": "25.-26. Juni 2026 (Donnerstag-Freitag) - 17:30 - 21:30",
+      "slot12": "2.-3. Juli 2026 (Donnerstag-Freitag) - 17:30 - 21:30",
+      "slot13": "9.-10. Juli 2026 (Donnerstag-Freitag) - 17:30 - 21:30",
+      "slot14": "16.-17. Juli 2026 (Donnerstag-Freitag) - 17:30 - 21:30",
+      "slot15": "23.-24. Juli 2026 (Donnerstag-Freitag) - 17:30 - 21:30",
+      "slot16": "30.-31. Juli 2026 (Donnerstag-Freitag) - 17:30 - 21:30"
     }
   },
   "partners": {

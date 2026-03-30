@@ -67,7 +67,7 @@ const FirebaseTest = () => {
         userEmail: currentUser.email || '',
         firstName: userData.nome || 'Test',
         lastName: userData.cognome || 'User',
-        timeSlot: '12-13 Marzo 2026 (Giovedi-Venerdi) - 17:30 - 21:30',
+        timeSlot: '16-17 Aprile 2026 (Giovedi-Venerdi) - 17:30 - 21:30',
         paymentMethod: 'TWINT',
         registrationId: `test-course-${Date.now()}`
       });

@@ -562,7 +562,7 @@
     "helpRealizeIdeas": "Nous sommes là pour vous aider à réaliser vos idées. Contactez-nous pour discuter de votre projet ou recevoir plus d'informations sur nos services.",
     "contactInfo": "Informations de contact",
     "chatWithUs": "Discutez avec nous",
-    "fullAddress": "Via Cantonale 15\n6918 Lamone, Suisse",
+    "fullAddress": "Via Cantonale 15\n6918 Figino, Suisse",
     "mondayFriday": "Lundi - vendredi",
     "saturday": "Samedi",
     "sunday": "Dimanche",
@@ -1537,18 +1537,22 @@
       "orEmail": "ou par email"
     },
     "timeSlots": {
-      "slot1": "5-6 mars 2026 (jeudi-vendredi) - 17:30 - 21:30",
-      "slot2": "12-13 mars 2026 (jeudi-vendredi) - 17:30 - 21:30",
-      "slot3": "26-27 mars 2026 (jeudi-vendredi) - 17:30 - 21:30",
-      "slot4": "2-3 avril 2026 (jeudi-vendredi) - 17:30 - 21:30",
-      "slot5": "9-10 avril 2026 (jeudi-vendredi) - 17:30 - 21:30",
-      "slot6": "16-17 avril 2026 (jeudi-vendredi) - 17:30 - 21:30",
-      "slot7": "23-24 avril 2026 (jeudi-vendredi) - 17:30 - 21:30",
-      "slot8": "30 avril-1 mai 2026 (jeudi-vendredi) - 17:30 - 21:30",
-      "slot9": "7-8 mai 2026 (jeudi-vendredi) - 17:30 - 21:30",
-      "slot10": "14-15 mai 2026 (jeudi-vendredi) - 17:30 - 21:30",
-      "slot11": "21-22 mai 2026 (jeudi-vendredi) - 17:30 - 21:30",
-      "slot12": "28-29 mai 2026 (jeudi-vendredi) - 17:30 - 21:30"
+      "slot1": "16-17 avril 2026 (jeudi-vendredi) - 17:30 - 21:30",
+      "slot2": "23-24 avril 2026 (jeudi-vendredi) - 17:30 - 21:30",
+      "slot3": "30 avril-1 mai 2026 (jeudi-vendredi) - 17:30 - 21:30",
+      "slot4": "7-8 mai 2026 (jeudi-vendredi) - 17:30 - 21:30",
+      "slot5": "14-15 mai 2026 (jeudi-vendredi) - 17:30 - 21:30",
+      "slot6": "21-22 mai 2026 (jeudi-vendredi) - 17:30 - 21:30",
+      "slot7": "28-29 mai 2026 (jeudi-vendredi) - 17:30 - 21:30",
+      "slot8": "4-5 juin 2026 (jeudi-vendredi) - 17:30 - 21:30",
+      "slot9": "11-12 juin 2026 (jeudi-vendredi) - 17:30 - 21:30",
+      "slot10": "18-19 juin 2026 (jeudi-vendredi) - 17:30 - 21:30",
+      "slot11": "25-26 juin 2026 (jeudi-vendredi) - 17:30 - 21:30",
+      "slot12": "2-3 juillet 2026 (jeudi-vendredi) - 17:30 - 21:30",
+      "slot13": "9-10 juillet 2026 (jeudi-vendredi) - 17:30 - 21:30",
+      "slot14": "16-17 juillet 2026 (jeudi-vendredi) - 17:30 - 21:30",
+      "slot15": "23-24 juillet 2026 (jeudi-vendredi) - 17:30 - 21:30",
+      "slot16": "30-31 juillet 2026 (jeudi-vendredi) - 17:30 - 21:30"
     }
   },
   "partners": {
