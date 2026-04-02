@@ -14,6 +14,9 @@
 - https://3dmakes.ch/calculator/
 - https://3dmakes.ch/blog/
 - https://3dmakes.ch/about/
+- https://3dmakes.ch/mission/
+- https://3dmakes.ch/iscrizione-corsi/
+- https://3dmakes.ch/contact-success/
 
 ## Indicizzazione
 

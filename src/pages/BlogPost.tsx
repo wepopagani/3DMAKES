@@ -1,7 +1,7 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { getBlogPosts, blogPostsContent } from "@/data/blogContent";
+import { getBlogPosts, blogPostsContent, BLOG_AUTHOR_NAME } from "@/data/blogContent";
 import { useEffect, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from 'react-i18next';
@@ -71,35 +71,38 @@ const BlogPostPage = () => {
       ? post.imageSrc
       : `${CANONICAL_BASE_URL}${post.imageSrc.startsWith("/") ? post.imageSrc : `/${post.imageSrc}`}`;
 
-    const authorPerson = {
-      "@type": "Person",
-      name: post.author,
-    };
-
     const articleSchema = {
       "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "Article",
-          "@id": `${pageUrl}#article`,
-          headline: post.title,
-          description: post.excerpt,
-          image: [imageUrl],
-          datePublished: isoDate ?? undefined,
-          dateModified: isoDate ?? undefined,
-          author: authorPerson,
-          publisher: {
-            "@type": "Organization",
-            name: "3DMAKES",
-          },
-          mainEntityOfPage: {
-            "@type": "WebPage",
-            "@id": pageUrl,
-          },
-          inLanguage: i18n.language,
+      "@type": "BlogPosting",
+      "@id": `${pageUrl}#article`,
+      headline: post.title,
+      description: post.excerpt,
+      image: [imageUrl],
+      datePublished: isoDate ?? undefined,
+      dateModified: isoDate ?? undefined,
+      author: {
+        "@type": "Person",
+        name: BLOG_AUTHOR_NAME,
+        sameAs: "https://ch.linkedin.com/company/3d-makes",
+      },
+      publisher: {
+        "@type": "Organization",
+        name: "3DMAKES",
+        logo: {
+          "@type": "ImageObject",
+          url: `${CANONICAL_BASE_URL}/images/3dmakes-logo.png`,
         },
-        authorPerson,
-      ],
+      },
+      mainEntityOfPage: {
+        "@type": "WebPage",
+        "@id": pageUrl,
+      },
+      isPartOf: {
+        "@type": "Blog",
+        "@id": `${CANONICAL_BASE_URL}/blog/#blog`,
+        name: "3DMAKES",
+      },
+      inLanguage: i18n.language,
     };
 
     const ARTICLE_SCHEMA_ID = "article-author-schema-blogpost";

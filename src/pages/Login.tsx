@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "@/firebase/config";
@@ -18,17 +18,12 @@ const Login = () => {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const { currentUser, isAdmin, logInWithGoogle } = useAuth();
+  const { currentUser, isAdmin, logInWithGoogle, loading: authLoading } = useAuth();
 
-  // Se l'utente è già loggato, reindirizza
-  if (currentUser) {
-    if (isAdmin) {
-      navigate("/admin");
-    } else {
-      navigate("/dashboard");
-    }
-    return null;
-  }
+  useEffect(() => {
+    if (authLoading || !currentUser) return;
+    navigate(isAdmin ? "/admin" : "/dashboard", { replace: true });
+  }, [authLoading, currentUser, isAdmin, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -95,14 +90,12 @@ const Login = () => {
     }
   };
 
-  // Verifica se l'utente è già autenticato dopo il caricamento
-  if (currentUser) {
-    if (isAdmin) {
-      navigate("/admin");
-    } else {
-      navigate("/dashboard");
-    }
-    return null;
+  if (authLoading || currentUser) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50" aria-busy="true">
+        <span className="sr-only">{t("common.loading")}</span>
+      </div>
+    );
   }
 
   return (

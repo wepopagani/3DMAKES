@@ -199,6 +199,49 @@ export default function SeoManager() {
       removeJsonLd("service-schema-jsonld");
     }
 
+    // FAQ homepage (audit GEO: FAQPage leggibile dai crawler anche senza scroll)
+    if (pathNorm === "/") {
+      const homeFaqPairs = [
+        { q: t("seo.homeFaqQ1"), a: t("seo.homeFaqA1") },
+        { q: t("seo.homeFaqQ2"), a: t("seo.homeFaqA2") },
+        { q: t("seo.homeFaqQ3"), a: t("seo.homeFaqA3") },
+        { q: t("seo.homeFaqQ4"), a: t("seo.homeFaqA4") },
+      ];
+      upsertJsonLd("home-faq-jsonld", {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: homeFaqPairs.map((pair) => ({
+          "@type": "Question",
+          name: pair.q,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: pair.a,
+          },
+        })),
+      });
+    } else {
+      removeJsonLd("home-faq-jsonld");
+    }
+
+    // Elenco articoli blog (ItemList)
+    if (pathNorm === "/blog") {
+      const posts = getBlogPosts();
+      upsertJsonLd("blog-index-itemlist-jsonld", {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        name: t("seo.blogIndexTitle"),
+        numberOfItems: posts.length,
+        itemListElement: posts.map((p, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: p.title,
+          url: `${CANONICAL_BASE_URL}/blog/${p.id}/`,
+        })),
+      });
+    } else {
+      removeJsonLd("blog-index-itemlist-jsonld");
+    }
+
     // --- Route-based Title/Description ---
     if (pathNorm.startsWith("/services/")) {
       const serviceId = pathNorm.split("/")[2] ?? "";
@@ -222,32 +265,28 @@ export default function SeoManager() {
       const description = t(`services.${key}.description`);
 
       if (title && description) {
-        setAll(`${title} | 3DMAKES Lugano`, description);
+        setAll(`${title} ${t("seo.titleSuffix")}`, description);
         return;
       }
     }
 
     if (pathNorm === "/services") {
-      setAll(
-        "Servizi Stampa 3D | FDM, SLA, Scansione, Laser | 3DMAKES Lugano",
-        "Servizi di stampa 3D professionale: FDM, SLA, scansione 3D, taglio/incisione laser e prototipazione rapida a Lugano (Ticino) e Lombardia."
-      );
+      setAll(t("seo.servicesIndexTitle"), t("seo.servicesIndexDescription"));
+      return;
+    }
+
+    if (pathNorm === "/mission") {
+      setAll(t("seo.missionTitle"), t("seo.missionDescription"));
       return;
     }
 
     if (pathNorm === "/about") {
-      setAll(
-        `Chi Siamo | 3DMAKES Lugano`,
-        "Scopri 3DMAKES: il team, la mission e l’esperienza nella stampa 3D professionale, prototipazione rapida e produzione di qualità."
-      );
+      setAll(t("seo.aboutTitle"), t("seo.aboutDescription"));
       return;
     }
 
     if (pathNorm === "/blog") {
-      setAll(
-        `${t("blog.title")} | 3DMAKES`,
-        `${t("blog.subtitle")}`
-      );
+      setAll(t("seo.blogIndexTitle"), `${t("blog.subtitle")}`);
       return;
     }
 
@@ -256,20 +295,49 @@ export default function SeoManager() {
       const posts = getBlogPosts();
       const post = posts.find((p) => p.id === id);
       if (post) {
-        setAll(`${post.title} | Blog 3DMAKES`, post.excerpt);
+        setAll(`${post.title} ${t("seo.titleSuffix")}`, post.excerpt);
       } else {
-        setAll(`${t("blog.title")} | 3DMAKES`, `${t("blog.subtitle")}`);
+        setAll(t("seo.blogIndexTitle"), `${t("blog.subtitle")}`);
       }
       return;
     }
 
-    if (pathNorm === "/") {
-      setAll(
-        "3DMAKES | Servizi di Stampa 3D Professionale a Lugano, Ticino e Lombardia",
-        "Servizi di stampa 3D di alta qualità a Lugano, Ticino e Lombardia. Prototipazione rapida, modellazione 3D e produzione con tecnologie FDM e SLA."
-      );
+    if (pathNorm === "/calculator") {
+      setAll(t("seo.calculatorTitle"), t("seo.calculatorDescription"));
       return;
     }
+
+    if (pathNorm === "/contact-success") {
+      setAll(t("seo.contactSuccessTitle"), t("seo.contactSuccessDescription"));
+      return;
+    }
+
+    if (pathNorm === "/iscrizione-corsi") {
+      setAll(t("seo.coursesTitle"), t("seo.coursesDescription"));
+      return;
+    }
+
+    if (pathNorm === "/login") {
+      setAll(t("seo.loginTitle"), t("seo.loginDescription"));
+      return;
+    }
+
+    if (pathNorm === "/register") {
+      setAll(t("seo.registerTitle"), t("seo.registerDescription"));
+      return;
+    }
+
+    if (pathNorm === "/forgot-password") {
+      setAll(t("seo.forgotPasswordTitle"), t("seo.forgotPasswordDescription"));
+      return;
+    }
+
+    if (pathNorm === "/") {
+      setAll(t("seo.homeTitle"), t("seo.homeDescription"));
+      return;
+    }
+
+    setAll(t("seo.notFoundTitle"), t("seo.notFoundDescription"));
   }, [location.pathname, i18n.language, t]);
 
   return null;

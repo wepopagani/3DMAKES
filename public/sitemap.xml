@@ -62,6 +62,74 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://3dmakes.ch/mission/?lang=de"/>
   </url>
 
+  <!-- Conferma contatto -->
+  <url>
+    <loc>https://3dmakes.ch/contact-success/</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="it" href="https://3dmakes.ch/contact-success/?lang=it"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://3dmakes.ch/contact-success/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://3dmakes.ch/contact-success/?lang=fr"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://3dmakes.ch/contact-success/?lang=de"/>
+  </url>
+
+  <!-- Corsi stampa 3D -->
+  <url>
+    <loc>https://3dmakes.ch/iscrizione-corsi/</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="it" href="https://3dmakes.ch/iscrizione-corsi/?lang=it"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://3dmakes.ch/iscrizione-corsi/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://3dmakes.ch/iscrizione-corsi/?lang=fr"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://3dmakes.ch/iscrizione-corsi/?lang=de"/>
+  </url>
+
+  <!-- Area account (indicizzazione opzionale) -->
+  <url>
+    <loc>https://3dmakes.ch/login/</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+    <xhtml:link rel="alternate" hreflang="it" href="https://3dmakes.ch/login/?lang=it"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://3dmakes.ch/login/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://3dmakes.ch/login/?lang=fr"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://3dmakes.ch/login/?lang=de"/>
+  </url>
+  <url>
+    <loc>https://3dmakes.ch/register/</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.4</priority>
+    <xhtml:link rel="alternate" hreflang="it" href="https://3dmakes.ch/register/?lang=it"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://3dmakes.ch/register/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://3dmakes.ch/register/?lang=fr"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://3dmakes.ch/register/?lang=de"/>
+  </url>
+  <url>
+    <loc>https://3dmakes.ch/forgot-password/</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="it" href="https://3dmakes.ch/forgot-password/?lang=it"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://3dmakes.ch/forgot-password/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://3dmakes.ch/forgot-password/?lang=fr"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://3dmakes.ch/forgot-password/?lang=de"/>
+  </url>
+
+  <!-- Registrazione pet passport -->
+  <url>
+    <loc>https://3dmakes.ch/pets/</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="it" href="https://3dmakes.ch/pets/?lang=it"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://3dmakes.ch/pets/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://3dmakes.ch/pets/?lang=fr"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://3dmakes.ch/pets/?lang=de"/>
+  </url>
+
   <!-- Blog -->
   <url>
     <loc>https://3dmakes.ch/blog/</loc>
@@ -138,6 +206,27 @@
     <priority>0.7</priority>
   </url>
 
+  <url>
+    <loc>https://3dmakes.ch/services/cff/</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://3dmakes.ch/services/polyjet/</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://3dmakes.ch/services/lsam/</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
   <!-- Post del blog principali -->
   <url>
     <loc>https://3dmakes.ch/blog/stampa-3d-odontotecnica/</loc>
@@ -179,6 +268,48 @@
     <lastmod>2024-12-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://3dmakes.ch/blog/gadget-aziendali-nfc/</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://3dmakes.ch/blog/accessori-ristorativi/</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://3dmakes.ch/blog/componenti-meccanici/</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://3dmakes.ch/blog/protesi-mediche/</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://3dmakes.ch/blog/applicazioni-creative-stampa-3d/</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://3dmakes.ch/blog/stampanti-3d-confronto/</loc>
+    <lastmod>2026-03-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
 
 </urlset> 

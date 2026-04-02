@@ -26,3 +26,6 @@ Allow: /about
 Allow: /mission
 Allow: /blog
 Allow: /contact
+Allow: /iscrizione-corsi
+Allow: /contact-success
+Allow: /pets
