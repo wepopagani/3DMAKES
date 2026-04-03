@@ -3,10 +3,8 @@
   publish = "dist"
 
 [build.environment]
-  # Node 20 LTS; il prerender usa Puppeteer 1.x (Chromium vecchio): il target di build in vite.config.ts è es2019.
   NODE_VERSION = "20"
 
-# Cache lunga per chunk Vite (hash nel nome); HTML e route prerenderizzate restano senza questo pattern
 [[headers]]
   for = "/assets/*"
   [headers.values]

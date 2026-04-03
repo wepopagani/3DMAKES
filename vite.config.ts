@@ -1,5 +1,24 @@
-import { defineConfig } from "vite";
+import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react-swc";
+
+/** In dev, serve public/b2b/index.html at /b2b (Vite does not auto-resolve index.html for subpaths). */
+function b2bStaticRoute(): Plugin {
+  return {
+    name: "b2b-static-route",
+    configureServer(server) {
+      server.middlewares.use((req, _res, next) => {
+        const raw = req.url;
+        if (!raw) return next();
+        const pathOnly = raw.split("?")[0] ?? "";
+        if (pathOnly === "/b2b" || pathOnly === "/b2b/") {
+          const qs = raw.includes("?") ? raw.slice(raw.indexOf("?")) : "";
+          req.url = "/b2b/index.html" + qs;
+        }
+        next();
+      });
+    },
+  };
+}
 import path from "path";
 import { componentTagger } from "lovable-tagger";
 import { createRequire } from "module";
@@ -17,6 +36,7 @@ export default defineConfig(({ mode }) => ({
     port: 5173,
   },
   plugins: [
+    b2bStaticRoute(),
     react(),
     mode === "production" &&
       vitePrerender({

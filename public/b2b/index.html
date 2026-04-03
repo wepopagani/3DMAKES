@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Componenti critici on-demand — 3DMAKES Lugano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blu:     #1A2B5F;
+    --azzurro: #1E9FD8;
+    --beige:   #EDE8E1;
+    --testo:   #1C1C2E;
+    --grigio:  #6B7280;
+    --chiaro:  #F8F6F2;
+    --bianco:  #FFFFFF;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Montserrat", sans-serif;
+    background: var(--bianco);
+    color: var(--testo);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── NAVIGAZIONE ─── */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(26,43,95,0.97);
+    backdrop-filter: blur(16px);
+    padding: 0 60px;
+    height: 68px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .logo {
+    font-weight: 900; font-size: 22px; color: var(--bianco);
+    letter-spacing: -0.3px; text-decoration: none;
+  }
+  .logo em { font-style: normal; color: var(--azzurro); }
+  .nav-link {
+    color: rgba(255,255,255,0.5); font-size: 13px; font-weight: 500;
+    text-decoration: none; letter-spacing: 0.3px; transition: color 0.2s;
+    margin-right: 32px;
+  }
+  .nav-link:hover { color: var(--bianco); }
+  .nav-right { display: flex; align-items: center; }
+  .nav-cta {
+    background: var(--azzurro); color: var(--bianco);
+    font-size: 12px; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; padding: 11px 24px;
+    text-decoration: none; transition: all 0.2s;
+  }
+  .nav-cta:hover { background: var(--bianco); color: var(--blu); }
+
+  /* ─── HERO — layout a due colonne ─── */
+  .hero {
+    min-height: 90vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 68px;
+  }
+
+  /* Colonna sinistra — testo su blu */
+  .hero-left {
+    background: var(--blu);
+    padding: 80px 64px 80px 64px;
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+
+  /* Texture geometrica discreta */
+  .hero-left::before {
+    content: "";
+    position: absolute; top: 0; right: 0; bottom: 0;
+    width: 1px; background: rgba(30,159,216,0.25);
+  }
+  .hero-left::after {
+    content: "";
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 3px; background: linear-gradient(90deg, var(--azzurro), transparent);
+  }
+
+  .hero-eyebrow {
+    font-size: 11px; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--azzurro);
+    margin-bottom: 28px;
+    display: flex; align-items: center; gap: 12px;
+    opacity: 0; animation: fadeIn 0.6s ease 0.15s forwards;
+  }
+  .hero-eyebrow::before {
+    content: ""; width: 28px; height: 1px; background: var(--azzurro);
+  }
+
+  .hero-h1 {
+    font-weight: 900; font-size: clamp(40px, 4.5vw, 60px);
+    line-height: 1.05; color: var(--bianco); letter-spacing: -1px;
+    text-transform: uppercase;
+    opacity: 0; animation: fadeIn 0.7s ease 0.3s forwards;
+  }
+  .hero-h1 .highlight { color: var(--azzurro); display: block; }
+
+  .hero-lead {
+    margin-top: 28px;
+    font-size: 16px; font-weight: 300; line-height: 1.8;
+    color: rgba(255,255,255,0.65); max-width: 460px;
+    opacity: 0; animation: fadeIn 0.7s ease 0.45s forwards;
+  }
+  .hero-lead strong { color: rgba(255,255,255,0.9); font-weight: 500; }
+
+  .hero-actions {
+    margin-top: 44px; display: flex; align-items: center; gap: 24px;
+    opacity: 0; animation: fadeIn 0.7s ease 0.6s forwards;
+  }
+
+  .btn-primary {
+    background: var(--azzurro); color: var(--bianco);
+    font-weight: 700; font-size: 13px; letter-spacing: 1px;
+    text-transform: uppercase; padding: 16px 36px;
+    text-decoration: none; transition: all 0.25s; display: inline-block;
+  }
+  .btn-primary:hover {
+    background: var(--bianco); color: var(--blu);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(30,159,216,0.3);
+  }
+
+  .btn-link {
+    color: rgba(255,255,255,0.5); font-size: 13px; font-weight: 500;
+    text-decoration: none; letter-spacing: 0.3px;
+    display: flex; align-items: center; gap: 8px; transition: color 0.2s;
+  }
+  .btn-link::after { content: "→"; transition: transform 0.2s; }
+  .btn-link:hover { color: var(--bianco); }
+  .btn-link:hover::after { transform: translateX(4px); }
+
+  /* Pills tecnologie */
+  .hero-tech {
+    margin-top: 52px; padding-top: 36px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex; flex-wrap: wrap; gap: 8px;
+    opacity: 0; animation: fadeIn 0.7s ease 0.75s forwards;
+  }
+  .tech-pill {
+    font-size: 10px; font-weight: 600; letter-spacing: 1px;
+    text-transform: uppercase; color: rgba(255,255,255,0.45);
+    border: 1px solid rgba(255,255,255,0.12); padding: 5px 14px;
+  }
+
+  /* Colonna destra — immagine */
+  .hero-right {
+    background: var(--beige);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+    padding: 48px 40px;
+    min-height: 0;
+  }
+
+  /* Cerchio sottile di posizionamento */
+  .hero-right::before {
+    content: "";
+    position: absolute;
+    bottom: -120px; left: 50%; transform: translateX(-50%);
+    width: 500px; height: 500px; border-radius: 50%;
+    border: 1px solid rgba(26,43,95,0.08);
+  }
+  .hero-right::after {
+    content: "";
+    position: absolute;
+    bottom: -60px; left: 50%; transform: translateX(-50%);
+    width: 360px; height: 360px; border-radius: 50%;
+    border: 1px solid rgba(26,43,95,0.06);
+  }
+
+  /* Animazioni */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── STRIP DATI ─── */
+  .strip {
+    background: var(--azzurro);
+    display: grid; grid-template-columns: repeat(4,1fr);
+    border-top: none;
+  }
+  .strip-item {
+    padding: 28px 20px; text-align: center;
+    border-right: 1px solid rgba(255,255,255,0.15);
+    position: relative;
+  }
+  .strip-item:last-child { border-right: none; }
+  .strip-num {
+    font-weight: 900; font-size: 44px; color: var(--bianco);
+    line-height: 1; letter-spacing: -1px;
+  }
+  .strip-unit { font-size: 22px; color: rgba(255,255,255,0.55); font-weight: 600; }
+  .strip-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 1.5px;
+    text-transform: uppercase; color: rgba(255,255,255,0.6); margin-top: 6px;
+  }
+
+  /* ─── SEZIONI COMUNI ─── */
+  .section { padding: 72px 64px; }
+  .section-max { max-width: 1200px; margin: 0 auto; }
+
+  .eyebrow {
+    font-size: 11px; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--azzurro);
+    display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+  }
+  .eyebrow::before { content: ""; width: 24px; height: 1px; background: var(--azzurro); }
+
+  .section-h2 {
+    font-weight: 800; font-size: clamp(30px, 3vw, 44px);
+    color: var(--blu); line-height: 1.1; letter-spacing: -0.5px;
+    text-transform: uppercase; max-width: 600px;
+  }
+  .section-h2.white { color: var(--bianco); }
+
+  .section-body {
+    font-size: 16px; font-weight: 300; line-height: 1.8;
+    color: var(--grigio); max-width: 560px; margin-top: 14px;
+  }
+
+  /* ─── PROBLEMA ─── */
+  .problema-bg { background: var(--chiaro); }
+
+  .problema-grid {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    gap: 1px; background: rgba(26,43,95,0.08); margin-top: 56px;
+  }
+  .p-card {
+    background: var(--chiaro); padding: 44px 36px;
+    border-top: 2px solid transparent; transition: border-color 0.3s;
+  }
+  .p-card:hover { border-top-color: var(--azzurro); background: var(--bianco); }
+  .p-card-num {
+    font-weight: 900; font-size: 13px; letter-spacing: 2px;
+    color: rgba(26,43,95,0.2); text-transform: uppercase; margin-bottom: 20px;
+  }
+  .p-card h3 {
+    font-weight: 700; font-size: 17px; color: var(--blu);
+    text-transform: uppercase; letter-spacing: 0.2px; margin-bottom: 14px;
+  }
+  .p-card p { font-size: 14px; font-weight: 400; color: var(--grigio); line-height: 1.75; }
+
+  /* ─── PROCESSO ─── */
+  .processo-bg { background: var(--blu); border-top: 4px solid var(--azzurro); }
+
+  .steps-grid {
+    display: grid; grid-template-columns: repeat(4,1fr);
+    gap: 0; margin-top: 60px; position: relative;
+  }
+  .steps-grid::before {
+    content: ""; position: absolute;
+    top: 24px; left: 12%; right: 12%;
+    height: 1px; background: rgba(255,255,255,0.12); z-index: 0;
+  }
+  .step { padding: 0 24px; text-align: center; position: relative; z-index: 1; }
+  .step-dot {
+    width: 48px; height: 48px; border-radius: 50%;
+    border: 2px solid var(--azzurro); background: var(--blu);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 18px; color: var(--azzurro);
+    margin: 0 auto 24px; position: relative; z-index: 2;
+  }
+  .step h3 {
+    font-weight: 700; font-size: 14px; color: var(--bianco);
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;
+  }
+  .step p { font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.5); line-height: 1.65; }
+  .step-time {
+    display: inline-block; margin-top: 14px;
+    font-size: 11px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; color: var(--azzurro);
+    border-bottom: 1px solid rgba(30,159,216,0.3); padding-bottom: 2px;
+  }
+
+  /* ─── TECNOLOGIE ─── */
+  .tech-grid {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    gap: 1px; background: rgba(26,43,95,0.07); margin-top: 56px;
+  }
+  .t-card {
+    background: var(--bianco); padding: 32px 28px;
+    border-top: 2px solid transparent; transition: all 0.3s;
+  }
+  .t-card:hover {
+    border-top-color: var(--azzurro);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(26,43,95,0.08);
+  }
+  .t-eyebrow {
+    font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--azzurro); margin-bottom: 10px;
+  }
+  .t-card h3 {
+    font-weight: 700; font-size: 16px; color: var(--blu);
+    text-transform: uppercase; letter-spacing: 0.2px; margin-bottom: 12px;
+  }
+  .t-card p { font-size: 13px; font-weight: 400; color: var(--grigio); line-height: 1.7; }
+  .t-tags { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .t-tag {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.5px;
+    background: var(--chiaro); color: var(--blu); padding: 3px 10px;
+  }
+
+  /* ─── FORM ─── */
+  .form-section { background: var(--bianco); }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+
+  .form-promises { list-style: none; margin-top: 36px; display: flex; flex-direction: column; gap: 16px; }
+  .form-promises li {
+    font-size: 14px; font-weight: 400; color: var(--testo);
+    display: flex; align-items: flex-start; gap: 12px; line-height: 1.5;
+  }
+  .form-promises li::before {
+    content: ""; width: 20px; height: 20px; flex-shrink: 0;
+    background: var(--azzurro);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6l3 3 5-5' stroke='white' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: center; background-size: 12px;
+    margin-top: 1px;
+  }
+
+  .form-card {
+    background: var(--bianco); padding: 48px 44px;
+    box-shadow: 0 2px 40px rgba(26,43,95,0.08);
+  }
+  .form-card-title {
+    font-weight: 800; font-size: 22px; color: var(--blu);
+    text-transform: uppercase; letter-spacing: -0.3px; margin-bottom: 6px;
+  }
+  .form-card-sub {
+    font-size: 13px; font-weight: 400; color: var(--grigio); margin-bottom: 32px;
+  }
+  .fg { margin-bottom: 18px; }
+  .fg label {
+    display: block; font-size: 11px; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--blu); margin-bottom: 8px;
+  }
+  .fg input, .fg select, .fg textarea {
+    width: 100%; padding: 13px 15px;
+    border: 1.5px solid rgba(26,43,95,0.12);
+    font-family: "Montserrat", sans-serif; font-size: 14px; font-weight: 400;
+    color: var(--testo); outline: none; transition: border-color 0.2s;
+    background: var(--bianco); appearance: none; border-radius: 0;
+  }
+  .fg input:focus, .fg select:focus, .fg textarea:focus { border-color: var(--azzurro); }
+  .fg textarea { resize: vertical; min-height: 88px; }
+  .fg-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-submit {
+    width: 100%; background: var(--blu); color: var(--bianco);
+    font-family: "Montserrat", sans-serif; font-weight: 700; font-size: 13px;
+    letter-spacing: 1.5px; text-transform: uppercase; padding: 17px;
+    border: none; cursor: pointer; transition: all 0.2s; margin-top: 8px;
+  }
+  .form-submit:hover { background: var(--azzurro); }
+  .form-submit:disabled { opacity: 0.65; cursor: not-allowed; }
+  .form-submit:disabled:hover { background: var(--blu); }
+  .form-note { font-size: 11px; font-weight: 400; color: var(--grigio); text-align: center; margin-top: 12px; line-height: 1.5; }
+  .form-success {
+    padding: 28px 24px;
+    background: var(--chiaro);
+    border-left: 4px solid var(--azzurro);
+    font-size: 15px; font-weight: 400; color: var(--blu); line-height: 1.65;
+  }
+  .form-success strong { font-weight: 700; display: block; margin-bottom: 8px; font-size: 17px; }
+  .nf-honeypot {
+    position: absolute; left: -10000px; top: auto; width: 1px; height: 1px;
+    overflow: hidden; margin: 0; padding: 0; border: 0; clip: rect(0, 0, 0, 0);
+  }
+  .form-error {
+    margin-top: 12px; padding: 12px 14px; font-size: 12px; color: #991b1b;
+    background: #fef2f2; border: 1px solid #fecaca; text-align: left; line-height: 1.5;
+  }
+  .form-warning {
+    margin-top: 12px; padding: 14px 16px; font-size: 12px; color: #92400e;
+    background: #fffbeb; border: 1px solid #fde68a; text-align: left; line-height: 1.55;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: #0d1a3a; padding: 64px;
+    display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 60px;
+  }
+  .f-logo { font-weight: 900; font-size: 24px; color: var(--bianco); letter-spacing: -0.3px; margin-bottom: 16px; display: block; }
+  .f-logo em { font-style: normal; color: var(--azzurro); }
+  .f-desc { font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.35); line-height: 1.75; max-width: 260px; }
+  .f-col h4 { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--azzurro); margin-bottom: 20px; }
+  .f-col a, .f-col address {
+    display: block; font-size: 13px; font-weight: 400; font-style: normal;
+    color: rgba(255,255,255,0.4); text-decoration: none; margin-bottom: 10px; line-height: 1.6;
+    transition: color 0.2s;
+  }
+  .f-col a:hover { color: var(--bianco); }
+  .f-bottom {
+    background: #0d1a3a; padding: 20px 64px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .f-bottom p { font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.2); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 960px) {
+    .nav { padding: 0 24px; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-left { padding: 60px 28px; }
+    .hero-right { min-height: 420px; padding: 40px 28px 0; }
+    
+    .strip { grid-template-columns: 1fr 1fr; }
+    .section { padding: 72px 28px; }
+    .problema-grid, .tech-grid, .steps-grid { grid-template-columns: 1fr; gap: 0; }
+    .steps-grid::before { display: none; }
+    .steps-grid .step { padding: 28px 0; text-align: left; }
+    .steps-grid .step-dot { margin: 0 0 16px; }
+    .form-grid { grid-template-columns: 1fr; gap: 40px; }
+    footer { grid-template-columns: 1fr; gap: 40px; padding: 48px 28px; }
+    .f-bottom { padding: 20px 28px; flex-direction: column; gap: 8px; text-align: center; }
+    .fg-row { grid-template-columns: 1fr; }
+  }
+
+  /* ─── PLACEHOLDER HERO VISUAL ─── */
+  .hero-visual-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .hvp-inner { position: relative; width: 280px; height: 280px; display: flex; align-items: center; justify-content: center; }
+  .hvp-circle {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: 260px; height: 260px; border-radius: 50%;
+    border: 1px solid rgba(26,43,95,0.12);
+  }
+  .hvp-circle::before {
+    content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: 180px; height: 180px; border-radius: 50%;
+    border: 1px solid rgba(26,43,95,0.07);
+  }
+  .hvp-text {
+    position: absolute; top: 20px; right: 0px;
+    background: var(--bianco);
+    padding: 18px 20px;
+    max-width: 180px;
+    box-shadow: 0 4px 24px rgba(26,43,95,0.1);
+    border-left: 3px solid var(--azzurro);
+    opacity: 0;
+    animation: fadeIn 0.6s ease 0.9s forwards;
+  }
+  .hvp-num { display: block; font-weight: 900; font-size: 38px; color: var(--blu); line-height: 1; letter-spacing: -1px; }
+  .hvp-num em { font-style: normal; color: var(--azzurro); font-size: 22px; }
+  .hvp-label { display: block; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--grigio); margin-top: 5px; }
+  .hvp-card2 {
+    position: absolute; bottom: 20px; left: 0px;
+    background: var(--blu); padding: 14px 18px;
+    max-width: 160px;
+    opacity: 0;
+    animation: fadeIn 0.6s ease 1.05s forwards;
+  }
+  .hvp-num2 { display: block; font-weight: 900; font-size: 30px; color: var(--bianco); line-height: 1; letter-spacing: -0.5px; }
+  .hvp-num2 em { font-style: normal; color: var(--azzurro); font-size: 18px; }
+  .hvp-label2 { display: block; font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<!-- NAVIGAZIONE -->
+<nav class="nav">
+  <a href="#" class="logo"><em>3D</em>MAKES</a>
+  <div class="nav-right">
+    <a href="#come-funziona" class="nav-link">Come funziona</a>
+    <a href="#tecnologie" class="nav-link">Tecnologie</a>
+    <a href="#preventivo" class="nav-cta">Preventivo gratuito</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+
+  <!-- Colonna sinistra: testo -->
+  <div class="hero-left">
+    <div class="hero-eyebrow">Partner tecnologico B2B · Lugano, Ticino</div>
+
+    <h1 class="hero-h1">
+      Componente<br>
+      <span class="highlight">introvabile?</span>
+    </h1>
+
+    <p class="hero-lead">
+      La vostra linea produttiva non può aspettare.<br>
+      Dalla scansione 3D alla riproduzione fisica: <strong>vi consegniamo il pezzo in 48 ore</strong>,
+      senza compromessi sulla qualità.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#preventivo" class="btn-primary">Richiedi preventivo</a>
+      <a href="#come-funziona" class="btn-link">Come funziona</a>
+    </div>
+
+    <div class="hero-tech">
+      <span class="tech-pill">FDM Stratasys</span>
+      <span class="tech-pill">CFF Markforged</span>
+      <span class="tech-pill">SLA</span>
+      <span class="tech-pill">Scansione 3D</span>
+      <span class="tech-pill">Reverse Engineering</span>
+    </div>
+  </div>
+
+  <!-- Colonna destra: visual -->
+  <div class="hero-right">
+    <!-- Placeholder per visual / mascotte — da integrare in fase esecutiva -->
+    <div class="hero-visual-placeholder">
+      <div class="hvp-inner">
+        <div class="hvp-circle"></div>
+        <div class="hvp-text">
+          <span class="hvp-num">48<em>h</em></span>
+          <span class="hvp-label">Consegna media</span>
+        </div>
+        <div class="hvp-card2">
+          <span class="hvp-num2">2<em>h</em></span>
+          <span class="hvp-label2">Risposta garantita</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- STRIP DATI -->
+<div class="strip">
+  <div class="strip-item">
+    <div class="strip-num">48<span class="strip-unit">h</span></div>
+    <div class="strip-label">Consegna media</div>
+  </div>
+  <div class="strip-item">
+    <div class="strip-num">0,1<span class="strip-unit">mm</span></div>
+    <div class="strip-label">Precisione scansione</div>
+  </div>
+  <div class="strip-item">
+    <div class="strip-num">12<span class="strip-unit">+</span></div>
+    <div class="strip-label">Tecnologie disponibili</div>
+  </div>
+  <div class="strip-item">
+    <div class="strip-num">2<span class="strip-unit">h</span></div>
+    <div class="strip-label">Risposta garantita</div>
+  </div>
+</div>
+
+<!-- IL PROBLEMA -->
+<section class="section problema-bg">
+  <div class="section-max">
+    <div class="eyebrow">Il contesto</div>
+    <h2 class="section-h2">Tre situazioni<br>che conosciamo bene.</h2>
+    <p class="section-body">
+      Lavorando con le PMI manifatturiere del Ticino e della Lombardia,
+      incontriamo ricorrentemente le stesse criticità. Le riconoscete?
+    </p>
+
+    <div class="problema-grid">
+      <div class="p-card">
+        <div class="p-card-num">01</div>
+        <h3>Il ricambio non esiste più</h3>
+        <p>Il componente è fuori produzione. Il fornitore originale non risponde. Attendere dall'estero significa settimane di fermo linea. Ogni ora ha un costo preciso.</p>
+      </div>
+      <div class="p-card">
+        <div class="p-card-num">02</div>
+        <h3>Il prototipo non può aspettare</h3>
+        <p>Il cliente vuole vedere il pezzo prima di approvare. I produttori tradizionali richiedono stampi, setup e settimane di attesa per qualcosa che potrebbe cambiare domani.</p>
+      </div>
+      <div class="p-card">
+        <div class="p-card-num">03</div>
+        <h3>L'ufficio tecnico non c'è</h3>
+        <p>L'idea c'è, il mercato c'è. Mancano le risorse interne per passare dal concept al prototipo validato in tempi e costi ragionevoli.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESSO -->
+<section class="section processo-bg" id="come-funziona">
+  <div class="section-max">
+    <div class="eyebrow" style="color:var(--azzurro)">Il processo</div>
+    <h2 class="section-h2 white">Dal problema<br>al pezzo fisico.</h2>
+
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-dot">1</div>
+        <h3>Ci contattate</h3>
+        <p>Descrivete il problema via form, email o telefono. Non è necessario avere un file CAD.</p>
+        <div class="step-time">Entro 2h risposta</div>
+      </div>
+      <div class="step">
+        <div class="step-dot">2</div>
+        <h3>Analisi tecnica</h3>
+        <p>Valutiamo il pezzo, la tecnologia adatta e il materiale corretto. Il preventivo è gratuito e arriva in giornata.</p>
+        <div class="step-time">Stesso giorno</div>
+      </div>
+      <div class="step">
+        <div class="step-dot">3</div>
+        <h3>Produzione</h3>
+        <p>Scansione 3D se necessario, ingegneria inversa, stampa con Stratasys Fortus o Markforged nel nostro laboratorio.</p>
+        <div class="step-time">24 – 48 ore</div>
+      </div>
+      <div class="step">
+        <div class="step-dot">4</div>
+        <h3>Consegna</h3>
+        <p>Il pezzo arriva in azienda o lo ritirate direttamente a Figino. Garanzia di qualità inclusa su ogni commessa.</p>
+        <div class="step-time">48h dalla conferma</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECNOLOGIE -->
+<section class="section" id="tecnologie">
+  <div class="section-max">
+    <div class="eyebrow">Tecnologie</div>
+    <h2 class="section-h2">La tecnologia giusta<br>per ogni esigenza.</h2>
+
+    <div class="tech-grid">
+      <div class="t-card">
+        <div class="t-eyebrow">Stratasys Fortus</div>
+        <h3>Stampa FDM Industriale</h3>
+        <p>Componenti funzionali in ABS M30, Ultem, Nylon, ASA. Dimensioni fino a 914×610×914mm. La soluzione di riferimento per ricambi e attrezzature industriali.</p>
+        <div class="t-tags"><span class="t-tag">Ricambi</span><span class="t-tag">Componenti meccanici</span><span class="t-tag">Fixture</span></div>
+      </div>
+      <div class="t-card">
+        <div class="t-eyebrow">Markforged CFF</div>
+        <h3>Fibra di Carbonio Continua</h3>
+        <p>Parti strutturali più resistenti dell'acciaio con un terzo del peso. Fibra continua di carbonio, kevlar e vetro per applicazioni ad alte prestazioni.</p>
+        <div class="t-tags"><span class="t-tag">Alta resistenza</span><span class="t-tag">Strutturale</span><span class="t-tag">Leggerezza</span></div>
+      </div>
+      <div class="t-card">
+        <div class="t-eyebrow">Precisione 0,1mm</div>
+        <h3>Scansione 3D</h3>
+        <p>Digitalizzazione millimetrica di oggetti fisici senza file CAD originale. Ideale per il reverse engineering di componenti obsoleti. Output in STL, STEP, OBJ.</p>
+        <div class="t-tags"><span class="t-tag">Reverse Engineering</span><span class="t-tag">Senza CAD</span></div>
+      </div>
+      <div class="t-card">
+        <div class="t-eyebrow">10 micron di risoluzione</div>
+        <h3>Resina SLA</h3>
+        <p>Superfici lisce, dettagli fini, minima post-produzione. Per prototipi estetici, modelli di presentazione e componenti di precisione.</p>
+        <div class="t-tags"><span class="t-tag">Prototipi</span><span class="t-tag">Alta precisione</span></div>
+      </div>
+      <div class="t-card">
+        <div class="t-eyebrow">Stratasys PolyJet</div>
+        <h3>Multicolore e Multi-materiale</h3>
+        <p>Prototipi con più materiali e colori in un'unica stampa. Qualità fotografica per la presentazione e validazione dei concept con clienti e stakeholder.</p>
+        <div class="t-tags"><span class="t-tag">Concept</span><span class="t-tag">Presentazione</span></div>
+      </div>
+      <div class="t-card">
+        <div class="t-eyebrow">Partnership estese</div>
+        <h3>SLS · MJF · SLM · LSAM</h3>
+        <p>Per esigenze specifiche: nylon HP MJF, metallo SLM (titanio, acciaio inox, inconel), grandi dimensioni LSAM Caracol. Vi orientiamo verso la soluzione corretta.</p>
+        <div class="t-tags"><span class="t-tag">Metallo</span><span class="t-tag">Grandi dimensioni</span><span class="t-tag">Nylon HP</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORM -->
+<section class="section form-section" id="preventivo">
+  <div class="section-max">
+    <div class="form-grid">
+      <div>
+        <div class="eyebrow">Preventivo gratuito</div>
+        <h2 class="section-h2">Raccontateci<br>il problema.</h2>
+        <p class="section-body">
+          Vi risponderemo entro due ore lavorative con una valutazione tecnica
+          e un preventivo chiaro. Senza impegno.
+        </p>
+
+        <ul class="form-promises">
+          <li>Risposta entro 2 ore lavorative</li>
+          <li>Preventivo dettagliato e gratuito</li>
+          <li>Consulenza tecnica inclusa nella valutazione</li>
+          <li>Consegna media in 48 ore dalla conferma</li>
+          <li>Laboratorio a Figino, Lugano — aperti a visite in sede</li>
+        </ul>
+      </div>
+
+      <div class="form-card">
+        <div class="form-card-title">Richiesta di preventivo</div>
+        <div class="form-card-sub">Risposta garantita entro 2 ore lavorative</div>
+
+        <!-- Netlify Forms: dopo il deploy, abilita notifiche email in Site settings → Forms → Notifications. -->
+        <div id="lead-form-root">
+        <form
+          id="lead-form"
+          name="b2b-preventivo"
+          method="POST"
+          action="/b2b/"
+          data-netlify="true"
+          data-netlify-honeypot="bot-field"
+          accept-charset="UTF-8"
+        >
+          <input type="hidden" name="form-name" value="b2b-preventivo">
+          <p class="nf-honeypot" aria-hidden="true">
+            <label>Non compilare: <input name="bot-field" tabindex="-1" autocomplete="off"></label>
+          </p>
+          <div class="fg-row">
+            <div class="fg"><label for="lead-nome">Nome *</label><input id="lead-nome" name="nome" type="text" autocomplete="given-name" required placeholder="Marco"></div>
+            <div class="fg"><label for="lead-cognome">Cognome *</label><input id="lead-cognome" name="cognome" type="text" autocomplete="family-name" required placeholder="Rossi"></div>
+          </div>
+          <div class="fg"><label for="lead-azienda">Azienda *</label><input id="lead-azienda" name="azienda" type="text" autocomplete="organization" required placeholder="Rossi Meccanica Sagl"></div>
+          <div class="fg"><label for="lead-email">Email aziendale *</label><input id="lead-email" name="email" type="email" autocomplete="email" required placeholder="marco@rossi-meccanica.ch"></div>
+          <div class="fg">
+            <label for="lead-tipo">Tipo di richiesta *</label>
+            <select id="lead-tipo" name="tipo" required>
+              <option value="">Seleziona...</option>
+              <option value="Componente rotto o introvabile">Componente rotto o introvabile</option>
+              <option value="Prototipo funzionale">Prototipo funzionale</option>
+              <option value="Piccola serie (5–500 pezzi)">Piccola serie (5–500 pezzi)</option>
+              <option value="Reverse engineering da oggetto fisico">Reverse engineering da oggetto fisico</option>
+              <option value="Sviluppo prodotto / R&amp;D">Sviluppo prodotto / R&amp;D</option>
+              <option value="Altro">Altro</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label for="lead-descrizione">Descrizione</label>
+            <textarea id="lead-descrizione" name="descrizione" placeholder="Descrivete il vostro problema o la vostra esigenza. Non è necessario avere un file tecnico — basterebbe una foto o una descrizione."></textarea>
+          </div>
+          <button type="submit" class="form-submit">Invia richiesta</button>
+          <p class="form-note">Invio tramite Netlify Forms (server sicuro). Le richieste compaiono nel pannello Netlify → Forms; da lì potete inviare notifiche a info@3dmakes.ch. DSG / GDPR.</p>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <span class="f-logo"><em>3D</em>MAKES</span>
+    <p class="f-desc">Partner tecnologico per PMI manifatturiere nel Canton Ticino e in Lombardia. Dal componente introvabile al prototipo validato.</p>
+  </div>
+  <div class="f-col">
+    <h4>Servizi</h4>
+    <a href="#">Componenti critici on-demand</a>
+    <a href="#">Prototipazione rapida</a>
+    <a href="#">Reverse engineering</a>
+    <a href="#">Scansione 3D</a>
+    <a href="#">R&D in outsourcing</a>
+    <a href="#">Corsi in presenza</a>
+  </div>
+  <div class="f-col">
+    <h4>Contatti</h4>
+    <address>Via Cantonale 15<br>6918 Figino, Lugano CH</address>
+    <a href="mailto:info@3dmakes.ch">info@3dmakes.ch</a>
+    <a href="tel:+41762660396">+41 76 266 03 96</a>
+    <a href="https://3dmakes.ch" target="_blank">3dmakes.ch</a>
+  </div>
+</footer>
+<div class="f-bottom">
+  <p>© 2026 3DMAKES · Lugano</p>
+  <p>Componenti critici on-demand per PMI</p>
+</div>
+
+<script>
+(function () {
+  var form = document.getElementById("lead-form");
+  var root = document.getElementById("lead-form-root");
+  if (!form || !root) return;
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    var errEl = form.querySelector(".form-error");
+    if (errEl) errEl.remove();
+    var warnEl = form.querySelector(".form-warning");
+    if (warnEl) warnEl.remove();
+
+    var btn = form.querySelector(".form-submit");
+    var prevLabel = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = "Invio in corso…";
+
+    var action = form.getAttribute("action") || "/b2b/";
+    var params = new URLSearchParams(new FormData(form));
+
+    fetch(action, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: params.toString()
+    })
+      .then(function (res) {
+        if (!res.ok) throw new Error("http " + res.status);
+        root.innerHTML =
+          '<div class="form-success" role="status">' +
+          "<strong>Richiesta inviata.</strong>" +
+          " Abbiamo ricevuto i vostri dati. Vi risponderemo entro 2 ore lavorative.</div>";
+        root.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      })
+      .catch(function () {
+        btn.disabled = false;
+        btn.textContent = prevLabel;
+        var p = document.createElement("p");
+        p.className = "form-error";
+        var isLocal =
+          location.hostname === "localhost" ||
+          location.hostname === "127.0.0.1" ||
+          location.hostname === "";
+        p.innerHTML = isLocal
+          ? "<strong>Netlify Forms</strong> funziona solo sul sito pubblicato su Netlify (non su localhost). Per provare: fai un deploy o apri un Deploy preview, oppure scrivi a <a href=\"mailto:info@3dmakes.ch\">info@3dmakes.ch</a>."
+          : "Invio non riuscito. Riprovate tra poco o scrivete a " +
+            '<a href="mailto:info@3dmakes.ch">info@3dmakes.ch</a>.';
+        form.appendChild(p);
+      });
+  });
+})();
+</script>
+</body>
+</html>

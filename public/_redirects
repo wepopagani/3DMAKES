@@ -1,3 +1,5 @@
  /blog/stampa-3d-in-odontotecnica /blog/stampa-3d-odontotecnica 301!
 /blog/stampa-3d-in-odontotecnica/ /blog/stampa-3d-odontotecnica 301!
+# Static B2B landing — must be before SPA fallback so /b2b is not served by React
+/b2b /b2b/index.html 200
 /* /index.html 200
