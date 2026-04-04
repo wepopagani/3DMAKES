@@ -19,7 +19,10 @@
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
   body {
     font-family: "Montserrat", sans-serif;
     background: var(--bianco);
@@ -43,20 +46,40 @@
     letter-spacing: -0.3px; text-decoration: none;
   }
   .logo em { font-style: normal; color: var(--azzurro); }
+  .nav-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
   .nav-link {
-    color: rgba(255,255,255,0.5); font-size: 13px; font-weight: 500;
-    text-decoration: none; letter-spacing: 0.3px; transition: color 0.2s;
-    margin-right: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.92);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 10px 18px;
+    min-height: 40px;
+    border: 1.5px solid rgba(255,255,255,0.4);
+    background: transparent;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
   }
-  .nav-link:hover { color: var(--bianco); }
-  .nav-right { display: flex; align-items: center; }
+  .nav-link:hover {
+    color: var(--bianco);
+    border-color: var(--azzurro);
+    background: rgba(30, 159, 216, 0.15);
+  }
   .nav-cta {
     background: var(--azzurro); color: var(--bianco);
     font-size: 12px; font-weight: 700; letter-spacing: 1.5px;
     text-transform: uppercase; padding: 11px 24px;
     text-decoration: none; transition: all 0.2s;
+    border: 1.5px solid var(--azzurro);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
   }
-  .nav-cta:hover { background: var(--bianco); color: var(--blu); }
+  .nav-cta:hover { background: var(--bianco); color: var(--blu); border-color: var(--bianco); }
 
   /* ─── HERO — layout a due colonne ─── */
   .hero {
@@ -410,21 +433,118 @@
 
   /* ─── RESPONSIVE ─── */
   @media (max-width: 960px) {
-    .nav { padding: 0 24px; }
-    .hero { grid-template-columns: 1fr; }
-    .hero-left { padding: 60px 28px; }
-    .hero-right { min-height: 420px; padding: 40px 28px 0; }
-    
+    .nav { padding: 0 max(20px, env(safe-area-inset-left)) 0 max(20px, env(safe-area-inset-right)); }
+    .hero { grid-template-columns: 1fr; min-height: 0; }
+    .hero-left { padding: 56px 24px 48px; }
+    .hero-right { min-height: 320px; padding: 32px 24px 40px; }
+
     .strip { grid-template-columns: 1fr 1fr; }
-    .section { padding: 72px 28px; }
+    .strip-item:nth-child(2n) { border-right: none; }
+    .strip-item:nth-child(-n+2) { border-bottom: 1px solid rgba(255,255,255,0.15); }
+    .section { padding: 56px 24px; }
     .problema-grid, .tech-grid, .steps-grid { grid-template-columns: 1fr; gap: 0; }
     .steps-grid::before { display: none; }
     .steps-grid .step { padding: 28px 0; text-align: left; }
     .steps-grid .step-dot { margin: 0 0 16px; }
     .form-grid { grid-template-columns: 1fr; gap: 40px; }
-    footer { grid-template-columns: 1fr; gap: 40px; padding: 48px 28px; }
-    .f-bottom { padding: 20px 28px; flex-direction: column; gap: 8px; text-align: center; }
+    footer { grid-template-columns: 1fr; gap: 40px; padding: 48px 24px; }
+    .f-bottom {
+      padding: 20px max(24px, env(safe-area-inset-left)) max(20px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-right));
+      flex-direction: column; gap: 8px; text-align: center;
+    }
     .fg-row { grid-template-columns: 1fr; }
+    .form-card { padding: 36px 24px; }
+  }
+
+  /* Telefono (schermi stretti) */
+  @media (max-width: 640px) {
+    html { scroll-padding-top: max(120px, calc(env(safe-area-inset-top) + 80px)); }
+    .nav {
+      height: auto;
+      min-height: 56px;
+      padding: 12px max(16px, env(safe-area-inset-right)) 12px max(16px, env(safe-area-inset-left));
+      padding-top: max(12px, env(safe-area-inset-top));
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo { font-size: 19px; }
+    .nav-right {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: stretch;
+      gap: 8px;
+    }
+    .nav-link {
+      flex: 1 1 calc(50% - 4px);
+      min-width: 0;
+      font-size: 10px;
+      letter-spacing: 0.8px;
+      padding: 12px 10px;
+      min-height: 44px;
+    }
+    .nav-cta {
+      flex: 1 1 100%;
+      text-align: center;
+      padding: 14px 16px;
+      font-size: 11px;
+      letter-spacing: 1px;
+    }
+
+    /* Spazio sotto la nav a più righe + notch */
+    .hero { padding-top: max(108px, calc(env(safe-area-inset-top) + 88px)); }
+    .hero-left { padding: 24px 16px 40px; }
+    .hero-right { min-height: 260px; padding: 24px 16px 32px; }
+    .hero-h1 { font-size: clamp(28px, 9vw, 44px); letter-spacing: -0.5px; }
+    .hero-eyebrow { font-size: 10px; letter-spacing: 2px; margin-bottom: 20px; flex-wrap: wrap; }
+    .hero-lead { font-size: 15px; margin-top: 20px; }
+    .hero-actions {
+      margin-top: 28px;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 14px;
+    }
+    .btn-primary { text-align: center; padding: 15px 20px; }
+    .btn-link { justify-content: center; padding: 8px 0; min-height: 44px; }
+    .hero-tech { margin-top: 36px; padding-top: 24px; }
+
+    .strip {
+      grid-template-columns: 1fr;
+    }
+    .strip-item {
+      border-right: none;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+      padding: 22px 16px;
+    }
+    .strip-item:last-child { border-bottom: none; }
+    .strip-num { font-size: 36px; }
+    .strip-unit { font-size: 18px; }
+
+    .section { padding: 44px 16px; }
+    .section-h2 { font-size: clamp(22px, 6.5vw, 34px); }
+    .section-body { font-size: 15px; }
+    .p-card { padding: 28px 20px; }
+    .t-card { padding: 24px 18px; }
+
+    .form-card { padding: 28px 18px; }
+    .form-card-title { font-size: 18px; }
+    .form-note { text-align: left; font-size: 10px; }
+
+    footer { padding: 40px 16px; }
+    .f-desc { max-width: none; }
+
+    .hvp-inner { width: min(240px, 70vw); height: min(240px, 70vw); }
+    .hvp-circle { width: 220px; height: 220px; max-width: 90%; max-height: 90%; }
+    .hvp-circle::before { width: 150px; height: 150px; }
+    .hvp-text { max-width: 150px; padding: 14px 14px; right: -4px; }
+    .hvp-num { font-size: 30px; }
+    .hvp-card2 { max-width: 140px; padding: 12px 14px; left: -4px; }
+    .hvp-num2 { font-size: 24px; }
+  }
+
+  @media (max-width: 380px) {
+    .nav-link { font-size: 9px; letter-spacing: 0.5px; padding: 12px 8px; }
   }
 
   /* ─── PLACEHOLDER HERO VISUAL ─── */
@@ -508,8 +628,15 @@
       <span class="tech-pill">FDM Stratasys</span>
       <span class="tech-pill">CFF Markforged</span>
       <span class="tech-pill">SLA</span>
+      <span class="tech-pill">PolyJet Stratasys</span>
+      <span class="tech-pill">Incisione laser</span>
+      <span class="tech-pill">Riparazione stampanti 3D</span>
       <span class="tech-pill">Scansione 3D</span>
-      <span class="tech-pill">Reverse Engineering</span>
+      <span class="tech-pill">Prototipazione</span>
+      <span class="tech-pill">LSAM Caracol</span>
+      <span class="tech-pill">MJF HP</span>
+      <span class="tech-pill">SLM metallo</span>
+      <span class="tech-pill">SLS</span>
     </div>
   </div>
 
