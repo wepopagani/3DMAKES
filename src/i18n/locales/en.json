@@ -1664,18 +1664,19 @@
   "droneShop": {
     "eyebrow": "FPV DRONES",
     "heroTitle": "Build your own drone",
-    "heroSubtitle": "Pick the package that fits you: just the frame, a ready-to-fly Bind-and-Fly drone, the full bundle with radio and goggles, or the dedicated case.",
+    "heroSubtitle": "Pick the package that fits you: just the frame, a ready-to-fly Bind-and-Fly drone, or the full bundle with radio and goggles.",
     "configureNow": "Configure now",
     "bundlesTitle": "Our bundles",
-    "bundlesSubtitle": "Four configurations for every pilot, from the seasoned builder to the rider who just wants to fly.",
+    "bundlesSubtitle": "Three configurations for every pilot, from the seasoned builder to the rider who just wants to fly.",
     "radioSystem": "Radio system",
+    "motorSpacing": "Motor screw spacing",
     "includes": "What's included",
     "addToCart": "Add to cart",
     "added": "Added",
     "bundles": {
       "frame": {
         "title": "Frame",
-        "desc": "High-quality 3D-printed frame. Includes the complete VTX support set (9 pieces, DJI O4 compatible) and all three GPS adapter sizes as samples. Ideal if you build from scratch."
+        "desc": "High-quality 3D-printed frame. Includes the complete VTX support set (4 pieces, DJI O4 compatible) and all three GPS adapter sizes as samples. Ideal if you build from scratch."
       },
       "drone": {
         "title": "Drone (Bind & Fly)",
@@ -1704,12 +1705,13 @@
     "accessoryAll": "Full accessory pack",
     "accessoryAllDesc": "Includes every accessory listed below. Turning this on automatically disables individual items.",
     "accessories": {
-      "vtxSet": "VTX support set (9 pieces, DJI O4)",
+      "vtxSet": "VTX support set (4 pieces, DJI O4)",
       "gps12x16": "GPS adapter 12×16 mm",
       "gps18x18": "GPS adapter 18×18 mm",
       "gps21x21": "GPS adapter 21.5×21.5 mm",
       "antennaMount": "Antenna mount",
-      "actionCamMount": "Front action cam mount"
+      "actionCamMount": "Front action cam mount",
+      "box": "Drone box"
     },
     "priceTbd": "Price coming soon",
     "orderSummary": "Order summary",

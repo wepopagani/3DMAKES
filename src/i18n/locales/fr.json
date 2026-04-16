@@ -1598,18 +1598,19 @@
   "droneShop": {
     "eyebrow": "DRONES FPV",
     "heroTitle": "Construis ton drone",
-    "heroSubtitle": "Choisis le pack qui te correspond : uniquement le châssis, un drone Bind-and-Fly prêt à voler, le bundle complet avec radio et lunettes, ou la valise dédiée.",
+    "heroSubtitle": "Choisis le pack qui te correspond : uniquement le châssis, un drone Bind-and-Fly prêt à voler, ou le bundle complet avec radio et lunettes.",
     "configureNow": "Configurer",
     "bundlesTitle": "Nos bundles",
-    "bundlesSubtitle": "Quatre configurations pensées pour chaque pilote, du builder au rider qui veut juste voler.",
+    "bundlesSubtitle": "Trois configurations pensées pour chaque pilote, du builder au rider qui veut juste voler.",
     "radioSystem": "Système radio",
+    "motorSpacing": "Entraxe vis moteurs",
     "includes": "Contenu",
     "addToCart": "Ajouter au panier",
     "added": "Ajouté",
     "bundles": {
       "frame": {
         "title": "Châssis",
-        "desc": "Châssis imprimé en 3D haute qualité. Inclut le set complet de support VTX (9 pièces, compatible DJI O4) et les trois tailles d'adaptateur GPS en échantillon. Parfait pour construire à ta façon."
+        "desc": "Châssis imprimé en 3D haute qualité. Inclut le set complet de support VTX (4 pièces, compatible DJI O4) et les trois tailles d'adaptateur GPS en échantillon. Parfait pour construire à ta façon."
       },
       "drone": {
         "title": "Drone (Bind & Fly)",
@@ -1638,12 +1639,13 @@
     "accessoryAll": "Pack accessoires complet",
     "accessoryAllDesc": "Inclut tous les accessoires ci-dessous. Quand il est activé, les éléments individuels sont désactivés automatiquement.",
     "accessories": {
-      "vtxSet": "Set support VTX (9 pièces, DJI O4)",
+      "vtxSet": "Set support VTX (4 pièces, DJI O4)",
       "gps12x16": "Adaptateur GPS 12×16 mm",
       "gps18x18": "Adaptateur GPS 18×18 mm",
       "gps21x21": "Adaptateur GPS 21.5×21.5 mm",
       "antennaMount": "Support antenne",
-      "actionCamMount": "Support Action Cam frontal"
+      "actionCamMount": "Support Action Cam frontal",
+      "box": "Box drone"
     },
     "priceTbd": "Prix à venir",
     "orderSummary": "Récapitulatif",

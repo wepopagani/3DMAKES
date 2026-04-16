@@ -1664,18 +1664,19 @@
   "droneShop": {
     "eyebrow": "DRONI FPV",
     "heroTitle": "Costruisci il tuo drone",
-    "heroSubtitle": "Scegli il pacchetto che fa per te: solo il frame, drone Bind-and-Fly pronto al volo, bundle completo con radio e occhiali, o la valigia dedicata.",
+    "heroSubtitle": "Scegli il pacchetto che fa per te: solo il frame, drone Bind-and-Fly pronto al volo, oppure il bundle completo con radio e occhiali.",
     "configureNow": "Configura ora",
     "bundlesTitle": "I nostri bundle",
-    "bundlesSubtitle": "Quattro configurazioni pensate per ogni pilota, dal builder esperto al rider che vuole solo volare.",
+    "bundlesSubtitle": "Tre configurazioni pensate per ogni pilota, dal builder esperto al rider che vuole solo volare.",
     "radioSystem": "Sistema radio",
+    "motorSpacing": "Interasse viti motori",
     "includes": "Cosa include",
     "addToCart": "Aggiungi al carrello",
     "added": "Aggiunto",
     "bundles": {
       "frame": {
         "title": "Frame",
-        "desc": "Telaio stampato in 3D di alta qualità. Include il set supporto VTX completo (9 pezzi, compatibile DJI O4) e tutte e tre le misure di adattatore GPS come sample. Perfetto per chi costruisce da zero."
+        "desc": "Telaio stampato in 3D di alta qualità. Include il set supporto VTX completo (4 pezzi, compatibile DJI O4) e tutte e tre le misure di adattatore GPS come sample. Perfetto per chi costruisce da zero."
       },
       "drone": {
         "title": "Drone (Bind & Fly)",
@@ -1704,12 +1705,13 @@
     "accessoryAll": "Pack accessori completo",
     "accessoryAllDesc": "Include tutti gli accessori qui sotto. Selezionandolo, le singole voci vengono disattivate automaticamente.",
     "accessories": {
-      "vtxSet": "Set supporto VTX (9 pezzi, DJI O4)",
+      "vtxSet": "Set supporto VTX (4 pezzi, DJI O4)",
       "gps12x16": "Adattatore GPS 12×16 mm",
       "gps18x18": "Adattatore GPS 18×18 mm",
       "gps21x21": "Adattatore GPS 21.5×21.5 mm",
       "antennaMount": "Supporto antenna",
-      "actionCamMount": "Supporto Action Cam frontale"
+      "actionCamMount": "Supporto Action Cam frontale",
+      "box": "Box drone"
     },
     "priceTbd": "Prezzo in fase di definizione",
     "orderSummary": "Riepilogo ordine",

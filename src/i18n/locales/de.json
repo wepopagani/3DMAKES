@@ -1598,18 +1598,19 @@
   "droneShop": {
     "eyebrow": "FPV-DROHNEN",
     "heroTitle": "Bau deine eigene Drohne",
-    "heroSubtitle": "Wähle das passende Paket: nur der Rahmen, eine flugfertige Bind-and-Fly-Drohne, das komplette Bundle mit Funke und Brille, oder der passende Koffer.",
+    "heroSubtitle": "Wähle das passende Paket: nur der Rahmen, eine flugfertige Bind-and-Fly-Drohne oder das komplette Bundle mit Funke und Brille.",
     "configureNow": "Jetzt konfigurieren",
     "bundlesTitle": "Unsere Bundles",
-    "bundlesSubtitle": "Vier Konfigurationen für jeden Piloten — vom Builder bis zum Piloten, der einfach nur fliegen will.",
+    "bundlesSubtitle": "Drei Konfigurationen für jeden Piloten — vom Builder bis zum Piloten, der einfach nur fliegen will.",
     "radioSystem": "Funksystem",
+    "motorSpacing": "Motor-Schraubenabstand",
     "includes": "Enthält",
     "addToCart": "In den Warenkorb",
     "added": "Hinzugefügt",
     "bundles": {
       "frame": {
         "title": "Rahmen",
-        "desc": "Hochwertiger, 3D-gedruckter Rahmen. Inklusive komplettem VTX-Halterungsset (9 Teile, DJI O4 kompatibel) und allen drei GPS-Adaptergrössen als Muster. Ideal für Eigenbau."
+        "desc": "Hochwertiger, 3D-gedruckter Rahmen. Inklusive komplettem VTX-Halterungsset (4 Teile, DJI O4 kompatibel) und allen drei GPS-Adaptergrössen als Muster. Ideal für Eigenbau."
       },
       "drone": {
         "title": "Drohne (Bind & Fly)",
@@ -1638,12 +1639,13 @@
     "accessoryAll": "Komplett-Zubehörpaket",
     "accessoryAllDesc": "Enthält das gesamte Zubehör unten. Ist es aktiviert, werden die Einzelartikel automatisch deaktiviert.",
     "accessories": {
-      "vtxSet": "VTX-Halterungsset (9 Teile, DJI O4)",
+      "vtxSet": "VTX-Halterungsset (4 Teile, DJI O4)",
       "gps12x16": "GPS-Adapter 12×16 mm",
       "gps18x18": "GPS-Adapter 18×18 mm",
       "gps21x21": "GPS-Adapter 21.5×21.5 mm",
       "antennaMount": "Antennenhalterung",
-      "actionCamMount": "Action-Cam-Halterung (vorne)"
+      "actionCamMount": "Action-Cam-Halterung (vorne)",
+      "box": "Drohnen-Box"
     },
     "priceTbd": "Preis folgt",
     "orderSummary": "Bestellübersicht",

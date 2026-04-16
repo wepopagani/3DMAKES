@@ -6,7 +6,6 @@ import {
   ChevronRight,
   Package,
   Plane,
-  Briefcase,
   Boxes,
 } from 'lucide-react';
 
@@ -20,14 +19,14 @@ import { Button } from '@/components/ui/button';
 // `null` price renders as "Prezzo in fase di definizione" and skips the total.
 // ─────────────────────────────────────────────────────────────────────────────
 
-type BundleId = 'frame' | 'drone' | 'full' | 'case';
+type BundleId = 'frame' | 'drone' | 'full';
 type RadioChoice = 'crossfire' | 'elrs';
+type MotorSpacing = '9x9' | '12x12';
 
 const BUNDLE_PRICES: Record<BundleId, number | null> = {
   frame: null,
   drone: null,
   full: null,
-  case: null,
 };
 
 const ACCESSORY_PRICE: number | null = null;
@@ -40,6 +39,7 @@ const ACCESSORY_IDS = [
   'gps21x21',
   'antennaMount',
   'actionCamMount',
+  'box',
 ] as const;
 
 type AccessoryId = (typeof ACCESSORY_IDS)[number];
@@ -64,6 +64,7 @@ const DroneShop = () => {
 
   const [bundle, setBundle] = useState<BundleId | null>(null);
   const [radio, setRadio] = useState<RadioChoice>('elrs');
+  const [motorSpacing, setMotorSpacing] = useState<MotorSpacing>('9x9');
   const [allAccessories, setAllAccessories] = useState(false);
   const [accessories, setAccessories] = useState<Record<AccessoryId, boolean>>({
     vtxSet: false,
@@ -72,6 +73,7 @@ const DroneShop = () => {
     gps21x21: false,
     antennaMount: false,
     actionCamMount: false,
+    box: false,
   });
 
   function toggleBundle(id: BundleId) {
@@ -94,6 +96,7 @@ const DroneShop = () => {
           gps21x21: false,
           antennaMount: false,
           actionCamMount: false,
+          box: false,
         });
       }
       return next;
@@ -136,10 +139,12 @@ const DroneShop = () => {
     const lines: string[] = [t('droneShop.waIntro'), ''];
     if (bundle) {
       const bundleName = t(`droneShop.bundles.${bundle}.title`);
-      const extra =
-        bundle === 'drone'
-          ? ` · ${radio === 'crossfire' ? 'TBS Crossfire' : 'ELRS'}`
-          : '';
+      let extra = '';
+      if (bundle === 'drone') {
+        extra = ` · ${radio === 'crossfire' ? 'TBS Crossfire' : 'ELRS'}`;
+      } else if (bundle === 'frame') {
+        extra = ` · ${motorSpacing === '9x9' ? '9×9 mm' : '12×12 mm'}`;
+      }
       lines.push(`• ${bundleName}${extra}`);
     }
     if (allAccessories) {
@@ -183,15 +188,6 @@ const DroneShop = () => {
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/80 md:text-lg">
             {t('droneShop.heroSubtitle')}
           </p>
-          <div className="mt-8">
-            <a
-              href="#bundles"
-              className="inline-flex items-center gap-2 rounded-xl bg-brand-accent px-6 py-3 text-sm font-bold text-brand-blue shadow-lg transition hover:bg-brand-accent/90"
-            >
-              {t('droneShop.configureNow')}
-              <ChevronRight className="h-4 w-4" />
-            </a>
-          </div>
         </div>
       </section>
 
@@ -207,7 +203,7 @@ const DroneShop = () => {
             </p>
           </div>
 
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             <BundleCard
               active={bundle === 'frame'}
               onToggle={() => toggleBundle('frame')}
@@ -216,7 +212,25 @@ const DroneShop = () => {
               price={BUNDLE_PRICES.frame}
               icon={<Boxes className="h-7 w-7" />}
               index={0}
-            />
+            >
+              <fieldset className="mt-5">
+                <legend className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  {t('droneShop.motorSpacing')}
+                </legend>
+                <div className="mt-2 grid grid-cols-2 gap-2">
+                  <RadioChip
+                    label="9×9 mm"
+                    selected={motorSpacing === '9x9'}
+                    onClick={() => setMotorSpacing('9x9')}
+                  />
+                  <RadioChip
+                    label="12×12 mm"
+                    selected={motorSpacing === '12x12'}
+                    onClick={() => setMotorSpacing('12x12')}
+                  />
+                </div>
+              </fieldset>
+            </BundleCard>
 
             <BundleCard
               active={bundle === 'drone'}
@@ -275,16 +289,6 @@ const DroneShop = () => {
                 </ul>
               </div>
             </BundleCard>
-
-            <BundleCard
-              active={bundle === 'case'}
-              onToggle={() => toggleBundle('case')}
-              title={t('droneShop.bundles.case.title')}
-              description={t('droneShop.bundles.case.desc')}
-              price={BUNDLE_PRICES.case}
-              icon={<Briefcase className="h-7 w-7" />}
-              index={3}
-            />
           </div>
         </div>
       </section>
@@ -301,8 +305,8 @@ const DroneShop = () => {
             </p>
           </div>
 
-          <div className="mt-12 grid gap-8 lg:grid-cols-2">
-            <div className="relative flex items-center justify-center overflow-hidden rounded-2xl bg-gray-50 p-6 ring-1 ring-border">
+          <div className="mt-10 grid gap-6 md:mt-12 md:gap-8 xl:grid-cols-2">
+            <div className="relative flex items-center justify-center overflow-hidden rounded-2xl bg-gray-50 p-4 ring-1 ring-border sm:p-6">
               <img
                 src="/images/droni/accessori-placeholder.svg"
                 alt={t('droneShop.accessoriesImageAlt')}
@@ -310,7 +314,7 @@ const DroneShop = () => {
               />
             </div>
 
-            <div>
+            <div className="min-w-0">
               {/* "Everything" master card */}
               <button
                 type="button"
@@ -347,7 +351,7 @@ const DroneShop = () => {
               {/* Individual accessories */}
               <div
                 className={[
-                  'mt-4 grid grid-cols-2 gap-2.5 transition',
+                  'mt-4 grid grid-cols-1 gap-2.5 transition sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-2',
                   allAccessories ? 'pointer-events-none opacity-50' : '',
                 ].join(' ')}
               >
@@ -361,7 +365,7 @@ const DroneShop = () => {
                       disabled={allAccessories}
                       aria-pressed={checked}
                       className={[
-                        'flex items-start gap-3 rounded-xl border-2 p-3 text-left transition',
+                        'flex h-full items-start gap-3 rounded-xl border-2 p-3 text-left transition',
                         checked
                           ? 'border-brand-accent bg-brand-accent/5'
                           : 'border-border bg-card hover:border-foreground/20',
@@ -369,10 +373,10 @@ const DroneShop = () => {
                     >
                       <CheckSquare checked={checked} small />
                       <div className="min-w-0 flex-1">
-                        <p className="truncate text-sm font-semibold text-foreground">
+                        <p className="text-sm font-semibold leading-tight text-foreground break-words">
                           {t(`droneShop.accessories.${id}`)}
                         </p>
-                        <p className="mt-0.5 text-xs text-muted-foreground">
+                        <p className="mt-1 text-xs text-muted-foreground">
                           {ACCESSORY_PRICE === null
                             ? t('droneShop.priceTbd')
                             : formatPrice(ACCESSORY_PRICE)}
@@ -404,13 +408,20 @@ const DroneShop = () => {
                   <ul className="divide-y divide-border">
                     {bundle && (
                       <OrderLine
-                        name={
-                          bundle === 'drone'
-                            ? `${t(`droneShop.bundles.${bundle}.title`)} · ${
-                                radio === 'crossfire' ? 'TBS Crossfire' : 'ELRS'
-                              }`
-                            : t(`droneShop.bundles.${bundle}.title`)
-                        }
+                        name={(() => {
+                          const title = t(`droneShop.bundles.${bundle}.title`);
+                          if (bundle === 'drone') {
+                            return `${title} · ${
+                              radio === 'crossfire' ? 'TBS Crossfire' : 'ELRS'
+                            }`;
+                          }
+                          if (bundle === 'frame') {
+                            return `${title} · ${
+                              motorSpacing === '9x9' ? '9×9 mm' : '12×12 mm'
+                            }`;
+                          }
+                          return title;
+                        })()}
                         price={BUNDLE_PRICES[bundle]}
                         placeholderLabel={t('droneShop.priceTbd')}
                       />
