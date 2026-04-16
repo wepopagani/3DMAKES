@@ -1675,11 +1675,11 @@
     "bundles": {
       "frame": {
         "title": "Frame",
-        "desc": "Our high-quality 3D-printed drone frame on its own. Ideal if you want to build from scratch."
+        "desc": "High-quality 3D-printed frame. Includes the complete VTX support set (9 pieces, DJI O4 compatible) and all three GPS adapter sizes as samples. Ideal if you build from scratch."
       },
       "drone": {
         "title": "Drone (Bind & Fly)",
-        "desc": "A ready-to-fly drone, pre-assembled and tuned. Pick your preferred radio link."
+        "desc": "A ready-to-fly drone, pre-assembled and tuned, with the VTX support and the GPS adapter matching the installed size. Pick your preferred radio link."
       },
       "full": {
         "title": "Full bundle",
@@ -1704,14 +1704,12 @@
     "accessoryAll": "Full accessory pack",
     "accessoryAllDesc": "Includes every accessory listed below. Turning this on automatically disables individual items.",
     "accessories": {
-      "propGuards": "Prop guards",
-      "gopro": "GoPro mount",
-      "antenna": "Antenna mount",
-      "batteryStrap": "Battery strap",
-      "cameraMount": "Alternative camera mount",
-      "landingGear": "Landing gear",
-      "ledHolder": "LED holder",
-      "spareArms": "Spare arms"
+      "vtxSet": "VTX support set (9 pieces, DJI O4)",
+      "gps12x16": "GPS adapter 12×16 mm",
+      "gps18x18": "GPS adapter 18×18 mm",
+      "gps21x21": "GPS adapter 21.5×21.5 mm",
+      "antennaMount": "Antenna mount",
+      "actionCamMount": "Front action cam mount"
     },
     "priceTbd": "Price coming soon",
     "orderSummary": "Order summary",

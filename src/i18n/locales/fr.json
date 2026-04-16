@@ -1609,11 +1609,11 @@
     "bundles": {
       "frame": {
         "title": "Châssis",
-        "desc": "Notre châssis de drone imprimé en 3D, seul. Parfait pour construire à ta façon."
+        "desc": "Châssis imprimé en 3D haute qualité. Inclut le set complet de support VTX (9 pièces, compatible DJI O4) et les trois tailles d'adaptateur GPS en échantillon. Parfait pour construire à ta façon."
       },
       "drone": {
         "title": "Drone (Bind & Fly)",
-        "desc": "Un drone prêt à voler, assemblé et réglé. Choisis ton système radio préféré."
+        "desc": "Un drone prêt à voler, assemblé et réglé, avec le support VTX et l'adaptateur GPS de la taille installée. Choisis ton système radio préféré."
       },
       "full": {
         "title": "Bundle complet",
@@ -1638,14 +1638,12 @@
     "accessoryAll": "Pack accessoires complet",
     "accessoryAllDesc": "Inclut tous les accessoires ci-dessous. Quand il est activé, les éléments individuels sont désactivés automatiquement.",
     "accessories": {
-      "propGuards": "Prop guards",
-      "gopro": "Support GoPro",
-      "antenna": "Support antenne",
-      "batteryStrap": "Sangle batterie",
-      "cameraMount": "Support caméra alternatif",
-      "landingGear": "Train d'atterrissage",
-      "ledHolder": "Support LED",
-      "spareArms": "Bras de rechange"
+      "vtxSet": "Set support VTX (9 pièces, DJI O4)",
+      "gps12x16": "Adaptateur GPS 12×16 mm",
+      "gps18x18": "Adaptateur GPS 18×18 mm",
+      "gps21x21": "Adaptateur GPS 21.5×21.5 mm",
+      "antennaMount": "Support antenne",
+      "actionCamMount": "Support Action Cam frontal"
     },
     "priceTbd": "Prix à venir",
     "orderSummary": "Récapitulatif",

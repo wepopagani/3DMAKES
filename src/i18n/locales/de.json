@@ -1609,11 +1609,11 @@
     "bundles": {
       "frame": {
         "title": "Rahmen",
-        "desc": "Der hochwertige, 3D-gedruckte Drohnenrahmen einzeln. Ideal für Eigenbau."
+        "desc": "Hochwertiger, 3D-gedruckter Rahmen. Inklusive komplettem VTX-Halterungsset (9 Teile, DJI O4 kompatibel) und allen drei GPS-Adaptergrössen als Muster. Ideal für Eigenbau."
       },
       "drone": {
         "title": "Drohne (Bind & Fly)",
-        "desc": "Flugbereite Drohne, vormontiert und abgestimmt. Wähle deine Funkverbindung."
+        "desc": "Flugbereite Drohne, vormontiert und abgestimmt, mit VTX-Halterung und passendem GPS-Adapter. Wähle deine Funkverbindung."
       },
       "full": {
         "title": "Komplett-Bundle",
@@ -1638,14 +1638,12 @@
     "accessoryAll": "Komplett-Zubehörpaket",
     "accessoryAllDesc": "Enthält das gesamte Zubehör unten. Ist es aktiviert, werden die Einzelartikel automatisch deaktiviert.",
     "accessories": {
-      "propGuards": "Propellerschutz",
-      "gopro": "GoPro-Halterung",
-      "antenna": "Antennenhalterung",
-      "batteryStrap": "Akku-Strap",
-      "cameraMount": "Alternative Kamerahalterung",
-      "landingGear": "Landegestell",
-      "ledHolder": "LED-Halter",
-      "spareArms": "Ersatzarme"
+      "vtxSet": "VTX-Halterungsset (9 Teile, DJI O4)",
+      "gps12x16": "GPS-Adapter 12×16 mm",
+      "gps18x18": "GPS-Adapter 18×18 mm",
+      "gps21x21": "GPS-Adapter 21.5×21.5 mm",
+      "antennaMount": "Antennenhalterung",
+      "actionCamMount": "Action-Cam-Halterung (vorne)"
     },
     "priceTbd": "Preis folgt",
     "orderSummary": "Bestellübersicht",

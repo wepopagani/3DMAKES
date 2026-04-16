@@ -1675,11 +1675,11 @@
     "bundles": {
       "frame": {
         "title": "Frame",
-        "desc": "Solo il telaio stampato in 3D di alta qualità. Perfetto per chi vuole costruire il proprio drone da zero."
+        "desc": "Telaio stampato in 3D di alta qualità. Include il set supporto VTX completo (9 pezzi, compatibile DJI O4) e tutte e tre le misure di adattatore GPS come sample. Perfetto per chi costruisce da zero."
       },
       "drone": {
         "title": "Drone (Bind & Fly)",
-        "desc": "Drone pronto al volo, già assemblato e calibrato. Scegli il tuo sistema radio preferito."
+        "desc": "Drone pronto al volo, già assemblato e calibrato, con supporto VTX e l'adattatore GPS della misura installata. Scegli il tuo sistema radio preferito."
       },
       "full": {
         "title": "Bundle completo",
@@ -1704,14 +1704,12 @@
     "accessoryAll": "Pack accessori completo",
     "accessoryAllDesc": "Include tutti gli accessori qui sotto. Selezionandolo, le singole voci vengono disattivate automaticamente.",
     "accessories": {
-      "propGuards": "Prop guards",
-      "gopro": "Attacco GoPro",
-      "antenna": "Supporto antenna",
-      "batteryStrap": "Strap batteria",
-      "cameraMount": "Mount camera alternativo",
-      "landingGear": "Carrello di atterraggio",
-      "ledHolder": "Supporto LED",
-      "spareArms": "Bracci di ricambio"
+      "vtxSet": "Set supporto VTX (9 pezzi, DJI O4)",
+      "gps12x16": "Adattatore GPS 12×16 mm",
+      "gps18x18": "Adattatore GPS 18×18 mm",
+      "gps21x21": "Adattatore GPS 21.5×21.5 mm",
+      "antennaMount": "Supporto antenna",
+      "actionCamMount": "Supporto Action Cam frontale"
     },
     "priceTbd": "Prezzo in fase di definizione",
     "orderSummary": "Riepilogo ordine",

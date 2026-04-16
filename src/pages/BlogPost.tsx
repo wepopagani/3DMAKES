@@ -5,6 +5,8 @@ import { getBlogPosts, blogPostsContent } from "@/data/blogContent";
 import { useEffect, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from 'react-i18next';
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const BlogPostPage = () => {
   const { t, i18n } = useTranslation();
@@ -18,7 +20,19 @@ const BlogPostPage = () => {
   const post = blogPosts.find(post => post.id === id);
   
   // Trova il contenuto completo del post
-  const postContent = id ? blogPostsContent[id as keyof typeof blogPostsContent] : null;
+  const rawContent = id ? blogPostsContent[id as keyof typeof blogPostsContent] : null;
+
+  // Seleziona la versione corretta in base alla lingua attiva (fallback su italiano)
+  const postContent = useMemo(() => {
+    if (!rawContent) return null;
+    const isEn = i18n.language?.toLowerCase().startsWith('en');
+    const anyContent = rawContent as any;
+    return {
+      ...rawContent,
+      title: isEn && anyContent.titleEn ? anyContent.titleEn : rawContent.title,
+      content: isEn && anyContent.contentEn ? anyContent.contentEn : rawContent.content,
+    };
+  }, [rawContent, i18n.language]);
   
   // Reindirizza alla pagina 404 se il post non esiste
   useEffect(() => {
@@ -180,23 +194,32 @@ const BlogPostPage = () => {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
               {/* Main Content */}
               <div className="lg:col-span-8">
-                <div className="prose prose-lg max-w-none">
+                <div
+                  className="
+                    prose prose-lg max-w-none
+                    prose-headings:font-bold prose-headings:text-brand-blue prose-headings:scroll-mt-24
+                    prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-5 prose-h2:border-b prose-h2:border-gray-200 prose-h2:pb-3
+                    prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-3 prose-h3:text-brand-accent
+                    prose-h4:text-xl prose-h4:mt-6 prose-h4:mb-2
+                    prose-p:text-brand-gray prose-p:leading-relaxed prose-p:mb-5
+                    prose-a:text-brand-accent hover:prose-a:text-brand-blue prose-a:no-underline hover:prose-a:underline
+                    prose-strong:text-gray-900 prose-strong:font-semibold
+                    prose-ul:my-5 prose-ul:space-y-1 prose-li:marker:text-brand-accent
+                    prose-ol:my-5 prose-ol:space-y-1
+                    prose-blockquote:border-l-brand-accent prose-blockquote:bg-gray-50 prose-blockquote:py-1 prose-blockquote:px-4 prose-blockquote:not-italic
+                    prose-code:text-brand-accent prose-code:bg-gray-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:before:content-none prose-code:after:content-none
+                    prose-hr:border-gray-200
+                  "
+                >
                   {postContent ? (
                     <>
-                      <p className="lead text-xl text-brand-gray mb-8">{post.excerpt}</p>
-                      
-                      {/* Render il contenuto utilizzando dangerouslySetInnerHTML (convertito da markdown) */}
-                      <div 
-                        dangerouslySetInnerHTML={{ 
-                          __html: postContent.content
-                            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                            .replace(/\n\n/g, '</p><p>')
-                            .replace(/\n/g, '<br />')
-                            .replace(/- (.*?)(?:\n|$)/g, '<li>$1</li>')
-                            .replace(/<li>/g, '</p><ul><li>')
-                            .replace(/<\/li>(?!\n*<li>)/g, '</li></ul><p>')
-                        }} 
-                      />
+                      <p className="lead text-xl text-brand-gray !mb-8 !mt-0 font-medium">{post.excerpt}</p>
+
+                      <ReactMarkdown
+                        remarkPlugins={[remarkGfm]}
+                      >
+                        {postContent.content}
+                      </ReactMarkdown>
                     </>
                   ) : (
                     <p className="text-xl text-brand-gray mb-8">{post.excerpt}</p>

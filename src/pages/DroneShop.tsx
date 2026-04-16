@@ -34,14 +34,12 @@ const ACCESSORY_PRICE: number | null = null;
 const ACCESSORY_PACK_PRICE: number | null = null;
 
 const ACCESSORY_IDS = [
-  'propGuards',
-  'gopro',
-  'antenna',
-  'batteryStrap',
-  'cameraMount',
-  'landingGear',
-  'ledHolder',
-  'spareArms',
+  'vtxSet',
+  'gps12x16',
+  'gps18x18',
+  'gps21x21',
+  'antennaMount',
+  'actionCamMount',
 ] as const;
 
 type AccessoryId = (typeof ACCESSORY_IDS)[number];
@@ -68,14 +66,12 @@ const DroneShop = () => {
   const [radio, setRadio] = useState<RadioChoice>('elrs');
   const [allAccessories, setAllAccessories] = useState(false);
   const [accessories, setAccessories] = useState<Record<AccessoryId, boolean>>({
-    propGuards: false,
-    gopro: false,
-    antenna: false,
-    batteryStrap: false,
-    cameraMount: false,
-    landingGear: false,
-    ledHolder: false,
-    spareArms: false,
+    vtxSet: false,
+    gps12x16: false,
+    gps18x18: false,
+    gps21x21: false,
+    antennaMount: false,
+    actionCamMount: false,
   });
 
   function toggleBundle(id: BundleId) {
@@ -92,14 +88,12 @@ const DroneShop = () => {
       const next = !cur;
       if (next) {
         setAccessories({
-          propGuards: false,
-          gopro: false,
-          antenna: false,
-          batteryStrap: false,
-          cameraMount: false,
-          landingGear: false,
-          ledHolder: false,
-          spareArms: false,
+          vtxSet: false,
+          gps12x16: false,
+          gps18x18: false,
+          gps21x21: false,
+          antennaMount: false,
+          actionCamMount: false,
         });
       }
       return next;

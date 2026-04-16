@@ -147,42 +147,60 @@ export const blogPostsContent = {
   "stampa-3d-odontotecnica": {
     title: "Stampa 3D in Odontotecnica",
     titleEn: "3D Printing in Dentistry",
-    content: `La stampa 3D sta rivoluzionando il settore odontoiatrico, offrendo precisione e personalizzazione senza precedenti.
+    content: `Il settore odontoiatrico è uno dei primi ad aver adottato la stampa 3D su scala reale. Oggi consente di realizzare modelli, guide e dispositivi con una precisione e una ripetibilità difficilmente raggiungibili con i metodi tradizionali, riducendo allo stesso tempo tempi e margini di errore.
 
-**I nostri servizi di stampa 3D dentale includono:**
-- Guide chirurgiche personalizzate con precisione millimetrica
-- Modelli anatomici dettagliati per pianificazione operatoria
-- Prototipi di dispositivi ortodontici per test e validazione
-- Componenti protesici temporanei biocompatibili
-- Impronte digitali per ortodonzia invisibile
+In questa guida vediamo come viene applicata la produzione additiva in odontotecnica, quali sono i servizi più richiesti e perché sempre più studi dentistici e laboratori si stanno orientando in questa direzione.
 
-La tecnologia SLA garantisce una precisione di 0.05mm, ideale per applicazioni mediche dove ogni dettaglio conta. I materiali biocompatibili certificati assicurano la massima sicurezza per i pazienti.
+## 1) A cosa serve davvero la stampa 3D in odontoiatria
+Non è una moda tecnologica: è un cambio di processo. Grazie alla scansione digitale e alla modellazione CAD, il flusso diventa interamente digitale e permette di produrre:
+- guide chirurgiche personalizzate con precisione millimetrica
+- modelli anatomici dettagliati per la pianificazione operatoria
+- prototipi di dispositivi ortodontici per test e validazione
+- componenti protesici temporanei biocompatibili
+- impronte digitali per ortodonzia invisibile
 
-**Vantaggi della stampa 3D in odontoiatria:**
-- Riduzione dei tempi di produzione del 70%
-- Maggiore comfort per il paziente
-- Precisione superiore ai metodi tradizionali
-- Possibilità di personalizzazione totale
+## 2) Tecnologia SLA e precisione medicale
+Per l'odontoiatria utilizziamo principalmente la tecnologia SLA (stereolitografia), che garantisce uno spessore dello strato fino a 0.05 mm e superfici lisce pronte per l'uso clinico. I materiali sono resine biocompatibili certificate, scelte specificatamente per l'applicazione: provvisori, guide chirurgiche, modelli, splint.
 
-Il futuro dell'odontoiatria è digitale, e noi siamo qui per accompagnare dentisti e laboratori in questa trasformazione tecnologica.`,
-    contentEn: `3D printing is revolutionizing the dental industry, offering unprecedented precision and customization.
+## 3) I vantaggi concreti per dentisti e laboratori
+Passare a un flusso additivo significa ottenere benefici misurabili:
+- riduzione dei tempi di produzione fino al 70%
+- maggiore comfort per il paziente grazie al fitting digitale
+- precisione superiore ai metodi tradizionali
+- personalizzazione totale paziente per paziente
+- tracciabilità digitale di ogni lavoro
 
-**Our dental 3D printing services include:**
-- Custom surgical guides with millimeter precision
-- Detailed anatomical models for surgical planning
-- Orthodontic device prototypes for testing and validation
-- Biocompatible temporary prosthetic components
-- Digital impressions for invisible orthodontics
+## 4) Come lavoriamo in 3DMAKES
+Dal file digitale (scansione o STL) al pezzo finito, gestiamo ogni fase: preparazione del modello, orientamento ottimale, scelta del materiale, stampa SLA, lavaggio, post-curing e controllo dimensionale.
 
-SLA technology guarantees 0.05mm precision, ideal for medical applications where every detail counts. Certified biocompatible materials ensure maximum patient safety.
+Il futuro dell'odontoiatria è digitale: la stampa 3D è lo strumento che rende questa trasformazione davvero operativa.`,
+    contentEn: `Dentistry is one of the first sectors to adopt 3D printing at real scale. It allows production of models, guides and devices with a precision and repeatability that traditional methods can hardly match, while reducing both lead times and error margins.
 
-**Advantages of 3D printing in dentistry:**
-- 70% reduction in production times
-- Greater patient comfort
-- Superior precision compared to traditional methods
-- Complete customization possibilities
+This guide explains how additive manufacturing is applied in dental labs, which services are most requested and why more studios are moving in this direction.
 
-The future of dentistry is digital, and we are here to accompany dentists and laboratories in this technological transformation.`,
+## 1) What 3D printing actually brings to dentistry
+It's not just a trend: it's a process shift. Thanks to digital scanning and CAD modelling, the full workflow becomes digital and enables production of:
+- custom surgical guides with millimetric precision
+- detailed anatomical models for surgical planning
+- orthodontic prototypes for testing and validation
+- biocompatible temporary prosthetic components
+- digital impressions for invisible orthodontics
+
+## 2) SLA technology and medical precision
+For dental work we mainly rely on SLA (stereolithography): layer thickness down to 0.05 mm, smooth surfaces, ready for clinical use. We work with certified biocompatible resins, chosen for each application: provisionals, surgical guides, models, splints.
+
+## 3) Concrete advantages for dentists and labs
+An additive workflow delivers measurable benefits:
+- up to 70% reduction in production time
+- better patient comfort thanks to digital fitting
+- higher precision than traditional methods
+- complete patient-by-patient customization
+- fully digital traceability for every job
+
+## 4) How we work at 3DMAKES
+From the digital file (scan or STL) to the finished part, we handle every stage: model preparation, orientation, material selection, SLA printing, washing, post-curing and dimensional check.
+
+The future of dentistry is digital: 3D printing is the tool that makes this transformation operational.`,
     details: {
       material: 'Resine biocompatibili certificate CE, PETG medical grade',
       printTime: '2-8 ore a seconda della complessità',
@@ -205,44 +223,60 @@ The future of dentistry is digital, and we are here to accompany dentists and la
   "ciotole-personalizzabili": {
     title: "Ciotole Personalizzabili per Animali",
     titleEn: "Customizable Pet Bowls",
-    content: `Una collezione innovativa di accessori per animali domestici realizzata con stampa 3D, che combina funzionalità, design e personalizzazione totale.
+    content: `Una ciotola non è solo un contenitore: incide sul modo in cui l'animale mangia, beve e vive i suoi momenti quotidiani. Grazie alla stampa 3D possiamo progettare ciotole e accessori su misura, combinando funzionalità, design e una personalizzazione completa.
 
-**Caratteristiche principali:**
-- Design ergonomico studiato per il comfort dell'animale
-- Materiali sicuri e completamente lavabili in lavastoviglie
-- Personalizzazione con nomi, simboli e decorazioni uniche
-- Diverse dimensioni per tutte le taglie di animali
-- Base antiscivolo per maggiore stabilità
+## 1) Progettate per il comfort dell'animale
+Ogni ciotola viene pensata in base alla taglia, alla postura e alle abitudini dell'animale, non solo a un'estetica generica. I punti chiave del nostro design sono:
+- forma ergonomica adatta al muso dell'animale
+- base stabile e antiscivolo
+- bordi studiati per non infastidire vibrisse e orecchie
+- altezza corretta per cani anziani o con problemi articolari
 
-Utilizziamo esclusivamente PETG food-grade certificato per garantire la massima sicurezza alimentare e durata nel tempo. Ogni ciotola può essere personalizzata con il nome dell'animale, motivi decorativi o persino il logo del proprietario.
+## 2) Materiali sicuri e facili da pulire
+Utilizziamo esclusivamente PETG food-grade certificato: un materiale resistente, lavabile in lavastoviglie e sicuro per il contatto con gli alimenti. Per gli accessori decorativi scegliamo PLA+ o finiture dedicate, sempre compatibili con un uso quotidiano.
 
-**La nostra gamma include:**
-- Ciotole per cani di tutte le taglie (da 150ml a 2L)
-- Ciotole rialzate per cani anziani o con problemi articolari
-- Ciotole slow-feeding per rallentare l'alimentazione
-- Ciotole per gatti con design specifico
-- Accessori coordinati (portasacchetti, porta guinzaglio)
+## 3) La gamma: una ciotola per ogni esigenza
+La personalizzazione permette di coprire scenari molto diversi:
+- ciotole per cani di tutte le taglie (da 150 ml a 2 L)
+- ciotole rialzate per cani anziani o con problemi articolari
+- ciotole slow-feeding per rallentare l'alimentazione e aiutare la digestione
+- ciotole per gatti con profilo ribassato
+- accessori coordinati: portasacchetti, porta guinzaglio, scodelline da viaggio
 
-Ogni prodotto è testato per resistenza e sicurezza, garantendo un prodotto durevole e completamente sicuro per i nostri amici a quattro zampe.`,
-    contentEn: `An innovative collection of pet accessories made with 3D printing, combining functionality, design and total customization.
+## 4) Personalizzazione: il nome non è un dettaglio
+Su ogni ciotola possiamo incidere il nome dell'animale, motivi decorativi, loghi, colori coordinati. È la parte che fa la differenza tra un oggetto utile e un oggetto a cui si affeziona il proprietario.
 
-**Main features:**
-- Ergonomic design designed for animal comfort
-- Safe materials completely dishwasher safe
-- Customization with names, symbols and unique decorations
-- Different sizes for all animal sizes
-- Non-slip base for greater stability
+## 5) Dalla misura alla consegna
+Il flusso è semplice: richiesta, scelta modello e taglia, personalizzazione, stampa, controllo qualità e spedizione. Se hai esigenze particolari (formati speciali, collaborazioni per petshop o studi veterinari), possiamo progettare soluzioni dedicate.
 
-We use exclusively certified food-grade PETG to guarantee maximum food safety and durability over time. Each bowl can be personalized with the animal's name, decorative motifs or even the owner's logo.
+Ogni prodotto è testato per resistenza e sicurezza, per un risultato durevole, pulibile e davvero pensato per i nostri amici a quattro zampe.`,
+    contentEn: `A bowl is not just a container: it affects how an animal eats, drinks and lives its daily routine. With 3D printing we can design custom bowls and accessories combining functionality, design and full personalization.
 
-**Our range includes:**
-- Dog bowls of all sizes (from 150ml to 2L)
-- Raised bowls for elderly dogs or those with joint problems
-- Slow-feeding bowls to slow down feeding
-- Cat bowls with specific design
-- Coordinated accessories (bag holders, leash holders)
+## 1) Designed around the animal's comfort
+Every bowl is designed based on size, posture and habits of the animal, not just on generic aesthetics. Key design points:
+- ergonomic shape suited to the animal's muzzle
+- stable, non-slip base
+- edges designed to avoid disturbing whiskers and ears
+- correct height for senior dogs or those with joint issues
 
-Each product is tested for resistance and safety, guaranteeing a durable and completely safe product for our four-legged friends.`,
+## 2) Safe, easy-to-clean materials
+We use exclusively certified food-grade PETG: resistant, dishwasher safe and safe for food contact. For decorative accessories we use PLA+ or dedicated finishes, always compatible with daily use.
+
+## 3) The range: a bowl for every need
+Personalization covers very different scenarios:
+- dog bowls of all sizes (150 ml to 2 L)
+- raised bowls for senior dogs or with joint issues
+- slow-feeding bowls to slow down eating and aid digestion
+- low-profile cat bowls
+- matching accessories: bag holders, leash holders, travel bowls
+
+## 4) Personalization: the name is not a detail
+We can engrave the animal's name, decorative motifs, logos and matching colors on every bowl. This is what turns a useful object into something the owner gets attached to.
+
+## 5) From spec to delivery
+The workflow is simple: request, model and size selection, personalization, printing, QA and shipping. For special needs (custom formats, collaborations with petshops or vet clinics), we can design dedicated solutions.
+
+Every product is tested for resistance and safety, for a durable, cleanable result truly designed around our four-legged friends.`,
     details: {
       material: 'PETG food-grade certificato, PLA+ per accessori decorativi',
       printTime: '2-6 ore per pezzo a seconda delle dimensioni',
@@ -265,44 +299,84 @@ Each product is tested for resistance and safety, guaranteeing a durable and com
   "cuscinetti-tpu-ferrature-equine": {
     title: "Cuscinetti in TPU per Ferrature Equine",
     titleEn: "TPU Cushions for Equine Horseshoes",
-    content: `Innovazione nel settore equino con cuscinetti stampati in 3D utilizzando TPU (poliuretano termoplastico), progettati specificamente per migliorare il comfort e le prestazioni dei cavalli.
+    content: `La stampa 3D sta entrando anche nel mondo equino, offrendo soluzioni su misura per uno dei problemi più delicati: l'ammortizzazione dello zoccolo. Grazie al TPU (poliuretano termoplastico) possiamo realizzare cuscinetti personalizzati che migliorano il comfort del cavallo e la durata della ferratura.
 
-**Caratteristiche tecniche:**
-- Materiale TPU flessibile e resistente all'usura
-- Design personalizzato per ogni zoccolo
-- Assorbimento degli urti superiore ai materiali tradizionali
-- Resistenza agli agenti atmosferici e all'umidità
-- Facilità di installazione e sostituzione
+## 1) Perché un cuscinetto fa la differenza
+Lo zoccolo del cavallo subisce impatti continui: terreno irregolare, lavoro prolungato, sollecitazioni articolari. Un buon cuscinetto:
+- riduce lo stress sulle articolazioni
+- assorbe urti e vibrazioni
+- protegge la zona sensibile dal contatto con sassi e detriti
+- aumenta l'aderenza su superfici scivolose
 
-I nostri cuscinetti sono progettati in collaborazione con maniscalchi esperti per garantire la massima efficacia. Ogni cuscinetto viene realizzato su misura dopo un'accurata scansione 3D dello zoccolo, assicurando un perfetto adattamento.
+## 2) Perché il TPU
+Il TPU è un materiale flessibile, resistente all'abrasione e stabile nel tempo. Rispetto a soluzioni tradizionali offre:
+- buona elasticità e ritorno elastico controllato
+- resistenza all'umidità e agli agenti atmosferici
+- ottima resistenza all'usura
+- possibilità di modulare la durezza (Shore A 85-95) in base al cavallo e al tipo di lavoro
 
-**Vantaggi per il cavallo:**
-- Riduzione significativa dello stress articolare
-- Migliore aderenza su superfici scivolose
-- Protezione superiore da sassi e detriti
-- Comfort aumentato durante il movimento
-- Prevenzione di patologie podali
+## 3) Personalizzazione tramite scansione 3D
+Ogni cuscinetto viene realizzato partendo da una scansione 3D accurata dello zoccolo. Il file viene poi ottimizzato in CAD per garantire:
+- un adattamento perfetto alla forma reale
+- una distribuzione uniforme del peso
+- geometrie interne (lattice o canali di flusso) impossibili con metodi tradizionali
 
-La stampa 3D permette di creare geometrie complesse impossibili con metodi tradizionali, ottimizzando la distribuzione del peso e l'assorbimento degli impatti.`,
-    contentEn: `Innovation in the equine sector with 3D printed cushions using TPU (thermoplastic polyurethane), specifically designed to improve horse comfort and performance.
+Il risultato è un prodotto letteralmente "su misura", non un compromesso standard.
 
-**Technical features:**
-- Flexible TPU material resistant to wear
-- Custom design for each hoof
-- Impact absorption superior to traditional materials
-- Resistance to weather and humidity
-- Easy installation and replacement
+## 4) Collaborazione con maniscalchi esperti
+I nostri cuscinetti sono progettati insieme a maniscalchi, che contribuiscono con esperienza pratica sulle patologie podali più comuni e sulle esigenze specifiche di ogni cavallo (da lavoro, sportivo, anziano, in riabilitazione).
 
-Our cushions are designed in collaboration with expert farriers to ensure maximum effectiveness. Each cushion is made to measure after an accurate 3D scan of the hoof, ensuring a perfect fit.
+## 5) Vantaggi per il cavallo
+Una ferratura con cuscinetto ben progettato porta benefici concreti:
+- riduzione significativa dello stress articolare
+- migliore aderenza su superfici difficili
+- protezione superiore da sassi e detriti
+- comfort aumentato durante il movimento
+- prevenzione di diverse patologie podali
 
-**Benefits for the horse:**
-- Significant reduction in joint stress
-- Better grip on slippery surfaces
-- Superior protection from stones and debris
-- Increased comfort during movement
-- Prevention of foot pathologies
+## 6) Installazione e sostituzione
+Il cuscinetto in TPU è pensato per essere facile da installare per il maniscalco e semplice da sostituire quando necessario, senza interventi invasivi sulla ferratura tradizionale.
 
-3D printing allows the creation of complex geometries impossible with traditional methods, optimizing weight distribution and impact absorption.`,
+La stampa 3D, in questo caso, non è un vezzo tecnologico: è lo strumento che permette di creare geometrie e proprietà meccaniche altrimenti impossibili, a beneficio diretto del cavallo.`,
+    contentEn: `3D printing is entering the equine world too, offering tailor-made solutions for one of the most delicate problems: hoof cushioning. Using TPU (thermoplastic polyurethane) we can produce custom pads that improve horse comfort and the lifetime of the shoeing.
+
+## 1) Why a pad makes a difference
+A horse's hoof constantly absorbs impacts: uneven ground, long work sessions, joint stress. A good pad:
+- reduces joint stress
+- absorbs impacts and vibrations
+- protects the sensitive area from stones and debris
+- improves grip on slippery surfaces
+
+## 2) Why TPU
+TPU is a flexible, abrasion-resistant and long-term stable material. Compared to traditional options it offers:
+- good elasticity and controlled elastic return
+- resistance to humidity and weather
+- excellent wear resistance
+- tunable hardness (Shore A 85-95) based on the horse and its workload
+
+## 3) Personalization via 3D scanning
+Every pad is made starting from an accurate 3D scan of the hoof. The file is then optimized in CAD to ensure:
+- perfect adaptation to the real shape
+- uniform weight distribution
+- internal geometries (lattice or flow channels) impossible with traditional methods
+
+The outcome is a literally "tailor-made" product, not a standard compromise.
+
+## 4) Working with expert farriers
+Our pads are designed together with farriers, who bring hands-on experience on common hoof pathologies and specific needs of each horse (working, sport, senior, rehabilitation).
+
+## 5) Benefits for the horse
+A well-designed pad delivers concrete benefits:
+- significant reduction in joint stress
+- better grip on difficult surfaces
+- superior protection from stones and debris
+- increased comfort during movement
+- prevention of several hoof pathologies
+
+## 6) Installation and replacement
+The TPU pad is designed to be easy for the farrier to install and simple to replace when needed, without invasive changes to traditional shoeing.
+
+Here, 3D printing is not a tech gimmick: it is the tool that enables geometries and mechanical properties otherwise impossible, for the direct benefit of the horse.`,
     details: {
       material: 'TPU Shore A 85-95, resistente e flessibile',
       printTime: '4-8 ore per set completo',
@@ -313,44 +387,90 @@ Our cushions are designed in collaboration with expert farriers to ensure maximu
   "gadget-aziendali-nfc": {
     title: "Gadget Aziendali NFC Smart",
     titleEn: "Smart NFC Corporate Gadgets",
-    content: `Il futuro del networking aziendale attraverso gadget intelligenti che integrano la tecnologia NFC (Near Field Communication) con il design personalizzato della stampa 3D.
+    content: `Il networking aziendale sta cambiando. Il biglietto da visita tradizionale si perde in un cassetto, i gadget da fiera finiscono nei rifiuti, e le aziende cercano strumenti più moderni per comunicare il proprio brand. Qui entrano in gioco i gadget NFC stampati in 3D: oggetti unici che uniscono design personalizzato e tecnologia contactless.
 
-**I nostri gadget NFC includono:**
-- Biglietti da visita smart con chip NFC integrato
-- Portachiavi aziendali con link diretti al sito web
-- Supporti per smartphone con funzioni smart
-- Badge e portabadge con tecnologia contactless
-- Gadget promozionali interattivi per eventi
+## 1) Cos'è NFC e perché è rilevante oggi
+NFC (Near Field Communication) è la stessa tecnologia dei pagamenti contactless. Basta avvicinare lo smartphone al gadget per attivare un'azione digitale: aprire un sito, salvare un contatto, collegarsi al WiFi, scaricare un'app. Nessuna installazione, nessun QR da inquadrare, solo un gesto naturale.
 
-Ogni gadget può essere programmato per diverse azioni: apertura sito web, condivisione contatti, download app, connessione WiFi automatica, e molto altro. Il design è completamente personalizzabile con loghi, colori aziendali e forme uniche.
+## 2) La nostra gamma di gadget NFC
+Grazie alla stampa 3D possiamo realizzare oggetti unici, con forma, colore e finitura su misura. Le soluzioni più richieste includono:
+- biglietti da visita smart con chip NFC integrato
+- portachiavi aziendali con link diretti al sito web
+- supporti per smartphone con funzioni contactless
+- badge e portabadge per eventi e fiere
+- gadget promozionali interattivi per campagne marketing
 
-**Vantaggi del networking NFC:**
-- Condivisione istantanea delle informazioni
-- Eliminazione dei biglietti da visita cartacei
-- Trackking delle interazioni per analisi marketing
-- Aggiornamento remoto delle informazioni
-- Maggiore impatto e ricordo del brand
+## 3) Azioni programmabili
+Ogni gadget può essere configurato per un'azione specifica, e può essere anche riprogrammato in un secondo momento. Alcuni esempi:
+- apertura automatica del sito aziendale
+- condivisione diretta del contatto (vCard)
+- download diretto di un'app
+- connessione automatica al WiFi dell'ufficio
+- apertura di un video, una landing o una pagina di offerta
 
-La combinazione di stampa 3D e tecnologia NFC crea oggetti unici che rappresentano perfettamente l'innovazione aziendale e l'attenzione alla sostenibilità.`,
-    contentEn: `The future of corporate networking through smart gadgets that integrate NFC (Near Field Communication) technology with the custom design of 3D printing.
+## 4) Design personalizzato: è lì che vinci
+Il valore reale di un gadget NFC nasce dal design. Stampando in 3D possiamo:
+- riprodurre fedelmente il logo aziendale
+- usare i colori del brand
+- creare forme esclusive, non replicabili in serie tradizionali
+- inserire texture, incisioni o rilievi
 
-**Our NFC gadgets include:**
-- Smart business cards with integrated NFC chip
-- Corporate keychains with direct links to website
-- Smartphone stands with smart functions
-- Badges and badge holders with contactless technology
-- Interactive promotional gadgets for events
+Il risultato è un oggetto che viene conservato, non buttato.
 
-Each gadget can be programmed for different actions: website opening, contact sharing, app download, automatic WiFi connection, and much more. The design is completely customizable with logos, corporate colors and unique shapes.
+## 5) Vantaggi per l'azienda
+Utilizzare gadget NFC porta benefici concreti:
+- condivisione istantanea delle informazioni
+- eliminazione dei biglietti cartacei
+- tracciamento delle interazioni per analisi marketing
+- aggiornamento remoto dei contenuti collegati
+- maggiore impatto e memorabilità del brand
 
-**Benefits of NFC networking:**
-- Instant information sharing
-- Elimination of paper business cards
-- Interaction tracking for marketing analysis
-- Remote information updating
-- Greater brand impact and recall
+## 6) Sostenibilità e modernità
+Un biglietto NFC è riutilizzabile, aggiornabile e riduce sprechi cartacei. Per un'azienda è un modo concreto per mostrare attenzione all'ambiente senza rinunciare a uno strumento di comunicazione efficace.
 
-The combination of 3D printing and NFC technology creates unique objects that perfectly represent corporate innovation and attention to sustainability.`,
+Se stai progettando un evento, una campagna o semplicemente vuoi modernizzare i tuoi biglietti da visita, possiamo aiutarti a costruire un gadget NFC completo: design, stampa 3D, programmazione del chip e test funzionali.`,
+    contentEn: `Corporate networking is changing. Traditional business cards end up lost in drawers, trade-show giveaways in the trash. Companies are looking for modern tools to communicate their brand. That's where 3D-printed NFC gadgets come in: unique objects combining custom design and contactless technology.
+
+## 1) What NFC is and why it matters today
+NFC (Near Field Communication) is the same technology behind contactless payments. Just tap a smartphone on the gadget to trigger a digital action: open a website, save a contact, connect to WiFi, download an app. No install, no QR to scan, just a natural gesture.
+
+## 2) Our NFC gadget range
+Thanks to 3D printing we can create unique objects, with custom shape, color and finish. Most requested solutions include:
+- smart business cards with integrated NFC chip
+- corporate keychains with direct website links
+- smartphone stands with contactless features
+- badges and holders for events and trade shows
+- interactive promotional gadgets for marketing campaigns
+
+## 3) Programmable actions
+Each gadget can be configured for a specific action, and can also be reprogrammed later. Examples:
+- auto-open of the corporate website
+- direct contact sharing (vCard)
+- direct app download
+- auto-connect to the office WiFi
+- open a video, landing page or offer page
+
+## 4) Custom design: that's where you win
+The real value of an NFC gadget is the design. With 3D printing we can:
+- reproduce the company logo faithfully
+- use brand colors
+- create exclusive shapes, not reproducible with traditional mass production
+- add textures, engravings or reliefs
+
+The result is an object people keep instead of discard.
+
+## 5) Advantages for the company
+Using NFC gadgets brings concrete benefits:
+- instant information sharing
+- paper business cards eliminated
+- interaction tracking for marketing analytics
+- remote update of linked content
+- greater brand impact and recall
+
+## 6) Sustainability and modern image
+An NFC card is reusable, updatable and reduces paper waste. For a company it's a real way to show environmental awareness without giving up an effective communication tool.
+
+If you're planning an event, a campaign or just want to modernize your business cards, we can help you build a complete NFC gadget: design, 3D printing, chip programming and functional tests.`,
     details: {
       material: 'PLA+, PETG, ABS per diversi utilizzi',
       printTime: '1-3 ore per gadget standard',
@@ -361,42 +481,92 @@ The combination of 3D printing and NFC technology creates unique objects that pe
   "accessori-ristorativi": {
     title: "Collezione Accessori Ristorativi",
     titleEn: "Restaurant Accessories Collection",
-    content: `Una linea completa di accessori innovativi per il settore della ristorazione, progettati per migliorare l'efficienza operativa e l'esperienza del cliente.
+    content: `Un ristorante, un bar o un hotel non si distinguono solo per il menù: ogni dettaglio comunica il brand, dalle tovaglie al sottobicchiere. La stampa 3D permette di creare accessori completamente personalizzati, resistenti e coerenti con l'identità visiva del locale, senza dover acquistare grandi quantità in stock.
 
-**La nostra collezione include:**
-- Sottobicchieri personalizzati con logo del ristorante
-- Portamenù resistenti e lavabili
-- Organizzer per tavoli e banconi
-- Supporti per tablet e dispositivi POS
-- Accessori per presentazione piatti
-- Dispenser personalizzati per tovaglioli e condimenti
+## 1) La nostra collezione per il settore Ho.Re.Ca.
+Progettiamo soluzioni pensate per la vita quotidiana di un locale:
+- sottobicchieri personalizzati con logo del ristorante
+- portamenù resistenti e facilmente lavabili
+- organizer per tavoli e banconi
+- supporti per tablet e dispositivi POS
+- accessori per la presentazione dei piatti
+- dispenser personalizzati per tovaglioli e condimenti
 
-Ogni accessorio è progettato pensando alle esigenze specifiche del settore Ho.Re.Ca., garantendo resistenza, facilità di pulizia e conformità alle normative igienico-sanitarie.
+Ogni pezzo è progettato per essere robusto, pulibile e coerente con l'estetica del locale.
 
-**Materiali certificati per uso alimentare:**
+## 2) Materiali certificati per uso alimentare
+La scelta del materiale è fondamentale. Utilizziamo:
 - PETG food-grade per accessori a contatto con alimenti
-- ABS per componenti strutturali resistenti
-- PLA+ biodegradabile per articoli monouso ecologici
+- ABS per componenti strutturali più sollecitati
+- PLA+ biodegradabile per articoli monouso o di breve durata
 
-La personalizzazione totale permette di creare un'identità visiva coerente in tutto il locale, rafforzando il brand e migliorando l'esperienza del cliente.`,
-    contentEn: `A complete line of innovative accessories for the restaurant sector, designed to improve operational efficiency and customer experience.
+La nostra priorità è la sicurezza: tutti i materiali sono compatibili con le normative igienico-sanitarie del settore.
 
-**Our collection includes:**
-- Personalized coasters with restaurant logo
-- Resistant and washable menu holders
-- Organizers for tables and counters
-- Supports for tablets and POS devices
-- Accessories for dish presentation
-- Custom dispensers for napkins and condiments
+## 3) Personalizzazione totale: il brand visibile ovunque
+Stampando in 3D non sei più legato a cataloghi generici. Puoi richiedere:
+- forme esclusive
+- loghi in rilievo o incisi
+- colori perfettamente coordinati al brand
+- serie numerate per eventi e menu speciali
 
-Each accessory is designed with the specific needs of the Ho.Re.Ca. sector in mind, guaranteeing resistance, ease of cleaning and compliance with hygiene regulations.
+Un locale con accessori coordinati trasmette cura, professionalità e unicità. Il cliente lo percepisce, e lo ricorda.
 
-**Materials certified for food use:**
-- Food-grade PETG for accessories in contact with food
-- ABS for resistant structural components
-- Biodegradable PLA+ for ecological disposable items
+## 4) Produzione su misura, senza magazzino
+Con la stampa 3D puoi ordinare esattamente quello che ti serve, nei tempi che ti servono:
+- 20 sottobicchieri per un evento privato
+- 50 portamenù per la nuova stagione
+- 5 supporti POS custom per il tuo sistema
+- 200 dispenser personalizzati per una catena
 
-Total customization allows you to create a consistent visual identity throughout the venue, strengthening the brand and improving the customer experience.`,
+Niente minimi d'ordine impossibili, niente avanzi in magazzino.
+
+## 5) Manutenzione e resistenza
+Tutti gli accessori sono progettati per resistere all'uso quotidiano: lavaggi frequenti, urti, calore moderato, prodotti di pulizia comuni. Quando un pezzo si rompe, lo rimpiazziamo rapidamente senza dover riordinare l'intera collezione.
+
+Se stai aprendo un nuovo locale, rinnovando il concept o preparando un evento speciale, possiamo aiutarti a costruire una collezione coordinata che rafforza il tuo brand dal primo piatto all'ultimo caffè.`,
+    contentEn: `A restaurant, bar or hotel is not defined only by the menu: every detail communicates the brand, from tablecloths to coasters. 3D printing makes it possible to create fully custom, durable accessories aligned with the venue's visual identity, without buying large stock quantities.
+
+## 1) Our Ho.Re.Ca. collection
+We design solutions tailored to the daily life of a venue:
+- custom coasters with restaurant logo
+- durable, easily washable menu holders
+- organizers for tables and counters
+- stands for tablets and POS devices
+- accessories for plate presentation
+- custom dispensers for napkins and condiments
+
+Every piece is built to be sturdy, cleanable and consistent with the venue's aesthetics.
+
+## 2) Food-safe certified materials
+Material choice is critical. We use:
+- food-grade PETG for food-contact accessories
+- ABS for more stressed structural components
+- biodegradable PLA+ for disposable or short-life items
+
+Safety comes first: all materials comply with sector hygiene regulations.
+
+## 3) Full customization: your brand, everywhere
+With 3D printing you're no longer stuck with generic catalogs. You can request:
+- exclusive shapes
+- embossed or engraved logos
+- colors perfectly matched to the brand
+- numbered editions for events and special menus
+
+A venue with coordinated accessories communicates care, professionalism and uniqueness. The customer notices, and remembers.
+
+## 4) On-demand production, no warehouse
+With 3D printing you order exactly what you need, when you need it:
+- 20 coasters for a private event
+- 50 menu holders for the new season
+- 5 custom POS stands for your system
+- 200 personalized dispensers for a chain
+
+No impossible minimum orders, no leftover stock.
+
+## 5) Maintenance and durability
+Every accessory is designed for daily use: frequent washing, impacts, moderate heat, common cleaning products. When a piece breaks, we quickly replace it without reordering the whole collection.
+
+If you're opening a new venue, refreshing your concept or preparing a special event, we can help you build a coordinated collection that strengthens your brand from the first plate to the last coffee.`,
     details: {
       material: 'PETG food-grade, ABS, PLA+ biodegradabile',
       printTime: '1-6 ore a seconda della complessità',
@@ -407,44 +577,112 @@ Total customization allows you to create a consistent visual identity throughout
   "componenti-meccanici": {
     title: "Componenti Meccanici Personalizzati",
     titleEn: "Custom Mechanical Components",
-    content: `Produzione di componenti meccanici di alta precisione utilizzando tecnologie di stampa 3D avanzate, per applicazioni industriali e prototipazione funzionale.
+    content: `La produzione additiva non serve più solo per prototipi estetici. Oggi è una tecnologia matura che permette di realizzare componenti meccanici funzionali, con tolleranze controllate e prestazioni adatte a test reali, piccole serie e applicazioni industriali.
 
-**Settori di applicazione:**
-- Automotive: prototipi e componenti di ricambio
-- Aerospaziale: parti leggere ad alta resistenza
-- Robotica: giunti, supporti e custodie personalizzate
-- Automazione industriale: guide, supporti e adattatori
-- Prototipazione: test funzionali prima della produzione
+In questa guida vediamo in quali settori la stampa 3D sta sostituendo o affiancando i metodi tradizionali, e come sfruttarla al meglio per componenti meccanici personalizzati.
 
-Utilizziamo materiali tecnici avanzati come PETG rinforzato, PC (policarbonato), e ABS modificato per garantire proprietà meccaniche superiori. Ogni componente viene progettato utilizzando software CAD professionali e validato attraverso simulazioni FEA.
+## 1) Dove la stampa 3D fa davvero la differenza
+La produzione additiva è particolarmente efficace quando servono:
+- geometrie complesse impossibili con fresatura o stampaggio
+- leggerezza senza perdere resistenza (strutture lattice)
+- pezzi su misura in piccole tirature
+- iterazioni rapide tra una versione e la successiva
+- riduzione dei tempi di attrezzaggio
 
-**Vantaggi della produzione additiva:**
-- Geometrie complesse impossibili con metodi tradizionali
-- Riduzione del peso fino al 40% rispetto al tradizionale
-- Tempi di produzione ridotti per prototipi e piccole serie
-- Possibilità di integrare più funzioni in un singolo pezzo
-- Personalizzazione totale senza costi aggiuntivi per attrezzature
+## 2) Settori di applicazione
+Lavoriamo con realtà che operano in ambiti molto diversi. Alcuni esempi tipici:
+- **Automotive**: prototipi funzionali, componenti di ricambio, parti per racing
+- **Aerospaziale**: parti leggere ad alta resistenza, elementi di staffaggio custom
+- **Robotica**: giunti, supporti, custodie, flangie personalizzate
+- **Automazione industriale**: guide, supporti, adattatori, afferraggi
+- **Prototipazione funzionale**: test reali prima della produzione di serie
 
-La nostra esperienza nel settore ci permette di ottimizzare ogni design per la stampa 3D, garantendo la massima qualità e funzionalità.`,
-    contentEn: `Production of high-precision mechanical components using advanced 3D printing technologies, for industrial applications and functional prototyping.
+## 3) Materiali tecnici selezionati
+Non ogni pezzo può essere stampato con un PLA di base. Per componenti meccanici utilizziamo materiali selezionati in base al carico reale:
+- PETG rinforzato, per parti robuste e resistenti agli urti
+- PC (policarbonato), quando servono resistenza e stabilità a temperature elevate
+- ABS e ASA per parti tecniche con buona lavorabilità post-stampa
+- compositi in fibra di carbonio per rigidezza e leggerezza
+- TPU quando serve flessibilità o assorbimento vibrazioni
 
-**Application sectors:**
-- Automotive: prototypes and spare parts
-- Aerospace: lightweight high-strength parts
-- Robotics: custom joints, supports and housings
-- Industrial automation: guides, supports and adapters
-- Prototyping: functional tests before production
+## 4) Progettazione ottimizzata per la stampa
+Un buon risultato nasce prima della stampa, in fase CAD. Ogni componente viene progettato tenendo conto di:
+- orientamento ottimale per direzione di carico
+- spessori minimi e raggi di raccordo
+- tolleranze per accoppiamenti (fori, perni, guide)
+- posizione dei supporti e accessibilità per la rimozione
+- simulazioni FEA per verificare punti critici
 
-We use advanced technical materials such as reinforced PETG, PC (polycarbonate), and modified ABS to guarantee superior mechanical properties. Each component is designed using professional CAD software and validated through FEA simulations.
+## 5) Vantaggi concreti della produzione additiva
+Rispetto ai metodi tradizionali, una parte stampata può offrire:
+- geometrie impossibili con fresatura o stampaggio
+- riduzione del peso fino al 40%
+- tempi di produzione ridotti per prototipi e piccole serie
+- integrazione di più funzioni in un singolo pezzo
+- personalizzazione completa senza costi di attrezzaggio
 
-**Advantages of additive manufacturing:**
-- Complex geometries impossible with traditional methods
-- Weight reduction up to 40% compared to traditional
-- Reduced production times for prototypes and small series
-- Possibility to integrate multiple functions in a single piece
-- Total customization without additional costs for equipment
+## 6) Come lavoriamo su un componente meccanico
+Il nostro processo tipico:
+1. Analisi del file CAD e del carico di utilizzo
+2. Selezione tecnologia e materiale
+3. Ottimizzazione geometrica per stampa (orientamento, supporti, tolleranze)
+4. Stampa e post-processing
+5. Controllo dimensionale con strumenti di misura
 
-Our experience in the sector allows us to optimize every design for 3D printing, guaranteeing maximum quality and functionality.`,
+Se hai un componente da prototipare o una piccola serie da produrre, possiamo analizzare il progetto e consigliarti l'approccio più adatto. L'obiettivo non è "usare la stampa 3D a tutti i costi", ma scegliere la tecnologia giusta per il tuo risultato.`,
+    contentEn: `Additive manufacturing is no longer just for aesthetic prototypes. Today it's a mature technology that allows production of functional mechanical components with controlled tolerances and performance suitable for real tests, small batches and industrial applications.
+
+This guide explains where 3D printing is replacing or complementing traditional methods, and how to leverage it for custom mechanical components.
+
+## 1) Where 3D printing really makes a difference
+Additive manufacturing shines when you need:
+- complex geometries impossible with milling or molding
+- lightweight parts without losing strength (lattice structures)
+- custom parts in small batches
+- fast iterations between versions
+- reduced tooling times
+
+## 2) Application sectors
+We work with companies from very different fields. Typical examples:
+- **Automotive**: functional prototypes, spare parts, racing components
+- **Aerospace**: lightweight high-strength parts, custom brackets
+- **Robotics**: custom joints, supports, housings, flanges
+- **Industrial automation**: guides, supports, adapters, grippers
+- **Functional prototyping**: real tests before series production
+
+## 3) Selected technical materials
+Not every part can be printed in basic PLA. For mechanical components we use materials selected based on the real load:
+- reinforced PETG, for robust, impact-resistant parts
+- PC (polycarbonate), when you need strength and stability at higher temperatures
+- ABS and ASA for technical parts with good post-processing
+- carbon-fiber composites for stiffness and lightness
+- TPU when flexibility or vibration damping is needed
+
+## 4) Design optimized for 3D printing
+A good result starts before printing, in CAD. Each component is designed accounting for:
+- optimal orientation based on load direction
+- minimum thicknesses and fillets
+- tolerances for fits (holes, pins, guides)
+- support placement and accessibility for removal
+- FEA simulations to verify critical points
+
+## 5) Concrete advantages of additive manufacturing
+Compared to traditional methods, a printed part can offer:
+- geometries impossible with milling or molding
+- weight reduction up to 40%
+- shorter production times for prototypes and small batches
+- multiple functions integrated in a single piece
+- complete customization with no tooling costs
+
+## 6) How we approach a mechanical component
+Our typical process:
+1. CAD file and load case analysis
+2. Technology and material selection
+3. Geometry optimization for printing (orientation, supports, tolerances)
+4. Printing and post-processing
+5. Dimensional control with measurement tools
+
+If you have a component to prototype or a small batch to produce, we can analyze the project and recommend the best approach. The goal isn't "use 3D printing at all costs", but choosing the right technology for your result.`,
     details: {
       material: 'PETG rinforzato, PC, ABS-CF (fibra di carbonio)',
       printTime: '4-24 ore a seconda della complessità',
