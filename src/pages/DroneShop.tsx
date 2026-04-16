@@ -363,7 +363,7 @@ const DroneShop = () => {
 
           <div className="mt-10 grid gap-6 md:mt-12 md:gap-8 xl:grid-cols-2">
             <div className="xl:sticky xl:top-24 xl:self-start">
-              <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-brand-blue to-brand-blue/80 ring-1 ring-border">
+              <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-2xl bg-white ring-1 ring-border">
                 <img
                   key={previewSrc}
                   src={previewSrc}
@@ -372,10 +372,10 @@ const DroneShop = () => {
                       ? t(`droneShop.accessories.${previewCaptionId}`)
                       : t('droneShop.accessoriesImageAlt')
                   }
-                  className="h-auto max-h-full w-auto max-w-full object-contain p-6 motion-safe:animate-in motion-safe:fade-in-50 motion-safe:zoom-in-95 motion-safe:duration-300"
+                  className="h-full w-full scale-[1.8] object-contain p-2 motion-safe:animate-in motion-safe:fade-in-50 motion-safe:zoom-in-95 motion-safe:duration-300"
                 />
                 {previewCaptionId && (
-                  <div className="pointer-events-none absolute inset-x-4 bottom-4 rounded-xl bg-black/40 px-4 py-2 text-sm font-semibold text-white backdrop-blur-sm">
+                  <div className="pointer-events-none absolute inset-x-4 bottom-4 rounded-xl bg-brand-blue/90 px-4 py-2 text-sm font-semibold text-white shadow-lg">
                     {t(`droneShop.accessories.${previewCaptionId}`)}
                   </div>
                 )}
