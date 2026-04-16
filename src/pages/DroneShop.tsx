@@ -355,10 +355,6 @@ const DroneShop = () => {
             <p className="mt-3 text-base leading-relaxed text-muted-foreground">
               {t('droneShop.accessoriesSubtitle')}
             </p>
-            <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-gray-900 px-4 py-2 text-xs font-semibold text-white">
-              <span className="h-2 w-2 rounded-full bg-white/80" aria-hidden />
-              {t('droneShop.materialsNote')}
-            </div>
           </div>
 
           <div className="mt-10 grid gap-6 md:mt-12 md:gap-8 xl:grid-cols-2">
