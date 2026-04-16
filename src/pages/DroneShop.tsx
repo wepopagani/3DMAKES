@@ -44,6 +44,38 @@ const ACCESSORY_IDS = [
 
 type AccessoryId = (typeof ACCESSORY_IDS)[number];
 
+const PLACEHOLDER_IMG = '/images/droni/accessori-placeholder.svg';
+
+// Per ogni accessorio la relativa foto. Se mancante si mostra il placeholder.
+const ACCESSORY_IMAGES: Record<AccessoryId, string | null> = {
+  vtxSet: '/images/droni/vtx-set.png',
+  gps12x16: null,
+  gps18x18: null,
+  gps21x21: null,
+  antennaMount: null,
+  actionCamMount: null,
+  box: null,
+};
+
+type Material = 'ASA' | 'TPU' | 'PETG';
+
+// Materiale di stampa per ogni accessorio (tutti in colore nero).
+const ACCESSORY_MATERIAL: Record<AccessoryId, Material> = {
+  vtxSet: 'ASA',
+  gps12x16: 'TPU',
+  gps18x18: 'TPU',
+  gps21x21: 'TPU',
+  antennaMount: 'TPU',
+  actionCamMount: 'ASA',
+  box: 'PETG',
+};
+
+const MATERIAL_COLORS: Record<Material, string> = {
+  ASA: 'bg-sky-100 text-sky-700 ring-sky-200',
+  TPU: 'bg-emerald-100 text-emerald-700 ring-emerald-200',
+  PETG: 'bg-amber-100 text-amber-700 ring-amber-200',
+};
+
 // WhatsApp target (same number as the floating button on the site)
 const WA_PHONE = '41762660396';
 
@@ -66,6 +98,7 @@ const DroneShop = () => {
   const [radio, setRadio] = useState<RadioChoice>('elrs');
   const [motorSpacing, setMotorSpacing] = useState<MotorSpacing>('9x9');
   const [allAccessories, setAllAccessories] = useState(false);
+  const [previewId, setPreviewId] = useState<AccessoryId | null>(null);
   const [accessories, setAccessories] = useState<Record<AccessoryId, boolean>>({
     vtxSet: false,
     gps12x16: false,
@@ -108,6 +141,25 @@ const DroneShop = () => {
       ACCESSORY_IDS.filter((id) => accessories[id]),
     [accessories],
   );
+
+  // Preview: hover ha priorità, poi ultimo selezionato con foto, poi primo con foto, poi placeholder.
+  const previewSrc = useMemo(() => {
+    if (previewId && ACCESSORY_IMAGES[previewId]) {
+      return ACCESSORY_IMAGES[previewId]!;
+    }
+    const selectedWithImg = [...selectedAccessoryIds]
+      .reverse()
+      .find((id) => ACCESSORY_IMAGES[id]);
+    if (selectedWithImg) return ACCESSORY_IMAGES[selectedWithImg]!;
+    const firstWithImg = ACCESSORY_IDS.find((id) => ACCESSORY_IMAGES[id]);
+    return firstWithImg ? ACCESSORY_IMAGES[firstWithImg]! : PLACEHOLDER_IMG;
+  }, [previewId, selectedAccessoryIds]);
+
+  const previewCaptionId: AccessoryId | null =
+    previewId ??
+    ([...selectedAccessoryIds].reverse().find((id) => ACCESSORY_IMAGES[id]) ??
+      ACCESSORY_IDS.find((id) => ACCESSORY_IMAGES[id]) ??
+      null);
 
   const cartIsEmpty =
     !bundle && !allAccessories && selectedAccessoryIds.length === 0;
@@ -303,15 +355,31 @@ const DroneShop = () => {
             <p className="mt-3 text-base leading-relaxed text-muted-foreground">
               {t('droneShop.accessoriesSubtitle')}
             </p>
+            <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-gray-900 px-4 py-2 text-xs font-semibold text-white">
+              <span className="h-2 w-2 rounded-full bg-white/80" aria-hidden />
+              {t('droneShop.materialsNote')}
+            </div>
           </div>
 
           <div className="mt-10 grid gap-6 md:mt-12 md:gap-8 xl:grid-cols-2">
-            <div className="relative flex items-center justify-center overflow-hidden rounded-2xl bg-gray-50 p-4 ring-1 ring-border sm:p-6">
-              <img
-                src="/images/droni/accessori-placeholder.svg"
-                alt={t('droneShop.accessoriesImageAlt')}
-                className="h-auto w-full max-w-md"
-              />
+            <div className="xl:sticky xl:top-24 xl:self-start">
+              <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-brand-blue to-brand-blue/80 ring-1 ring-border">
+                <img
+                  key={previewSrc}
+                  src={previewSrc}
+                  alt={
+                    previewCaptionId
+                      ? t(`droneShop.accessories.${previewCaptionId}`)
+                      : t('droneShop.accessoriesImageAlt')
+                  }
+                  className="h-auto max-h-full w-auto max-w-full object-contain p-6 motion-safe:animate-in motion-safe:fade-in-50 motion-safe:zoom-in-95 motion-safe:duration-300"
+                />
+                {previewCaptionId && (
+                  <div className="pointer-events-none absolute inset-x-4 bottom-4 rounded-xl bg-black/40 px-4 py-2 text-sm font-semibold text-white backdrop-blur-sm">
+                    {t(`droneShop.accessories.${previewCaptionId}`)}
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="min-w-0">
@@ -361,7 +429,14 @@ const DroneShop = () => {
                     <button
                       key={id}
                       type="button"
-                      onClick={() => toggleAccessory(id)}
+                      onClick={() => {
+                        toggleAccessory(id);
+                        setPreviewId(id);
+                      }}
+                      onMouseEnter={() => setPreviewId(id)}
+                      onMouseLeave={() => setPreviewId(null)}
+                      onFocus={() => setPreviewId(id)}
+                      onBlur={() => setPreviewId(null)}
                       disabled={allAccessories}
                       aria-pressed={checked}
                       className={[
@@ -376,7 +451,21 @@ const DroneShop = () => {
                         <p className="text-sm font-semibold leading-tight text-foreground break-words">
                           {t(`droneShop.accessories.${id}`)}
                         </p>
-                        <p className="mt-1 text-xs text-muted-foreground">
+                        <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+                          <span
+                            className={[
+                              'rounded-md px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ring-1',
+                              MATERIAL_COLORS[ACCESSORY_MATERIAL[id]],
+                            ].join(' ')}
+                          >
+                            {ACCESSORY_MATERIAL[id]}
+                          </span>
+                          <span className="inline-flex items-center gap-1 rounded-md bg-gray-900 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                            <span className="h-1.5 w-1.5 rounded-full bg-white/80" aria-hidden />
+                            {t('droneShop.colorBlack')}
+                          </span>
+                        </div>
+                        <p className="mt-1.5 text-xs text-muted-foreground">
                           {ACCESSORY_PRICE === null
                             ? t('droneShop.priceTbd')
                             : formatPrice(ACCESSORY_PRICE)}

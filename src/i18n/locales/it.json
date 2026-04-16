@@ -1713,6 +1713,8 @@
       "actionCamMount": "Supporto Action Cam frontale",
       "box": "Box drone"
     },
+    "materialsNote": "Tutti gli accessori sono stampati in colore nero: supporti VTX e Action Cam in ASA, GPS e supporto antenna in TPU flessibile, box drone in PETG.",
+    "colorBlack": "Nero",
     "priceTbd": "Prezzo in fase di definizione",
     "orderSummary": "Riepilogo ordine",
     "emptyCart": "Nessun prodotto selezionato.",

@@ -1647,6 +1647,8 @@
       "actionCamMount": "Action-Cam-Halterung (vorne)",
       "box": "Drohnen-Box"
     },
+    "materialsNote": "Alle Zubehörteile werden schwarz gedruckt: VTX- und Action-Cam-Halterungen aus ASA, GPS-Adapter und Antennenhalterung aus flexiblem TPU, Drohnen-Box aus PETG.",
+    "colorBlack": "Schwarz",
     "priceTbd": "Preis folgt",
     "orderSummary": "Bestellübersicht",
     "emptyCart": "Kein Produkt ausgewählt.",

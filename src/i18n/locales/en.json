@@ -1713,6 +1713,8 @@
       "actionCamMount": "Front action cam mount",
       "box": "Drone box"
     },
+    "materialsNote": "All accessories are printed in black: VTX and action cam mounts in ASA, GPS adapters and antenna mount in flexible TPU, drone box in PETG.",
+    "colorBlack": "Black",
     "priceTbd": "Price coming soon",
     "orderSummary": "Order summary",
     "emptyCart": "No product selected.",
