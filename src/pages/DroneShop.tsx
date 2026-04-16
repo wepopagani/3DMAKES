@@ -54,7 +54,7 @@ const ACCESSORY_IMAGES: Record<AccessoryId, string | null> = {
   gps21x21: '/images/droni/gps-21x21.png',
   antennaMount: '/images/droni/antenna-mount.png',
   actionCamMount: '/images/droni/action-cam-mount.png',
-  box: null,
+  box: '/images/droni/box.png',
 };
 
 type Material = 'ASA' | 'TPU' | 'PETG';
