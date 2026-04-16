@@ -49,11 +49,11 @@ const PLACEHOLDER_IMG = '/images/droni/accessori-placeholder.svg';
 // Per ogni accessorio la relativa foto. Se mancante si mostra il placeholder.
 const ACCESSORY_IMAGES: Record<AccessoryId, string | null> = {
   vtxSet: '/images/droni/vtx-set.png',
-  gps12x16: null,
-  gps18x18: null,
-  gps21x21: null,
-  antennaMount: null,
-  actionCamMount: null,
+  gps12x16: '/images/droni/gps-12x16.png',
+  gps18x18: '/images/droni/gps-18x18.png',
+  gps21x21: '/images/droni/gps-21x21.png',
+  antennaMount: '/images/droni/antenna-mount.png',
+  actionCamMount: '/images/droni/action-cam-mount.png',
   box: null,
 };
 
