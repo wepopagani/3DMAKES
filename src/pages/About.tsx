@@ -33,40 +33,6 @@ const About = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  // Team members data
-  const team = [
-    {
-      name: t('about.team.marco.name'),
-      role: t('about.team.marco.role'),
-      bio: t('about.team.marco.bio'),
-      image: "utente1.png"
-    },
-    {
-      name: t('about.team.matteo.name'),
-      role: t('about.team.matteo.role'),
-      bio: t('about.team.matteo.bio'),
-      image: "utente2.png"
-    },
-    {
-      name: t('about.team.manuel.name'),
-      role: t('about.team.manuel.role'),
-      bio: t('about.team.manuel.bio'),
-      image: "utente3.png"
-    },
-    {
-      name: t('about.team.alessandro.name'),
-      role: t('about.team.alessandro.role'),
-      bio: t('about.team.alessandro.bio'),
-      image: "utente1.png"
-    },
-    {
-      name: t('about.team.alessandro2.name'),
-      role: t('about.team.alessandro2.role'),
-      bio: t('about.team.alessandro2.bio'),
-      image: "utente2.png"
-    }
-  ];
-
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -165,42 +131,8 @@ const About = () => {
           </div>
         </section>
 
-        {/* Team */}
-        <section className="py-16 md:py-24 bg-white">
-          <div className="container-custom">
-            <div className="text-center max-w-3xl mx-auto mb-12">
-              <div className="inline-block px-3 py-1 text-sm font-medium rounded-full bg-brand-accent/10 text-brand-accent mb-4">
-                {t('about.ourTeam')}
-              </div>
-              <h2 className="heading-2 mb-6">{t('about.meetOurExperts')}</h2>
-              <p className="body-text">
-                {t('about.teamDescription')}
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
-              {team.map((member, index) => (
-                <div key={index} className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 transition-all hover:shadow-md">
-                  <div className="h-64 overflow-hidden">
-                    <img
-                      src={member.image}
-                      alt={member.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-xl font-semibold mb-1">{member.name}</h3>
-                    <p className="text-brand-accent font-medium text-sm mb-3">{member.role}</p>
-                    <p className="text-brand-gray">{member.bio}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-        
         {/* Come Raggiungerci */}
-        <section className="py-16 md:py-24" style={{backgroundColor: '#E4DDD4'}}>
+        <section className="py-16 md:py-24 bg-white">
           <div className="container-custom">
             <div className="text-center max-w-3xl mx-auto mb-12">
               <div className="inline-block px-3 py-1 text-sm font-medium rounded-full bg-brand-accent/10 text-brand-accent mb-4">

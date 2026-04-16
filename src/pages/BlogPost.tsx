@@ -1,7 +1,7 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { getBlogPosts, blogPostsContent, BLOG_AUTHOR_NAME } from "@/data/blogContent";
+import { getBlogPosts, blogPostsContent } from "@/data/blogContent";
 import { useEffect, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from 'react-i18next';
@@ -82,7 +82,7 @@ const BlogPostPage = () => {
       dateModified: isoDate ?? undefined,
       author: {
         "@type": "Person",
-        name: BLOG_AUTHOR_NAME,
+        name: post.author,
         sameAs: "https://ch.linkedin.com/company/3d-makes",
       },
       publisher: {

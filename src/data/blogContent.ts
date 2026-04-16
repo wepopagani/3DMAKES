@@ -1,7 +1,24 @@
 import i18n from '@/i18n';
 
-/** Autore ufficiale per E-E-A-T e schema.org (audit SEO: uniformare a Marco Pagani). */
-export const BLOG_AUTHOR_NAME = "Marco Pagani";
+/** Autori ufficiali del blog 3DMAKES (E-E-A-T e schema.org). */
+export const BLOG_AUTHORS = ["Marco Pagani", "Matteo Verdicchio"] as const;
+
+/** Retrocompatibilità: nome autore di default (primo della lista). */
+export const BLOG_AUTHOR_NAME = BLOG_AUTHORS[0];
+
+/**
+ * Restituisce in modo deterministico uno degli autori in base all'id del post.
+ * Usando un hash dell'id, la distribuzione appare casuale ma rimane stabile
+ * tra i render (importante per SSR, SEO e schema.org).
+ */
+export const getAuthorForPost = (postId: string): string => {
+  let hash = 0;
+  for (let i = 0; i < postId.length; i++) {
+    hash = (hash * 31 + postId.charCodeAt(i)) | 0;
+  }
+  const index = Math.abs(hash) % BLOG_AUTHORS.length;
+  return BLOG_AUTHORS[index];
+};
 
 // Helper function to get translated blog content with fallback
 const t = (key: string, fallback?: string) => {
@@ -15,7 +32,7 @@ export const getBlogPosts = () => [
     title: t('blogPosts.dental.title', 'Stampa 3D in Odontotecnica'),
     excerpt: t('blogPosts.dental.excerpt', 'Esplorando come la produzione additiva sta rivoluzionando i metodi di produzione tradizionali nel settore dentale.'),
     imageSrc: "/images/projects/dental.png",
-    author: BLOG_AUTHOR_NAME,
+    author: getAuthorForPost("stampa-3d-odontotecnica"),
     date: "20 Apr 2023",
     category: t('blog.categories.technology', 'Tecnologia'),
     featured: true
@@ -25,7 +42,7 @@ export const getBlogPosts = () => [
     title: t('blogPosts.petBowls.title', 'Ciotole Personalizzabili per Animali'),
     excerpt: t('blogPosts.petBowls.excerpt', 'Collezione di ciotole e accessori per animali domestici realizzati con stampa 3D.'),
     imageSrc: "/images/projects/ciotole.png",
-    author: BLOG_AUTHOR_NAME,
+    author: getAuthorForPost("ciotole-personalizzabili"),
     date: "15 Mar 2023",
     category: t('blog.categories.innovation', 'Innovazione')
   },
@@ -34,7 +51,7 @@ export const getBlogPosts = () => [
     title: t('blogPosts.horseshoe.title', 'Cuscinetti in TPU per Ferrature Equine'),
     excerpt: t('blogPosts.horseshoe.excerpt', 'Cuscinetti in TPU stampati in 3D su misura per ferrature dei cavalli.'),
     imageSrc: "/images/projects/horseshoe.png",
-    author: BLOG_AUTHOR_NAME,
+    author: getAuthorForPost("cuscinetti-tpu-ferrature-equine"),
     date: "5 Feb 2023",
     category: t('blog.categories.casestudy', 'Caso Studio')
   },
@@ -43,7 +60,7 @@ export const getBlogPosts = () => [
     title: t('blogPosts.nfcGadgets.title', 'Gadget Aziendali NFC Smart'),
     excerpt: t('blogPosts.nfcGadgets.excerpt', 'Gadget aziendali smart con tecnologia NFC integrata.'),
     imageSrc: "/images/projects/nfc-gadgets.png",
-    author: BLOG_AUTHOR_NAME,
+    author: getAuthorForPost("gadget-aziendali-nfc"),
     date: "28 Jan 2023",
     category: t('blog.categories.innovation', 'Innovazione')
   },
@@ -52,7 +69,7 @@ export const getBlogPosts = () => [
     title: t('blogPosts.restaurant.title', 'Collezione Accessori Ristorativi'),
     excerpt: t('blogPosts.restaurant.excerpt', 'Accessori innovativi e personalizzabili per ristoranti.'),
     imageSrc: "/images/projects/restaurant-accessories.png",
-    author: BLOG_AUTHOR_NAME,
+    author: getAuthorForPost("accessori-ristorativi"),
     date: "12 Jan 2023",
     category: t('blog.categories.casestudy', 'Caso Studio')
   },
@@ -61,7 +78,7 @@ export const getBlogPosts = () => [
     title: t('blogPosts.mechanical.title', 'Componenti Meccanici Personalizzati'),
     excerpt: t('blogPosts.mechanical.excerpt', 'Componenti meccanici di alta precisione stampati in PETG.'),
     imageSrc: "/images/projects/comp.png",
-    author: BLOG_AUTHOR_NAME,
+    author: getAuthorForPost("componenti-meccanici"),
     date: "5 Dec 2022",
     category: t('blog.categories.technology', 'Tecnologia')
   },
@@ -70,7 +87,7 @@ export const getBlogPosts = () => [
     title: t('blogPosts.prosthetics.title', 'Protesi Mediche Personalizzate'),
     excerpt: t('blogPosts.prosthetics.excerpt', 'Dispositivi protesici personalizzati stampati con materiali biocompatibili.'),
     imageSrc: "/images/projects/medical.jpg",
-    author: BLOG_AUTHOR_NAME,
+    author: getAuthorForPost("protesi-mediche"),
     date: "18 Nov 2022",
     category: t('blog.categories.technology', 'Tecnologia')
   },
@@ -79,7 +96,7 @@ export const getBlogPosts = () => [
     title: t('blogPosts.how3dWorks.title', 'Come funziona realmente la stampa 3D: guida completa'),
     excerpt: t('blogPosts.how3dWorks.excerpt', 'Una spiegazione dettagliata dei principi di funzionamento della stampa 3D.'),
     imageSrc: "https://images.unsplash.com/photo-1581094288338-2314dddb7ece?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
-    author: BLOG_AUTHOR_NAME,
+    author: getAuthorForPost("come-funziona-stampa-3d"),
     date: "15 Oct 2022",
     category: t('blog.categories.tutorial', 'Tutorial'),
     featured: true
@@ -89,7 +106,7 @@ export const getBlogPosts = () => [
     title: t('blogPosts.materials.title', 'I migliori materiali per la stampa 3D nel 2023'),
     excerpt: t('blogPosts.materials.excerpt', 'Confronto tra PLA, ABS, PETG e resine: caratteristiche, vantaggi e applicazioni.'),
     imageSrc: "https://images.unsplash.com/photo-1615286922420-c6b348ffbd62?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-    author: BLOG_AUTHOR_NAME,
+    author: getAuthorForPost("materiali-stampa-3d"),
     date: "23 Sep 2022",
     category: t('blog.categories.tutorial', 'Tutorial')
   },
@@ -98,7 +115,7 @@ export const getBlogPosts = () => [
     title: t('blogPosts.rapidPrototyping.title', 'Prototipazione rapida: velocizzare lo sviluppo prodotto'),
     excerpt: t('blogPosts.rapidPrototyping.excerpt', 'Come la stampa 3D sta rivoluzionando il processo di sviluppo prodotto.'),
     imageSrc: "/images/projects/prototipazione.png",
-    author: BLOG_AUTHOR_NAME,
+    author: getAuthorForPost("prototipazione-rapida"),
     date: "8 Aug 2022",
     category: t('blog.categories.innovation', 'Innovazione')
   },
@@ -107,7 +124,7 @@ export const getBlogPosts = () => [
     title: t('blogPosts.creativeApplications.title', 'Applicazioni creative della stampa 3D nel design'),
     excerpt: t('blogPosts.creativeApplications.excerpt', 'Esplorando le infinite possibilità creative offerte dalla stampa 3D.'),
     imageSrc: "https://images.unsplash.com/photo-1556740738-b6a63e27c4df?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-    author: BLOG_AUTHOR_NAME,
+    author: getAuthorForPost("applicazioni-creative-stampa-3d"),
     date: "3 Jul 2022",
     category: t('blog.categories.innovation', 'Innovazione')
   },
@@ -116,7 +133,7 @@ export const getBlogPosts = () => [
     title: t('blogPosts.printerComparison.title', 'Le migliori stampanti 3D per uso professionale'),
     excerpt: t('blogPosts.printerComparison.excerpt', 'Analisi comparativa delle migliori stampanti 3D professionali.'),
     imageSrc: "/images/projects/printers.png",
-    author: BLOG_AUTHOR_NAME,
+    author: getAuthorForPost("stampanti-3d-confronto"),
     date: "15 Jun 2022", 
     category: t('blog.categories.tutorial', 'Tutorial')
   }

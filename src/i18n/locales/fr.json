@@ -4,6 +4,7 @@
     "mission": "Mission",
     "services": "Services",
     "shop": "Boutique",
+    "drones": "Drones",
     "blog": "Blog",
     "courses": "Cours",
     "contact": "Contact",
@@ -1593,5 +1594,65 @@
     "title": "Ils ont choisi 3DMAKES",
     "description": "Entreprises et institutions qui ont fait confiance à nos services d'impression 3D",
     "companiesCount": "Clients"
+  },
+  "droneShop": {
+    "eyebrow": "DRONES FPV",
+    "heroTitle": "Construis ton drone",
+    "heroSubtitle": "Choisis le pack qui te correspond : uniquement le châssis, un drone Bind-and-Fly prêt à voler, le bundle complet avec radio et lunettes, ou la valise dédiée.",
+    "configureNow": "Configurer",
+    "bundlesTitle": "Nos bundles",
+    "bundlesSubtitle": "Quatre configurations pensées pour chaque pilote, du builder au rider qui veut juste voler.",
+    "radioSystem": "Système radio",
+    "includes": "Contenu",
+    "addToCart": "Ajouter au panier",
+    "added": "Ajouté",
+    "bundles": {
+      "frame": {
+        "title": "Châssis",
+        "desc": "Notre châssis de drone imprimé en 3D, seul. Parfait pour construire à ta façon."
+      },
+      "drone": {
+        "title": "Drone (Bind & Fly)",
+        "desc": "Un drone prêt à voler, assemblé et réglé. Choisis ton système radio préféré."
+      },
+      "full": {
+        "title": "Bundle complet",
+        "desc": "Tout ce qu'il faut pour commencer à voler, en une seule commande.",
+        "items": [
+          "Drone Bind & Fly",
+          "Radiocommande",
+          "3 batteries",
+          "Chargeur",
+          "Lunettes FPV",
+          "Valise drone"
+        ]
+      },
+      "case": {
+        "title": "Valise drone",
+        "desc": "Valise rigide sur-mesure pour transporter et protéger ton drone."
+      }
+    },
+    "accessoriesTitle": "Accessoires imprimables",
+    "accessoriesSubtitle": "Sélectionne les accessoires imprimés en 3D à ajouter à ta commande — ou prends le pack complet.",
+    "accessoriesImageAlt": "Accessoires pour drone imprimables en 3D",
+    "accessoryAll": "Pack accessoires complet",
+    "accessoryAllDesc": "Inclut tous les accessoires ci-dessous. Quand il est activé, les éléments individuels sont désactivés automatiquement.",
+    "accessories": {
+      "propGuards": "Prop guards",
+      "gopro": "Support GoPro",
+      "antenna": "Support antenne",
+      "batteryStrap": "Sangle batterie",
+      "cameraMount": "Support caméra alternatif",
+      "landingGear": "Train d'atterrissage",
+      "ledHolder": "Support LED",
+      "spareArms": "Bras de rechange"
+    },
+    "priceTbd": "Prix à venir",
+    "orderSummary": "Récapitulatif",
+    "emptyCart": "Aucun produit sélectionné.",
+    "total": "Total",
+    "orderOnWhatsApp": "Envoyer la commande sur WhatsApp",
+    "orderDisclaimer": "Nous te recontactons sous 24 h pour confirmer disponibilité, prix et moyens de paiement.",
+    "waIntro": "Bonjour 3DMAKES ! J'aimerais commander cette configuration drone :"
   }
 }

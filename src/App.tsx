@@ -43,6 +43,7 @@ const PetAdmin = lazy(() => import("./pages/PetAdmin"));
 const PetPassportSimple = lazy(() => import("./pages/PetPassportSimple"));
 const TestPetPassport = lazy(() => import("./pages/TestPetPassport"));
 const IscrizioneCorsi = lazy(() => import("./pages/IscrizioneCorsi"));
+const DroneShop = lazy(() => import("./pages/DroneShop"));
 
 const queryClient = new QueryClient();
 
@@ -229,6 +230,8 @@ const App = () => (
               <Route path="/pets/:passportNumber" element={<PetPassportSimple />} />
 
               <Route path="/iscrizione-corsi" element={<IscrizioneCorsi />} />
+
+              <Route path="/droni" element={<DroneShop />} />
 
               <Route path="*" element={<NotFound />} />
             </Routes>

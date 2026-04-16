@@ -1,0 +1,642 @@
+import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
+import {
+  Check,
+  ChevronRight,
+  Package,
+  Plane,
+  Briefcase,
+  Boxes,
+} from 'lucide-react';
+
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import WhatsAppButton from '@/components/WhatsAppButton';
+import { Button } from '@/components/ui/button';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Catalog — placeholder prices, fill in real CHF amounts later.
+// `null` price renders as "Prezzo in fase di definizione" and skips the total.
+// ─────────────────────────────────────────────────────────────────────────────
+
+type BundleId = 'frame' | 'drone' | 'full' | 'case';
+type RadioChoice = 'crossfire' | 'elrs';
+
+const BUNDLE_PRICES: Record<BundleId, number | null> = {
+  frame: null,
+  drone: null,
+  full: null,
+  case: null,
+};
+
+const ACCESSORY_PRICE: number | null = null;
+const ACCESSORY_PACK_PRICE: number | null = null;
+
+const ACCESSORY_IDS = [
+  'propGuards',
+  'gopro',
+  'antenna',
+  'batteryStrap',
+  'cameraMount',
+  'landingGear',
+  'ledHolder',
+  'spareArms',
+] as const;
+
+type AccessoryId = (typeof ACCESSORY_IDS)[number];
+
+// WhatsApp target (same number as the floating button on the site)
+const WA_PHONE = '41762660396';
+
+// ─────────────────────────────────────────────────────────────────────────────
+
+function formatPrice(amount: number | null): string {
+  if (amount === null) return '—';
+  return `CHF ${amount.toLocaleString('de-CH', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+
+const DroneShop = () => {
+  const { t } = useTranslation();
+
+  const [bundle, setBundle] = useState<BundleId | null>(null);
+  const [radio, setRadio] = useState<RadioChoice>('elrs');
+  const [allAccessories, setAllAccessories] = useState(false);
+  const [accessories, setAccessories] = useState<Record<AccessoryId, boolean>>({
+    propGuards: false,
+    gopro: false,
+    antenna: false,
+    batteryStrap: false,
+    cameraMount: false,
+    landingGear: false,
+    ledHolder: false,
+    spareArms: false,
+  });
+
+  function toggleBundle(id: BundleId) {
+    setBundle((cur) => (cur === id ? null : id));
+  }
+
+  function toggleAccessory(id: AccessoryId) {
+    if (allAccessories) setAllAccessories(false);
+    setAccessories((prev) => ({ ...prev, [id]: !prev[id] }));
+  }
+
+  function toggleAll() {
+    setAllAccessories((cur) => {
+      const next = !cur;
+      if (next) {
+        setAccessories({
+          propGuards: false,
+          gopro: false,
+          antenna: false,
+          batteryStrap: false,
+          cameraMount: false,
+          landingGear: false,
+          ledHolder: false,
+          spareArms: false,
+        });
+      }
+      return next;
+    });
+  }
+
+  const selectedAccessoryIds = useMemo(
+    () =>
+      ACCESSORY_IDS.filter((id) => accessories[id]),
+    [accessories],
+  );
+
+  const cartIsEmpty =
+    !bundle && !allAccessories && selectedAccessoryIds.length === 0;
+
+  const total = useMemo(() => {
+    let sum = 0;
+    let hasPlaceholder = false;
+
+    if (bundle) {
+      const p = BUNDLE_PRICES[bundle];
+      if (p === null) hasPlaceholder = true;
+      else sum += p;
+    }
+    if (allAccessories) {
+      if (ACCESSORY_PACK_PRICE === null) hasPlaceholder = true;
+      else sum += ACCESSORY_PACK_PRICE;
+    } else {
+      for (const _ of selectedAccessoryIds) {
+        if (ACCESSORY_PRICE === null) hasPlaceholder = true;
+        else sum += ACCESSORY_PRICE;
+      }
+    }
+    return { sum, hasPlaceholder };
+  }, [bundle, allAccessories, selectedAccessoryIds]);
+
+  function handleCheckout() {
+    if (cartIsEmpty) return;
+
+    const lines: string[] = [t('droneShop.waIntro'), ''];
+    if (bundle) {
+      const bundleName = t(`droneShop.bundles.${bundle}.title`);
+      const extra =
+        bundle === 'drone'
+          ? ` · ${radio === 'crossfire' ? 'TBS Crossfire' : 'ELRS'}`
+          : '';
+      lines.push(`• ${bundleName}${extra}`);
+    }
+    if (allAccessories) {
+      lines.push(`• ${t('droneShop.accessoryAll')}`);
+    } else {
+      for (const id of selectedAccessoryIds) {
+        lines.push(`• ${t(`droneShop.accessories.${id}`)}`);
+      }
+    }
+    if (!total.hasPlaceholder && total.sum > 0) {
+      lines.push('', `${t('droneShop.total')}: ${formatPrice(total.sum)}`);
+    }
+
+    const msg = encodeURIComponent(lines.join('\n'));
+    window.open(`https://wa.me/${WA_PHONE}?text=${msg}`, '_blank');
+  }
+
+  return (
+    <div className="min-h-screen flex flex-col bg-background">
+      <Navbar />
+
+      {/* ── Hero ───────────────────────────────────────────────────────── */}
+      <section className="relative overflow-hidden bg-brand-blue text-white">
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.08]"
+          aria-hidden
+          style={{
+            backgroundImage:
+              'linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)',
+            backgroundSize: '40px 40px',
+          }}
+        />
+        <div className="container-custom relative py-20 md:py-28">
+          <div className="flex items-center gap-3 text-xs font-semibold tracking-[0.22em] text-brand-accent">
+            <span className="inline-block h-px w-10 bg-brand-accent" aria-hidden />
+            {t('droneShop.eyebrow')}
+          </div>
+          <h1 className="mt-5 font-display text-4xl font-bold leading-tight md:text-6xl">
+            {t('droneShop.heroTitle')}
+          </h1>
+          <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/80 md:text-lg">
+            {t('droneShop.heroSubtitle')}
+          </p>
+          <div className="mt-8">
+            <a
+              href="#bundles"
+              className="inline-flex items-center gap-2 rounded-xl bg-brand-accent px-6 py-3 text-sm font-bold text-brand-blue shadow-lg transition hover:bg-brand-accent/90"
+            >
+              {t('droneShop.configureNow')}
+              <ChevronRight className="h-4 w-4" />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Bundles ────────────────────────────────────────────────────── */}
+      <section id="bundles" className="bg-gray-50 py-16 md:py-20">
+        <div className="container-custom">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="font-display text-3xl font-bold text-brand-blue md:text-4xl">
+              {t('droneShop.bundlesTitle')}
+            </h2>
+            <p className="mt-3 text-base leading-relaxed text-muted-foreground">
+              {t('droneShop.bundlesSubtitle')}
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <BundleCard
+              active={bundle === 'frame'}
+              onToggle={() => toggleBundle('frame')}
+              title={t('droneShop.bundles.frame.title')}
+              description={t('droneShop.bundles.frame.desc')}
+              price={BUNDLE_PRICES.frame}
+              icon={<Boxes className="h-7 w-7" />}
+              index={0}
+            />
+
+            <BundleCard
+              active={bundle === 'drone'}
+              onToggle={() => toggleBundle('drone')}
+              title={t('droneShop.bundles.drone.title')}
+              description={t('droneShop.bundles.drone.desc')}
+              price={BUNDLE_PRICES.drone}
+              icon={<Plane className="h-7 w-7" />}
+              index={1}
+            >
+              <fieldset className="mt-5">
+                <legend className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  {t('droneShop.radioSystem')}
+                </legend>
+                <div className="mt-2 grid grid-cols-2 gap-2">
+                  <RadioChip
+                    label="TBS Crossfire"
+                    selected={radio === 'crossfire'}
+                    onClick={() => setRadio('crossfire')}
+                  />
+                  <RadioChip
+                    label="ELRS"
+                    selected={radio === 'elrs'}
+                    onClick={() => setRadio('elrs')}
+                  />
+                </div>
+              </fieldset>
+            </BundleCard>
+
+            <BundleCard
+              active={bundle === 'full'}
+              onToggle={() => toggleBundle('full')}
+              title={t('droneShop.bundles.full.title')}
+              description={t('droneShop.bundles.full.desc')}
+              price={BUNDLE_PRICES.full}
+              icon={<Package className="h-7 w-7" />}
+              highlight
+              index={2}
+            >
+              <div className="mt-5">
+                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                  {t('droneShop.includes')}
+                </p>
+                <ul className="mt-2 space-y-1.5">
+                  {(t('droneShop.bundles.full.items', {
+                    returnObjects: true,
+                  }) as string[]).map((item) => (
+                    <li
+                      key={item}
+                      className="flex items-center gap-2 text-sm text-foreground/80"
+                    >
+                      <Check className="h-4 w-4 shrink-0 text-brand-accent" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </BundleCard>
+
+            <BundleCard
+              active={bundle === 'case'}
+              onToggle={() => toggleBundle('case')}
+              title={t('droneShop.bundles.case.title')}
+              description={t('droneShop.bundles.case.desc')}
+              price={BUNDLE_PRICES.case}
+              icon={<Briefcase className="h-7 w-7" />}
+              index={3}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ── Accessories ────────────────────────────────────────────────── */}
+      <section className="py-16 md:py-20">
+        <div className="container-custom">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="font-display text-3xl font-bold text-brand-blue md:text-4xl">
+              {t('droneShop.accessoriesTitle')}
+            </h2>
+            <p className="mt-3 text-base leading-relaxed text-muted-foreground">
+              {t('droneShop.accessoriesSubtitle')}
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-8 lg:grid-cols-2">
+            <div className="relative flex items-center justify-center overflow-hidden rounded-2xl bg-gray-50 p-6 ring-1 ring-border">
+              <img
+                src="/images/droni/accessori-placeholder.svg"
+                alt={t('droneShop.accessoriesImageAlt')}
+                className="h-auto w-full max-w-md"
+              />
+            </div>
+
+            <div>
+              {/* "Everything" master card */}
+              <button
+                type="button"
+                onClick={toggleAll}
+                aria-pressed={allAccessories}
+                className={[
+                  'group relative flex w-full items-start gap-4 rounded-2xl border-2 p-5 text-left transition',
+                  allAccessories
+                    ? 'border-brand-accent bg-brand-accent/5 shadow-[0_0_0_4px_rgba(61,157,255,0.15)]'
+                    : 'border-border bg-card hover:border-foreground/20',
+                ].join(' ')}
+              >
+                <CheckSquare checked={allAccessories} />
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-bold text-foreground">
+                      {t('droneShop.accessoryAll')}
+                    </span>
+                    <span className="rounded-full bg-brand-accent/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-brand-accent">
+                      ALL
+                    </span>
+                  </div>
+                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                    {t('droneShop.accessoryAllDesc')}
+                  </p>
+                  <p className="mt-2 text-sm font-semibold text-foreground">
+                    {ACCESSORY_PACK_PRICE === null
+                      ? t('droneShop.priceTbd')
+                      : formatPrice(ACCESSORY_PACK_PRICE)}
+                  </p>
+                </div>
+              </button>
+
+              {/* Individual accessories */}
+              <div
+                className={[
+                  'mt-4 grid grid-cols-2 gap-2.5 transition',
+                  allAccessories ? 'pointer-events-none opacity-50' : '',
+                ].join(' ')}
+              >
+                {ACCESSORY_IDS.map((id) => {
+                  const checked = !allAccessories && accessories[id];
+                  return (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => toggleAccessory(id)}
+                      disabled={allAccessories}
+                      aria-pressed={checked}
+                      className={[
+                        'flex items-start gap-3 rounded-xl border-2 p-3 text-left transition',
+                        checked
+                          ? 'border-brand-accent bg-brand-accent/5'
+                          : 'border-border bg-card hover:border-foreground/20',
+                      ].join(' ')}
+                    >
+                      <CheckSquare checked={checked} small />
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-sm font-semibold text-foreground">
+                          {t(`droneShop.accessories.${id}`)}
+                        </p>
+                        <p className="mt-0.5 text-xs text-muted-foreground">
+                          {ACCESSORY_PRICE === null
+                            ? t('droneShop.priceTbd')
+                            : formatPrice(ACCESSORY_PRICE)}
+                        </p>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Order summary ──────────────────────────────────────────────── */}
+      <section className="bg-gray-50 py-16 md:py-20">
+        <div className="container-custom">
+          <div className="mx-auto max-w-3xl">
+            <div className="overflow-hidden rounded-2xl bg-card shadow-lg ring-1 ring-border">
+              <div className="bg-brand-blue px-6 py-5 text-white">
+                <h2 className="text-lg font-bold">{t('droneShop.orderSummary')}</h2>
+              </div>
+              <div className="p-6">
+                {cartIsEmpty ? (
+                  <p className="text-sm text-muted-foreground">
+                    {t('droneShop.emptyCart')}
+                  </p>
+                ) : (
+                  <ul className="divide-y divide-border">
+                    {bundle && (
+                      <OrderLine
+                        name={
+                          bundle === 'drone'
+                            ? `${t(`droneShop.bundles.${bundle}.title`)} · ${
+                                radio === 'crossfire' ? 'TBS Crossfire' : 'ELRS'
+                              }`
+                            : t(`droneShop.bundles.${bundle}.title`)
+                        }
+                        price={BUNDLE_PRICES[bundle]}
+                        placeholderLabel={t('droneShop.priceTbd')}
+                      />
+                    )}
+                    {allAccessories && (
+                      <OrderLine
+                        name={t('droneShop.accessoryAll')}
+                        price={ACCESSORY_PACK_PRICE}
+                        placeholderLabel={t('droneShop.priceTbd')}
+                      />
+                    )}
+                    {!allAccessories &&
+                      selectedAccessoryIds.map((id) => (
+                        <OrderLine
+                          key={id}
+                          name={t(`droneShop.accessories.${id}`)}
+                          price={ACCESSORY_PRICE}
+                          placeholderLabel={t('droneShop.priceTbd')}
+                        />
+                      ))}
+                  </ul>
+                )}
+
+                <div className="mt-6 flex items-center justify-between border-t border-border pt-5">
+                  <span className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                    {t('droneShop.total')}
+                  </span>
+                  <span className="text-2xl font-bold text-foreground">
+                    {total.hasPlaceholder && total.sum === 0
+                      ? '—'
+                      : total.hasPlaceholder
+                        ? `${formatPrice(total.sum)} +`
+                        : formatPrice(total.sum)}
+                  </span>
+                </div>
+
+                <Button
+                  onClick={handleCheckout}
+                  disabled={cartIsEmpty}
+                  size="lg"
+                  className="mt-6 w-full bg-brand-accent py-6 text-base font-semibold text-white hover:bg-brand-accent/90"
+                >
+                  {t('droneShop.orderOnWhatsApp')}
+                  <ChevronRight className="ml-2 h-4 w-4" />
+                </Button>
+                <p className="mt-3 text-center text-xs text-muted-foreground">
+                  {t('droneShop.orderDisclaimer')}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+      <WhatsAppButton />
+    </div>
+  );
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Sub-components
+// ─────────────────────────────────────────────────────────────────────────────
+
+function BundleCard({
+  active,
+  onToggle,
+  title,
+  description,
+  price,
+  icon,
+  highlight,
+  children,
+  index,
+}: {
+  active: boolean;
+  onToggle: () => void;
+  title: string;
+  description: string;
+  price: number | null;
+  icon: React.ReactNode;
+  highlight?: boolean;
+  children?: React.ReactNode;
+  index: number;
+}) {
+  const { t } = useTranslation();
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.4, delay: index * 0.08 }}
+      className={[
+        'relative flex flex-col rounded-2xl bg-card p-6 ring-1 transition',
+        active
+          ? 'ring-2 ring-brand-accent shadow-[0_0_0_4px_rgba(61,157,255,0.15)]'
+          : 'ring-border hover:ring-foreground/20 shadow-sm',
+      ].join(' ')}
+    >
+      {highlight && (
+        <span className="absolute -top-3 left-6 rounded-full bg-brand-accent px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow">
+          ★
+        </span>
+      )}
+      <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-brand-accent/10 text-brand-accent">
+        {icon}
+      </div>
+      <h3 className="font-display text-xl font-bold text-brand-blue">{title}</h3>
+      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+        {description}
+      </p>
+
+      {children}
+
+      <div className="mt-auto pt-6">
+        <p className="text-xl font-bold text-foreground">
+          {price === null ? (
+            <span className="text-sm font-semibold text-muted-foreground">
+              {t('droneShop.priceTbd')}
+            </span>
+          ) : (
+            formatPrice(price)
+          )}
+        </p>
+        <button
+          type="button"
+          onClick={onToggle}
+          aria-pressed={active}
+          className={[
+            'mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold transition',
+            active
+              ? 'bg-brand-blue text-white hover:bg-brand-blue/90'
+              : 'bg-brand-accent text-white hover:bg-brand-accent/90',
+          ].join(' ')}
+        >
+          {active ? (
+            <>
+              <Check className="h-4 w-4" />
+              {t('droneShop.added')}
+            </>
+          ) : (
+            t('droneShop.addToCart')
+          )}
+        </button>
+      </div>
+    </motion.div>
+  );
+}
+
+function RadioChip({
+  label,
+  selected,
+  onClick,
+}: {
+  label: string;
+  selected: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={selected}
+      className={[
+        'rounded-lg border-2 px-3 py-2 text-xs font-bold transition',
+        selected
+          ? 'border-brand-accent bg-brand-accent/10 text-brand-accent'
+          : 'border-border bg-card text-muted-foreground hover:border-foreground/20',
+      ].join(' ')}
+    >
+      {label}
+    </button>
+  );
+}
+
+function CheckSquare({
+  checked,
+  small,
+}: {
+  checked: boolean;
+  small?: boolean;
+}) {
+  const size = small ? 'h-5 w-5' : 'h-6 w-6';
+  return (
+    <span
+      aria-hidden
+      className={[
+        'mt-0.5 inline-flex shrink-0 items-center justify-center rounded-md border-2 transition',
+        size,
+        checked
+          ? 'border-brand-accent bg-brand-accent text-white'
+          : 'border-border bg-card',
+      ].join(' ')}
+    >
+      {checked && <Check className={small ? 'h-3 w-3' : 'h-4 w-4'} strokeWidth={3} />}
+    </span>
+  );
+}
+
+function OrderLine({
+  name,
+  price,
+  placeholderLabel,
+}: {
+  name: string;
+  price: number | null;
+  placeholderLabel: string;
+}) {
+  return (
+    <li className="flex items-center justify-between py-3">
+      <span className="text-sm text-foreground/80">{name}</span>
+      <span className="text-sm font-semibold text-foreground">
+        {price === null ? (
+          <span className="text-muted-foreground">{placeholderLabel}</span>
+        ) : (
+          formatPrice(price)
+        )}
+      </span>
+    </li>
+  );
+}
+
+export default DroneShop;

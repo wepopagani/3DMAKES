@@ -4,6 +4,7 @@
     "mission": "Mission",
     "services": "Dienstleistungen",
     "shop": "Shop",
+    "drones": "Drohnen",
     "blog": "Blog",
     "courses": "Kurse",
     "contact": "Kontakt",
@@ -1593,5 +1594,65 @@
     "title": "Sie haben 3DMAKES gewählt",
     "description": "Unternehmen und Institutionen, die unseren 3D-Druckservice vertrauen",
     "companiesCount": "Kunden"
+  },
+  "droneShop": {
+    "eyebrow": "FPV-DROHNEN",
+    "heroTitle": "Bau deine eigene Drohne",
+    "heroSubtitle": "Wähle das passende Paket: nur der Rahmen, eine flugfertige Bind-and-Fly-Drohne, das komplette Bundle mit Funke und Brille, oder der passende Koffer.",
+    "configureNow": "Jetzt konfigurieren",
+    "bundlesTitle": "Unsere Bundles",
+    "bundlesSubtitle": "Vier Konfigurationen für jeden Piloten — vom Builder bis zum Piloten, der einfach nur fliegen will.",
+    "radioSystem": "Funksystem",
+    "includes": "Enthält",
+    "addToCart": "In den Warenkorb",
+    "added": "Hinzugefügt",
+    "bundles": {
+      "frame": {
+        "title": "Rahmen",
+        "desc": "Der hochwertige, 3D-gedruckte Drohnenrahmen einzeln. Ideal für Eigenbau."
+      },
+      "drone": {
+        "title": "Drohne (Bind & Fly)",
+        "desc": "Flugbereite Drohne, vormontiert und abgestimmt. Wähle deine Funkverbindung."
+      },
+      "full": {
+        "title": "Komplett-Bundle",
+        "desc": "Alles zum sofortigen Losfliegen in einer Bestellung.",
+        "items": [
+          "Bind & Fly Drohne",
+          "Fernsteuerung",
+          "3 Akkus",
+          "Ladegerät",
+          "FPV-Brille",
+          "Drohnen-Koffer"
+        ]
+      },
+      "case": {
+        "title": "Drohnen-Koffer",
+        "desc": "Maßgefertigter Hartschalenkoffer zum Transport und Schutz deiner Drohne."
+      }
+    },
+    "accessoriesTitle": "Druckbares Zubehör",
+    "accessoriesSubtitle": "Wähle das 3D-gedruckte Zubehör, das du ergänzen möchtest – oder nimm das Komplettpaket.",
+    "accessoriesImageAlt": "3D-druckbares Drohnen-Zubehör",
+    "accessoryAll": "Komplett-Zubehörpaket",
+    "accessoryAllDesc": "Enthält das gesamte Zubehör unten. Ist es aktiviert, werden die Einzelartikel automatisch deaktiviert.",
+    "accessories": {
+      "propGuards": "Propellerschutz",
+      "gopro": "GoPro-Halterung",
+      "antenna": "Antennenhalterung",
+      "batteryStrap": "Akku-Strap",
+      "cameraMount": "Alternative Kamerahalterung",
+      "landingGear": "Landegestell",
+      "ledHolder": "LED-Halter",
+      "spareArms": "Ersatzarme"
+    },
+    "priceTbd": "Preis folgt",
+    "orderSummary": "Bestellübersicht",
+    "emptyCart": "Kein Produkt ausgewählt.",
+    "total": "Gesamt",
+    "orderOnWhatsApp": "Bestellung per WhatsApp senden",
+    "orderDisclaimer": "Wir melden uns innerhalb von 24 Stunden mit Verfügbarkeit, Preis und Zahlungsoptionen.",
+    "waIntro": "Hallo 3DMAKES! Ich möchte diese Drohnen-Konfiguration bestellen:"
   }
 }

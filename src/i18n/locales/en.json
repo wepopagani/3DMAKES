@@ -4,6 +4,7 @@
     "mission": "Mission",
     "services": "Services",
     "shop": "Shop",
+    "drones": "Drones",
     "blog": "Blog",
     "courses": "Courses",
     "contact": "Contact",
@@ -1659,5 +1660,65 @@
     "title": "They Chose 3DMAKES",
     "description": "Companies and institutions that trusted our 3D printing services",
     "companiesCount": "Clients"
+  },
+  "droneShop": {
+    "eyebrow": "FPV DRONES",
+    "heroTitle": "Build your own drone",
+    "heroSubtitle": "Pick the package that fits you: just the frame, a ready-to-fly Bind-and-Fly drone, the full bundle with radio and goggles, or the dedicated case.",
+    "configureNow": "Configure now",
+    "bundlesTitle": "Our bundles",
+    "bundlesSubtitle": "Four configurations for every pilot, from the seasoned builder to the rider who just wants to fly.",
+    "radioSystem": "Radio system",
+    "includes": "What's included",
+    "addToCart": "Add to cart",
+    "added": "Added",
+    "bundles": {
+      "frame": {
+        "title": "Frame",
+        "desc": "Our high-quality 3D-printed drone frame on its own. Ideal if you want to build from scratch."
+      },
+      "drone": {
+        "title": "Drone (Bind & Fly)",
+        "desc": "A ready-to-fly drone, pre-assembled and tuned. Pick your preferred radio link."
+      },
+      "full": {
+        "title": "Full bundle",
+        "desc": "Everything you need to start flying right away, in one order.",
+        "items": [
+          "Bind & Fly drone",
+          "Radio controller",
+          "3 batteries",
+          "Charger",
+          "FPV goggles",
+          "Drone case"
+        ]
+      },
+      "case": {
+        "title": "Drone case",
+        "desc": "Custom-fitted hard case to carry and protect your drone."
+      }
+    },
+    "accessoriesTitle": "Printable accessories",
+    "accessoriesSubtitle": "Pick the 3D-printed accessories to add to your order — or grab the complete pack.",
+    "accessoriesImageAlt": "3D-printable drone accessories",
+    "accessoryAll": "Full accessory pack",
+    "accessoryAllDesc": "Includes every accessory listed below. Turning this on automatically disables individual items.",
+    "accessories": {
+      "propGuards": "Prop guards",
+      "gopro": "GoPro mount",
+      "antenna": "Antenna mount",
+      "batteryStrap": "Battery strap",
+      "cameraMount": "Alternative camera mount",
+      "landingGear": "Landing gear",
+      "ledHolder": "LED holder",
+      "spareArms": "Spare arms"
+    },
+    "priceTbd": "Price coming soon",
+    "orderSummary": "Order summary",
+    "emptyCart": "No product selected.",
+    "total": "Total",
+    "orderOnWhatsApp": "Send order on WhatsApp",
+    "orderDisclaimer": "We'll get back to you within 24 hours to confirm availability, pricing and payment.",
+    "waIntro": "Hi 3DMAKES! I'd like to order this drone configuration:"
   }
 } 

@@ -4,6 +4,7 @@
     "mission": "Mission",
     "services": "Servizi",
     "shop": "Shop",
+    "drones": "Droni",
     "blog": "Blog",
     "courses": "Corsi",
     "contact": "Contatti",
@@ -1659,5 +1660,65 @@
     "title": "Hanno scelto 3DMAKES",
     "description": "Aziende e istituzioni che si sono affidate ai nostri servizi di stampa 3D",
     "companiesCount": "Clienti"
+  },
+  "droneShop": {
+    "eyebrow": "DRONI FPV",
+    "heroTitle": "Costruisci il tuo drone",
+    "heroSubtitle": "Scegli il pacchetto che fa per te: solo il frame, drone Bind-and-Fly pronto al volo, bundle completo con radio e occhiali, o la valigia dedicata.",
+    "configureNow": "Configura ora",
+    "bundlesTitle": "I nostri bundle",
+    "bundlesSubtitle": "Quattro configurazioni pensate per ogni pilota, dal builder esperto al rider che vuole solo volare.",
+    "radioSystem": "Sistema radio",
+    "includes": "Cosa include",
+    "addToCart": "Aggiungi al carrello",
+    "added": "Aggiunto",
+    "bundles": {
+      "frame": {
+        "title": "Frame",
+        "desc": "Solo il telaio stampato in 3D di alta qualità. Perfetto per chi vuole costruire il proprio drone da zero."
+      },
+      "drone": {
+        "title": "Drone (Bind & Fly)",
+        "desc": "Drone pronto al volo, già assemblato e calibrato. Scegli il tuo sistema radio preferito."
+      },
+      "full": {
+        "title": "Bundle completo",
+        "desc": "Tutto l'occorrente per iniziare subito a volare, in un solo ordine.",
+        "items": [
+          "Drone Bind & Fly",
+          "Radiocomando",
+          "3 batterie",
+          "Caricatore",
+          "Occhiali FPV",
+          "Valigia drone"
+        ]
+      },
+      "case": {
+        "title": "Valigia drone",
+        "desc": "La valigia rigida personalizzata per trasportare e proteggere il tuo drone."
+      }
+    },
+    "accessoriesTitle": "Accessori stampabili",
+    "accessoriesSubtitle": "Seleziona gli accessori stampati in 3D da aggiungere all'ordine. Oppure prendi il pack completo.",
+    "accessoriesImageAlt": "Accessori stampabili in 3D per il drone",
+    "accessoryAll": "Pack accessori completo",
+    "accessoryAllDesc": "Include tutti gli accessori qui sotto. Selezionandolo, le singole voci vengono disattivate automaticamente.",
+    "accessories": {
+      "propGuards": "Prop guards",
+      "gopro": "Attacco GoPro",
+      "antenna": "Supporto antenna",
+      "batteryStrap": "Strap batteria",
+      "cameraMount": "Mount camera alternativo",
+      "landingGear": "Carrello di atterraggio",
+      "ledHolder": "Supporto LED",
+      "spareArms": "Bracci di ricambio"
+    },
+    "priceTbd": "Prezzo in fase di definizione",
+    "orderSummary": "Riepilogo ordine",
+    "emptyCart": "Nessun prodotto selezionato.",
+    "total": "Totale",
+    "orderOnWhatsApp": "Invia ordine su WhatsApp",
+    "orderDisclaimer": "Verrai contattato entro 24 ore per confermare disponibilità, prezzi e modalità di pagamento.",
+    "waIntro": "Ciao 3DMAKES! Vorrei ordinare questa configurazione drone:"
   }
 } 
