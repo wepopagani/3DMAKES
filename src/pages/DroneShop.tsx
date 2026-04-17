@@ -41,7 +41,7 @@ const ACCESSORY_PACK_PRICE = 69;
 const ACCESSORY_TIER: Record<number, number> = {
   1: 10,
   2: 15,
-  3: 30,
+  3: 20,
 };
 
 function normalAccessoriesTotal(count: number): number {
