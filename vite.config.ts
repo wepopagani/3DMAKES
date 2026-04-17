@@ -70,6 +70,7 @@ export default defineConfig(({ mode }) => ({
                 "/services/scansione",
                 "/services/prototipazione",
                 "/services/lsam",
+                "/droni",
                 "/blog/stampa-3d-odontotecnica",
                 "/blog/ciotole-personalizzabili",
                 "/blog/cuscinetti-tpu-ferrature-equine",
