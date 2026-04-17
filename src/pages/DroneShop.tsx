@@ -24,13 +24,31 @@ type RadioChoice = 'crossfire' | 'elrs';
 type MotorSpacing = '9x9' | '12x12';
 
 const BUNDLE_PRICES: Record<BundleId, number | null> = {
-  frame: null,
-  drone: null,
-  full: null,
+  frame: 79,
+  drone: 549,
+  full: 999,
 };
 
-const ACCESSORY_PRICE: number | null = null;
-const ACCESSORY_PACK_PRICE: number | null = null;
+// Prezzo singolo "visualizzato" per ogni accessorio normale (non-box).
+const ACCESSORY_PRICE = 10;
+// Prezzo box drone (accessorio dal pricing dedicato).
+const BOX_PRICE = 45;
+// Prezzo pack "tutti gli accessori" (include anche il box).
+const ACCESSORY_PACK_PRICE = 69;
+
+// Tier quantità per gli accessori "normali" (tutti tranne il box).
+// count → prezzo totale. Fallback lineare (count × 10) per quantità non mappate.
+const ACCESSORY_TIER: Record<number, number> = {
+  1: 10,
+  2: 15,
+  3: 30,
+};
+
+function normalAccessoriesTotal(count: number): number {
+  if (count <= 0) return 0;
+  if (ACCESSORY_TIER[count] !== undefined) return ACCESSORY_TIER[count];
+  return count * ACCESSORY_PRICE;
+}
 
 const ACCESSORY_IDS = [
   'vtxSet',
@@ -164,26 +182,36 @@ const DroneShop = () => {
   const cartIsEmpty =
     !bundle && !allAccessories && selectedAccessoryIds.length === 0;
 
+  // Separo box dagli accessori "normali" perché hanno pricing diverso.
+  const normalAccessoryIds = useMemo(
+    () => selectedAccessoryIds.filter((id) => id !== 'box'),
+    [selectedAccessoryIds],
+  );
+  const boxSelected = accessories.box && !allAccessories;
+
+  const quantityDiscount = useMemo(() => {
+    const count = normalAccessoryIds.length;
+    const base = count * ACCESSORY_PRICE;
+    const actual = normalAccessoriesTotal(count);
+    return base - actual;
+  }, [normalAccessoryIds]);
+
   const total = useMemo(() => {
     let sum = 0;
-    let hasPlaceholder = false;
+    const hasPlaceholder = false;
 
     if (bundle) {
       const p = BUNDLE_PRICES[bundle];
-      if (p === null) hasPlaceholder = true;
-      else sum += p;
+      if (p !== null) sum += p;
     }
     if (allAccessories) {
-      if (ACCESSORY_PACK_PRICE === null) hasPlaceholder = true;
-      else sum += ACCESSORY_PACK_PRICE;
+      sum += ACCESSORY_PACK_PRICE;
     } else {
-      for (const _ of selectedAccessoryIds) {
-        if (ACCESSORY_PRICE === null) hasPlaceholder = true;
-        else sum += ACCESSORY_PRICE;
-      }
+      sum += normalAccessoriesTotal(normalAccessoryIds.length);
+      if (boxSelected) sum += BOX_PRICE;
     }
     return { sum, hasPlaceholder };
-  }, [bundle, allAccessories, selectedAccessoryIds]);
+  }, [bundle, allAccessories, normalAccessoryIds, boxSelected]);
 
   function handleCheckout() {
     if (cartIsEmpty) return;
@@ -197,16 +225,25 @@ const DroneShop = () => {
       } else if (bundle === 'frame') {
         extra = ` · ${motorSpacing === '9x9' ? '9×9 mm' : '12×12 mm'}`;
       }
-      lines.push(`• ${bundleName}${extra}`);
+      const p = BUNDLE_PRICES[bundle];
+      lines.push(`• ${bundleName}${extra} — ${p !== null ? formatPrice(p) : t('droneShop.priceTbd')}`);
     }
     if (allAccessories) {
-      lines.push(`• ${t('droneShop.accessoryAll')}`);
+      lines.push(`• ${t('droneShop.accessoryAll')} — ${formatPrice(ACCESSORY_PACK_PRICE)}`);
     } else {
-      for (const id of selectedAccessoryIds) {
-        lines.push(`• ${t(`droneShop.accessories.${id}`)}`);
+      for (const id of normalAccessoryIds) {
+        lines.push(`• ${t(`droneShop.accessories.${id}`)} — ${formatPrice(ACCESSORY_PRICE)}`);
+      }
+      if (quantityDiscount > 0) {
+        lines.push(
+          `  ${t('droneShop.quantityDiscount', { count: normalAccessoryIds.length })}: -${formatPrice(quantityDiscount)}`,
+        );
+      }
+      if (boxSelected) {
+        lines.push(`• ${t('droneShop.accessories.box')} — ${formatPrice(BOX_PRICE)}`);
       }
     }
-    if (!total.hasPlaceholder && total.sum > 0) {
+    if (total.sum > 0) {
       lines.push('', `${t('droneShop.total')}: ${formatPrice(total.sum)}`);
     }
 
@@ -404,10 +441,13 @@ const DroneShop = () => {
                   <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
                     {t('droneShop.accessoryAllDesc')}
                   </p>
-                  <p className="mt-2 text-sm font-semibold text-foreground">
-                    {ACCESSORY_PACK_PRICE === null
-                      ? t('droneShop.priceTbd')
-                      : formatPrice(ACCESSORY_PACK_PRICE)}
+                  <p className="mt-2 flex items-baseline gap-2">
+                    <span className="text-lg font-bold text-foreground">
+                      {formatPrice(ACCESSORY_PACK_PRICE)}
+                    </span>
+                    <span className="text-xs font-semibold text-muted-foreground line-through">
+                      {formatPrice(6 * ACCESSORY_PRICE + BOX_PRICE)}
+                    </span>
                   </p>
                 </div>
               </button>
@@ -461,10 +501,8 @@ const DroneShop = () => {
                             {t('droneShop.colorBlack')}
                           </span>
                         </div>
-                        <p className="mt-1.5 text-xs text-muted-foreground">
-                          {ACCESSORY_PRICE === null
-                            ? t('droneShop.priceTbd')
-                            : formatPrice(ACCESSORY_PRICE)}
+                        <p className="mt-1.5 text-xs font-semibold text-foreground">
+                          {formatPrice(id === 'box' ? BOX_PRICE : ACCESSORY_PRICE)}
                         </p>
                       </div>
                     </button>
@@ -519,7 +557,7 @@ const DroneShop = () => {
                       />
                     )}
                     {!allAccessories &&
-                      selectedAccessoryIds.map((id) => (
+                      normalAccessoryIds.map((id) => (
                         <OrderLine
                           key={id}
                           name={t(`droneShop.accessories.${id}`)}
@@ -527,6 +565,23 @@ const DroneShop = () => {
                           placeholderLabel={t('droneShop.priceTbd')}
                         />
                       ))}
+                    {!allAccessories && quantityDiscount > 0 && (
+                      <OrderLine
+                        name={t('droneShop.quantityDiscount', {
+                          count: normalAccessoryIds.length,
+                        })}
+                        price={-quantityDiscount}
+                        placeholderLabel={t('droneShop.priceTbd')}
+                        muted
+                      />
+                    )}
+                    {!allAccessories && boxSelected && (
+                      <OrderLine
+                        name={t('droneShop.accessories.box')}
+                        price={BOX_PRICE}
+                        placeholderLabel={t('droneShop.priceTbd')}
+                      />
+                    )}
                   </ul>
                 )}
 
@@ -710,17 +765,39 @@ function OrderLine({
   name,
   price,
   placeholderLabel,
+  muted,
 }: {
   name: string;
   price: number | null;
   placeholderLabel: string;
+  muted?: boolean;
 }) {
+  const isNegative = typeof price === 'number' && price < 0;
   return (
-    <li className="flex items-center justify-between py-3">
-      <span className="text-sm text-foreground/80">{name}</span>
-      <span className="text-sm font-semibold text-foreground">
+    <li
+      className={[
+        'flex items-center justify-between py-3',
+        muted ? 'text-emerald-700' : '',
+      ].join(' ')}
+    >
+      <span
+        className={[
+          'text-sm',
+          muted ? 'font-medium text-emerald-700' : 'text-foreground/80',
+        ].join(' ')}
+      >
+        {name}
+      </span>
+      <span
+        className={[
+          'text-sm font-semibold',
+          muted || isNegative ? 'text-emerald-700' : 'text-foreground',
+        ].join(' ')}
+      >
         {price === null ? (
           <span className="text-muted-foreground">{placeholderLabel}</span>
+        ) : isNegative ? (
+          `- ${formatPrice(Math.abs(price))}`
         ) : (
           formatPrice(price)
         )}

@@ -1649,6 +1649,7 @@
     },
     "materialsNote": "Alle Zubehörteile werden schwarz gedruckt: VTX- und Action-Cam-Halterungen aus ASA, GPS-Adapter und Antennenhalterung aus flexiblem TPU, Drohnen-Box aus PETG.",
     "colorBlack": "Schwarz",
+    "quantityDiscount": "Mengenrabatt ({{count}} Zubehörteile)",
     "priceTbd": "Preis folgt",
     "orderSummary": "Bestellübersicht",
     "emptyCart": "Kein Produkt ausgewählt.",
