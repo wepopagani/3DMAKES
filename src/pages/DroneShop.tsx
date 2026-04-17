@@ -26,7 +26,7 @@ type MotorSpacing = '9x9' | '12x12';
 const BUNDLE_PRICES: Record<BundleId, number | null> = {
   frame: 79,
   drone: 549,
-  full: 999,
+  full: 1099,
 };
 
 // Prezzo singolo "visualizzato" per ogni accessorio normale (non-box).

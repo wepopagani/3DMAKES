@@ -1687,11 +1687,11 @@
         "desc": "Everything you need to start flying right away, in one order.",
         "items": [
           "Bind & Fly drone",
-          "Radio controller",
-          "3 batteries",
+          "Radiomaster Pocket radio",
+          "DJI Goggles N3",
+          "3× 4S 1550 mAh batteries",
           "Charger",
-          "FPV goggles",
-          "Drone case"
+          "Drone box"
         ]
       },
       "case": {
