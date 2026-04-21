@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useEffect, useMemo } from "react";
 import NotFound from "./NotFound";
 import FAQSection from "@/components/FAQSection";
+import { getExtendedServiceContent } from "@/data/serviceExtendedContent";
 
 interface Material {
   name: string;
@@ -209,6 +210,7 @@ const ServiceDetail = () => {
   }
 
   const isCalculatorRequest = service.id === "fdm" || service.id === "sla";
+  const extendedContent = getExtendedServiceContent(service.id);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -349,8 +351,96 @@ const ServiceDetail = () => {
           </section>
         )}
 
-        {/* FAQ (Structured Data + content) */}
-        <FAQSection />
+        {/* Contenuto esteso SEO per servizio (audit v3.0 — azione B5: 800-1000 parole).
+            Le FAQ specifiche di questo servizio vengono passate a <FAQSection /> più
+            avanti, così il sito emette UN SOLO FAQPage JSON-LD per URL. */}
+        {extendedContent && (
+          <section className="py-16 md:py-20 bg-white border-t border-gray-100">
+            <div className="container-custom">
+              <div className="max-w-4xl mx-auto">
+                <h2 className="heading-2 mb-6">
+                  {service.title}: panoramica, applicazioni e settori serviti in Ticino e Lombardia
+                </h2>
+                <p className="body-text mb-10 text-lg leading-relaxed">
+                  {extendedContent.overview}
+                </p>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-12">
+                  <div>
+                    <h3 className="text-2xl font-semibold mb-4 text-brand-blue">
+                      Applicazioni concrete
+                    </h3>
+                    <ul className="space-y-4">
+                      {extendedContent.applications.map((app, idx) => (
+                        <li key={idx} className="border-l-4 border-brand-accent pl-4">
+                          <h4 className="font-semibold text-gray-900 mb-1">{app.title}</h4>
+                          <p className="text-brand-gray leading-relaxed">{app.description}</p>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h3 className="text-2xl font-semibold mb-4 text-brand-blue">
+                      Settori che serviamo
+                    </h3>
+                    <ul className="space-y-4">
+                      {extendedContent.sectors.map((sector, idx) => (
+                        <li key={idx} className="border-l-4 border-brand-blue pl-4">
+                          <h4 className="font-semibold text-gray-900 mb-1">{sector.name}</h4>
+                          <p className="text-brand-gray leading-relaxed">{sector.description}</p>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-12">
+                  <div className="bg-gray-50 p-6 rounded-lg">
+                    <h3 className="text-xl font-semibold mb-3 text-brand-blue">
+                      Quando scegliere {service.title.toLowerCase()}
+                    </h3>
+                    <p className="text-brand-gray leading-relaxed">
+                      {extendedContent.whenToChoose}
+                    </p>
+                  </div>
+
+                  <div className="bg-gray-50 p-6 rounded-lg">
+                    <h3 className="text-xl font-semibold mb-3 text-brand-blue">
+                      Perché 3DMAKES
+                    </h3>
+                    <p className="text-brand-gray leading-relaxed">
+                      {extendedContent.whyUs}
+                    </p>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-2xl font-semibold mb-6 text-brand-blue">
+                    Domande frequenti su {service.title.toLowerCase()}
+                  </h3>
+                  <div className="space-y-6">
+                    {extendedContent.faqs.map((faq, idx) => (
+                      <div key={idx}>
+                        <h4 className="font-semibold text-gray-900 mb-2">{faq.question}</h4>
+                        <p className="text-brand-gray leading-relaxed">{faq.answer}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* FAQ generale: emette UN unico FAQPage JSON-LD che include anche le FAQ
+            specifiche del servizio (hideExtraInUi evita doppioni nell'UI, visto
+            che le stesse FAQ sono già mostrate nel blocco di contenuto esteso). */}
+        <FAQSection
+          extraFaqs={extendedContent?.faqs}
+          extraCategoryTitle={service.title}
+          hideExtraInUi
+        />
 
         {/* CTA */}
         <section className="py-16 md:py-20 bg-gradient-to-br from-brand-blue to-slate-900 text-white">

@@ -71,6 +71,8 @@ export default defineConfig(({ mode }) => ({
                 "/services/prototipazione",
                 "/services/lsam",
                 "/droni",
+                "/blog/drone-fpv-aether4-stampa-3d",
+                "/blog/riciclaggio-filamento-fdm",
                 "/blog/stampa-3d-odontotecnica",
                 "/blog/ciotole-personalizzabili",
                 "/blog/cuscinetti-tpu-ferrature-equine",

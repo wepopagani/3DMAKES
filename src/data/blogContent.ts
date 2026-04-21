@@ -28,6 +28,40 @@ const t = (key: string, fallback?: string) => {
 
 export const getBlogPosts = () => [
   {
+    id: "drone-fpv-aether4-stampa-3d",
+    title: t(
+      'blogPosts.droneAether4.title',
+      'Stampa 3D e assemblaggio di un drone FPV: il progetto Aether4'
+    ),
+    excerpt: t(
+      'blogPosts.droneAether4.excerpt',
+      "Nel laboratorio 3DMAKES abbiamo assemblato un drone FPV da 4 pollici con telaio stampato in 3D: l'Aether4. Materiali tecnici, processo di stampa, montaggio dell'elettronica e primi test di volo."
+    ),
+    imageSrc:
+      "https://images.unsplash.com/photo-1508444845599-5c89863b1c44?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    author: getAuthorForPost("drone-fpv-aether4-stampa-3d"),
+    date: "19 Apr 2026",
+    category: t('blog.categories.casestudy', 'Caso Studio'),
+    featured: true
+  },
+  {
+    id: "riciclaggio-filamento-fdm",
+    title: t(
+      'blogPosts.recycling.title',
+      'Riciclaggio dei materiali di stampa 3D FDM: zero scarti con 3DMAKES'
+    ),
+    excerpt: t(
+      'blogPosts.recycling.excerpt',
+      'Abbiamo integrato una tecnologia di riciclaggio interno che recupera il 100% degli scarti FDM: PLA, ABS, PETG, ASA e PA tornano filamento nuovo, pronto per prototipi e oggetti estetici.'
+    ),
+    imageSrc:
+      "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+    author: getAuthorForPost("riciclaggio-filamento-fdm"),
+    date: "18 Apr 2026",
+    category: t('blog.categories.innovation', 'Innovazione'),
+    featured: true
+  },
+  {
     id: "stampa-3d-odontotecnica",
     title: t('blogPosts.dental.title', 'Stampa 3D in Odontotecnica'),
     excerpt: t('blogPosts.dental.excerpt', 'Esplorando come la produzione additiva sta rivoluzionando i metodi di produzione tradizionali nel settore dentale.'),
@@ -1323,6 +1357,258 @@ Se mi racconti il pezzo che vuoi ottenere (dimensioni, funzione, materiali e tem
       "Migliore rapporto qualità/tempo per prototipazione e produzione",
       "Prestazioni reali grazie a materiale e processo coerenti",
       "Riduzione dei rischi durante lo sviluppo prodotto"
+    ]
+  }
+  ,
+  "drone-fpv-aether4-stampa-3d": {
+    title: "Stampa 3D e assemblaggio di un drone FPV: il progetto Aether4",
+    titleEn: "3D Printing and assembly of an FPV drone: the Aether4 project",
+    content: `> **Nota redazionale**: questo articolo è una prima stesura. Verrà aggiornato con i dati definitivi, le foto del nostro Aether4 montato in officina, i parametri di stampa verificati e il video dei primi voli di test.
+
+Nel laboratorio 3DMAKES a Figino (Lugano) abbiamo voluto portare la stampa 3D in uno dei contesti in cui viene naturalmente messa alla prova: il mondo del **drone FPV**. Il risultato è l'**Aether4**, un quadricottero da 4 pollici con **telaio interamente stampato in 3D** nei materiali tecnici che utilizziamo ogni giorno per applicazioni industriali.
+
+Un drone FPV (First Person View) è una piattaforma in cui ogni grammo, ogni millimetro e ogni vibrazione conta: se il telaio è troppo morbido, la struttura flette e il pilota perde controllo; se è troppo rigido, gli impatti si propagano all'elettronica; se è troppo pesante, l'autonomia crolla. È il banco di prova perfetto per dimostrare fino a dove possiamo spingere la stampa 3D con materiali compositi e design ottimizzato.
+
+## Perché stampare in 3D il telaio di un drone
+
+La scelta della stampa 3D per il telaio Aether4 nasce da una valutazione concreta, non da una moda tecnologica:
+
+- **Personalizzazione completa**: ogni pilota ha esigenze diverse — angolo della camera, posizione del VTX, spazio per la batteria. Un telaio stampato si adatta alla build specifica invece di costringere la build al telaio.
+- **Riparabilità in giornata**: un crash che rompe un braccio si risolve ristampando in poche ore il pezzo danneggiato al costo di pochi franchi, invece di ordinare un ricambio.
+- **Iterazione rapida del design**: possiamo modificare forma, posizionamento dei fori, aggiungere rinforzi in zone che abbiamo visto cedere. In una settimana di sviluppo abbiamo testato più versioni di quanto un ciclo di produzione CNC renderebbe possibile.
+- **Leggerezza e rigidità su misura**: scegliendo materiali caricati fibra e pattern di infill mirati, otteniamo un rapporto rigidezza/peso competitivo con i telai commerciali in carbonio laminato.
+
+## I materiali tecnici dell'Aether4
+
+Per un telaio FPV la selezione dei materiali è la decisione più importante. Sull'Aether4 lavoriamo con tre polimeri diversi, ciascuno per la funzione a cui è più adatto:
+
+### PA-CF (Nylon + fibra di carbonio)
+È il materiale del corpo principale e delle braccia. Il nylon caricato con fibre corte di carbonio offre un rapporto **rigidezza/peso** tra i migliori disponibili per la stampa FDM e una buona **resistenza all'impatto** — critica considerando che in un uso tipico gli atterraggi bruschi e i contatti con ostacoli sono la norma.
+
+### TPU 95A
+Usato per gli elementi **ammortizzanti**: supporti del flight controller, bumper di protezione della batteria, anelli di tenuta per le antenne. Il TPU assorbe le vibrazioni ad alta frequenza generate dai motori, proteggendo il giroscopio e migliorando la qualità del video registrato.
+
+### PETG
+Per la **canopy** (la cupola che copre l'elettronica) e per eventuali accessori estetici. È il materiale più economico, facile da verniciare e personalizzare, meno critico dal punto di vista strutturale.
+
+## Parametri di stampa studiati per ogni parte
+
+L'orientamento di stampa, l'altezza layer e la percentuale di riempimento non sono dettagli tecnici: sulla resistenza finale del pezzo cambiano di molto. Per l'Aether4 abbiamo definito uno standard:
+
+- **Braccia del telaio** (PA-CF): altezza layer 0,15 mm, infill 100%, perimetri 4, orientamento lungo l'asse del braccio per massimizzare la resistenza a flessione.
+- **Piastra centrale e top plate** (PA-CF): altezza layer 0,2 mm, infill 60% con pattern gyroid per rigidezza torsionale.
+- **Gommini e bumper** (TPU 95A): infill 30%, velocità ridotta, ventilazione controllata.
+- **Canopy** (PETG): altezza layer 0,2 mm, infill 20%, finitura verniciabile.
+
+Le parti in PA-CF richiedono un **ugello in acciaio temprato**: il filamento carbonato consuma rapidamente un ugello in ottone standard. Lavoriamo sempre con una stampante dedicata ai materiali caricati fibra per evitare contaminazioni.
+
+## L'elettronica di bordo
+
+L'Aether4 nella configurazione base integra una selezione di componenti consolidati nel mondo FPV competitivo:
+
+- **Flight controller** F722 con Betaflight aggiornato
+- **ESC 4-in-1** da 45A a switch DShot600
+- **Motori** brushless 2306 a 1960 KV
+- **Eliche bipala** da 4 pollici
+- **Ricevitore** ExpressLRS 2.4 GHz per latenza minima
+- **VTX** DJI O3 Air Unit (versione digitale) oppure Runcam Link / analogico 5.8 GHz (versione più economica)
+- **Telecamera** FPV integrata con angolo regolabile tra 15° e 45°
+- **Batteria** 4S LiPo 1300-1500 mAh
+
+## Il processo di assemblaggio passo passo
+
+Un drone FPV non si assembla: si **costruisce**. Ogni passaggio incide sul comportamento in volo. Il nostro workflow tipico:
+
+1. Controllo dimensionale di tutte le parti stampate e sbavatura dei fori M3.
+2. Montaggio motori sulle braccia con viti appropriate (attenzione alla lunghezza: viti troppo lunghe toccano il rotore) e threadlocker blu sui filetti.
+3. Saldatura dei fili motore agli ESC, curando la lunghezza minima per ridurre il peso.
+4. Installazione della stack FC+ESC con gommini in silicone per isolare meccanicamente dall'elettronica.
+5. Collegamento di VTX, ricevitore e telecamera; fissaggio dei cavi con zip tie.
+6. Configurazione firmware: Betaflight (assi, failsafe, rates), binding ExpressLRS, taratura PID di base.
+7. **Bench test a motori in aria** per verificare direzione di rotazione e risposta ai comandi.
+8. **Primo volo** in zona aperta e controllata, con batteria di capacità ridotta per limitare i rischi.
+
+## Cosa abbiamo imparato durante il progetto
+
+Durante lo sviluppo dell'Aether4 abbiamo raccolto indicazioni che ora stiamo applicando anche a telai per altre classi di drone:
+
+- Le braccia stampate in PA-CF mostrano **comportamento diverso** da quelle in carbonio laminato: più elastiche, meno fragili, assorbono meglio gli urti ma flettono di più sotto carico continuo.
+- L'**orientamento di stampa** delle braccia è il singolo parametro più importante: un errore qui può dimezzare la resistenza a flessione.
+- Il **TPU 95A** non è solo un accessorio: montare l'elettronica su isolatori stampati ha ridotto in modo misurabile il noise sul giroscopio (confronto log Betaflight).
+
+## Prossimi passi del progetto Aether4
+
+Questo articolo verrà aggiornato nelle prossime settimane con:
+
+- **Video del primo volo** dell'Aether4 nella configurazione definitiva
+- **Dati di telemetria** reali (noise, vibrazioni, corrente assorbita)
+- **File STL del telaio** messi a disposizione della community dei piloti FPV
+- **Variante 5"** per chi preferisce un drone più rapido e performante
+- **Guida di build** passo passo con foto di ciascun passaggio
+
+## Servizio stampa 3D per piloti FPV in Ticino
+
+Se sei un pilota FPV in Canton Ticino, Grigioni o Lombardia e vuoi un telaio su misura, un ricambio stampato con materiali tecnici o una versione custom di un telaio esistente, possiamo aiutarti: stampiamo su ordinazione in PA-CF, TPU e PETG nella nostra sede di Figino (Lugano). Ritiro in sede, spedizione in tutta Italia e Svizzera.`,
+    contentEn: `> **Editorial note**: this is an early draft. It will be updated with the final data, pictures of the assembled Aether4, verified printing parameters and the video of the first test flights.
+
+In the 3DMAKES lab in Figino (Lugano) we wanted to put 3D printing to the test in one of the most demanding contexts: the **FPV drone** world. The result is the **Aether4**, a 4-inch quadcopter with a frame **entirely 3D-printed** using the same technical materials we use daily for industrial applications.
+
+An FPV (First Person View) drone is a platform where every gram, every millimeter and every vibration matters. It's the perfect benchmark to show how far we can push FDM 3D printing with composite materials and optimized design.
+
+This article will be expanded with build pictures, measured flight data and the video of the first flights.`,
+    details: {
+      telaio: "Aether4 4\"",
+      materiale: "PA-CF / TPU / PETG",
+      peso: "TBD (da confermare)",
+      tempoStampa: "8-10 h",
+      tipoStampa: "FDM"
+    },
+    challenges: [
+      "Bilanciare rigidezza e resistenza all'impatto nelle braccia",
+      "Ridurre il noise del giroscopio tramite isolatori stampati",
+      "Ottimizzare l'orientamento di stampa per la massima resistenza a flessione",
+      "Scegliere parametri di stampa compatibili con PA-CF senza saturare l'ugello"
+    ],
+    benefits: [
+      "Telaio personalizzabile sulla configurazione elettronica del pilota",
+      "Ricambi stampabili in giornata dopo un crash",
+      "Costo inferiore rispetto a telai commerciali in carbonio laminato",
+      "Iterazione rapida del design per migliorare le prestazioni"
+    ]
+  }
+  ,
+  "riciclaggio-filamento-fdm": {
+    title: "Riciclaggio dei materiali di stampa 3D FDM: zero scarti con 3DMAKES",
+    titleEn: "Recycling FDM 3D printing materials: zero waste at 3DMAKES",
+    content: `La stampa 3D FDM, per sua natura, genera **scarti**: supporti di stampa, skirt, brim, pezzi falliti, prototipi scartati dopo la validazione, bobine quasi finite che nessuno vuole più usare. In un laboratorio di produzione continuativa questi scarti possono rappresentare facilmente il **10-20% del materiale acquistato ogni anno**.
+
+Per un settore che si presenta come sinonimo di "produzione efficiente" e a basso impatto, questo è un paradosso difficile da ignorare. In 3DMAKES ci lavoriamo da tempo e a un certo punto abbiamo smesso di considerarlo un problema "esterno". Abbiamo integrato nel nostro processo una **tecnologia di riciclaggio interno** che ci permette di recuperare il **100% del materiale** che entra in officina. Niente smaltimento, niente pattumiera: ogni stampa fallita, ogni supporto rimosso e ogni bobina terminata torna a essere **materia prima nuova**.
+
+## Quali materiali riusciamo a riciclare
+
+La nostra tecnologia di triturazione ed estrusione è compatibile con i **principali polimeri termoplastici** usati nella stampa 3D FDM:
+
+- **PLA** (acido polilattico) — il materiale più diffuso, derivato da fonti vegetali (mais, canna da zucchero). Si ricicla molto bene.
+- **ABS** (acrilonitrile-butadiene-stirene) — resistente agli urti e alle alte temperature, utilizzato in componenti tecnici.
+- **PETG** (polietilene tereftalato glicole) — combinazione di lavorabilità e resistenza chimica.
+- **ASA** (acrilonitrile-stirene-acrilato) — resistente agli UV e agli agenti atmosferici, ideale per applicazioni esterne.
+- **PA** (poliammide/Nylon non caricato) — tenace, resistente all'abrasione, con buona tenacità meccanica.
+
+### Cosa NON riusciamo a riciclare
+
+Per trasparenza, non tutti i filamenti possono essere reinseriti nel ciclo di riciclaggio:
+
+- **Materiali rinforzati con fibra continua** (PA-CF, PETG-CF, PA-GF) — la presenza di fibre di carbonio o vetro compromette l'omogeneità del riestruso e rischia di abradere le macchine.
+- **Materiali caricati con additivi abrasivi** (metalli, ceramica, legno) — stessi problemi dei fibrati.
+- **Resine e materiali SLA** — il riciclaggio della resina richiede processi chimici diversi, non affrontati da questa tecnologia.
+- **Supporti solubili (PVA, HIPS)** — ciclo di riciclaggio dedicato, non ancora integrato.
+
+Per questi materiali mantiamo una tracciabilità separata e valutiamo caso per caso lo smaltimento responsabile o il recupero tramite partner specializzati.
+
+## Come funziona il processo di riciclaggio interno
+
+Il ciclo di riciclaggio in 3DMAKES segue cinque fasi principali:
+
+### 1. Raccolta selezionata
+Gli scarti vengono separati **per tipologia di materiale e per colore**. Una stampante PETG verde non può finire nello stesso flusso di una PLA blu: il filamento riciclato risulterebbe un grigio-marrone indistinto. Nel nostro laboratorio abbiamo contenitori dedicati per ciascun materiale e ciascuna famiglia cromatica.
+
+### 2. Triturazione
+Un **trituratore industriale** a coltelli riduce i pezzi in frammenti di dimensioni controllate (tipicamente 3-5 mm). Questa fase è critica: la granulometria determina il comportamento del materiale nelle fasi successive.
+
+### 3. Essiccazione
+I frammenti vengono **asciugati in forno** a temperatura controllata. Molti termoplastici — in particolare PETG, Nylon e ASA — assorbono umidità dall'aria. Se riestrusi da bagnati, il filamento risulterebbe poroso, fragile e ingovernabile durante la stampa. Questa fase richiede da 4 a 12 ore a seconda del materiale.
+
+### 4. Estrusione del nuovo filamento
+Un **estrusore specializzato** rifonde il materiale a temperatura controllata e produce nuovo filamento da **1,75 mm**, calibrato entro tolleranze compatibili con le normali stampanti FDM. Un sistema di controllo ottico in tempo reale misura il diametro ad alta frequenza, scartando automaticamente tratti fuori specifica.
+
+### 5. Avvolgimento e controllo qualità
+Il filamento viene **avvolto in bobine** standard, etichettato con lotto, materiale, colore e percentuale di riciclato, e stoccato per l'uso interno o per la consegna al cliente finale.
+
+## Quando scegliere il filamento riciclato
+
+Il filamento prodotto dal nostro ciclo di riciclaggio mantiene **buone proprietà meccaniche ed estetiche** per applicazioni non strutturali. Lo consigliamo quando il progetto rientra in una di queste categorie:
+
+- **Prototipi dimensionali e di validazione** — per verificare forma, ergonomia, incastri.
+- **Oggetti estetici** — modellini, gadget, portaoggetti, complementi d'arredo.
+- **Prototipi di design industriale** per presentazioni, fiere e validazione concept.
+- **Attrezzature di laboratorio non critiche** — supporti, organizer, fixture leggere.
+- **Progetti didattici** — scuole, workshop, fablab, corsi di stampa 3D.
+- **Stampe di grande volume** dove il costo del materiale incide molto sul totale.
+
+### Quando invece consigliamo materiale vergine
+
+Non tutte le applicazioni sono adatte al riciclato. Per queste raccomandiamo materiale vergine certificato:
+
+- **Parti strutturali** soggette a carichi meccanici continui o fatica.
+- **Componenti critici** che non possono fallire (medicali, aerospace, sicurezza).
+- **Pezzi esposti a cicli termici intensi** o a ambienti chimicamente aggressivi.
+- **Applicazioni certificate** (alimentare, farmaceutico, giocattoli) — dove serve tracciabilità del lotto vergine.
+- **Parti con tolleranze dimensionali molto strette** dove la variabilità del riciclato può essere un limite.
+
+Essere onesti su questa distinzione è fondamentale: il riciclato è una **soluzione concreta per la maggior parte dei progetti**, non una scorciatoia universale.
+
+## L'impegno 3DMAKES: **100% del materiale utilizzato**
+
+Questa frase non è marketing. È il principio operativo del nostro laboratorio.
+
+Ogni progetto che entra in produzione viene quotato con **tre opzioni trasparenti** che il cliente può scegliere in fase di preventivo:
+
+- **Vergine 100%** — per applicazioni tecniche, certificate o critiche. Materiale tracciato per lotto.
+- **Mix vergine + riciclato** — soluzione bilanciata che mantiene buone prestazioni riducendo costo e impatto ambientale.
+- **Riciclato 100%** — per prototipi e oggetti estetici, a frazione del costo del materiale vergine.
+
+Questo approccio si inserisce nella filosofia che ci guida da sempre: fare stampa 3D in modo **onesto** e **sostenibile**, senza accumulare plastica inutile, senza ignorare l'impatto del nostro lavoro sull'ambiente e senza vendere come "green" ciò che green non è.
+
+## Servizio di ritiro scarti per clienti ricorrenti
+
+Per aziende, studi di design e fablab che stampano regolarmente, offriamo un **servizio di ritiro scarti**: raccogliamo periodicamente il materiale di scarto dal cliente, lo processiamo nel nostro ciclo di riciclaggio e possiamo restituire al cliente stesso il filamento ricavato dalle sue stesse stampe.
+
+È l'**economia circolare applicata alla stampa 3D**, in una forma molto concreta: non un certificato verde da appendere al muro, ma un filamento di colore riconoscibile sul carrello della tua stampante che ti ricorda che quello che stai producendo oggi nasce da quello che ieri sarebbe finito in discarica.
+
+## Domande frequenti sul filamento riciclato
+
+**Il filamento riciclato si comporta come quello vergine in stampa?**
+Nella maggior parte dei casi sì, con parametri leggermente regolati (temperatura, flusso). Per materiali come PLA e PETG la differenza è minima. Per Nylon e ASA richiede più cura nell'essiccazione.
+
+**Posso ottenere un colore specifico?**
+Dipende dalla disponibilità di scarti di quel colore. Per lotti grandi possiamo aggiungere masterbatch colorato. Per piccoli lotti consigliamo di accettare la varietà cromatica del riciclato o di orientarsi su nero / grigio scuro (colori molto forgiving).
+
+**Quanto costa rispetto al vergine?**
+Tipicamente tra il 30% e il 50% meno del filamento vergine equivalente, a seconda del materiale e della disponibilità.
+
+**Le proprietà meccaniche si degradano cicli dopo cicli?**
+Sì, ma in modo contenuto per PLA, PETG e ABS. Dopo 3-4 cicli di riciclaggio consigliamo di miscelare con vergine per mantenere il livello qualitativo stabile. Tracciamo internamente il numero di cicli di ogni lotto.
+
+**Posso portare io stesso degli scarti di stampa 3D?**
+Sì — se sei in Ticino possiamo ritirarli o puoi portarli in sede a Figino. Per clienti ricorrenti organizziamo ritiri programmati.
+
+## Contattaci
+
+Se sei un'azienda, uno studio di design o un fablab interessato a produzioni più sostenibili, possiamo studiare insieme il **mix di materiali ideale** per il tuo progetto e integrare il nostro servizio di riciclaggio nel tuo flusso di lavoro. La stampa 3D può essere uno strumento potente non solo per produrre meglio, ma anche per produrre in modo più responsabile.`,
+    contentEn: `FDM 3D printing naturally produces waste: supports, failed prints, brims, discarded prototypes, almost-empty spools. In a lab that runs continuous production this can easily reach **10-20% of the material purchased every year**.
+
+At 3DMAKES we integrated an in-house recycling technology that lets us recover **100% of the material** entering our workshop: PLA, ABS, PETG, ASA and unreinforced PA all become new filament, ready to be printed again.
+
+The process goes through five stages: sorting by type and color, shredding, drying, extrusion of new 1.75 mm filament with real-time diameter control, and spooling. Recycled filament performs well for prototypes, aesthetic parts, educational projects and non-structural production. For certified, medical or structural applications we still recommend virgin material — we believe in being honest about the trade-offs.
+
+Every quote we issue includes three transparent material options: 100% virgin, virgin + recycled blend, or 100% recycled. For recurring clients we also offer a waste pickup service: we collect their print scrap, process it, and can return the resulting filament for closed-loop production.`,
+    details: {
+      materiali: "PLA, ABS, PETG, ASA, PA",
+      resa: "100% del materiale di scarto",
+      cicli: "3-4 prima di reintegro vergine",
+      tipoStampa: "FDM"
+    },
+    challenges: [
+      "Separare gli scarti per tipologia e colore per ottenere riciclato uniforme",
+      "Gestire l'essiccazione dei materiali igroscopici (PETG, PA, ASA)",
+      "Mantenere la tolleranza dimensionale del filamento riestruso (1,75 mm)",
+      "Comunicare con trasparenza i limiti del riciclato vs vergine"
+    ],
+    benefits: [
+      "100% del materiale in ingresso recuperato, zero scarti in smaltimento",
+      "Costo del filamento riciclato fino al 50% inferiore al vergine",
+      "Economia circolare reale con servizio di ritiro scarti per clienti",
+      "Scelta tra vergine, mix o riciclato per ogni singolo progetto"
     ]
   }
 };

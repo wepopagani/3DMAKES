@@ -229,6 +229,20 @@
 
   <!-- Post del blog principali -->
   <url>
+    <loc>https://3dmakes.ch/blog/drone-fpv-aether4-stampa-3d/</loc>
+    <lastmod>2026-04-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+
+  <url>
+    <loc>https://3dmakes.ch/blog/riciclaggio-filamento-fdm/</loc>
+    <lastmod>2026-04-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+
+  <url>
     <loc>https://3dmakes.ch/blog/stampa-3d-odontotecnica/</loc>
     <lastmod>2024-12-17</lastmod>
     <changefreq>monthly</changefreq>

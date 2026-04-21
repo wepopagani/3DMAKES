@@ -9,7 +9,28 @@ interface FAQCategory {
   }[];
 }
 
-export default function FAQSection() {
+interface FAQSectionProps {
+  /**
+   * FAQ aggiuntive specifiche della pagina (es. FAQ per singola tecnologia
+   * di stampa). Vengono incluse sia nel JSON-LD FAQPage unificato, sia
+   * come categoria extra nell'UI. Evita il problema di avere più schemi
+   * FAQPage sulla stessa URL.
+   */
+  extraCategoryTitle?: string;
+  extraFaqs?: { question: string; answer: string }[];
+  /**
+   * Se true, NON renderizza l'UI della FAQ (le FAQ vengono già mostrate
+   * altrove nella pagina) ma include comunque i dati nello schema JSON-LD.
+   * Utile quando ServiceDetail ha già la sua sezione di FAQ specifiche.
+   */
+  hideExtraInUi?: boolean;
+}
+
+export default function FAQSection({
+  extraCategoryTitle,
+  extraFaqs,
+  hideExtraInUi = false,
+}: FAQSectionProps = {}) {
   const { t, i18n } = useTranslation();
 
   const faqCategories: FAQCategory[] = [
@@ -71,6 +92,18 @@ export default function FAQSection() {
     }
   ];
 
+  // Categorie visibili nell'UI (può escludere quella "extra" se hideExtraInUi)
+  const visibleCategories: FAQCategory[] =
+    extraFaqs && extraFaqs.length > 0 && !hideExtraInUi
+      ? [
+          ...faqCategories,
+          {
+            title: extraCategoryTitle ?? t('faq.titleSpecific', 'Domande specifiche'),
+            faqs: extraFaqs,
+          },
+        ]
+      : faqCategories;
+
   const [openCategory, setOpenCategory] = useState<number | null>(null);
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
 
@@ -84,17 +117,24 @@ export default function FAQSection() {
   };
 
   const faqPageSchema = useMemo(() => {
-    const questions = faqCategories.flatMap((category) =>
+    // Unifichiamo FAQ generiche + FAQ specifiche della pagina (se fornite via prop)
+    // in un UNICO FAQPage JSON-LD per URL — raccomandato da Google per evitare
+    // conflitti con più schemi FAQPage sulla stessa pagina.
+    const genericQuestions = faqCategories.flatMap((category) =>
       category.faqs.map((faq) => ({
         question: faq.question,
         answer: faq.answer,
       }))
     );
+    const extraQuestions = (extraFaqs ?? []).map((faq) => ({
+      question: faq.question,
+      answer: faq.answer,
+    }));
 
     return {
       "@context": "https://schema.org",
       "@type": "FAQPage",
-      mainEntity: questions.map((q) => ({
+      mainEntity: [...extraQuestions, ...genericQuestions].map((q) => ({
         "@type": "Question",
         name: q.question,
         acceptedAnswer: {
@@ -103,7 +143,9 @@ export default function FAQSection() {
         },
       })),
     };
-  }, [i18n.language]); // faqCategories dipende da t() e quindi dalla lingua
+    // faqCategories dipende da t() e quindi dalla lingua attiva
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [i18n.language, extraFaqs]);
 
   return (
     <section className="py-16" style={{backgroundColor: '#E5DDD3'}}>
@@ -126,7 +168,7 @@ export default function FAQSection() {
         </div>
 
         <div className="max-w-3xl mx-auto space-y-6">
-          {faqCategories.map((category, categoryIndex) => (
+          {visibleCategories.map((category, categoryIndex) => (
             <div
               key={categoryIndex}
               className="bg-gray-50 rounded-lg overflow-hidden shadow-sm border border-gray-100"

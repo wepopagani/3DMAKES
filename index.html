@@ -167,32 +167,88 @@
   </head>
 
   <body>
-    <!-- Contenuto statico per crawler senza JS (es. audit con rendering disattivato). React sostituisce #root al mount. -->
+    <!-- Contenuto statico per crawler senza JS (es. audit con rendering disattivato,
+         bot AI come ChatGPT/Perplexity/Gemini, audit SEO GEO). React sostituisce #root al mount.
+         Ampliato in seguito all'audit v3.0 (aprile 2026): riporta counter reali, FAQ visibili,
+         panoramica servizi ed E-E-A-T minimo. -->
     <div id="root">
-      <div class="static-fallback-home" style="min-height:100vh;padding:1.5rem;background:#0f172a;color:#f8fafc;font-family:system-ui,sans-serif;">
+      <div class="static-fallback-home" style="min-height:100vh;padding:1.5rem;background:#0f172a;color:#f8fafc;font-family:system-ui,sans-serif;line-height:1.6;">
         <header>
-          <p style="margin:0 0 1rem;"><a href="/" style="color:#38bdf8;">3DMAKES</a></p>
+          <p style="margin:0 0 1rem;"><a href="/" style="color:#38bdf8;font-weight:700;">3DMAKES — Stampa 3D professionale in Ticino</a></p>
           <nav aria-label="Navigazione principale" style="margin-bottom:1.5rem;">
             <a href="/services/" style="color:#e2e8f0;margin-right:1rem;">Servizi</a>
             <a href="/calculator/" style="color:#e2e8f0;margin-right:1rem;">Preventivo</a>
             <a href="/blog/" style="color:#e2e8f0;margin-right:1rem;">Blog</a>
             <a href="/about/" style="color:#e2e8f0;margin-right:1rem;">Chi siamo</a>
-            <a href="/mission/" style="color:#e2e8f0;">Mission</a>
+            <a href="/mission/" style="color:#e2e8f0;margin-right:1rem;">Mission</a>
+            <a href="/iscrizione-corsi/" style="color:#e2e8f0;">Corsi</a>
           </nav>
         </header>
-        <main>
+        <main style="max-width:60rem;">
           <h1 style="font-size:1.75rem;line-height:1.2;margin:0 0 0.75rem;">Stampa 3D professionale <span style="color:#38bdf8;">a Lugano, Ticino e Lombardia</span></h1>
-          <p style="max-width:42rem;line-height:1.6;color:#cbd5e1;margin:0 0 1rem;">
-            Specialisti nella stampa 3D: prototipazione rapida, produzione di qualità con tecnologie FDM e SLA, scansione 3D, taglio laser e riparazione stampanti 3D.
-            Operiamo da Figino (Ticino) con servizio per aziende e privati in Svizzera e Lombardia.
+          <p style="max-width:42rem;color:#cbd5e1;margin:0 0 1rem;">
+            3DMAKES è un laboratorio di stampa 3D con sede a Figino (Lugano, Canton Ticino).
+            Realizziamo prototipazione rapida, produzione di parti funzionali e pezzi estetici con tecnologie
+            FDM, SLA, SLS, MJF, SLM, PolyJet, CFF e LSAM. Offriamo anche scansione 3D, taglio e incisione laser
+            e riparazione di stampanti 3D. Serviamo aziende e privati in Svizzera italiana e Lombardia.
           </p>
-          <p style="margin:0 0 1.5rem;">
+          <p style="margin:0 0 1.25rem;">
             <a href="/services/" style="color:#38bdf8;font-weight:600;">Scopri i servizi</a>
             &nbsp;·&nbsp;
             <a href="/calculator/" style="color:#38bdf8;">Richiedi un preventivo</a>
             &nbsp;·&nbsp;
             <a href="/#contact" style="color:#38bdf8;">Contatti</a>
           </p>
+
+          <section aria-labelledby="fallback-stats" style="margin:1.5rem 0 1.75rem;padding:1rem;border:1px solid rgba(255,255,255,0.08);border-radius:8px;background:rgba(255,255,255,0.02);">
+            <h2 id="fallback-stats" style="font-size:1rem;margin:0 0 0.5rem;color:#38bdf8;">3DMAKES in numeri</h2>
+            <ul style="margin:0;padding-left:1.1rem;color:#cbd5e1;">
+              <li><strong>5+ anni</strong> di esperienza nella stampa 3D professionale</li>
+              <li><strong>100+ progetti</strong> completati per clienti B2B e B2C</li>
+              <li><strong>25+ km</strong> di filamento impiegati in produzione</li>
+              <li><strong>Precisione fino a 25 µm</strong> con tecnologia SLA</li>
+              <li><strong>15 recensioni Google</strong> con valutazione media 5/5</li>
+            </ul>
+          </section>
+
+          <section aria-labelledby="fallback-services" style="margin:1.5rem 0;">
+            <h2 id="fallback-services" style="font-size:1.1rem;margin:0 0 0.5rem;">Servizi principali</h2>
+            <ul style="margin:0;padding-left:1.1rem;color:#cbd5e1;">
+              <li><a href="/services/fdm/" style="color:#38bdf8;">Stampa 3D FDM</a> — prototipi e parti funzionali in PLA, ABS, PETG, TPU, Nylon e PETG-CF.</li>
+              <li><a href="/services/sla/" style="color:#38bdf8;">Stampa 3D SLA in resina</a> — alta risoluzione per dentale, gioielleria e modelli estetici.</li>
+              <li><a href="/services/sls/" style="color:#38bdf8;">SLS</a>, <a href="/services/mjf/" style="color:#38bdf8;">MJF</a>, <a href="/services/slm/" style="color:#38bdf8;">SLM</a> — produzione industriale in Nylon PA12, TPU e metallo.</li>
+              <li><a href="/services/polyjet/" style="color:#38bdf8;">PolyJet</a> e <a href="/services/lsam/" style="color:#38bdf8;">LSAM</a> — multi-materiale e stampa di grande formato.</li>
+              <li><a href="/services/scansione/" style="color:#38bdf8;">Scansione 3D</a> — reverse engineering, ispezione dimensionale, digitalizzazione di oggetti.</li>
+              <li><a href="/services/laser/" style="color:#38bdf8;">Taglio e incisione laser</a> — legno, MDF, acrilico, acciaio inossidabile.</li>
+              <li><a href="/services/riparazione-stampanti/" style="color:#38bdf8;">Riparazione stampanti 3D</a> — diagnosi, upgrade e manutenzione per tutti i brand.</li>
+              <li><a href="/iscrizione-corsi/" style="color:#38bdf8;">Corsi di stampa 3D</a> in Ticino — base e avanzati, FDM e SLA.</li>
+            </ul>
+          </section>
+
+          <section aria-labelledby="fallback-faq" style="margin:1.5rem 0;">
+            <h2 id="fallback-faq" style="font-size:1.1rem;margin:0 0 0.75rem;">Domande frequenti</h2>
+            <div>
+              <h3 style="font-size:1rem;margin:0.75rem 0 0.25rem;color:#e2e8f0;">Quali materiali usate per la stampa 3D FDM?</h3>
+              <p style="margin:0;color:#cbd5e1;">Lavoriamo con PLA, PLA+, ABS, PETG, ASA, TPU, Nylon e materiali caricati in fibra di carbonio (PETG-CF, PA-CF). Per applicazioni tecniche consigliamo PETG o Nylon CF per la resistenza meccanica.</p>
+            </div>
+            <div>
+              <h3 style="font-size:1rem;margin:0.75rem 0 0.25rem;color:#e2e8f0;">Quali sono i tempi di consegna tipici?</h3>
+              <p style="margin:0;color:#cbd5e1;">Per prototipi singoli in FDM o SLA consegniamo mediamente in 2–5 giorni lavorativi. Per produzioni in serie (SLS, MJF, SLM) i tempi sono 7–15 giorni a seconda delle quantità.</p>
+            </div>
+            <div>
+              <h3 style="font-size:1rem;margin:0.75rem 0 0.25rem;color:#e2e8f0;">Quanto costa una stampa 3D?</h3>
+              <p style="margin:0;color:#cbd5e1;">Il prezzo dipende da volume, materiale, finitura e tecnologia. Con il nostro <a href="/calculator/" style="color:#38bdf8;">calcolatore di preventivi</a> ottieni una stima automatica in pochi secondi caricando il tuo file STL, STEP o 3MF.</p>
+            </div>
+            <div>
+              <h3 style="font-size:1rem;margin:0.75rem 0 0.25rem;color:#e2e8f0;">Dove siete e chi sono i vostri clienti?</h3>
+              <p style="margin:0;color:#cbd5e1;">La sede operativa è in Via Cantonale 15, 6918 Figino (Lugano, Ticino). Serviamo aziende manifatturiere, studi di design, settore medicale, architettura e privati in tutta la Svizzera italiana e nel nord Italia (Lombardia, Como, Varese, Milano).</p>
+            </div>
+          </section>
+
+          <footer style="margin-top:2rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,0.08);color:#94a3b8;font-size:0.875rem;">
+            <p style="margin:0 0 0.25rem;"><strong style="color:#e2e8f0;">3DMAKES</strong> — Via Cantonale 15, 6918 Figino (Lugano, CH)</p>
+            <p style="margin:0;">Tel: <a href="tel:+41762660396" style="color:#38bdf8;">+41 76 266 03 96</a> · Email: <a href="mailto:info@3dmakes.ch" style="color:#38bdf8;">info@3dmakes.ch</a></p>
+          </footer>
         </main>
       </div>
     </div>
