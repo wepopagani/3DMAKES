@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { ShopPhoneLinks } from '@/components/ShopPhoneLinks';
+import { SHOP_PRIMARY_WA_DIGITS } from '@/constants/shopPhones';
 import { CheckCircle, Mail, Phone, MapPin, Clock } from "lucide-react";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -86,12 +88,10 @@ const ContactSuccess = () => {
                       info@3dmakes.ch
                     </a>
                   </p>
-                  <p className="text-brand-gray text-sm">
-                    📞{" "}
-                    <a href="tel:+41762660396" className="hover:underline">
-                      +41 76 266 03 96
-                    </a>
-                  </p>
+                  <div className="text-brand-gray text-sm flex flex-col items-center gap-1">
+                    <span aria-hidden>📞</span>
+                    <ShopPhoneLinks stacked linkClassName="hover:underline" className="items-center" />
+                  </div>
                 </div>
 
                 <div className="text-center p-6 bg-gray-50 rounded-xl">
@@ -102,7 +102,7 @@ const ContactSuccess = () => {
                   </div>
                   <h3 className="font-semibold mb-2">WhatsApp</h3>
                   <a 
-                    href="https://wa.me/41762660396" 
+                    href={`https://wa.me/${SHOP_PRIMARY_WA_DIGITS}`}
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="text-brand-gray text-sm hover:text-green-500 transition-colors"

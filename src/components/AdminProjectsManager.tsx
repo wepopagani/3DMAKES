@@ -28,6 +28,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
+import { ShopPhoneLinks } from '@/components/ShopPhoneLinks';
 import {
   Table,
   TableBody,
@@ -1135,7 +1136,8 @@ const AdminProjectsManager = ({ initialTab = 'projects' }: AdminProjectsManagerP
                                   6918 Figino, Svizzera
                                 </a>
                                 <br/>
-                                Tel: <a href="tel:+41762660396" className="hover:underline">+41 76 266 03 96</a>
+                                Tel:{' '}
+                                <ShopPhoneLinks stacked={false} linkClassName="hover:underline" />
                               </p>
                 </div>
                             <div className="text-sm text-gray-700">

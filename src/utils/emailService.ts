@@ -1,4 +1,5 @@
 import emailjs from '@emailjs/browser';
+import { SHOP_PRIMARY_WA_DIGITS, shopPhonesEmailHtmlFragments } from '@/constants/shopPhones';
 
 // Configurazione EmailJS
 const EMAILJS_SERVICE_ID = 'service_z5mjon2'; // Il tuo Service ID da EmailJS
@@ -160,7 +161,7 @@ export const sendCourseRegistrationConfirmationEmail = async (registrationData: 
         <p style="margin-top: 16px;">Ti contatteremo entro <strong>24-48 ore</strong> per confermare definitivamente il posto e inviarti i prossimi passaggi.</p>
       `,
       'Contattaci su WhatsApp',
-      'https://wa.me/41762660396'
+      `https://wa.me/${SHOP_PRIMARY_WA_DIGITS}`
     );
 
     const templateParams: EmailData = {
@@ -181,7 +182,7 @@ export const sendCourseRegistrationConfirmationEmail = async (registrationData: 
       course_date: registrationData.timeSlot,
       registration_code: registrationData.registrationId.slice(0, 8).toUpperCase(),
       cta_label: 'Contattaci su WhatsApp',
-      cta_url: 'https://wa.me/41762660396',
+      cta_url: `https://wa.me/${SHOP_PRIMARY_WA_DIGITS}`,
       html_content: brandedHtml
     };
 
@@ -546,7 +547,7 @@ export const createEmailTemplate = (
           <br>
           📧 <a href="mailto:info@3dmakes.ch">info@3dmakes.ch</a>
           <br>
-          📱 <a href="tel:+41762660396">+41 76 266 03 96</a>
+          📱 ${shopPhonesEmailHtmlFragments()}
         </p>
       </div>
       

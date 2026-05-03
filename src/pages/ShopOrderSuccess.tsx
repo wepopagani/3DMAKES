@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { CheckCircle, Package, ArrowRight } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { ShopPhoneLinks } from '@/components/ShopPhoneLinks';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { getShopOrderById, ShopOrder } from '@/services/shopOrderService';
@@ -117,10 +118,8 @@ const ShopOrderSuccess = () => {
                         6918 Figino, Svizzera
                       </a>
                       <br />
-                      Tel:{" "}
-                      <a href="tel:+41762660396" className="hover:underline">
-                        +41 76 266 03 96
-                      </a>
+                      Tel:{' '}
+                      <ShopPhoneLinks stacked={false} linkClassName="hover:underline" />
                     </p>
                     <p className="text-sm text-blue-700 mt-2 font-medium">
                       {t('checkout.pickupReady')}

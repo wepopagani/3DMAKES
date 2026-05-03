@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Mail, Phone, MapPin, Send, CheckCircle } from "lucide-react";
 import { useTranslation } from 'react-i18next';
+import { ShopPhoneLinks } from '@/components/ShopPhoneLinks';
+import { SHOP_PRIMARY_WA_DIGITS } from '@/constants/shopPhones';
 
 // Dichiarazione gtag per Google Ads tracking
 declare global {
@@ -90,10 +92,10 @@ const ContactForm = () => {
                   </div>
                   <div>
                     <h4 className="font-medium text-gray-900">{t('contact.info.phone')}</h4>
-                    <a 
-                      href="tel:+41762660396" 
-                      className="text-brand-accent hover:text-brand-blue transition-colors"
-                      onClick={() => {
+                    <ShopPhoneLinks
+                      stacked
+                      linkClassName="text-brand-accent hover:text-brand-blue transition-colors"
+                      onTelClick={() => {
                         if (gtag) {
                           gtag('event', 'conversion', {
                             'send_to': 'AW-758841456/phone_call',
@@ -102,9 +104,7 @@ const ContactForm = () => {
                           });
                         }
                       }}
-                    >
-                      +41 76 266 03 96
-                    </a>
+                    />
                   </div>
                 </div>
 
@@ -117,7 +117,7 @@ const ContactForm = () => {
                   <div>
                     <h4 className="font-medium text-gray-900">WhatsApp</h4>
                     <a 
-                      href="https://wa.me/41762660396" 
+                      href={`https://wa.me/${SHOP_PRIMARY_WA_DIGITS}`} 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="text-gray-600 hover:text-green-500 transition-colors"

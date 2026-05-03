@@ -27,6 +27,7 @@ import { Badge } from "@/components/ui/badge";
 import { Order, OrderItem } from '@/types/user';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { ShopPhoneLinks } from '@/components/ShopPhoneLinks';
 import { FileText, ArrowLeft, CheckCircle, XCircle, Clock, Truck, Download } from 'lucide-react';
 
 const OrderDetails = () => {
@@ -606,7 +607,8 @@ const OrderDetails = () => {
                                 6918 Figino, Svizzera
                               </a>
                               <br/>
-                              Tel: <a href="tel:+41762660396" className="hover:underline">+41 76 266 03 96</a>
+                              Tel:{' '}
+                              <ShopPhoneLinks stacked={false} linkClassName="hover:underline" />
                             </p>
                           </div>
                           <div className="space-y-2">

@@ -1,9 +1,10 @@
+import { SHOP_PRIMARY_WA_DIGITS } from '@/constants/shopPhones';
+
 const WhatsAppButton = () => {
-  const phoneNumber = "0762660396"; // Numero senza spazi e prefisso
   const message = "Ciao! Sono interessato ai vostri servizi di stampa 3D.";
   
   const handleWhatsAppClick = () => {
-    const url = `https://wa.me/41${phoneNumber}?text=${encodeURIComponent(message)}`;
+    const url = `https://wa.me/${SHOP_PRIMARY_WA_DIGITS}?text=${encodeURIComponent(message)}`;
     window.open(url, "_blank");
   };
 

@@ -1523,6 +1523,7 @@
     "title": "What Our Clients Say",
     "ratingLabel": "on Google",
     "description": "Customer satisfaction is our priority. Read what they have to say about us.",
+    "totalOnGoogle": "{{count}} reviews on Google",
     "googleReview": "Google Review"
   },
   "courseRegistration": {

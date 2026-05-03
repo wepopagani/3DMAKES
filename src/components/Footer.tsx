@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { ShopPhoneLinks } from '@/components/ShopPhoneLinks';
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -88,12 +89,13 @@ const Footer = () => {
                   info@3dmakes.ch
                 </a>
               </p>
-              <p className="mb-2">
-                Tel:{" "}
-                <a href="tel:+41762660396" className="hover:text-white hover:underline">
-                  +41 76 266 03 96
-                </a>
-              </p>
+              <div className="mb-2">
+                <span className="block">Tel:</span>
+                <ShopPhoneLinks
+                  stacked
+                  linkClassName="hover:text-white hover:underline"
+                />
+              </div>
             </address>
           </div>
         </div>

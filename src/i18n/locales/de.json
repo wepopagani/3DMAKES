@@ -1457,6 +1457,7 @@
     "title": "Was unsere Kunden sagen",
     "ratingLabel": "auf Google",
     "description": "Die Zufriedenheit unserer Kunden ist unsere Priorität. Lesen Sie, was sie über uns sagen.",
+    "totalOnGoogle": "{{count}} Bewertungen bei Google",
     "googleReview": "Google Bewertung"
   },
   "courseRegistration": {

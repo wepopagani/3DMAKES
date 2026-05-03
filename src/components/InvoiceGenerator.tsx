@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { useAuth } from '@/firebase/AuthContext';
 import jsPDF from 'jspdf';
+import { SHOP_PHONE_CONTACTS } from '@/constants/shopPhones';
 
 // Interfaccia per l'ordine
 interface OrderType {
@@ -144,7 +145,8 @@ const InvoiceGenerator: React.FC<{
       pdf.setFontSize(10);
       pdf.text('Per informazioni contattare:', 20, yPosition);
       pdf.text('Email: info@3dmakes.ch', 20, yPosition + 10);
-      pdf.text('Tel: +41 76 266 03 96', 20, yPosition + 20);
+      pdf.text(`Marco: ${SHOP_PHONE_CONTACTS[0].displayLocal}`, 20, yPosition + 20);
+      pdf.text(`Matteo: ${SHOP_PHONE_CONTACTS[1].displayLocal}`, 20, yPosition + 30);
       
       // Salva il PDF
       pdf.save(`Fattura_3DMakes_${invoiceNumber}.pdf`);

@@ -7,6 +7,7 @@ import { BookOpen, CheckCircle, GraduationCap, Users, Clock, Send } from "lucide
 import { useTranslation } from 'react-i18next';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { ShopPhoneLinks } from "@/components/ShopPhoneLinks";
 import { addCourseRegistration } from "@/services/courseRegistrationService";
 import { useToast } from "@/components/ui/use-toast";
 import { sendAdminNotificationEmail, sendCourseRegistrationConfirmationEmail } from "@/utils/emailService";
@@ -547,7 +548,7 @@ const IscrizioneCorsi = () => {
                 <p className="font-semibold text-brand-blue mb-1">{t("courseRegistration.contact.title")}</p>
                 <p>
                   {t("courseRegistration.contact.prompt")}{" "}
-                  <a href="tel:+41762660396" className="text-brand-accent hover:underline font-semibold">+41 76 266 03 96</a>
+                  <ShopPhoneLinks stacked={false} linkClassName="text-brand-accent hover:underline font-semibold inline" />
                   {" "}{t("courseRegistration.contact.orEmail")}{" "}
                   <a href="mailto:info@3dmakes.ch" className="text-brand-accent hover:underline font-semibold">info@3dmakes.ch</a>
                 </p>

@@ -10,6 +10,7 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
+import { GOOGLE_PUBLIC_REVIEW_COUNT } from "@/constants/googleBusiness";
 
 interface Review {
   id: number;
@@ -48,7 +49,7 @@ const reviews: Review[] = [
     author: "Nicholas Chiggiato",
     rating: 5,
     text: "Prodotti eccezionali, molto professionali e disponibili",
-    date: "20 settimane fa",
+    date: "28 settimane fa",
   },
   {
     id: 5,
@@ -62,7 +63,7 @@ const reviews: Review[] = [
     author: "Lorenzo Rebuffo",
     rating: 5,
     text: "Lavoro veloce e di qualità. Molto disponibile e preparato. Consiglio vivamente",
-    date: "15 dic 2024",
+    date: "33 settimane fa",
   },
   {
     id: 7,
@@ -76,7 +77,7 @@ const reviews: Review[] = [
     author: "Francesca Bertagnoli",
     rating: 5,
     text: "Ho ordinato una stampa di un'arma per un cosplay e il risultato è stato eccellente! La qualità di stampa è davvero alta, con dettagli precisi. Inoltre i tempi di realizzazione e consegna sono stati rapidissimi, molto più veloci di quanto mi aspettassi. Servizio assolutamente consigliato!",
-    date: "24 settimane fa",
+    date: "32 settimane fa",
   },
   {
     id: 9,
@@ -90,7 +91,7 @@ const reviews: Review[] = [
     author: "Ian",
     rating: 5,
     text: "Avevo bisogno di un pezzo di ricambio e sono stati molto efficienti nel risolvere il mio problema, sono dei ragazzi gentili e offrono un altissima qualità di stampa.",
-    date: "17 settimane fa",
+    date: "24 settimane fa",
   },
   {
     id: 11,
@@ -155,11 +156,16 @@ const GoogleReviewsCarousel = () => {
       <div className="container-custom">
         <div className="text-center mb-12">
           <h2 className="heading-2 mb-4">{t('reviews.title')}</h2>
-          <div className="flex items-center justify-center gap-2 mb-4">
+          <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 mb-4">
             <div className="flex">
               {renderStars(5)}
             </div>
-            <span className="text-lg font-semibold text-brand-gray">5.0 {t('reviews.ratingLabel')}</span>
+            <span className="text-lg font-semibold text-brand-gray">
+              5.0 {t('reviews.ratingLabel')}
+            </span>
+            <span className="text-base text-brand-gray font-medium">
+              · {t('reviews.totalOnGoogle', { count: GOOGLE_PUBLIC_REVIEW_COUNT })}
+            </span>
           </div>
           <p className="body-text max-w-2xl mx-auto">
             {t('reviews.description')}

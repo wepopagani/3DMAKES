@@ -1,5 +1,6 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import { ShopPhoneLinks } from '@/components/ShopPhoneLinks';
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
@@ -194,10 +195,11 @@ const About = () => {
                       <p className="text-brand-gray mb-1">
                         <span className="font-medium">{t('contact.info.phone')}:</span>
                       </p>
-                      <a 
-                        href="tel:+41762660396" 
-                        className="text-brand-accent hover:text-brand-blue transition-colors font-medium"
-                        onClick={() => {
+                      <ShopPhoneLinks
+                        stacked
+                        linkClassName="text-brand-accent hover:text-brand-blue transition-colors font-medium"
+                        nameClassName="font-medium"
+                        onTelClick={() => {
                           if (gtag) {
                             gtag('event', 'conversion', {
                               'send_to': 'AW-758841456/phone_call',
@@ -206,9 +208,7 @@ const About = () => {
                             });
                           }
                         }}
-                      >
-                        +41 76 266 03 96
-                      </a>
+                      />
                     </div>
                   </div>
                   

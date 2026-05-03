@@ -13,6 +13,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import WhatsAppButton from '@/components/WhatsAppButton';
 import { Button } from '@/components/ui/button';
+import { SHOP_PRIMARY_WA_DIGITS } from '@/constants/shopPhones';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Catalog — placeholder prices, fill in real CHF amounts later.
@@ -95,7 +96,7 @@ const MATERIAL_COLORS: Record<Material, string> = {
 };
 
 // WhatsApp target (same number as the floating button on the site)
-const WA_PHONE = '41762660396';
+const WA_PHONE = SHOP_PRIMARY_WA_DIGITS;
 
 // ─────────────────────────────────────────────────────────────────────────────
 

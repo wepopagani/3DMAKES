@@ -22,6 +22,7 @@ import { FileInfo, OrderItem, ShippingAddress } from '@/types/user';
 import { sendAdminNotificationEmail } from '@/utils/emailService';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { ShopPhoneLinks } from '@/components/ShopPhoneLinks';
 
 // Funzione per generare numero d'ordine numerico corto
 const generateOrderNumber = (): string => {
@@ -1002,7 +1003,8 @@ const OrderForm = () => {
                               6918 Figino, Svizzera
                             </a>
                             <br/>
-                            Tel: <a href="tel:+41762660396" className="hover:underline">+41 76 266 03 96</a>
+                            Tel:{' '}
+                            <ShopPhoneLinks stacked={false} linkClassName="hover:underline" />
                           </p>
                           <p className="text-blue-600 text-xs mt-2">
                             Ti contatteremo per concordare l'orario di ritiro
