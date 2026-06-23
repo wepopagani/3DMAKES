@@ -42,7 +42,7 @@ export interface ExtendedServiceContent {
 export const serviceExtendedContent: Record<string, ExtendedServiceContent> = {
   fdm: {
     overview:
-      "La stampa 3D FDM (Fused Deposition Modeling) è la tecnologia additiva più diffusa al mondo e il punto di partenza ideale per la maggior parte dei progetti di prototipazione rapida e produzione in piccola serie. In 3DMAKES lavoriamo con stampanti professionali — tra cui macchine Stratasys e sistemi CoreXY ad alta velocità — per unire precisione, affidabilità di processo e un costo al pezzo tra i più competitivi del mercato. Dalla nostra sede di Figino (Lugano) serviamo aziende e privati in Canton Ticino, Grigioni italiani e Lombardia con tempi di consegna tipici di 2-5 giorni lavorativi, ritiro in sede o spedizione con corriere espresso.",
+      "La stampa 3D FDM (Fused Deposition Modeling) è la tecnologia additiva più diffusa al mondo e il punto di partenza ideale per la maggior parte dei progetti di prototipazione rapida e produzione in piccola serie. In 3DMAKES lavoriamo con stampanti professionali Stratasys per unire precisione, affidabilità di processo e un costo al pezzo tra i più competitivi del mercato. Dalla nostra sede di Figino (Lugano) serviamo aziende e privati in Canton Ticino, Grigioni italiani e Lombardia con ritiro in sede o spedizione con corriere espresso.",
     applications: [
       {
         title: "Prototipazione funzionale",
@@ -122,7 +122,7 @@ export const serviceExtendedContent: Record<string, ExtendedServiceContent> = {
 
   sla: {
     overview:
-      "La stampa 3D SLA (StereoLitografia) polimerizza un'intera sezione di resina fotosensibile tramite laser UV, costruendo il pezzo strato dopo strato con risoluzioni fino a 25 µm. È la tecnologia di riferimento quando servono dettagli fini, superfici lisce e alta fedeltà estetica. 3DMAKES utilizza macchine SLA professionali e una gamma di resine calibrate per applicazioni dentali, gioielleria, modelli di studio e componenti tecnici. Serviamo clienti in Canton Ticino e Lombardia con tempi di produzione tipici di 1-3 giorni per singoli prototipi.",
+      "La stampa 3D SLA (Stereolitografia) polimerizza sezione per sezione una resina fotosensibile tramite laser UV, costruendo il pezzo con risoluzione fino a 25 µm e area di stampa di 298 × 164 × 300 mm. È la tecnologia di riferimento quando servono dettagli fini, superfici lisce e alta fedeltà estetica. 3DMAKES utilizza macchine SLA professionali e una gamma di resine calibrate per applicazioni dentali, gioielleria, modelli di studio e componenti tecnici. Serviamo clienti in Canton Ticino e Lombardia.",
     applications: [
       {
         title: "Modelli dentali e odontotecnici",
@@ -180,7 +180,7 @@ export const serviceExtendedContent: Record<string, ExtendedServiceContent> = {
       {
         question: "Quali sono le dimensioni massime di stampa in SLA?",
         answer:
-          "Sulle nostre macchine fino a 192 × 120 × 245 mm per pezzo singolo. Pezzi più grandi possono essere stampati in parti e incollati con resina dedicata.",
+          "L'area di stampa è 298 × 164 × 300 mm. Pezzi più grandi possono essere stampati in parti e incollati con resina dedicata.",
       },
       {
         question: "Le resine SLA sono sicure per il contatto con la bocca?",
@@ -202,80 +202,80 @@ export const serviceExtendedContent: Record<string, ExtendedServiceContent> = {
 
   "incisione-laser": {
     overview:
-      "Il nostro servizio di taglio e incisione laser utilizza una macchina CoreXY con sorgente laser a diodo ad alta potenza, ideale per la lavorazione rapida di legno, MDF, acrilico, pelle, tessuto, cartone e acciaio inossidabile sottile. È una soluzione complementare alla stampa 3D quando il progetto richiede elementi piani, targhe personalizzate, decori, insegne o componenti incisi. Lavoriamo su file vettoriali (SVG, DXF, AI) e consegniamo in Canton Ticino con tempi tipici di 1-3 giorni lavorativi per lotti piccoli e medi.",
+      "Il nostro servizio di incisione, marcatura e taglio laser su metalli utilizza tecnologia laser a fibra MOPA da 60 W, ideale per lavorazioni precise su acciaio inossidabile, alluminio, ottone e rame. Realizziamo targhe industriali, marcature seriali, codici QR, componenti meccanici tagliati e personalizzazioni su metallo con area di lavoro di 250 × 250 mm e precisione di 0,01 mm. Lavoriamo su file DXF e PDF e serviamo clienti in Canton Ticino e Lombardia.",
     applications: [
       {
-        title: "Targhe, segnaletica e insegne",
+        title: "Marcatura industriale",
         description:
-          "Incisione e taglio di targhette identificative aziendali, segnaletica interna, loghi in legno o acrilico.",
+          "Matricole, codici QR, loghi e dati tecnici incisi in modo permanente su componenti meccanici e parti di macchinario.",
       },
       {
-        title: "Gadget e regali personalizzati",
+        title: "Targhe e plate identificative",
         description:
-          "Sottobicchieri, portachiavi, medaglie, oggetti promozionali incisi con logo o testo.",
+          "Targhette per macchinari, quadri elettrici, attrezzature industriali e segnaletica tecnica in metallo.",
       },
       {
-        title: "Componenti di design e modellismo",
+        title: "Taglio componenti metallici",
         description:
-          "Tagli precisi per maquette architettoniche, strutture modulari, modelli in scala, lampade.",
+          "Taglio di lamiere e piccoli componenti in acciaio inox, alluminio, ottone e rame per prototipi e assemblaggi.",
       },
       {
-        title: "Marcatura seriale su acciaio inossidabile",
+        title: "Personalizzazione su metallo",
         description:
-          "Marcatura permanente di matricole, codici QR e loghi su targhette metalliche.",
+          "Incisioni decorative su accessori, gadget promozionali e oggetti personalizzati in metallo.",
       },
       {
-        title: "Sagome per lavorazioni artigianali",
+        title: "Marcatura seriale e tracciabilità",
         description:
-          "Dime di taglio, sagome per cuoio, stencil per decorazione e allestimento.",
+          "Numerazione progressiva, codici a barre e marcature per tracciabilità di produzione e manutenzione.",
       },
     ],
     sectors: [
       {
-        name: "Retail e ristorazione",
+        name: "Industria e manifattura",
         description:
-          "Menu incisi su legno, targhette per tavoli, allestimenti espositivi per negozi.",
+          "Marcatura di componenti, targhe macchina e parti di ricambio per aziende manifatturiere in Ticino e Lombardia.",
       },
       {
-        name: "Agenzie di comunicazione e stampatori",
+        name: "Elettronica e automazione",
         description:
-          "Supporto tecnico per progetti che richiedono tagli e incisioni di precisione su materiali non convenzionali.",
+          "Plate e cover per quadri elettrici, pannelli e componenti identificativi.",
       },
       {
-        name: "Falegnamerie e artigiani",
+        name: "Meccanica di precisione",
         description:
-          "Collaborazione con botteghe locali per lavorazioni che richiedono la precisione del laser.",
+          "Taglio e marcatura di piccoli componenti metallici per prototipi e piccole serie.",
       },
       {
-        name: "Studi di architettura",
+        name: "Artigianato e gioielleria",
         description:
-          "Componenti per plastici architettonici e modelli di studio in MDF e cartone tecnico.",
+          "Incisioni decorative su ottone, rame e acciaio per pezzi unici e personalizzazioni.",
       },
     ],
     whenToChoose:
-      "Scegli il taglio laser quando il tuo progetto è piano (2D o 2.5D), quando il materiale è compatibile con il laser (legno, MDF, acrilico, pelle, cartone, acciaio inox sottile) e quando servono tempi di produzione rapidi per lotti piccoli o medi. Non è la scelta giusta per geometrie tridimensionali complesse (in quel caso la stampa 3D FDM o SLA è più adeguata) o per materiali riflettenti spessi come l'alluminio lucidato e il rame (non tagliabili con laser a diodo).",
+      "Scegli il laser a fibra quando devi marcare, incidere o tagliare metalli come acciaio inox, alluminio, ottone e rame con precisione e permanenza. È la soluzione ideale per targhe, marcature industriali, componenti piani in lamiera e personalizzazioni su metallo. Per geometrie tridimensionali complesse o pezzi plastici, la stampa 3D FDM, SLA o SLS è più adatta.",
     whyUs:
-      "Ogni job viene ottimizzato per massimizzare la resa del foglio e ridurre gli scarti. Lavoriamo direttamente su file vettoriali del cliente oppure possiamo aiutare nella preparazione del file da un disegno o un'idea. Per lotti ricorrenti offriamo tariffe dedicate. Spediamo in tutta Italia e Svizzera e offriamo ritiro in sede a Figino (Lugano).",
+      "Ottimizziamo ogni lavorazione in base al materiale e al risultato richiesto — marcatura, incisione o taglio. Lavoriamo su file DXF e PDF del cliente e possiamo supportare nella preparazione del disegno. Offriamo anche progettazione CAD, post-elaborazione e controllo qualità su richiesta. Ritiro in sede a Figino (Lugano) e spedizione in tutta Italia e Svizzera.",
     faqs: [
       {
-        question: "Che formato di file serve per il taglio laser?",
+        question: "Che formato di file serve per il laser?",
         answer:
-          "Lavoriamo in SVG, DXF, AI, PDF vettoriali. Se hai solo un'immagine raster (JPG, PNG) possiamo vettorizzarla: valutiamo il costo in preventivo.",
+          "Lavoriamo con file DXF e PDF vettoriali. Se hai solo un'immagine raster (JPG, PNG) possiamo vettorizzarla: valutiamo il costo in preventivo.",
       },
       {
-        question: "Qual è lo spessore massimo lavorabile?",
+        question: "Su quali metalli lavorate e quali spessori?",
         answer:
-          "Dipende dal materiale: fino a 15 mm su compensato/MDF, fino a 10 mm su acrilico, marcatura (non taglio) su acciaio inox fino a 1,5 mm.",
+          "Taglio su alluminio fino a 1 mm, acciaio inossidabile e ottone fino a 2 mm. Incisione e marcatura su acciaio inox, alluminio, ottone e rame. Per spessori o materiali particolari valutiamo la fattibilità in fase di preventivo.",
       },
       {
-        question: "Posso tagliare l'alluminio?",
+        question: "Qual è l'area di lavoro massima?",
         answer:
-          "Con il nostro laser a diodo non tagliamo metalli non ferrosi riflettenti (alluminio, rame, ottone). Per questi materiali consigliamo taglio a CO2 di potenza o fibra.",
+          "L'area utile è 250 × 250 mm. Per lavorazioni più grandi valutiamo soluzioni su misura.",
       },
       {
-        question: "Avete un minimo d'ordine?",
+        question: "Offrite anche progettazione e finitura?",
         answer:
-          "No, produciamo anche singoli pezzi. Il costo è proporzionale al tempo macchina e al materiale.",
+          "Sì. Progettazione CAD, post-elaborazione e controllo qualità sono disponibili come servizi complementari su tutti i nostri processi produttivi.",
       },
     ],
   },
@@ -522,7 +522,7 @@ export const serviceExtendedContent: Record<string, ExtendedServiceContent> = {
 
   sls: {
     overview:
-      "La stampa 3D SLS (Selective Laser Sintering) sinterizza polveri di poliammide (Nylon PA11, PA12) strato dopo strato tramite laser, producendo pezzi robusti, isotropi e privi di supporti. È la tecnologia ideale per componenti meccanici funzionali, piccole serie industriali e geometrie complesse impossibili da realizzare con altre tecnologie. 3DMAKES offre il servizio SLS tramite partnership con service professionali certificati, mantenendo il cliente al Canton Ticino come punto di contatto unico per preventivo, supporto tecnico e logistica.",
+      "La stampa 3D SLS (Selective Laser Sintering) sinterizza polveri termoplastiche — nylon e TPU — strato dopo strato tramite laser, producendo pezzi robusti, isotropi e privi di supporti. Con un'area di stampa di 165 × 165 × 300 mm è la tecnologia ideale per componenti meccanici funzionali, geometrie complesse e piccole serie industriali. 3DMAKES offre il servizio SLS in sede, con progettazione CAD, post-elaborazione e controllo qualità disponibili su richiesta.",
     applications: [
       {
         title: "Parti meccaniche funzionali",
@@ -575,27 +575,27 @@ export const serviceExtendedContent: Record<string, ExtendedServiceContent> = {
     whenToChoose:
       "Scegli SLS quando servono parti funzionali robuste, geometrie complesse senza supporti, piccole serie a costo competitivo e materiali tecnici di livello industriale. Non è ideale per parti estetiche a vista che richiedano superfici lisce senza post-processing — la finitura SLS è granulosa (anche se verniciabile).",
     whyUs:
-      "Coordiniamo noi l'intero processo anche quando la stampa è esternalizzata: preparazione file, DFM review, scelta del service più adatto in base a dimensione, volume e materiale, logistica di consegna in Canton Ticino o Lombardia. Il cliente ha un solo punto di contatto.",
+      "Gestiamo l'intero processo in sede: preparazione file, scelta del materiale (nylon o TPU), produzione, finitura e controllo qualità. Il cliente ha un unico punto di contatto e può integrare progettazione CAD e post-elaborazione nello stesso ordine.",
     faqs: [
       {
-        question: "Qual è il materiale più comune in SLS?",
+        question: "Quali materiali sono disponibili in SLS?",
         answer:
-          "PA12 (poliammide 12), robusto, isotropo e adatto alla maggior parte delle applicazioni tecniche. Esistono anche PA11 (più ecologico), PA-CF (caricato fibra di carbonio) e TPU flessibile.",
+          "Polvere di nylon (PA12) per parti meccaniche robuste e polvere di poliuretano termoplastico (TPU) per componenti flessibili ed elastici.",
       },
       {
-        question: "Tempo di produzione tipico?",
+        question: "Qual è l'area di stampa massima?",
         answer:
-          "Tipicamente 5–10 giorni lavorativi, dipende da volume di polvere utilizzato e coda del service partner.",
+          "165 × 165 × 300 mm per singolo pezzo.",
       },
       {
         question: "Posso verniciare o tingere un pezzo SLS?",
         answer:
-          "Sì, il PA12 accetta tinture a bagno (colori standard) e verniciatura a spruzzo dopo primer. Offriamo finitura liscia tramite tumbling e sabbiatura.",
+          "Sì, il nylon accetta tinture a bagno e verniciatura a spruzzo dopo primer. Offriamo anche finitura tramite tumbling e sabbiatura come post-elaborazione.",
       },
       {
-        question: "Dimensione massima?",
+        question: "Offrite progettazione e controllo qualità?",
         answer:
-          "Fino a 380 × 330 × 450 mm per singolo pezzo sui service che utilizziamo. Oltre si valuta caso per caso.",
+          "Sì. Progettazione CAD, post-elaborazione e controllo qualità dimensionale sono disponibili come servizi complementari.",
       },
     ],
   },

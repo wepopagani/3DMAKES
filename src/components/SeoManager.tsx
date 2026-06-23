@@ -157,7 +157,7 @@ export default function SeoManager() {
         { translationKey: "cff", slug: "cff", serviceType: "3D Printing" },
         { translationKey: "sla", slug: "sla", serviceType: "3D Printing" },
         { translationKey: "polyjet", slug: "polyjet", serviceType: "3D Printing" },
-        { translationKey: "laser", slug: "laser", serviceType: "Laser Cutting" },
+        { translationKey: "laser", slug: "laser", serviceType: "Laser Engraving & Cutting" },
         { translationKey: "largePrint", slug: "riparazione-stampanti", serviceType: "3D Printing Repair" },
         { translationKey: "scanning", slug: "scansione", serviceType: "3D Scanning" },
         { translationKey: "prototyping", slug: "prototipazione", serviceType: "Rapid Prototyping" },

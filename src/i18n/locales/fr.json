@@ -289,28 +289,34 @@
       ]
     },
     "laser": {
-      "title": "Découpe Laser",
-      "description": "Notre technologie de gravure et découpe laser offre une solution avancée pour créer des projets détaillés et personnalisés. Grâce à un système de mouvement CoreXY haute vitesse et un laser puissant de 22W avec point ultra-fin, nous garantissons gravures et découpes précises sur large gamme de matériaux.",
+      "title": "Gravure et découpe laser",
+      "description": "Service professionnel de gravure, marquage et découpe laser sur métaux. Nous travaillons l'acier inoxydable, l'aluminium, le laiton et le cuivre avec une technologie laser fibre MOPA de 60 W.",
       "features": [
-        "Précision: Mouvement avec précision de 0,01 mm pour détails nets",
-        "Vitesse: Jusqu'à 600 mm/s, pour optimiser temps de production",
-        "Point laser ultra-fin: Pour gravures de précision maximale",
-        "Système CoreXY: Technologie avancée pour mouvements rapides et précis",
-        "Zone de travail: 400 × 415 mm pour projets de diverses tailles",
-        "Matériaux compatibles: Bois, acrylique, cuir, tissus, papier et autres"
+        "Technologie laser fibre MOPA, 60 W",
+        "Zone de travail : 250 × 250 mm",
+        "Précision : 0,01 mm",
+        "Matériaux : acier inoxydable, aluminium, laiton, cuivre",
+        "Gravure et marquage permanent sur métaux",
+        "Découpe de tôles et composants métalliques",
+        "Épaisseurs de découpe : aluminium jusqu'à 1 mm, acier inox et laiton jusqu'à 2 mm",
+        "Formats de fichiers acceptés : DXF, PDF"
       ],
       "applications": [
         {
+          "name": "Marquage industriel",
+          "description": "Numéros de série, codes QR, logos et données techniques sur composants."
+        },
+        {
+          "name": "Plaques et étiquettes",
+          "description": "Plaques d'identification pour machines, armoires électriques et équipements industriels."
+        },
+        {
+          "name": "Composants mécaniques",
+          "description": "Découpe de tôles et petites pièces métalliques pour assemblages et prototypes."
+        },
+        {
           "name": "Personnalisation",
-          "description": "Personnalisation d'objets et gadgets avec gravures précises et détaillées."
-        },
-        {
-          "name": "Prototypage",
-          "description": "Création de prototypes et modèles architecturaux avec découpes nettes et précises."
-        },
-        {
-          "name": "Décorations",
-          "description": "Réalisation de décorations et articles artisanaux sur mesure pour tous besoins."
+          "description": "Gravures décoratives et personnalisation sur objets métalliques."
         }
       ]
     },
@@ -409,6 +415,24 @@
     "qualityControl": {
       "title": "Contrôle de qualité",
       "description": "Nous comparons la pièce produite avec le modèle CAO original."
+    },
+    "ancillaryServices": {
+      "title": "Services complémentaires",
+      "description": "Disponibles sur tous nos services de production — impression 3D, laser, scan et prototypage.",
+      "items": [
+        {
+          "name": "Conception CAO",
+          "description": "Aide à la modélisation, révision des fichiers et optimisation pour la technologie choisie."
+        },
+        {
+          "name": "Post-traitement",
+          "description": "Finition de surface, peinture, polissage et assemblage des composants."
+        },
+        {
+          "name": "Contrôle qualité",
+          "description": "Vérification dimensionnelle et inspection visuelle pour garantir la conformité au projet."
+        }
+      ]
     },
     "slm": {
       "title": "Impression 3D SLM – Solutions SLM / Renishaw",
@@ -836,10 +860,11 @@
     "unsupportedFormatForType": "Format de fichier non pris en charge pour {printType}. Utilisez : {formats}.",
     "laserInfo": {
       "title": "Informations sur les lasers",
-      "workArea": "Zone de travail : 400 × 415 mm",
+      "workArea": "Zone de travail : 250 × 250 mm",
       "precision": "Précision : 0,01 mm",
-      "fileFormats": "Formats : SVG, DXF, AI, PDF",
-      "delivery": "Livraison : 2-4 jours ouvrés"
+      "fileFormats": "Formats : DXF, PDF",
+      "materials": "Matériaux : acier inox, aluminium, laiton, cuivre, acrylique, cuir et plus",
+      "thickness": "Découpe métaux : aluminium jusqu'à 1 mm, acier inox et laiton jusqu'à 2 mm"
     },
     "printTypes": {
       "fdm": "FDM (impression filaire)",

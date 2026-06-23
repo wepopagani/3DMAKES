@@ -289,28 +289,34 @@
       ]
     },
     "laser": {
-      "title": "Laserschneiden",
-      "description": "Unsere Laser-Gravur- und Schneidtechnologie bietet eine fortschrittliche Lösung für detaillierte und personalisierte Projekte. Mit einem hochgeschwindigkeits CoreXY-Bewegungssystem und einem leistungsstarken 22W-Laser mit ultra-feinem Punkt garantieren wir präzise Gravuren und Schnitte auf breitem Materialspektrum.",
+      "title": "Lasergravur & -schneiden",
+      "description": "Professioneller Lasergravur-, Markierungs- und Schneidservice für Metalle. Wir bearbeiten Edelstahl, Aluminium, Messing und Kupfer mit 60-W-MOPA-Faserlasertechnologie.",
       "features": [
-        "Präzision: Bewegung mit 0,01 mm Genauigkeit für scharfe Details",
-        "Geschwindigkeit: Bis zu 600 mm/s zur Optimierung der Produktionszeiten",
-        "Ultra-feiner Laserpunkt: Für maximale Präzisionsgravuren",
-        "CoreXY-System: Fortschrittliche Technologie für schnelle und präzise Bewegungen",
-        "Arbeitsbereich: 400 × 415 mm für Projekte verschiedener Größen",
-        "Kompatible Materialien: Holz, Acryl, Leder, Stoffe, Papier und andere"
+        "MOPA-Faserlasertechnologie, 60 W",
+        "Arbeitsbereich: 250 × 250 mm",
+        "Präzision: 0,01 mm",
+        "Materialien: Edelstahl, Aluminium, Messing, Kupfer",
+        "Dauerhafte Gravur und Markierung auf Metallen",
+        "Schneiden von Blechen und Metallkomponenten",
+        "Schnittstärken: Aluminium bis 1 mm, Edelstahl und Messing bis 2 mm",
+        "Akzeptierte Dateiformate: DXF, PDF"
       ],
       "applications": [
         {
+          "name": "Industrielle Markierung",
+          "description": "Seriennummern, QR-Codes, Logos und technische Daten auf Bauteilen."
+        },
+        {
+          "name": "Typenschilder",
+          "description": "Kennzeichnungsschilder für Maschinen, Schaltschränke und Industrieanlagen."
+        },
+        {
+          "name": "Mechanische Komponenten",
+          "description": "Schneiden von Blechen und kleinen Metallteilen für Baugruppen und Prototypen."
+        },
+        {
           "name": "Personalisierung",
-          "description": "Personalisierung von Objekten und Gadgets mit präzisen und detaillierten Gravuren."
-        },
-        {
-          "name": "Prototyping",
-          "description": "Erstellung von Prototypen und Architekturmodellen mit sauberen und präzisen Schnitten."
-        },
-        {
-          "name": "Dekorationen",
-          "description": "Herstellung von Dekorationen und handwerklichen Artikeln maßgeschneidert für jeden Bedarf."
+          "description": "Dekorative Gravuren und Personalisierung auf Metallobjekten."
         }
       ]
     },
@@ -409,6 +415,24 @@
     "qualityControl": {
       "title": "Qualitätskontrolle",
       "description": "Wir vergleichen das gefertigte Teil mit dem Original-CAD-Modell."
+    },
+    "ancillaryServices": {
+      "title": "Ergänzende Dienstleistungen",
+      "description": "Verfügbar für alle unsere Produktionsdienstleistungen — 3D-Druck, Laser, Scanning und Prototyping.",
+      "items": [
+        {
+          "name": "CAD-Konstruktion",
+          "description": "Modellierungsunterstützung, Dateiprüfung und Optimierung für die gewählte Technologie."
+        },
+        {
+          "name": "Nachbearbeitung",
+          "description": "Oberflächenfinish, Lackierung, Politur und Montage von Komponenten."
+        },
+        {
+          "name": "Qualitätskontrolle",
+          "description": "Maßprüfung und Sichtprüfung zur Sicherstellung der Projektkonformität."
+        }
+      ]
     },
     "slm": {
       "title": "SLM 3D-Druck – SLM Solutions / Renishaw",
@@ -836,10 +860,11 @@
     "unsupportedFormatForType": "Nicht unterstütztes Dateiformat für {printType}. Verwendung: {Formate}.",
     "laserInfo": {
       "title": "Laserinformationen",
-      "workArea": "Arbeitsbereich: 400 × 415 mm",
+      "workArea": "Arbeitsbereich: 250 × 250 mm",
       "precision": "Genauigkeit: 0,01 mm",
-      "fileFormats": "Formate: SVG, DXF, AI, PDF",
-      "delivery": "Lieferung: 2-4 Werktage"
+      "fileFormats": "Formate: DXF, PDF",
+      "materials": "Materialien: Edelstahl, Aluminium, Messing, Kupfer, Acryl, Leder und mehr",
+      "thickness": "Metallschnitt: Aluminium bis 1 mm, Edelstahl und Messing bis 2 mm"
     },
     "printTypes": {
       "fdm": "FDM (Drahtdruck)",

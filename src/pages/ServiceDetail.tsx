@@ -336,6 +336,37 @@ const ServiceDetail = () => {
                 </>
               )}
             </div>
+
+            {/* Servizi complementari — disponibili su tutti i servizi */}
+            {(() => {
+              const ancillaryItems = Array.isArray(
+                t("services.ancillaryServices.items", { returnObjects: true })
+              )
+                ? (t("services.ancillaryServices.items", { returnObjects: true }) as Application[])
+                : [];
+              if (ancillaryItems.length === 0) return null;
+              return (
+                <div className="mt-16 pt-16 border-t border-gray-100">
+                  <h3 className="text-2xl font-semibold mb-3 text-center">
+                    {t("services.ancillaryServices.title")}
+                  </h3>
+                  <p className="text-brand-gray text-center max-w-2xl mx-auto mb-8">
+                    {t("services.ancillaryServices.description")}
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {ancillaryItems.map((item, idx) => (
+                      <div
+                        key={idx}
+                        className="bg-gray-50 p-6 rounded-lg border border-gray-100"
+                      >
+                        <h4 className="text-lg font-semibold mb-2">{item.name}</h4>
+                        <p className="text-brand-gray">{item.description}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         </section>
 
