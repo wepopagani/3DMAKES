@@ -390,6 +390,7 @@ export const sendAdminNotificationEmail = async (data: {
   type: 'new_order' | 'new_user' | 'new_message' | 'new_quote_request' | 'new_course_registration';
   details: string;
   userInfo?: string;
+  replyTo?: string;
   courseData?: {
     participantName: string;
     courseTitle: string;
@@ -417,12 +418,14 @@ export const sendAdminNotificationEmail = async (data: {
 
     const templateParams: EmailData = {
       email: 'info@3dmakes.ch',
+      to_email: 'info@3dmakes.ch',
       to_name: 'Admin 3DMAKES',
       from_name: 'Sistema 3DMAKES',
       subject: subjectMap[data.type],
       message: data.details,
       order_details: data.userInfo || '',
       order_id: `NOTIFICA-${Date.now()}`,
+      reply_to: data.replyTo || 'info@3dmakes.ch',
       html_content: brandedHtml
     };
 

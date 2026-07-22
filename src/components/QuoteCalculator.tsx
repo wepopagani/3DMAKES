@@ -263,22 +263,33 @@ const QuoteCalculator = () => {
 
       await addDoc(collection(db, 'quoteRequests'), quoteRequest);
 
-      // 4. Invia email di notifica all'admin
+      // 4. Invia email di notifica a info@3dmakes.ch
       try {
-        await sendAdminNotificationEmail({
+        const dimsText = modelDims
+          ? `${modelDims.x.toFixed(1)} × ${modelDims.y.toFixed(1)} × ${modelDims.z.toFixed(1)} mm`
+          : 'n/d';
+        const emailSent = await sendAdminNotificationEmail({
           type: 'new_quote_request',
           details: `Nuova richiesta di preventivo da ${formData.nome} ${formData.cognome}`,
+          replyTo: formData.email,
           userInfo: `
             Cliente: ${formData.nome} ${formData.cognome}
             Email: ${formData.email}
             Telefono: ${formData.telefono}
             File: ${file.name}
+            Link file: ${fileUrl}
+            Dimensioni: ${dimsText}
             Quantità richiesta: ${formData.quantity}
             ${formData.notes ? `Note: ${formData.notes}` : ''}
             ${userId ? 'Utente con account registrato' : 'Utente senza account'}
+            Pannello admin: https://3dmakes.ch/admin
           `
         });
-        console.log('Email di notifica admin inviata');
+        if (emailSent) {
+          console.log('Email di notifica admin inviata a info@3dmakes.ch');
+        } else {
+          console.error('Email di notifica admin non inviata (EmailJS ha restituito false)');
+        }
       } catch (emailError) {
         console.error('Errore invio email admin:', emailError);
         // Non blocchiamo l'operazione se l'email fallisce
