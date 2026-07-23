@@ -14,13 +14,26 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "@/firebase/config";
 import { doc, setDoc } from "firebase/firestore";
-import { CheckCircle, Upload, Eye, EyeOff } from "lucide-react";
+import { CheckCircle, Upload, Eye, EyeOff, X, FileText } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useNavigate } from "react-router-dom";
 import { sendAdminNotificationEmail } from "@/utils/emailService";
 
-// Costanti per i limiti e configurazioni
-const MAX_FILE_SIZE = 100 * 1024 * 1024; // 100MB
+const MAX_FILE_SIZE = 100 * 1024 * 1024; // 100MB per file
+const MAX_FILES = 10;
+const PREVIEWABLE_TYPES = new Set(["stl", "obj", "3mf", "gltf", "glb"]);
+
+type QuoteFileItem = {
+  id: string;
+  file: File;
+  type: string;
+  dimensions: { x: number; y: number; z: number } | null;
+};
+
+const formatFileSize = (bytes: number) => {
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+};
 
 const QuoteCalculator = () => {
   const { t } = useTranslation();
@@ -29,15 +42,12 @@ const QuoteCalculator = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
   
-  // Stato del file
-  const [file, setFile] = useState<File | null>(null);
-  const [fileType, setFileType] = useState<string>("");
+  const [files, setFiles] = useState<QuoteFileItem[]>([]);
+  const [previewId, setPreviewId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isDragging, setIsDragging] = useState<boolean>(false);
-  const [modelDims, setModelDims] = useState<{ x: number; y: number; z: number } | null>(null);
   
-  // Stato del form
   const [formData, setFormData] = useState({
     nome: "",
     cognome: "",
@@ -49,12 +59,12 @@ const QuoteCalculator = () => {
     quantity: 1
   });
   
-  // Stato per la sottomissione
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  // Pre-compila i dati se l'utente è loggato
+  const previewFile = files.find((f) => f.id === previewId) || files[0] || null;
+
   useEffect(() => {
     if (currentUser) {
       setFormData(prev => ({
@@ -66,45 +76,94 @@ const QuoteCalculator = () => {
     }
   }, [currentUser]);
 
-  // Handler per il caricamento del file
-  const processFile = (f: File) => {
+  useEffect(() => {
+    if (files.length === 0) {
+      setPreviewId(null);
+      return;
+    }
+    if (!previewId || !files.some((f) => f.id === previewId)) {
+      const firstPreviewable = files.find((f) => PREVIEWABLE_TYPES.has(f.type));
+      setPreviewId((firstPreviewable || files[0]).id);
+    }
+  }, [files, previewId]);
+
+  const addFiles = useCallback((incoming: FileList | File[]) => {
     setError(null);
+    const list = Array.from(incoming);
+    if (list.length === 0) return;
+
     setIsLoading(true);
-    
-    if (f.size > MAX_FILE_SIZE) {
-      setError(`File troppo grande (max ${Math.round(MAX_FILE_SIZE/1024/1024)}MB). Per file più grandi, contattaci.`);
-        setIsLoading(false);
-        return;
+
+    setFiles((prev) => {
+      const remainingSlots = MAX_FILES - prev.length;
+      if (remainingSlots <= 0) {
+        setError(`Puoi caricare al massimo ${MAX_FILES} file.`);
+        return prev;
       }
-      
-    const ext = f.name.split(".").pop()?.toLowerCase() ?? "";
-    
-    console.log("File caricato:", f.name, "Tipo:", ext, "Dimensione:", f.size);
-    
-    setFileType(ext);
-    setFile(f);
-      
-      toast({
-      title: "File caricato",
-      description: `${f.name} caricato con successo`,
-      variant: "default",
-      });
-      
-      setIsLoading(false);
+
+      const accepted: QuoteFileItem[] = [];
+      const rejected: string[] = [];
+
+      for (const f of list) {
+        if (accepted.length >= remainingSlots) {
+          rejected.push(`${f.name} (limite ${MAX_FILES} file)`);
+          continue;
+        }
+        if (f.size > MAX_FILE_SIZE) {
+          rejected.push(`${f.name} (max ${Math.round(MAX_FILE_SIZE / 1024 / 1024)}MB)`);
+          continue;
+        }
+        const alreadyAdded = prev.some((p) => p.file.name === f.name && p.file.size === f.size)
+          || accepted.some((p) => p.file.name === f.name && p.file.size === f.size);
+        if (alreadyAdded) {
+          rejected.push(`${f.name} (già aggiunto)`);
+          continue;
+        }
+
+        const ext = f.name.split(".").pop()?.toLowerCase() ?? "";
+        accepted.push({
+          id: `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
+          file: f,
+          type: ext,
+          dimensions: null,
+        });
+      }
+
+      if (rejected.length > 0) {
+        setError(`Alcuni file non sono stati aggiunti: ${rejected.join(", ")}`);
+      }
+
+      if (accepted.length > 0) {
+        toast({
+          title: accepted.length === 1 ? "File caricato" : "File caricati",
+          description: `${accepted.length} file aggiunti (${prev.length + accepted.length}/${MAX_FILES})`,
+          variant: "default",
+        });
+      }
+
+      return [...prev, ...accepted];
+    });
+
+    setIsLoading(false);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  }, [toast]);
+
+  const removeFile = (id: string) => {
+    setFiles((prev) => prev.filter((f) => f.id !== id));
+    setError(null);
   };
 
-  // Handler per l'input file tradizionale
   const handleFileChange = useCallback(
     (evt: React.ChangeEvent<HTMLInputElement>) => {
-      const f = evt.target.files?.[0];
-      if (f) {
-        processFile(f);
+      if (evt.target.files) {
+        addFiles(evt.target.files);
       }
     },
-    []
+    [addFiles]
   );
 
-  // Handlers per drag & drop
   const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
@@ -126,14 +185,11 @@ const QuoteCalculator = () => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(false);
-    
-    const files = e.dataTransfer.files;
-    if (files && files.length > 0) {
-      processFile(files[0]);
+    if (e.dataTransfer.files?.length) {
+      addFiles(e.dataTransfer.files);
     }
-  }, []);
+  }, [addFiles]);
 
-  // Handler per i campi del form
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
     setFormData(prev => ({
@@ -142,7 +198,6 @@ const QuoteCalculator = () => {
     }));
   };
 
-  // Handler per la checkbox
   const handleWantsAccountChange = (checked: boolean) => {
     setFormData(prev => ({
       ...prev,
@@ -150,7 +205,6 @@ const QuoteCalculator = () => {
     }));
   };
 
-  // Funzione per caricare il file su Firebase Storage
   const uploadFileToStorage = async (file: File): Promise<string> => {
     const timestamp = Date.now();
     const safeFileName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_');
@@ -158,12 +212,9 @@ const QuoteCalculator = () => {
     const storageRef = ref(storage, storagePath);
     
     await uploadBytes(storageRef, file);
-    const downloadURL = await getDownloadURL(storageRef);
-    
-    return downloadURL;
+    return getDownloadURL(storageRef);
   };
 
-  // Funzione per creare un account (se richiesto)
   const createAccount = async () => {
     if (!formData.wantsAccount || !formData.password) {
       return null;
@@ -174,7 +225,6 @@ const QuoteCalculator = () => {
     }
 
     try {
-      // Crea l'utente
       const userCredential = await createUserWithEmailAndPassword(
         auth, 
         formData.email, 
@@ -182,12 +232,10 @@ const QuoteCalculator = () => {
       );
       const user = userCredential.user;
 
-      // Aggiorna il profilo dell'utente
       await updateProfile(user, {
         displayName: `${formData.nome} ${formData.cognome}`
       });
 
-      // Salva i dati aggiuntivi in Firestore
       await setDoc(doc(db, "users", user.uid), {
         nome: formData.nome,
         cognome: formData.cognome,
@@ -209,13 +257,11 @@ const QuoteCalculator = () => {
     }
   };
 
-  // Funzione per sottomettere la richiesta di preventivo
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validazioni
-    if (!file) {
-      setError("Carica un file per richiedere un preventivo");
+    if (files.length === 0) {
+      setError("Carica almeno un file per richiedere un preventivo");
       return;
     }
     
@@ -233,26 +279,37 @@ const QuoteCalculator = () => {
     setError(null);
 
     try {
-      // 1. Se l'utente vuole creare un account e non è loggato, crealo
       let userId = currentUser?.uid;
       if (formData.wantsAccount && !currentUser) {
         const newUser = await createAccount();
         userId = newUser?.uid;
       }
 
-      // 2. Carica il file su Firebase Storage
-      const fileUrl = await uploadFileToStorage(file);
+      const uploadedFiles = [];
+      for (const item of files) {
+        const url = await uploadFileToStorage(item.file);
+        uploadedFiles.push({
+          name: item.file.name,
+          url,
+          type: item.type,
+          size: item.file.size,
+          dimensions: item.dimensions,
+        });
+      }
 
-      // 3. Crea il documento della richiesta di preventivo
+      const primary = uploadedFiles[0];
+
       const quoteRequest = {
         nome: formData.nome,
         cognome: formData.cognome,
         email: formData.email,
         telefono: formData.telefono,
-        fileName: file.name,
-        fileUrl: fileUrl,
-        fileType: fileType,
-        fileDimensions: modelDims,
+        // Campi legacy (primo file) per compatibilità admin esistente
+        fileName: primary.name,
+        fileUrl: primary.url,
+        fileType: primary.type,
+        fileDimensions: primary.dimensions,
+        files: uploadedFiles,
         notes: formData.notes,
         quantity: formData.quantity,
         status: 'pending',
@@ -263,22 +320,26 @@ const QuoteCalculator = () => {
 
       await addDoc(collection(db, 'quoteRequests'), quoteRequest);
 
-      // 4. Invia email di notifica a info@3dmakes.ch
       try {
-        const dimsText = modelDims
-          ? `${modelDims.x.toFixed(1)} × ${modelDims.y.toFixed(1)} × ${modelDims.z.toFixed(1)} mm`
-          : 'n/d';
+        const filesSummary = uploadedFiles
+          .map((f, i) => {
+            const dims = f.dimensions
+              ? ` (${f.dimensions.x.toFixed(1)}×${f.dimensions.y.toFixed(1)}×${f.dimensions.z.toFixed(1)} mm)`
+              : '';
+            return `${i + 1}. ${f.name}${dims}\n   ${f.url}`;
+          })
+          .join('\n');
+
         const emailSent = await sendAdminNotificationEmail({
           type: 'new_quote_request',
-          details: `Nuova richiesta di preventivo da ${formData.nome} ${formData.cognome}`,
+          details: `Nuova richiesta di preventivo da ${formData.nome} ${formData.cognome} (${uploadedFiles.length} file)`,
           replyTo: formData.email,
           userInfo: `
             Cliente: ${formData.nome} ${formData.cognome}
             Email: ${formData.email}
             Telefono: ${formData.telefono}
-            File: ${file.name}
-            Link file: ${fileUrl}
-            Dimensioni: ${dimsText}
+            File (${uploadedFiles.length}):
+            ${filesSummary}
             Quantità richiesta: ${formData.quantity}
             ${formData.notes ? `Note: ${formData.notes}` : ''}
             ${userId ? 'Utente con account registrato' : 'Utente senza account'}
@@ -292,19 +353,16 @@ const QuoteCalculator = () => {
         }
       } catch (emailError) {
         console.error('Errore invio email admin:', emailError);
-        // Non blocchiamo l'operazione se l'email fallisce
       }
 
-      // 5. Mostra successo
       setSubmitSuccess(true);
           
-          toast({
+      toast({
         title: "Richiesta inviata con successo!",
         description: "Ti contatteremo entro 24 ore per il preventivo",
-            variant: "default",
-          });
+        variant: "default",
+      });
 
-      // Se ha creato un account, reindirizza alla dashboard dopo 3 secondi
       if (formData.wantsAccount && userId) {
         setTimeout(() => {
           navigate('/dashboard');
@@ -326,12 +384,25 @@ const QuoteCalculator = () => {
   };
 
   const triggerFileInput = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
+    fileInputRef.current?.click();
   };
 
-  // Se la richiesta è stata inviata con successo, mostra il messaggio di conferma
+  const resetForm = () => {
+    setSubmitSuccess(false);
+    setFiles([]);
+    setPreviewId(null);
+    setFormData({
+      nome: "",
+      cognome: "",
+      email: "",
+      telefono: "",
+      password: "",
+      wantsAccount: false,
+      notes: "",
+      quantity: 1
+    });
+  };
+
   if (submitSuccess) {
     return (
       <div className="space-y-8 px-0 max-w-full mx-auto">
@@ -378,20 +449,7 @@ const QuoteCalculator = () => {
                   Vai alla Dashboard
                 </Button>
                 <Button 
-                  onClick={() => {
-                    setSubmitSuccess(false);
-                    setFile(null);
-                    setFormData({
-                      nome: "",
-                      cognome: "",
-                      email: "",
-                      telefono: "",
-                      password: "",
-                      wantsAccount: false,
-                      notes: "",
-                      quantity: 1
-                    });
-                  }}
+                  onClick={resetForm}
                   variant="outline"
                   className="w-full"
                 >
@@ -412,9 +470,13 @@ const QuoteCalculator = () => {
           <h3 className="text-2xl font-semibold mb-6">Richiedi un preventivo</h3>
           
           <form onSubmit={handleSubmit} className="space-y-8">
-            {/* Sezione caricamento file */}
             <div className="space-y-4">
-              <h4 className="text-lg font-medium">1. Carica il tuo file</h4>
+              <div className="flex items-center justify-between gap-4">
+                <h4 className="text-lg font-medium">1. Carica i tuoi file</h4>
+                <span className="text-sm text-gray-500">
+                  {files.length}/{MAX_FILES} file · max {Math.round(MAX_FILE_SIZE / 1024 / 1024)}MB ciascuno
+                </span>
+              </div>
               
               <Card 
                 className={`h-[450px] flex flex-col items-center justify-center border-2 ${isDragging ? 'border-brand-accent bg-brand-accent/5' : 'border-dashed'} relative`}
@@ -429,43 +491,55 @@ const QuoteCalculator = () => {
                       <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-blue"></div>
                       <p className="mt-4 text-brand-gray">Caricamento...</p>
                     </div>
-                  ) : file ? (
+                  ) : previewFile && PREVIEWABLE_TYPES.has(previewFile.type) ? (
                     <div className="w-full h-full">
                       <ModelViewerPreventivo 
-                        file={file} 
-                        fileType={fileType} 
-                        onDimensions={(dims) => setModelDims(dims)}
+                        file={previewFile.file} 
+                        fileType={previewFile.type} 
+                        onDimensions={(dims) => {
+                          setFiles((prev) =>
+                            prev.map((f) =>
+                              f.id === previewFile.id ? { ...f, dimensions: dims } : f
+                            )
+                          );
+                        }}
                         scaleFactor={1}
                       />
                       <div className="absolute bottom-2 left-0 right-0 text-center bg-white/70 p-2 backdrop-blur-sm">
-                        <p className="text-brand-blue font-medium">{file?.name}</p>
-                        {modelDims && (
-                        <p className="text-xs text-gray-500">
-                            Dimensioni: {modelDims.x.toFixed(2)}×{modelDims.y.toFixed(2)}×{modelDims.z.toFixed(2)} mm
+                        <p className="text-brand-blue font-medium">{previewFile.file.name}</p>
+                        {previewFile.dimensions && (
+                          <p className="text-xs text-gray-500">
+                            Dimensioni: {previewFile.dimensions.x.toFixed(2)}×{previewFile.dimensions.y.toFixed(2)}×{previewFile.dimensions.z.toFixed(2)} mm
                           </p>
                         )}
-                        <Button 
-                          type="button"
-                          variant="outline" 
-                          size="sm" 
-                          className="mt-2"
-                          onClick={triggerFileInput}
-                        >
-                          Cambia file
-                        </Button>
                       </div>
+                    </div>
+                  ) : files.length > 0 ? (
+                    <div className="flex flex-col items-center justify-center h-full text-center">
+                      <FileText className="h-16 w-16 text-brand-blue mb-4" />
+                      <p className="text-lg font-medium text-brand-blue mb-1">
+                        {files.length} file pronti per l&apos;invio
+                      </p>
+                      <p className="text-sm text-gray-500 mb-4">
+                        Anteprima 3D disponibile per STL, OBJ, 3MF, GLTF/GLB
+                      </p>
+                      {files.length < MAX_FILES && (
+                        <Button type="button" onClick={triggerFileInput}>
+                          Aggiungi altri file
+                        </Button>
+                      )}
                     </div>
                   ) : (
                     <>
                       <div className="text-brand-blue text-4xl mb-4">
                         <Upload className="h-20 w-20" />
                       </div>
-                      <p className="text-xl font-medium text-brand-blue mb-2">Carica il tuo file</p>
+                      <p className="text-xl font-medium text-brand-blue mb-2">Carica i tuoi file</p>
                       <p className="text-sm text-gray-500 text-center mb-4">
-                        Trascina e rilascia il file qui
+                        Trascina e rilascia fino a {MAX_FILES} file qui
                         <br />
                         <span className="text-xs text-brand-accent">
-                          Accettiamo tutti i formati di file (STL, OBJ, STEP, DXF, ecc.)
+                          Max {Math.round(MAX_FILE_SIZE / 1024 / 1024)}MB ciascuno · STL, OBJ, STEP, DXF, ecc.
                         </span>
                       </p>
                       <Button type="button" onClick={triggerFileInput}>
@@ -476,16 +550,61 @@ const QuoteCalculator = () => {
                 </CardContent>
               </Card>
 
+              {files.length > 0 && (
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-medium text-gray-700">File selezionati</p>
+                    {files.length < MAX_FILES && (
+                      <Button type="button" variant="outline" size="sm" onClick={triggerFileInput}>
+                        Aggiungi file
+                      </Button>
+                    )}
+                  </div>
+                  <ul className="divide-y rounded-lg border border-gray-200 overflow-hidden">
+                    {files.map((item) => (
+                      <li
+                        key={item.id}
+                        className={`flex items-center gap-3 px-3 py-2 ${previewId === item.id ? 'bg-brand-accent/5' : 'bg-white'}`}
+                      >
+                        <button
+                          type="button"
+                          className="flex-1 min-w-0 text-left"
+                          onClick={() => setPreviewId(item.id)}
+                        >
+                          <p className="text-sm font-medium text-gray-900 truncate">{item.file.name}</p>
+                          <p className="text-xs text-gray-500">
+                            {formatFileSize(item.file.size)}
+                            {item.dimensions
+                              ? ` · ${item.dimensions.x.toFixed(1)}×${item.dimensions.y.toFixed(1)}×${item.dimensions.z.toFixed(1)} mm`
+                              : ''}
+                          </p>
+                        </button>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="h-8 w-8 p-0 text-gray-400 hover:text-red-600"
+                          onClick={() => removeFile(item.id)}
+                          aria-label={`Rimuovi ${item.file.name}`}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
               <input
                 type="file"
                 ref={fileInputRef}
                 onChange={handleFileChange}
                 accept="*"
+                multiple
                 className="hidden"
               />
             </div>
             
-            {/* Sezione dati contatto */}
             <div className="space-y-4">
               <h4 className="text-lg font-medium">2. I tuoi dati di contatto</h4>
               
@@ -581,7 +700,6 @@ const QuoteCalculator = () => {
               </div>
             </div>
 
-            {/* Sezione creazione account (solo se non loggato) */}
             {!currentUser && (
               <div className="space-y-4 p-6 bg-gray-50 rounded-lg border border-gray-200">
                 <div className="flex items-center space-x-2">
@@ -637,21 +755,20 @@ const QuoteCalculator = () => {
               </div>
             )}
 
-              {/* Messaggio informativo */}
-              <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                <div className="flex items-start">
-                  <div className="flex-shrink-0">
-                    <svg className="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <div className="ml-3">
-                    <h3 className="text-sm font-medium text-blue-800">
+            <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+              <div className="flex items-start">
+                <div className="flex-shrink-0">
+                  <svg className="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <h3 className="text-sm font-medium text-blue-800">
                     Ti contatteremo entro 24 ore
-                    </h3>
-                    <div className="mt-2 text-sm text-blue-700">
-                      <p>
-                      Dopo aver ricevuto la tua richiesta, il nostro team analizzerà il file e ti invierà 
+                  </h3>
+                  <div className="mt-2 text-sm text-blue-700">
+                    <p>
+                      Dopo aver ricevuto la tua richiesta, il nostro team analizzerà i file e ti invierà 
                       un preventivo personalizzato entro 24 ore lavorative. Riceverai una notifica via email.
                     </p>
                   </div>
@@ -659,39 +776,36 @@ const QuoteCalculator = () => {
               </div>
             </div>
               
-              {/* Errore */}
-              {error && (
+            {error && (
               <div className="p-4 bg-red-50 rounded-lg border border-red-100">
-                  <p className="text-red-700">
+                <p className="text-red-700">
                   <span className="font-semibold">Errore:</span> {error}
-                  </p>
-                </div>
-              )}
+                </p>
+              </div>
+            )}
 
-            {/* Bottone invio */}
-              <Button 
+            <Button 
               type="submit"
-              disabled={isSubmitting || !file}
+              disabled={isSubmitting || files.length === 0}
               className="w-full"
               size="lg"
             >
               {isSubmitting ? (
                 <>
                   <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
                   Invio in corso...
-                    </>
+                </>
               ) : (
                 'Invia richiesta preventivo'
               )}
-              </Button>
+            </Button>
           </form>
         </div>
       </div>
       
-      {/* Sezione informativa */}
       <div className="bg-white rounded-lg shadow-md border border-gray-100 overflow-hidden">
         <div className="p-6 md:p-8">
           <h3 className="text-2xl font-semibold mb-8">Come funziona</h3>
@@ -702,10 +816,10 @@ const QuoteCalculator = () => {
                 1
               </div>
               <div>
-                <h4 className="font-semibold mb-1">Carica il tuo file</h4>
+                <h4 className="font-semibold mb-1">Carica i tuoi file</h4>
                 <p className="text-brand-gray">
-                  Carica qualsiasi tipo di file (STL, OBJ, STEP, DXF, PDF, ecc.). 
-                  Accettiamo tutti i formati più comuni per stampa 3D e taglio laser.
+                  Carica fino a {MAX_FILES} file (max {Math.round(MAX_FILE_SIZE / 1024 / 1024)}MB ciascuno).
+                  Accettiamo STL, OBJ, STEP, DXF, PDF e gli altri formati più comuni.
                 </p>
               </div>
             </li>

@@ -38,6 +38,14 @@ import { Badge } from "@/components/ui/badge";
 import { Search, MoreVertical, Eye, Check, X, Download, Mail, Phone, Calendar, FileText } from 'lucide-react';
 import { Timestamp } from 'firebase/firestore';
 
+interface QuoteRequestFile {
+  name: string;
+  url: string;
+  type?: string;
+  size?: number;
+  dimensions?: { x: number; y: number; z: number } | null;
+}
+
 interface QuoteRequest {
   id: string;
   nome: string;
@@ -48,6 +56,7 @@ interface QuoteRequest {
   fileUrl: string;
   fileType: string;
   fileDimensions?: { x: number; y: number; z: number };
+  files?: QuoteRequestFile[];
   status: 'pending' | 'contacted' | 'quoted' | 'rejected';
   createdAt: Timestamp;
   userId?: string;
@@ -55,6 +64,21 @@ interface QuoteRequest {
   notes?: string;
   quantity?: number;
 }
+
+const getRequestFiles = (request: QuoteRequest): QuoteRequestFile[] => {
+  if (request.files && request.files.length > 0) {
+    return request.files;
+  }
+  if (request.fileName && request.fileUrl) {
+    return [{
+      name: request.fileName,
+      url: request.fileUrl,
+      type: request.fileType,
+      dimensions: request.fileDimensions ?? null,
+    }];
+  }
+  return [];
+};
 
 const AdminQuoteRequests = () => {
   const { toast } = useToast();
@@ -75,12 +99,17 @@ const AdminQuoteRequests = () => {
     if (searchQuery.trim() === '') {
       setFilteredRequests(requests);
     } else {
-      const filtered = requests.filter(req => 
-        req.nome.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        req.cognome.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        req.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        req.fileName.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+      const q = searchQuery.toLowerCase();
+      const filtered = requests.filter(req => {
+        const fileNames = getRequestFiles(req).map((f) => f.name.toLowerCase()).join(' ');
+        return (
+          req.nome.toLowerCase().includes(q) ||
+          req.cognome.toLowerCase().includes(q) ||
+          req.email.toLowerCase().includes(q) ||
+          (req.fileName || '').toLowerCase().includes(q) ||
+          fileNames.includes(q)
+        );
+      });
       setFilteredRequests(filtered);
     }
   }, [searchQuery, requests]);
@@ -263,12 +292,20 @@ const AdminQuoteRequests = () => {
                       <TableCell>{request.email}</TableCell>
                       <TableCell>{request.telefono}</TableCell>
                       <TableCell>
-                        <div className="flex items-center space-x-2">
-                          <FileText className="h-4 w-4 text-gray-400" />
-                          <span className="text-sm truncate max-w-[150px]">
-                            {request.fileName}
-                          </span>
-                        </div>
+                        {(() => {
+                          const requestFiles = getRequestFiles(request);
+                          const firstName = requestFiles[0]?.name || request.fileName;
+                          return (
+                            <div className="flex items-center space-x-2">
+                              <FileText className="h-4 w-4 text-gray-400" />
+                              <span className="text-sm truncate max-w-[150px]">
+                                {requestFiles.length > 1
+                                  ? `${firstName} (+${requestFiles.length - 1})`
+                                  : firstName}
+                              </span>
+                            </div>
+                          );
+                        })()}
                       </TableCell>
                       <TableCell className="text-sm font-medium">
                         {request.quantity || 1}x
@@ -289,10 +326,17 @@ const AdminQuoteRequests = () => {
                               <Eye className="h-4 w-4 mr-2" />
                               Visualizza dettagli
                             </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => window.open(request.fileUrl, '_blank')}>
-                              <Download className="h-4 w-4 mr-2" />
-                              Scarica file
-                            </DropdownMenuItem>
+                            {getRequestFiles(request).map((file, index, all) => (
+                              <DropdownMenuItem
+                                key={`${file.url}-${index}`}
+                                onClick={() => window.open(file.url, '_blank')}
+                              >
+                                <Download className="h-4 w-4 mr-2" />
+                                {all.length > 1
+                                  ? `Scarica: ${file.name}`
+                                  : 'Scarica file'}
+                              </DropdownMenuItem>
+                            ))}
                             {request.status === 'pending' && (
                               <DropdownMenuItem onClick={() => updateStatus(request.id, 'contacted')}>
                                 <Check className="h-4 w-4 mr-2" />
@@ -370,33 +414,39 @@ const AdminQuoteRequests = () => {
               </div>
 
               <div>
-                <Label className="text-sm font-semibold text-gray-600">File</Label>
-                <div className="mt-2 p-3 bg-gray-50 rounded-lg flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <FileText className="h-5 w-5 text-gray-400" />
-                    <span>{selectedRequest.fileName}</span>
-                  </div>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => window.open(selectedRequest.fileUrl, '_blank')}
-                  >
-                    <Download className="h-4 w-4 mr-2" />
-                    Scarica
-                  </Button>
+                <Label className="text-sm font-semibold text-gray-600">
+                  File ({getRequestFiles(selectedRequest).length})
+                </Label>
+                <div className="mt-2 space-y-2">
+                  {getRequestFiles(selectedRequest).map((file, index) => (
+                    <div
+                      key={`${file.url}-${index}`}
+                      className="p-3 bg-gray-50 rounded-lg flex items-center justify-between gap-3"
+                    >
+                      <div className="min-w-0">
+                        <div className="flex items-center space-x-2">
+                          <FileText className="h-5 w-5 text-gray-400 flex-shrink-0" />
+                          <span className="truncate">{file.name}</span>
+                        </div>
+                        {file.dimensions && (
+                          <p className="text-xs text-gray-500 mt-1 ml-7">
+                            {file.dimensions.x.toFixed(2)} × {file.dimensions.y.toFixed(2)} × {file.dimensions.z.toFixed(2)} mm
+                          </p>
+                        )}
+                      </div>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="flex-shrink-0"
+                        onClick={() => window.open(file.url, '_blank')}
+                      >
+                        <Download className="h-4 w-4 mr-2" />
+                        Scarica
+                      </Button>
+                    </div>
+                  ))}
                 </div>
               </div>
-
-              {selectedRequest.fileDimensions && (
-                <div>
-                  <Label className="text-sm font-semibold text-gray-600">Dimensioni del modello</Label>
-                  <p className="mt-1">
-                    {selectedRequest.fileDimensions.x.toFixed(2)} × 
-                    {selectedRequest.fileDimensions.y.toFixed(2)} × 
-                    {selectedRequest.fileDimensions.z.toFixed(2)} mm
-                  </p>
-                </div>
-              )}
 
               <div>
                 <Label className="text-sm font-semibold text-gray-600">Quantità richiesta</Label>
