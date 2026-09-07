@@ -32,6 +32,12 @@ import { FileInfo } from "@/types/user";
 import { ModelViewerPreventivo } from "@/components/ModelViewer";
 import { LogOut, File, User, Menu, ChevronDown, Home } from "lucide-react";
 import AutoScrollText from "@/components/AutoScrollText";
+import {
+  fetchLabDocuments,
+  formatLabAmount,
+  formatLabDate,
+  type LabDocument,
+} from "@/lib/gestionaleDocuments";
 
 const Dashboard = () => {
   const { toast } = useToast();
@@ -39,6 +45,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [files, setFiles] = useState<FileInfo[]>([]);
+  const [labDocs, setLabDocs] = useState<LabDocument[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("files");
   
@@ -134,6 +141,14 @@ const Dashboard = () => {
         });
         
         setFiles(filesList);
+
+        try {
+          const idToken = await currentUser.getIdToken();
+          setLabDocs(await fetchLabDocuments(idToken));
+        } catch (labError) {
+          console.error("Error fetching lab documents:", labError);
+          setLabDocs([]);
+        }
         
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -505,6 +520,26 @@ const Dashboard = () => {
     setIsPreviewOpen(true);
   };
 
+  const handleOpenLabPreview = (doc: LabDocument) => {
+    const fromName = doc.fileName.split(".").pop()?.toLowerCase() || "";
+    const type = doc.mime.includes("pdf") || fromName === "pdf" ? "pdf" : fromName;
+    setPreviewUrl(doc.url);
+    setPreviewFileType(type);
+    setPreviewName(doc.fileName);
+    setIsPreviewOpen(true);
+  };
+
+  const handleDownloadLabDoc = (doc: LabDocument) => {
+    const a = document.createElement("a");
+    a.href = doc.url;
+    a.download = doc.fileName;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
   // Funzione per gestire il rename del file
   const handleOpenRename = (file: FileInfo) => {
     // Estrai il nome senza estensione per mostrare solo quello nell'input
@@ -706,6 +741,83 @@ const Dashboard = () => {
             
             {/* Files Tab */}
             {activeTab === "files" && (
+              <div className="space-y-6">
+              <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+                <div className="p-6">
+                  <div className="mb-6">
+                    <h2 className="text-xl font-semibold">Documenti 3DMAKES</h2>
+                    <p className="text-sm text-gray-500">
+                      Fatture e documenti caricati dal laboratorio.
+                    </p>
+                  </div>
+                  {loading ? (
+                    <div className="flex justify-center py-8">
+                      <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-brand-accent"></div>
+                    </div>
+                  ) : labDocs.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {labDocs.map((doc) => (
+                        <div key={doc.id} className="border rounded-lg overflow-hidden">
+                          <div
+                            className="h-40 bg-gray-100 flex items-center justify-center overflow-hidden cursor-pointer"
+                            onClick={() => handleOpenLabPreview(doc)}
+                          >
+                            {doc.mime.startsWith("image/") ? (
+                              <img
+                                src={doc.url}
+                                alt={doc.fileName}
+                                className="h-full w-full object-contain"
+                              />
+                            ) : (
+                              <div className="flex flex-col items-center justify-center text-gray-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                                </svg>
+                                <span className="text-xs font-medium mt-2">{doc.typeLabel}</span>
+                              </div>
+                            )}
+                          </div>
+                          <div className="p-3">
+                            <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                              {doc.typeLabel}
+                            </p>
+                            <p className="font-medium text-sm truncate">
+                              {doc.reference || doc.fileName}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              {formatLabDate(doc.docDate)}
+                              {formatLabAmount(doc.amount) ? ` · ${formatLabAmount(doc.amount)}` : ""}
+                            </p>
+                            <div className="mt-2 flex gap-1">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-8 px-2"
+                                onClick={() => handleOpenLabPreview(doc)}
+                              >
+                                Anteprima
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-8 px-2"
+                                onClick={() => handleDownloadLabDoc(doc)}
+                              >
+                                Scarica
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-gray-500">
+                      Quando ti inviamo una fattura o un documento, lo trovi qui.
+                    </p>
+                  )}
+                </div>
+              </div>
+
               <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
                 <div className="p-6">
                   <div className="flex justify-between items-center mb-6">
@@ -814,6 +926,7 @@ const Dashboard = () => {
                     </div>
                   )}
                 </div>
+              </div>
               </div>
             )}
             
