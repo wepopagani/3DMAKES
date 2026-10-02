@@ -50,12 +50,13 @@ const Navbar = () => {
     }
   };
   
-  // Desktop: voci essenziali. Mission e Corsi restano in menu mobile + footer.
+  // Desktop: voci essenziali. Mission resta nel menu mobile e nel footer.
   const desktopNavItems = [
     { name: t('nav.about'), path: '/about' },
     { name: t('nav.services'), path: '/services' },
     { name: t('nav.faq'), path: '/faq' },
     { name: t('nav.blog'), path: '/blog' },
+    { name: t('nav.courses'), path: '/iscrizione-corsi' },
     { name: t('nav.contact'), path: '/#contact', isContact: true },
   ];
 

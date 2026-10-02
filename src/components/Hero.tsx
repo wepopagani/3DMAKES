@@ -31,6 +31,9 @@ const Hero = () => {
               <Button asChild size="lg" variant="outline" className="bg-transparent border-white text-white hover:bg-white/10">
                 <Link to="/calculator">{t('hero.requestQuote')}</Link>
               </Button>
+              <Button asChild size="lg" variant="outline" className="bg-transparent border-white text-white hover:bg-white/10">
+                <Link to="/iscrizione-corsi">{t('nav.courses')}</Link>
+              </Button>
             </div>
           </div>
           

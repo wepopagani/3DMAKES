@@ -81,9 +81,14 @@ const Index = () => {
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="heading-2 mb-4">{t("services.readyToRealize")}</h2>
               <p className="body-text mb-8">{t("services.contactToday")}</p>
-              <Button asChild size="lg" className="bg-brand-blue text-white hover:bg-brand-blue/90 font-semibold px-8 md:px-12 py-4 md:py-5 text-lg md:text-xl">
-                <Link to="/calculator">{t("nav.requestQuote")}</Link>
-              </Button>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button asChild size="lg" className="bg-brand-blue text-white hover:bg-brand-blue/90 font-semibold px-8 md:px-12 py-4 md:py-5 text-lg md:text-xl">
+                  <Link to="/calculator">{t("nav.requestQuote")}</Link>
+                </Button>
+                <Button asChild size="lg" variant="outline" className="border-brand-blue text-brand-blue hover:bg-brand-blue/10 font-semibold px-8 md:px-12 py-4 md:py-5 text-lg md:text-xl">
+                  <Link to="/iscrizione-corsi">{t("courseRegistration.form.title")}</Link>
+                </Button>
+              </div>
             </div>
           </div>
         </section>
