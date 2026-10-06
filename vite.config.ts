@@ -55,7 +55,6 @@ export default defineConfig(({ mode }) => ({
                 "/blog",
                 "/contact-success",
                 "/iscrizione-corsi",
-                "/registrazione",
                 "/login",
                 "/register",
                 "/forgot-password",

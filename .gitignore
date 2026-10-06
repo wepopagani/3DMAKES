@@ -29,3 +29,6 @@ dist-ssr
 *.3mf
 *.ply
 price/
+
+# Local Netlify folder
+.netlify

@@ -17,6 +17,18 @@
 # Per aggiungere nuove route al prerender: aggiornare l'array `routes` in vite.config.ts.
 
 [[redirects]]
-  from = "/registrazione/*"
+  from = "/registrazione"
   to = "/registrazione/"
+  status = 200
+  force = false
+
+[[redirects]]
+  from = "/registrazione/*"
+  to = "/registrazione/index.html"
+  status = 200
+
+# SPA: se una route non è prerenderizzata, React Router la apre lo stesso.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
   status = 200
