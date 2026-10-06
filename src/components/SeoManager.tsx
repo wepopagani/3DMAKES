@@ -385,6 +385,14 @@ export default function SeoManager() {
       return;
     }
 
+    if (pathNorm === "/registrazione" || pathNorm.startsWith("/registrazione/")) {
+      setAll(
+        "Registrazione cliente | 3DMAKES Lugano",
+        "Compila i tuoi dati da telefono o computer: privato o azienda. Entri in automatico nell’anagrafica 3DMAKES.",
+      );
+      return;
+    }
+
     if (pathNorm === "/login") {
       setAll(t("seo.loginTitle"), t("seo.loginDescription"));
       return;

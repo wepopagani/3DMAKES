@@ -15,3 +15,8 @@
 # Ogni route ha il proprio `dist/<route>/index.html` con HTML completo leggibile
 # senza JS — quindi Prerender.io/SSR runtime NON sono necessari.
 # Per aggiungere nuove route al prerender: aggiornare l'array `routes` in vite.config.ts.
+
+[[redirects]]
+  from = "/registrazione/*"
+  to = "/registrazione/"
+  status = 200
