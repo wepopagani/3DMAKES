@@ -6,7 +6,7 @@ type ShopPhoneLinksProps = {
   className?: string;
   linkClassName?: string;
   nameClassName?: string;
-  /** true = righe verticali; false = sulla stessa riga separati da sep */
+  /** true = due righe allineate; false = sulla stessa riga */
   stacked?: boolean;
   inlineSeparator?: string;
   onTelClick?: () => void;
@@ -17,17 +17,21 @@ export function ShopPhoneLinks({
   linkClassName,
   nameClassName,
   stacked = true,
-  inlineSeparator = ' · ',
+  inlineSeparator = '·',
   onTelClick,
 }: ShopPhoneLinksProps) {
-  const items = SHOP_PHONE_CONTACTS.map((c, idx) => (
+  const rows = SHOP_PHONE_CONTACTS.map((c, idx) => (
     <Fragment key={c.telE164}>
-      {!stacked && idx > 0 ? inlineSeparator : null}
-      <span className={cn(!stacked && 'whitespace-nowrap')}>
-        <span className={nameClassName}>{c.name}: </span>
+      {!stacked && idx > 0 ? (
+        <span className="select-none px-1.5 text-current/40" aria-hidden>
+          {inlineSeparator}
+        </span>
+      ) : null}
+      <span className={cn('inline-flex items-baseline', stacked ? 'gap-3' : 'gap-2')}>
+        <span className={cn(stacked && 'w-16 shrink-0', nameClassName)}>{c.name}</span>
         <a
           href={`tel:${c.telE164}`}
-          className={linkClassName}
+          className={cn('whitespace-nowrap tabular-nums tracking-wide', linkClassName)}
           onClick={onTelClick}
         >
           {c.displayLocal}
@@ -38,13 +42,11 @@ export function ShopPhoneLinks({
 
   if (stacked) {
     return (
-      <span className={cn('flex flex-col gap-1', className)}>{items}</span>
+      <span className={cn('inline-flex flex-col items-start gap-1', className)}>{rows}</span>
     );
   }
 
   return (
-    <span className={cn('inline-flex flex-wrap items-baseline gap-x-1 gap-y-0.5', className)}>
-      {items}
-    </span>
+    <span className={cn('inline-flex flex-wrap items-baseline', className)}>{rows}</span>
   );
 }

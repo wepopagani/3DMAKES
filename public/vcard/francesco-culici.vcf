@@ -1,0 +1,12 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Culici;Francesco;;;
+FN:Francesco Culici
+ORG:3DMAKES
+TEL;TYPE=CELL,VOICE:+41764778907
+EMAIL;TYPE=INTERNET,WORK:francesco@3dmakes.ch
+ADR;TYPE=WORK:;;Via Cantonale 15;Figino;;6918;Svizzera
+URL:https://www.3dmakes.ch
+UID:francesco-culici@3dmakes.ch
+REV:20261007T130000Z
+END:VCARD

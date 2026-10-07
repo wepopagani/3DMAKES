@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { CheckCircle, FileUp, Loader2, Send, UserPlus } from "lucide-react";
+import { CheckCircle, Send, UserPlus } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ShopPhoneLinks } from "@/components/ShopPhoneLinks";
@@ -9,8 +9,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-import { extractTextFromImage } from "@/lib/intake-ocr";
-import { parseIntakeText, type ParsedIntake } from "@/lib/intake-parser";
 
 const INTAKE_API = "https://clienti.3dmakes.ch/api/public/client-intake";
 
@@ -19,11 +17,8 @@ type ClientType = "privato" | "azienda";
 const RegistrazioneCliente = () => {
   const { token } = useParams<{ token?: string }>();
   const { toast } = useToast();
-  const fileRef = useRef<HTMLInputElement>(null);
   const [type, setType] = useState<ClientType>("privato");
   const [sending, setSending] = useState(false);
-  const [parsing, setParsing] = useState(false);
-  const [parsedFields, setParsedFields] = useState<string[]>([]);
   const [done, setDone] = useState(false);
   const [linkError, setLinkError] = useState("");
   const [f, setF] = useState({
@@ -75,70 +70,6 @@ const RegistrazioneCliente = () => {
     (k: keyof typeof f) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
       setF((p) => ({ ...p, [k]: e.target.value }));
-
-  const applyParsed = (parsed: ParsedIntake) => {
-    if (parsed.type) setType(parsed.type);
-    const next = { ...f };
-    const detected: string[] = [];
-    if (parsed.type) detected.push("tipo cliente");
-    const pairs: Array<[keyof typeof f, string | undefined, string]> = [
-      ["company_name", parsed.company_name, "ragione sociale"],
-      ["vat_number", parsed.vat_number, "partita IVA"],
-      ["first_name", parsed.first_name, "nome"],
-      ["last_name", parsed.last_name, "cognome"],
-      ["email", parsed.email, "email"],
-      ["phone", parsed.phone, "telefono"],
-      ["address", parsed.address, "indirizzo"],
-      ["zip", parsed.zip, "CAP"],
-      ["city", parsed.city, "località"],
-    ];
-    for (const [key, value, label] of pairs) {
-      if (!value) continue;
-      next[key] = value;
-      detected.push(label);
-    }
-    setF(next);
-    setParsedFields(Array.from(new Set(detected)));
-    return detected;
-  };
-
-  async function handleFile(file: File) {
-    const isImage = file.type.startsWith("image/") || /\.(png|jpe?g|webp|gif|heic)$/i.test(file.name);
-    if (!isImage) {
-      toast({
-        title: "Serve uno screenshot",
-        description: "Carica una foto o uno screen della mail (PNG, JPG).",
-        variant: "destructive",
-      });
-      return;
-    }
-    setParsing(true);
-    try {
-      const text = await extractTextFromImage(file);
-      const parsed = parseIntakeText(text);
-      const detected = applyParsed(parsed);
-      if (detected.length === 0) {
-        toast({
-          title: "Nessun dato riconosciuto",
-          description: "Controlla che nello screen si vedano nome, mail e indirizzo, oppure compila a mano.",
-        });
-      } else {
-        toast({
-          title: "Dati estratti",
-          description: detected.join(", "),
-        });
-      }
-    } catch {
-      toast({
-        title: "Lettura non riuscita",
-        description: "Riprova con uno screen più nitido, o compila a mano.",
-        variant: "destructive",
-      });
-    } finally {
-      setParsing(false);
-      if (fileRef.current) fileRef.current.value = "";
-    }
-  }
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -193,12 +124,20 @@ const RegistrazioneCliente = () => {
                   <CheckCircle className="w-8 h-8 text-white" />
                 </div>
                 <h2 className="text-2xl font-bold text-brand-blue mb-2">Grazie, dati ricevuti</h2>
-                <p className="text-gray-600">
-                  Ti ricontattiamo noi. Per urgenze:{" "}
-                  <a href="mailto:info@3dmakes.ch" className="text-brand-accent font-semibold hover:underline">
+                <p className="text-gray-600 mb-5">Ti ricontattiamo noi. Per urgenze:</p>
+                <div className="flex flex-col items-center gap-3">
+                  <ShopPhoneLinks
+                    stacked
+                    nameClassName="text-gray-700"
+                    linkClassName="text-brand-accent font-semibold hover:underline"
+                  />
+                  <a
+                    href="mailto:info@3dmakes.ch"
+                    className="text-brand-accent font-semibold hover:underline"
+                  >
                     info@3dmakes.ch
                   </a>
-                </p>
+                </div>
               </div>
             ) : linkError ? (
               <div className="bg-white rounded-lg shadow-lg p-8 text-center">
@@ -241,36 +180,6 @@ const RegistrazioneCliente = () => {
                     >
                       Azienda
                     </Button>
-                  </div>
-
-                  <div className="rounded-lg border border-dashed border-gray-300 bg-gray-50 p-4">
-                    <p className="text-sm font-semibold text-brand-blue">Carica uno screenshot della mail</p>
-                    <p className="text-xs text-gray-600 mt-1">
-                      Se nello screen ci sono ragione sociale, IVA, mail e indirizzo, li riempiamo noi.
-                    </p>
-                    <input
-                      ref={fileRef}
-                      type="file"
-                      accept="image/*"
-                      className="hidden"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) void handleFile(file);
-                      }}
-                    />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      className="mt-3 gap-2"
-                      disabled={parsing}
-                      onClick={() => fileRef.current?.click()}
-                    >
-                      {parsing ? <Loader2 className="w-4 h-4 animate-spin" /> : <FileUp className="w-4 h-4" />}
-                      {parsing ? "Lettura in corso…" : "Seleziona screenshot"}
-                    </Button>
-                    {parsedFields.length > 0 ? (
-                      <p className="mt-3 text-xs text-gray-600">Estratto: {parsedFields.join(", ")}</p>
-                    ) : null}
                   </div>
 
                   {type === "azienda" ? (
@@ -381,7 +290,6 @@ const RegistrazioneCliente = () => {
           </div>
         </section>
       </main>
-      <ShopPhoneLinks />
       <Footer />
     </div>
   );

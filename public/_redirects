@@ -1,3 +1,15 @@
+/marco             /marco/index.html   200
+/marco/            /marco/index.html   200
+/Marco             /marco/index.html   200
+/Marco/            /marco/index.html   200
+/matteo            /matteo/index.html  200
+/matteo/           /matteo/index.html  200
+/Matteo            /matteo/index.html  200
+/Matteo/           /matteo/index.html  200
+/francesco         /francesco/index.html  200
+/francesco/        /francesco/index.html  200
+/Francesco         /francesco/index.html  200
+/Francesco/        /francesco/index.html  200
 /registrazione    /index.html   200
 /registrazione/*  /index.html   200
 /*                /index.html   200

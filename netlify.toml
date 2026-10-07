@@ -16,6 +16,87 @@
 # senza JS — quindi Prerender.io/SSR runtime NON sono necessari.
 # Per aggiungere nuove route al prerender: aggiornare l'array `routes` in vite.config.ts.
 
+[[headers]]
+  for = "/vcard/marco-pagani.vcf"
+  [headers.values]
+    Content-Type = "text/vcard; charset=utf-8"
+    Content-Disposition = "inline; filename=\"Marco-Pagani.vcf\""
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/vcard/matteo-verdicchio.vcf"
+  [headers.values]
+    Content-Type = "text/vcard; charset=utf-8"
+    Content-Disposition = "inline; filename=\"Matteo-Verdicchio.vcf\""
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/vcard/francesco-culici.vcf"
+  [headers.values]
+    Content-Type = "text/vcard; charset=utf-8"
+    Content-Disposition = "inline; filename=\"Francesco-Culici.vcf\""
+    Cache-Control = "public, max-age=3600"
+
+[[redirects]]
+  from = "/marco"
+  to = "/marco/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/marco/"
+  to = "/marco/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/Marco"
+  to = "/marco/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/Marco/"
+  to = "/marco/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/matteo"
+  to = "/matteo/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/matteo/"
+  to = "/matteo/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/Matteo"
+  to = "/matteo/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/Matteo/"
+  to = "/matteo/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/francesco"
+  to = "/francesco/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/francesco/"
+  to = "/francesco/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/Francesco"
+  to = "/francesco/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/Francesco/"
+  to = "/francesco/index.html"
+  status = 200
+
 [[redirects]]
   from = "/registrazione"
   to = "/registrazione/"

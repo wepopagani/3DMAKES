@@ -21,7 +21,15 @@ const COMPANY_LABEL_RE =
   /^(ragione sociale|societ[aà]|azienda|ditta|company|firmenname|firma|rag\.?\s*soc\.?)\s*[:\-–]?\s*/i;
 
 const NAME_LABEL_RE =
-  /^(referente|contatto|sig\.?ra?|signore|signora|name|contact|person|da|from)\s*[:\-–]?\s*/i;
+  /^(referente|contatto|sig\.?ra?|signore|signora|dott\.?|ing\.?|dr\.?|name|contact|person|da|from|inviato da)\s*[:\-–]?\s*/i;
+
+const NOT_NAME_WORD =
+  /^(via|viale|strada|switzerland|svizzera|ticino|lugano|consulting|technology|research|advanced|tech|gmbh|sagl|uid|mwst|che|info|office|hello|sales|admin|contact|mail|team|mostra|pi[uù]|more|show|from|encrypted|messages|people|only|this|chat|re|oggetto)$/i;
+
+const NAME_NOISE_WORD =
+  /^(la|il|lo|le|i|un|una|di|da|del|della|dei|degl[ie]|de|el|the|of|a|al|alla)$/i;
+
+const SKIP_EMAIL_LOCAL = /^(info|office|hello|sales|admin|contact|mail|team|segreteria|noreply|no-reply)$/i;
 
 const GREETING_RE =
   /^(buongiorno|buonasera|ciao|gentil[ei]|salve|hello|hi\b|good\s|dear\b|cordiali|kind regards|best regards|distinti|grazie|thanks|inviato da|sent from)/i;
@@ -41,19 +49,41 @@ const PHONE_RE =
 
 const EMAIL_RE = /[a-zA-Z0-9._%+'-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
 
-const CHE_VAT_RE = /CHE[\s.\-]*(\d{3})[\s.\-]*(\d{3})[\s.\-]*(\d{3})/i;
+const CHE_VAT_RE = /CHE[\s.\-–—]*([0-9OIl]{3})[\s.,\-–—]*([0-9OIl]{3})[\s.,\-–—]*([0-9OIl]{3})/i;
 const IT_VAT_RE = /(?:P\.?\s*IVA|IVA|VAT)[\s:.\-]*(\d{11})/i;
-const BARE_CHE_RE = /\bCHE(\d{9})\b/i;
+const BARE_CHE_RE = /\bCHE([0-9OIl]{9})\b/i;
 
 const YEAR_RE = /^(19|20)\d{2}$/;
 
-function normalize(text: string): string {
+function vatDigits(chunk: string): string {
+  return chunk.replace(/[Oo]/g, "0").replace(/[Il]/g, "1").replace(/\D/g, "");
+}
+
+function repairOcrText(text: string): string {
   return text
+    .replace(/[\u200B-\u200D\uFEFF]/g, "")
+    .replace(/[|•·]+/g, "\n")
+    .replace(/\+4[lI]\b/g, "+41")
+    .replace(/\bO(?=\d{8,})/g, "0")
+    .replace(/([a-z0-9._%+'-]+)\s*[@＠]\s*([a-z0-9.-]+(?:\s*\.\s*[a-z0-9.-]+)+)/gi, (_, user, host) => {
+      return `${user}@${String(host).replace(/\s+/g, "")}`;
+    })
+    .replace(/\b(Viale|Piazzale|Piazza|Vicolo|Strada|Chemin|Corso|Via)(?=[A-Za-zÀ-ÿ])/g, "$1 ")
+    .replace(/\b([1-9]\d{3})(?=[A-ZÀ-ÿ])/g, "$1 ")
+    .replace(/([a-zà-ÿ])(\()/g, "$1 $2")
+    .replace(/([a-zà-ÿ])(Consulting|GmbH|Studio|Group|Holding)\b/gi, "$1 $2")
+    .replace(/\bUID\s*[\\/|I1l]\s*MWST\b/gi, "UID/MWST")
+    .replace(/\bUIDIMWST\b/gi, "UID/MWST")
+    .replace(/mostra di pi[uù] da\s+/gi, "")
+    .replace(/show more from\s+/gi, "")
+    .replace(/messages? and data are end-to-end encrypted[^\n]*/gi, "");
+}
+
+function normalize(text: string): string {
+  return repairOcrText(text)
     .replace(/\r\n/g, "\n")
     .replace(/\r/g, "\n")
     .replace(/\u00a0/g, " ")
-    .replace(/[|•·]+/g, "\n")
-    .replace(/([a-z0-9._%+'-]+)\s+@\s+([a-z0-9.-]+\.[a-z]{2,})/gi, "$1@$2")
     .replace(/[ \t]+/g, " ")
     .trim();
 }
@@ -73,11 +103,59 @@ function formatCheVat(a: string, b: string, c: string): string {
   return `CHE-${a}.${b}.${c}`;
 }
 
+/** Check digit ufficiale UID svizzero (modulo 11). */
+function isValidCheUid(digits: string): boolean {
+  if (!/^\d{9}$/.test(digits)) return false;
+  const weights = [5, 4, 3, 2, 7, 6, 5, 4];
+  let sum = 0;
+  for (let i = 0; i < 8; i++) sum += Number(digits[i]) * (weights[i] ?? 0);
+  let check = 11 - (sum % 11);
+  if (check === 10) return false;
+  if (check === 11) check = 0;
+  return check === Number(digits[8]);
+}
+
+/** Confusione OCR più frequente sui numeri UID (6↔8, 5↔6). */
+const OCR_DIGIT: Record<string, string[]> = {
+  "5": ["6"],
+  "6": ["5", "8"],
+  "8": ["6"],
+};
+
+function repairCheUid(digits: string): string {
+  if (isValidCheUid(digits)) return digits;
+  const hits: string[] = [];
+  for (let i = 0; i < digits.length; i++) {
+    const alts = OCR_DIGIT[digits[i] ?? ""] ?? [];
+    for (const alt of alts) {
+      const next = `${digits.slice(0, i)}${alt}${digits.slice(i + 1)}`;
+      if (isValidCheUid(next) && !hits.includes(next)) hits.push(next);
+    }
+  }
+  return hits.length === 1 && hits[0] ? hits[0] : digits;
+}
+
 function usableEmail(email: string): boolean {
   const local = email.split("@")[0] ?? "";
   if (IGNORE_EMAIL.test(email)) return false;
   if (IGNORE_EMAIL_LOCAL.test(local)) return false;
   return true;
+}
+
+function titleCaseWord(word: string): string {
+  const lower = word.toLowerCase();
+  return lower.charAt(0).toUpperCase() + lower.slice(1);
+}
+
+function nameFromEmail(email: string): { first: string; last: string } | undefined {
+  const local = (email.split("@")[0] ?? "").replace(/^\d+/, "");
+  if (SKIP_EMAIL_LOCAL.test(local)) return undefined;
+  const parts = local
+    .split(/[._-]+/)
+    .map((p) => p.replace(/[^A-Za-zÀ-ÿ]/g, ""))
+    .filter((p) => p.length > 1 && !NOT_NAME_WORD.test(p));
+  if (parts.length < 2 || parts.length > 3) return undefined;
+  return { first: titleCaseWord(parts[0] ?? ""), last: parts.slice(1).map(titleCaseWord).join(" ") };
 }
 
 function extractFromHeader(text: string): {
@@ -86,7 +164,7 @@ function extractFromHeader(text: string): {
   email?: string;
 } {
   const m = text.match(
-    /^(?:da|from)\s*:\s*(?:["']?([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ' -]{1,60})["']?\s*)?(?:<([^>]+@[^>]+)>|([^\s<]+@[^\s>]+))?/im,
+    /^(?:da|from|inviato da)\s*:?\s*(?:["']?([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ' .-]{1,80})["']?\s*)?(?:<([^>]+@[^>]+)>|([^\s<]+@[^\s>]+))?/im,
   );
   if (!m) return {};
   const result: { first_name?: string; last_name?: string; email?: string } = {};
@@ -101,23 +179,35 @@ function extractFromHeader(text: string): {
 }
 
 function looksLikePersonName(line: string): { first: string; last: string } | undefined {
-  const clean = line.replace(NAME_LABEL_RE, "").replace(/<[^>]+>/g, "").trim();
-  if (!clean || GREETING_RE.test(clean) || JOB_TITLE_RE.test(clean) && clean.split(/\s+/).length < 3) {
-    return undefined;
-  }
+  const withoutMail = line.replace(EMAIL_RE, "").replace(/[<>]/g, " ").trim();
+  const clean = withoutMail
+    .replace(/^(a|to|cc|re|oggetto|subject)\s*:\s*.*$/i, "")
+    .replace(NAME_LABEL_RE, "")
+    .trim();
+  if (!clean || GREETING_RE.test(clean)) return undefined;
+  if (JOB_TITLE_RE.test(clean) && clean.split(/\s+/).length < 3) return undefined;
   if (STREET_RE.test(clean) || ADDRESS_LABEL_RE.test(clean) || LEGAL_SUFFIX_RE.test(clean)) {
     return undefined;
   }
-  if (clean.includes("@") || /\d{3,}/.test(clean)) return undefined;
-  const parts = clean
+  if (/\d{3,}/.test(clean) || /https?:\/\//i.test(clean)) return undefined;
+  const spaced = clean.replace(/([a-zà-ÿ])([A-ZÀ-ÿ])/g, "$1 $2");
+  const parts = spaced
     .split(/\s+/)
-    .map((p) => p.replace(/[^A-Za-zÀ-ÿ\-']+$/g, "").trim())
-    .filter((p) => p.length > 1 && /^[A-ZÀ-ÿ][a-zà-ÿ'’-]+$/.test(p));
+    .map((p) => p.replace(/[^A-Za-zÀ-ÿ'’-]+/g, "").trim())
+    .filter(
+      (p) =>
+        p.length > 1 &&
+        /^[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ'’-]+$/.test(p) &&
+        !NOT_NAME_WORD.test(p) &&
+        !NAME_NOISE_WORD.test(p),
+    );
   if (parts.length < 2 || parts.length > 4) return undefined;
   const first = parts[0];
   const rest = parts.slice(1);
-  if (!first || rest.length === 0) return undefined;
-  return { first, last: rest.join(" ") };
+  if (!first || rest.length === 0 || NAME_NOISE_WORD.test(first) || first.length < 3) {
+    return undefined;
+  }
+  return { first: titleCaseWord(first), last: rest.map(titleCaseWord).join(" ") };
 }
 
 const VAT_LINE_RE = /(?:UID\s*\/?\s*MWST|MWST|UID|P\.?\s*IVA|IVA|VAT|CHE[\s.\-]*\d{3})/i;
@@ -151,7 +241,11 @@ function extractCompanyName(ls: string[]): string | undefined {
     if (line.length < 3 || line.length > 100) return false;
     if (line.includes("@") || GREETING_RE.test(line) || STREET_RE.test(line)) return false;
     if (/^www\./i.test(line) || VAT_LINE_RE.test(line)) return false;
-    return LEGAL_SUFFIX_RE.test(line);
+    if (looksLikePersonName(line)) return false;
+    return (
+      LEGAL_SUFFIX_RE.test(line) ||
+      /\b(consulting|studio|group|holding|partners|associati)\b/i.test(line)
+    );
   });
   if (suffixHits[0]) {
     return cleanCompany(suffixHits[0].replace(/\s*[|•].*$/, ""));
@@ -169,10 +263,22 @@ function extractCompanyName(ls: string[]): string | undefined {
 
 function extractVat(text: string): string | undefined {
   const che = text.match(CHE_VAT_RE);
-  if (che?.[1] && che[2] && che[3]) return formatCheVat(che[1], che[2], che[3]);
+  if (che?.[1] && che[2] && che[3]) {
+    const a = vatDigits(che[1]);
+    const b = vatDigits(che[2]);
+    const c = vatDigits(che[3]);
+    if (a.length === 3 && b.length === 3 && c.length === 3) {
+      const digits = repairCheUid(`${a}${b}${c}`);
+      return formatCheVat(digits.slice(0, 3), digits.slice(3, 6), digits.slice(6, 9));
+    }
+  }
   const bare = text.match(BARE_CHE_RE);
-  if (bare?.[1] && bare[1].length === 9) {
-    return formatCheVat(bare[1].slice(0, 3), bare[1].slice(3, 6), bare[1].slice(6, 9));
+  if (bare?.[1]) {
+    const raw = vatDigits(bare[1]);
+    if (raw.length === 9) {
+      const digits = repairCheUid(raw);
+      return formatCheVat(digits.slice(0, 3), digits.slice(3, 6), digits.slice(6, 9));
+    }
   }
   const it = text.match(IT_VAT_RE);
   if (it?.[1]) return it[1];
@@ -184,6 +290,32 @@ function extractEmail(text: string, fromHeader?: string): string | undefined {
   const all = text.match(EMAIL_RE) ?? [];
   const usable = all.filter(usableEmail);
   return usable[0]?.toLowerCase();
+}
+
+const SKIP_WEB_HOST = /\b(facebook|instagram|linkedin|google|youtube|3dmakes|whatsapp|apple|icloud)\b/i;
+
+function extractWebsiteHost(text: string): string | undefined {
+  const patched = text.replace(/https?:\/(?!\/)/gi, "https://");
+  const m =
+    patched.match(/https?:\/\/(?:www\.)?([a-z0-9-]+(?:\.[a-z0-9-]+)+)/i) ??
+    patched.match(/\bwww\.([a-z0-9-]+(?:\.[a-z0-9-]+)+)/i) ??
+    patched.match(/\b([a-z0-9-]+\.(?:ch|com|tech|io|it|net|org|eu))\b/i);
+  const host = (m?.[1] ?? "").toLowerCase();
+  if (!host || SKIP_WEB_HOST.test(host)) return undefined;
+  return host;
+}
+
+function slugName(value: string): string {
+  return value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z]/g, "");
+}
+
+function emailFromNameAndHost(first: string, last: string, host: string): string {
+  const lastMain = last.split(/\s+/)[0] ?? last;
+  return `${slugName(first)}.${slugName(lastMain)}@${host}`;
 }
 
 function extractPhone(text: string, ls: string[]): string | undefined {
@@ -204,11 +336,33 @@ function extractPhone(text: string, ls: string[]): string | undefined {
   return best ? cleanPhone(best) : undefined;
 }
 
+const CITY_ZIP: Record<string, string> = {
+  pregassona: "6963",
+  figino: "6918",
+  mendrisio: "6850",
+  locarno: "6600",
+  chiasso: "6830",
+  bellinzona: "6500",
+  minusio: "6648",
+  ascona: "6612",
+};
+
+function repairZip(zip: string, city: string): string {
+  const known = CITY_ZIP[city.toLowerCase()];
+  if (!known || known === zip || known.length !== zip.length) return zip;
+  let diff = 0;
+  for (let i = 0; i < zip.length; i++) {
+    if (zip[i] !== known[i]) diff += 1;
+  }
+  return diff === 1 ? known : zip;
+}
+
 function extractZipCity(ls: string[]): { zip?: string; city?: string } {
   for (const line of ls) {
-    const swiss = line.match(/\b([1-9]\d{3})\b[ \t]+([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ\-']+(?:[ \t]+[A-Za-zÀ-ÿ\-']+)?)(?:\s*\([A-Z]{2}\))?/);
+    const swiss = line.match(/\b([1-9]\d{3})\b[ \t,]*([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ\-']+(?:[ \t]+[A-Za-zÀ-ÿ\-']+)?)(?:\s*\([A-Z]{2}\))?/);
     if (swiss?.[1] && swiss[2] && !YEAR_RE.test(swiss[1])) {
-      return { zip: swiss[1], city: swiss[2].trim() };
+      const city = swiss[2].trim();
+      return { zip: repairZip(swiss[1], city), city };
     }
     const it = line.match(/\b(\d{5})\b[ \t]+([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ\-']+(?:[ \t]+[A-Za-zÀ-ÿ\-']+)?)/);
     if (it?.[1] && it[2]) return { zip: it[1], city: it[2].trim() };
@@ -242,18 +396,38 @@ function extractAddress(ls: string[], zip?: string, city?: string): string | und
   return undefined;
 }
 
-function extractName(ls: string[], companyName?: string, headerName?: { first: string; last: string }): {
+function extractName(
+  ls: string[],
+  companyName?: string,
+  headerName?: { first: string; last: string },
+  email?: string,
+): {
   first_name?: string;
   last_name?: string;
 } {
-  if (headerName) return { first_name: headerName.first, last_name: headerName.last };
+  const votes = new Map<string, { first: string; last: string; n: number }>();
+  const consider = (name?: { first: string; last: string }) => {
+    if (!name || name.first.length < 3 || NAME_NOISE_WORD.test(name.first)) return;
+    const key = `${name.first} ${name.last}`.toLowerCase();
+    const prev = votes.get(key);
+    votes.set(key, { first: name.first, last: name.last, n: (prev?.n ?? 0) + 1 });
+  };
+  consider(headerName);
   const companyLower = companyName?.toLowerCase();
   for (const line of ls) {
-    if (line.includes("@")) continue;
     if (companyLower && line.toLowerCase().includes(companyLower)) continue;
-    const name = looksLikePersonName(line);
-    if (name) return { first_name: name.first, last_name: name.last };
+    consider(looksLikePersonName(line));
   }
+  if (email) consider(nameFromEmail(email));
+  let best: { first: string; last: string; n: number } | undefined;
+  for (const vote of votes.values()) {
+    const better =
+      !best ||
+      vote.n > best.n ||
+      (vote.n === best.n && vote.last.split(/\s+/).length < best.last.split(/\s+/).length);
+    if (better) best = vote;
+  }
+  if (best) return { first_name: best.first, last_name: best.last };
   return {};
 }
 
@@ -263,7 +437,7 @@ export function parseIntakeText(text: string): ParsedIntake {
   const header = extractFromHeader(t);
   const company_name = extractCompanyName(ls);
   const vat_number = extractVat(t);
-  const email = extractEmail(t, header.email);
+  let email = extractEmail(t, header.email);
   const phone = extractPhone(t, ls);
   const zipCity = extractZipCity(ls);
   const address = extractAddress(ls, zipCity.zip, zipCity.city);
@@ -271,7 +445,11 @@ export function parseIntakeText(text: string): ParsedIntake {
     header.first_name && header.last_name
       ? { first: header.first_name, last: header.last_name }
       : undefined;
-  const name = extractName(ls, company_name, headerName);
+  const name = extractName(ls, company_name, headerName, email);
+  if (!email && name.first_name && name.last_name) {
+    const host = extractWebsiteHost(t);
+    if (host) email = emailFromNameAndHost(name.first_name, name.last_name, host);
+  }
 
   const result: ParsedIntake = {};
   if (company_name || vat_number) result.type = "azienda";

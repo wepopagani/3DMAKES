@@ -3,13 +3,13 @@ export const SHOP_PHONE_CONTACTS = [
   {
     name: 'Marco',
     telE164: '+41762660396',
-    displayLocal: '076 266 03 96',
+    displayLocal: '076\u00A0266\u00A003\u00A096',
     waDigits: '41762660396',
   },
   {
     name: 'Matteo',
     telE164: '+41767027821',
-    displayLocal: '076 702 78 21',
+    displayLocal: '076\u00A0702\u00A078\u00A021',
     waDigits: '41767027821',
   },
 ] as const;

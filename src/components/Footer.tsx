@@ -93,9 +93,9 @@ const Footer = () => {
                 </a>
               </p>
               <div className="mb-2">
-                <span className="block">Tel:</span>
                 <ShopPhoneLinks
                   stacked
+                  nameClassName="text-gray-300"
                   linkClassName="hover:text-white hover:underline"
                 />
               </div>

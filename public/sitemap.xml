@@ -14,6 +14,27 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://3dmakes.ch/"/>
   </url>
 
+  <url>
+    <loc>https://3dmakes.ch/marco</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <url>
+    <loc>https://3dmakes.ch/matteo</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <url>
+    <loc>https://3dmakes.ch/francesco</loc>
+    <lastmod>2026-10-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
   <!-- Pagina servizi / tecnologie -->
   <url>
     <loc>https://3dmakes.ch/services/</loc>

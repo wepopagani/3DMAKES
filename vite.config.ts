@@ -1,19 +1,22 @@
 import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react-swc";
 
-/** In dev, serve public/b2b/index.html at /b2b (Vite does not auto-resolve index.html for subpaths). */
-function b2bStaticRoute(): Plugin {
+/** In dev, serve public/<slug>/index.html (Vite does not auto-resolve index.html for subpaths). */
+function staticIndexRoutes(): Plugin {
+  const slugs = ["/b2b", "/marco", "/matteo", "/francesco"];
   return {
-    name: "b2b-static-route",
+    name: "static-index-routes",
     configureServer(server) {
       server.middlewares.use((req, _res, next) => {
         const raw = req.url;
         if (!raw) return next();
         const pathOnly = raw.split("?")[0] ?? "";
-        if (pathOnly === "/b2b" || pathOnly === "/b2b/") {
-          const qs = raw.includes("?") ? raw.slice(raw.indexOf("?")) : "";
-          req.url = "/b2b/index.html" + qs;
-        }
+        const normalized =
+          pathOnly.length > 1 && pathOnly.endsWith("/") ? pathOnly.slice(0, -1) : pathOnly;
+        const slug = slugs.find((item) => item === normalized.toLowerCase());
+        if (!slug) return next();
+        const qs = raw.includes("?") ? raw.slice(raw.indexOf("?")) : "";
+        req.url = `${slug}/index.html${qs}`;
         next();
       });
     },
@@ -36,7 +39,7 @@ export default defineConfig(({ mode }) => ({
     port: 5173,
   },
   plugins: [
-    b2bStaticRoute(),
+    staticIndexRoutes(),
     react(),
     mode === "production" &&
       vitePrerender({
