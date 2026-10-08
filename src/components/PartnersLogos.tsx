@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Carousel,
@@ -6,7 +6,6 @@ import {
   CarouselItem,
   type CarouselApi,
 } from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
 
 interface Partner {
   id: number;
@@ -53,20 +52,68 @@ const partners: Partner[] = [
     logo: "/partner/verzasca.png",
     website: "",
   },
+  {
+    id: 7,
+    name: "Caffematica",
+    logo: "/partner/caffematica.png",
+    website: "",
+  },
+  {
+    id: 8,
+    name: "Marino Bernasconi Engineering",
+    logo: "/partner/marino-bernasconi.webp",
+    website: "",
+  },
 ];
 
 const PartnersLogos = () => {
   const { t } = useTranslation();
   const [api, setApi] = useState<CarouselApi>();
+  const direction = useRef<1 | -1>(1);
+  const paused = useRef(false);
 
   useEffect(() => {
-    if (!api) {
-      return;
-    }
+    if (!api) return;
+
+    const onPointerDown = () => {
+      paused.current = true;
+    };
+    const onPointerUp = () => {
+      paused.current = false;
+      if (!api.canScrollNext()) direction.current = -1;
+      else if (!api.canScrollPrev()) direction.current = 1;
+    };
+
+    api.on("pointerDown", onPointerDown);
+    api.on("pointerUp", onPointerUp);
+
+    const timer = window.setInterval(() => {
+      if (paused.current) return;
+      if (!api.canScrollNext() && !api.canScrollPrev()) return;
+
+      if (direction.current === 1) {
+        if (api.canScrollNext()) api.scrollNext();
+        else {
+          direction.current = -1;
+          api.scrollPrev();
+        }
+      } else if (api.canScrollPrev()) {
+        api.scrollPrev();
+      } else {
+        direction.current = 1;
+        api.scrollNext();
+      }
+    }, 2800);
+
+    return () => {
+      window.clearInterval(timer);
+      api.off("pointerDown", onPointerDown);
+      api.off("pointerUp", onPointerUp);
+    };
   }, [api]);
 
   return (
-    <section className="py-12 md:py-20 border-t border-b border-gray-200" style={{backgroundColor: '#E5DDD3'}}>
+    <section id="partners" className="py-12 md:py-20 border-t border-b border-gray-200" style={{backgroundColor: '#E5DDD3'}}>
       <div className="container-custom">
         <div className="text-center mb-12">
           <h2 className="heading-2 mb-4">{t('partners.title')}</h2>
@@ -75,60 +122,48 @@ const PartnersLogos = () => {
           </p>
         </div>
 
-        <div className="max-w-7xl mx-auto">
-          <Carousel
-            setApi={setApi}
-            opts={{
-              align: "start",
-              loop: true,
-              dragFree: false,
-            }}
-            plugins={[
-              Autoplay({
-                delay: 3000,
-                stopOnInteraction: false,
-                stopOnMouseEnter: true,
-              }),
-            ]}
-            className="w-full"
-          >
-            <CarouselContent className="-ml-2 md:-ml-4">
-              {partners.map((partner) => (
-                <CarouselItem 
-                  key={partner.id} 
-                  className="pl-2 md:pl-4 basis-1/2 md:basis-1/3 lg:basis-1/4"
+        <Carousel
+          setApi={setApi}
+          opts={{
+            align: "start",
+            loop: false,
+            containScroll: "trimSnaps",
+            dragFree: true,
+          }}
+          className="cursor-grab active:cursor-grabbing"
+        >
+          <CarouselContent>
+            {partners.map((partner) => (
+              <CarouselItem key={partner.id} className="basis-1/2 md:basis-1/3 lg:basis-1/4">
+                <div
+                  className={`flex h-28 md:h-32 items-center justify-center px-3 ${
+                    partner.website ? "cursor-pointer" : ""
+                  }`}
+                  onClick={() => partner.website && window.open(partner.website, "_blank")}
                 >
-                  <div className="p-4">
-                    <div 
-                      className="rounded-lg p-6 h-40 md:h-48 flex items-center justify-center transition-all duration-300 hover:scale-105 cursor-pointer group"
-                      onClick={() => partner.website && window.open(partner.website, '_blank')}
-                    >
-                      <img
-                        src={partner.logo}
-                        alt={partner.name}
-                        className={`w-52 md:w-64 h-auto object-contain transition-all duration-300 ${
-                          partner.name === "Securitas" ? "" : "filter grayscale group-hover:grayscale-0"
-                        }`}
-                        onError={(e) => {
-                          // Fallback: mostra il nome se l'immagine non viene caricata
-                          const target = e.currentTarget;
-                          target.style.display = 'none';
-                          const parent = target.parentElement;
-                          if (parent) {
-                            const textDiv = document.createElement('div');
-                            textDiv.className = 'text-center font-semibold text-brand-gray';
-                            textDiv.textContent = partner.name;
-                            parent.appendChild(textDiv);
-                          }
-                        }}
-                      />
-                    </div>
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-          </Carousel>
-        </div>
+                  <img
+                    src={partner.logo}
+                    alt={partner.name}
+                    draggable={false}
+                    className="max-h-20 md:max-h-24 w-full object-contain select-none"
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      target.style.display = "none";
+                      const parent = target.parentElement;
+                      if (parent && !parent.querySelector("[data-logo-fallback]")) {
+                        const textDiv = document.createElement("div");
+                        textDiv.dataset.logoFallback = "true";
+                        textDiv.className = "text-center text-sm font-semibold text-brand-gray";
+                        textDiv.textContent = partner.name;
+                        parent.appendChild(textDiv);
+                      }
+                    }}
+                  />
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
 
         {/* Badge "Collaborazioni" */}
         <div className="text-center mt-8">
