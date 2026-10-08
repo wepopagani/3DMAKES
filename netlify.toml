@@ -4,6 +4,8 @@
 
 [build.environment]
   NODE_VERSION = "20"
+  # Chiavi web Firebase (pubbliche nel client). Lo scanner di Netlify le segnala come segreti e blocca la build.
+  SECRETS_SCAN_SMART_DETECTION_OMIT_VALUES = "AIzaSyC6i0YOfn2YrasjYm13YrQmUr3c2RLtv0M,AIzaSyCBUMEwdWXnPKaMdkhtPSMwouMFeyDlsH0,AIzaSyA36G825R6uYJ1RxAF6NUfPRUkbSYCSCwc"
 
 [[headers]]
   for = "/assets/*"
