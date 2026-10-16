@@ -1,39 +1,25 @@
-import React from 'react';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import AdminUsersList from '@/components/AdminUsersList';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import AdminUsersList from "@/components/AdminUsersList";
+import { AccountShell, WorkspaceHeader } from "@/components/anteprima/accountUi";
+import { useNavigate } from "react-router-dom";
 
 const AdminClients = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <Navbar />
-      <main className="flex-grow container mx-auto px-4 py-8">
-        <div className="flex items-center gap-4 mb-6">
-          <Button 
-            variant="outline" 
-            size="sm" 
-            onClick={() => navigate('/admin')}
-            className="flex items-center gap-2"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Torna alla Dashboard
-          </Button>
-          <div>
-            <h1 className="text-3xl font-bold">Gestione Clienti</h1>
-            <p className="text-gray-600 mt-1">Visualizza e gestisci tutti i clienti registrati</p>
-          </div>
+    <AccountShell>
+      <div className="container-custom py-8 md:py-12">
+        <WorkspaceHeader
+          title="Gestione clienti"
+          subtitle="Visualizza e gestisci tutti i clienti registrati."
+          onBack={() => navigate("/admin")}
+          backLabel="Torna al pannello"
+        />
+        <div className="rounded-[1.75rem] border border-white/80 bg-white p-4 shadow-[0_18px_50px_-32px_rgba(26,42,74,0.55)] md:p-6 [&_button]:rounded-full">
+          <AdminUsersList />
         </div>
-        
-        <AdminUsersList />
-      </main>
-      <Footer />
-    </div>
+      </div>
+    </AccountShell>
   );
 };
 
-export default AdminClients; 
+export default AdminClients;

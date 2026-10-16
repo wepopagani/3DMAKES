@@ -1,14 +1,23 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { CheckCircle, Send, UserPlus } from "lucide-react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import { CheckCircle, Send } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { ShopPhoneLinks } from "@/components/ShopPhoneLinks";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
+import {
+  accountPanel,
+  areaClass,
+  fieldClass,
+  labelClass,
+  primaryButtonClass,
+} from "@/components/anteprima/accountUi";
+import { PageHero } from "@/components/anteprima/PageBlocks";
+import PageShell from "@/components/anteprima/PageShell";
+import { cn } from "@/lib/utils";
 
 const INTAKE_API = "https://clienti.3dmakes.ch/api/public/client-intake";
 
@@ -16,6 +25,7 @@ type ClientType = "privato" | "azienda";
 
 const RegistrazioneCliente = () => {
   const { token } = useParams<{ token?: string }>();
+  const { t } = useTranslation();
   const { toast } = useToast();
   const [type, setType] = useState<ClientType>("privato");
   const [sending, setSending] = useState(false);
@@ -47,11 +57,7 @@ const RegistrazioneCliente = () => {
       .then((data: { valid?: boolean; form_type?: string; reason?: string }) => {
         if (cancelled) return;
         if (!data.valid) {
-          setLinkError(
-            data.reason === "used"
-              ? "Questo link è già stato usato."
-              : "Questo link non è più valido.",
-          );
+          setLinkError(data.reason === "used" ? t("clientIntake.linkUsed") : t("clientIntake.linkInvalid"));
           return;
         }
         if (data.form_type === "azienda" || data.form_type === "privato") {
@@ -59,12 +65,12 @@ const RegistrazioneCliente = () => {
         }
       })
       .catch(() => {
-        if (!cancelled) setLinkError("Non riesco a verificare il link. Riprova più tardi.");
+        if (!cancelled) setLinkError(t("clientIntake.linkCheck"));
       });
     return () => {
       cancelled = true;
     };
-  }, [token]);
+  }, [token, t]);
 
   const set =
     (k: keyof typeof f) =>
@@ -91,8 +97,8 @@ const RegistrazioneCliente = () => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch {
       toast({
-        title: "Invio non riuscito",
-        description: "Controlla i dati e riprova. Se continua, scrivici a info@3dmakes.ch.",
+        title: t("clientIntake.failTitle"),
+        description: t("clientIntake.failBody"),
         variant: "destructive",
       });
     } finally {
@@ -100,198 +106,170 @@ const RegistrazioneCliente = () => {
     }
   }
 
+  const choice = (id: ClientType, label: string) => (
+    <button
+      type="button"
+      onClick={() => setType(id)}
+      className={cn(
+        "h-11 rounded-full text-sm font-semibold transition-colors",
+        type === id ? "bg-brand-blue text-white" : "text-brand-blue hover:bg-white"
+      )}
+    >
+      {label}
+    </button>
+  );
+
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-      <main className="flex-grow">
-        <section className="bg-gradient-to-br from-brand-blue to-slate-900 text-white py-16 md:py-24">
-          <div className="container-custom max-w-3xl mx-auto text-center">
-            <div className="inline-flex items-center justify-center w-14 h-14 bg-brand-accent/20 rounded-full mb-6">
-              <UserPlus className="w-7 h-7 text-brand-accent" />
+    <PageShell>
+      <PageHero eyebrow={t("clientIntake.eyebrow")} title={t("clientIntake.title")} subtitle={t("clientIntake.subtitle")} />
+
+      <section className="bg-[#E5DDD3] py-12 md:py-20">
+        <div className="container-custom max-w-3xl">
+          {done ? (
+            <div className={cn(accountPanel, "px-6 py-12 text-center md:px-10")}>
+              <span className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-brand-accent text-white">
+                <CheckCircle className="h-8 w-8" />
+              </span>
+              <h2 className="font-display text-3xl font-extrabold text-brand-blue">{t("clientIntake.thanksTitle")}</h2>
+              <p className="mt-3 text-brand-blue/70">{t("clientIntake.thanksBody")}</p>
+              <div className="mt-6 flex flex-col items-center gap-3">
+                <ShopPhoneLinks
+                  stacked
+                  nameClassName="text-brand-blue/80"
+                  linkClassName="font-semibold text-brand-accent hover:underline"
+                />
+                <a href="mailto:info@3dmakes.ch" className="font-semibold text-brand-accent hover:underline">
+                  info@3dmakes.ch
+                </a>
+              </div>
             </div>
-            <h1 className="heading-1 mb-4">Registrazione cliente</h1>
-            <p className="text-white/80 text-lg">
-              Compila i tuoi dati. Arrivano direttamente in anagrafica 3DMAKES.
-            </p>
-          </div>
-        </section>
-
-        <section className="py-16 md:py-20" style={{ backgroundColor: "#E5DDD3" }}>
-          <div className="container-custom max-w-3xl mx-auto">
-            {done ? (
-              <div className="bg-white rounded-lg shadow-lg p-8 text-center">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-green-500 rounded-full mb-5">
-                  <CheckCircle className="w-8 h-8 text-white" />
-                </div>
-                <h2 className="text-2xl font-bold text-brand-blue mb-2">Grazie, dati ricevuti</h2>
-                <p className="text-gray-600 mb-5">Ti ricontattiamo noi. Per urgenze:</p>
-                <div className="flex flex-col items-center gap-3">
-                  <ShopPhoneLinks
-                    stacked
-                    nameClassName="text-gray-700"
-                    linkClassName="text-brand-accent font-semibold hover:underline"
-                  />
-                  <a
-                    href="mailto:info@3dmakes.ch"
-                    className="text-brand-accent font-semibold hover:underline"
-                  >
-                    info@3dmakes.ch
-                  </a>
-                </div>
+          ) : linkError ? (
+            <div className={cn(accountPanel, "px-6 py-12 text-center md:px-10")}>
+              <h2 className="font-display text-3xl font-extrabold text-brand-blue">{linkError}</h2>
+              <p className="mt-3 text-brand-blue/70">
+                {t("clientIntake.linkHelp")}{" "}
+                <a href="mailto:info@3dmakes.ch" className="font-semibold text-brand-accent hover:underline">
+                  info@3dmakes.ch
+                </a>
+                .
+              </p>
+            </div>
+          ) : (
+            <div className={cn(accountPanel, "p-6 md:p-10")}>
+              <div className="mb-8 text-center">
+                <h2 className="font-display text-3xl font-extrabold text-brand-blue">{t("clientIntake.formTitle")}</h2>
+                <p className="mt-2 text-sm text-brand-blue/70">{t("clientIntake.formHint")}</p>
               </div>
-            ) : linkError ? (
-              <div className="bg-white rounded-lg shadow-lg p-8 text-center">
-                <h2 className="text-2xl font-bold text-brand-blue mb-2">{linkError}</h2>
-                <p className="text-gray-600">
-                  Chiedi a 3DMAKES un nuovo link, oppure scrivi a{" "}
-                  <a href="mailto:info@3dmakes.ch" className="text-brand-accent font-semibold hover:underline">
-                    info@3dmakes.ch
-                  </a>
-                  .
-                </p>
-              </div>
-            ) : (
-              <div className="bg-white rounded-lg shadow-lg p-6 md:p-8">
-                <div className="text-center mb-8">
-                  <h2 className="text-3xl font-bold text-brand-blue mb-2">I tuoi dati</h2>
-                  <p className="text-gray-600 text-sm">Privato o azienda: scegli e completa i campi.</p>
+
+              <form className="space-y-4" onSubmit={onSubmit}>
+                <div className="hidden" aria-hidden>
+                  <Label htmlFor="botField">Lascia vuoto</Label>
+                  <Input id="botField" name="botField" tabIndex={-1} autoComplete="off" value={f.botField} onChange={set("botField")} />
                 </div>
 
-                <form className="space-y-4" onSubmit={onSubmit}>
-                  <div className="hidden">
-                    <Label htmlFor="botField">Lascia vuoto</Label>
-                    <Input id="botField" name="botField" value={f.botField} onChange={set("botField")} />
-                  </div>
+                <div className="grid grid-cols-2 gap-1 rounded-full bg-[#F7F4F0] p-1">
+                  {choice("privato", t("clientIntake.private"))}
+                  {choice("azienda", t("clientIntake.company"))}
+                </div>
 
-                  <div className="grid grid-cols-2 gap-2">
-                    <Button
-                      type="button"
-                      variant={type === "privato" ? "default" : "outline"}
-                      className={type === "privato" ? "bg-brand-blue hover:bg-brand-blue/90" : ""}
-                      onClick={() => setType("privato")}
-                    >
-                      Privato
-                    </Button>
-                    <Button
-                      type="button"
-                      variant={type === "azienda" ? "default" : "outline"}
-                      className={type === "azienda" ? "bg-brand-blue hover:bg-brand-blue/90" : ""}
-                      onClick={() => setType("azienda")}
-                    >
-                      Azienda
-                    </Button>
-                  </div>
-
-                  {type === "azienda" ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="space-y-2 sm:col-span-2">
-                        <Label htmlFor="company_name" className="text-gray-700">
-                          Ragione sociale
-                        </Label>
-                        <Input
-                          id="company_name"
-                          required
-                          value={f.company_name}
-                          onChange={set("company_name")}
-                          placeholder="Es. Merk SA"
-                        />
-                      </div>
-                      <div className="space-y-2 sm:col-span-2">
-                        <Label htmlFor="vat_number" className="text-gray-700">
-                          Partita IVA / IDE
-                        </Label>
-                        <Input id="vat_number" value={f.vat_number} onChange={set("vat_number")} />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="first_name" className="text-gray-700">
-                          Nome referente
-                        </Label>
-                        <Input id="first_name" value={f.first_name} onChange={set("first_name")} />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="last_name" className="text-gray-700">
-                          Cognome referente
-                        </Label>
-                        <Input id="last_name" value={f.last_name} onChange={set("last_name")} />
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="first_name" className="text-gray-700">
-                          Nome
-                        </Label>
-                        <Input id="first_name" required value={f.first_name} onChange={set("first_name")} />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="last_name" className="text-gray-700">
-                          Cognome
-                        </Label>
-                        <Input id="last_name" required value={f.last_name} onChange={set("last_name")} />
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="email" className="text-gray-700">
-                        Email
+                {type === "azienda" ? (
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div className="space-y-2 sm:col-span-2">
+                      <Label htmlFor="company_name" className={labelClass}>
+                        {t("clientIntake.companyName")}
                       </Label>
-                      <Input id="email" type="email" required value={f.email} onChange={set("email")} />
+                      <Input id="company_name" required value={f.company_name} onChange={set("company_name")} className={fieldClass} />
+                    </div>
+                    <div className="space-y-2 sm:col-span-2">
+                      <Label htmlFor="vat_number" className={labelClass}>
+                        {t("clientIntake.vat")}
+                      </Label>
+                      <Input id="vat_number" value={f.vat_number} onChange={set("vat_number")} className={fieldClass} />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="phone" className="text-gray-700">
-                        Telefono
+                      <Label htmlFor="first_name" className={labelClass}>
+                        {t("clientIntake.contactFirst")}
                       </Label>
-                      <Input id="phone" type="tel" required value={f.phone} onChange={set("phone")} />
+                      <Input id="first_name" value={f.first_name} onChange={set("first_name")} className={fieldClass} />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="last_name" className={labelClass}>
+                        {t("clientIntake.contactLast")}
+                      </Label>
+                      <Input id="last_name" value={f.last_name} onChange={set("last_name")} className={fieldClass} />
                     </div>
                   </div>
+                ) : (
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="first_name" className={labelClass}>
+                        {t("clientIntake.firstName")}
+                      </Label>
+                      <Input id="first_name" required value={f.first_name} onChange={set("first_name")} className={fieldClass} />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="last_name" className={labelClass}>
+                        {t("clientIntake.lastName")}
+                      </Label>
+                      <Input id="last_name" required value={f.last_name} onChange={set("last_name")} className={fieldClass} />
+                    </div>
+                  </div>
+                )}
 
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
-                    <Label htmlFor="address" className="text-gray-700">
-                      Indirizzo
+                    <Label htmlFor="email" className={labelClass}>
+                      {t("clientIntake.email")}
                     </Label>
-                    <Input id="address" value={f.address} onChange={set("address")} />
+                    <Input id="email" type="email" required value={f.email} onChange={set("email")} className={fieldClass} />
                   </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="zip" className="text-gray-700">
-                        CAP
-                      </Label>
-                      <Input id="zip" value={f.zip} onChange={set("zip")} />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="city" className="text-gray-700">
-                        Località
-                      </Label>
-                      <Input id="city" value={f.city} onChange={set("city")} />
-                    </div>
-                  </div>
-
                   <div className="space-y-2">
-                    <Label htmlFor="notes" className="text-gray-700">
-                      Note (facoltative)
+                    <Label htmlFor="phone" className={labelClass}>
+                      {t("clientIntake.phone")}
                     </Label>
-                    <Textarea id="notes" value={f.notes} onChange={set("notes")} rows={3} />
+                    <Input id="phone" type="tel" required value={f.phone} onChange={set("phone")} className={fieldClass} />
                   </div>
+                </div>
 
-                  <Button
-                    type="submit"
-                    disabled={sending}
-                    className="w-full bg-brand-blue hover:bg-brand-blue/90 gap-2"
-                  >
-                    <Send className="w-4 h-4" />
-                    {sending ? "Invio in corso…" : "Invia registrazione"}
-                  </Button>
-                </form>
-              </div>
-            )}
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </div>
+                <div className="space-y-2">
+                  <Label htmlFor="address" className={labelClass}>
+                    {t("clientIntake.address")}
+                  </Label>
+                  <Input id="address" value={f.address} onChange={set("address")} className={fieldClass} />
+                </div>
+
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="zip" className={labelClass}>
+                      {t("clientIntake.zip")}
+                    </Label>
+                    <Input id="zip" value={f.zip} onChange={set("zip")} className={fieldClass} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="city" className={labelClass}>
+                      {t("clientIntake.city")}
+                    </Label>
+                    <Input id="city" value={f.city} onChange={set("city")} className={fieldClass} />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="notes" className={labelClass}>
+                    {t("clientIntake.notes")}
+                  </Label>
+                  <Textarea id="notes" value={f.notes} onChange={set("notes")} rows={3} className={areaClass} />
+                </div>
+
+                <Button type="submit" disabled={sending} className={`mt-2 w-full ${primaryButtonClass}`}>
+                  <Send className="h-4 w-4" />
+                  {sending ? t("clientIntake.sending") : t("clientIntake.submit")}
+                </Button>
+              </form>
+            </div>
+          )}
+        </div>
+      </section>
+    </PageShell>
   );
 };
 

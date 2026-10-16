@@ -429,19 +429,23 @@ const AdminPanel = () => {
   };
   
   return (
-    <div className="container mx-auto p-4">
-      <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-4">
-        <h2 className="text-2xl md:text-3xl font-bold">Pannello Amministratore</h2>
+    <div>
+      <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div>
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-brand-accent">3DMAKES</p>
+          <h2 className="font-display text-3xl font-extrabold tracking-tight text-brand-blue md:text-4xl">Pannello amministratore</h2>
+        </div>
       
         {/* Mobile Navigation - Dropdown menu */}
         <div className="md:hidden flex items-center">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="flex items-center gap-2">
+              <Button variant="outline" size="sm" className="flex items-center gap-2 rounded-full border-brand-blue/15 bg-white">
                 <Menu className="h-4 w-4" />
                 {activeTab === "dashboard" && "Dashboard"}
                 {activeTab === "shopOrders" && "Ordini Shop"}
                 {activeTab === "quoteRequests" && "Preventivi"}
+                {activeTab === "courses" && "Corsi"}
                 {activeTab === "messages" && "Messaggi"}
                 <ChevronDown className="h-4 w-4" />
               </Button>
@@ -488,11 +492,11 @@ const AdminPanel = () => {
       </div>
       
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="mb-4 hidden md:flex">
-          <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-          <TabsTrigger value="quoteRequests">Richieste Preventivo</TabsTrigger>
-          <TabsTrigger value="courses">Corsi</TabsTrigger>
-          <TabsTrigger value="messages">Messaggi</TabsTrigger>
+        <TabsList className="mb-2 hidden h-auto flex-wrap justify-start gap-1 rounded-full bg-white p-1.5 md:flex">
+          <TabsTrigger value="dashboard" className="rounded-full px-4 py-2 data-[state=active]:bg-brand-blue data-[state=active]:text-white data-[state=active]:shadow-none">Dashboard</TabsTrigger>
+          <TabsTrigger value="quoteRequests" className="rounded-full px-4 py-2 data-[state=active]:bg-brand-blue data-[state=active]:text-white data-[state=active]:shadow-none">Richieste preventivo</TabsTrigger>
+          <TabsTrigger value="courses" className="rounded-full px-4 py-2 data-[state=active]:bg-brand-blue data-[state=active]:text-white data-[state=active]:shadow-none">Corsi</TabsTrigger>
+          <TabsTrigger value="messages" className="rounded-full px-4 py-2 data-[state=active]:bg-brand-blue data-[state=active]:text-white data-[state=active]:shadow-none">Messaggi</TabsTrigger>
         </TabsList>
         
         <TabsContent value="dashboard">
@@ -500,14 +504,14 @@ const AdminPanel = () => {
           <div className="space-y-6">
             <div className="flex flex-col md:flex-row md:justify-between md:items-center">
               <div>
-                <h3 className="text-xl md:text-2xl font-semibold">Dashboard Amministratore</h3>
-                <p className="text-gray-600 mt-1">Panoramica generale del sistema</p>
+                <h3 className="font-display text-2xl font-extrabold text-brand-blue">Panoramica</h3>
+                <p className="mt-1 text-brand-blue/60">Preventivi, clienti e fatturato.</p>
               </div>
               <Button 
                 variant="outline" 
                 onClick={fetchDashboardStats}
                 disabled={dashboardLoading}
-                className="mt-4 md:mt-0"
+                className="mt-4 rounded-full border-brand-blue/15 md:mt-0"
               >
                 {dashboardLoading ? 'Aggiornando...' : 'Aggiorna'}
               </Button>
@@ -522,7 +526,7 @@ const AdminPanel = () => {
                 {/* Statistiche principali */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                   <Card 
-                    className="cursor-pointer transition-all duration-200 hover:shadow-lg hover:scale-105 hover:bg-blue-50"
+                    className="cursor-pointer rounded-[1.5rem] border-brand-blue/10 bg-white shadow-none transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_20px_40px_-24px_rgba(26,42,74,0.45)]"
                     onClick={() => setActiveTab("quoteRequests")}
                   >
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -538,7 +542,7 @@ const AdminPanel = () => {
                   </Card>
                   
                   <Card 
-                    className="cursor-pointer transition-all duration-200 hover:shadow-lg hover:scale-105 hover:bg-blue-50"
+                    className="cursor-pointer rounded-[1.5rem] border-brand-blue/10 bg-white shadow-none transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_20px_40px_-24px_rgba(26,42,74,0.45)]"
                     onClick={() => navigate('/admin/clients')}
                   >
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -554,7 +558,7 @@ const AdminPanel = () => {
                   </Card>
                   
                   <Card 
-                    className="cursor-pointer transition-all duration-200 hover:shadow-lg hover:scale-105 hover:bg-blue-50"
+                    className="cursor-pointer rounded-[1.5rem] border-brand-blue/10 bg-white shadow-none transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_20px_40px_-24px_rgba(26,42,74,0.45)]"
                     onClick={() => navigate('/admin/revenue')}
                   >
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -573,7 +577,7 @@ const AdminPanel = () => {
                 {/* Sezioni di riepilogo */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   <Card 
-                    className="cursor-pointer transition-all duration-200 hover:shadow-lg hover:bg-gray-50"
+                    className="cursor-pointer rounded-[1.5rem] border-brand-blue/10 bg-white shadow-none transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_20px_40px_-24px_rgba(26,42,74,0.45)]"
                     onClick={() => setActiveTab("quoteRequests")}
                   >
                     <CardHeader>
@@ -612,9 +616,9 @@ const AdminPanel = () => {
                 </div>
                 
                 {/* Azioni rapide */}
-                <Card>
+                <Card className="rounded-[1.5rem] border-brand-blue/10 bg-white shadow-none">
                   <CardHeader>
-                    <CardTitle>Azioni Rapide</CardTitle>
+                    <CardTitle className="font-display text-xl font-extrabold text-brand-blue">Azioni rapide</CardTitle>
                     <CardDescription>
                       Accesso rapido alle funzioni principali
                     </CardDescription>

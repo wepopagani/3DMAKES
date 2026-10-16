@@ -3,10 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { BookOpen, CheckCircle, GraduationCap, Users, Clock, Send } from "lucide-react";
+import { BookOpen, CheckCircle, GraduationCap, Users, Clock, Send, type LucideIcon } from "lucide-react";
 import { useTranslation } from 'react-i18next';
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import { motion } from "framer-motion";
+import PageShell from "@/components/anteprima/PageShell";
+import { CheckDot, GrowLine, PageHero, SectionIntro } from "@/components/anteprima/PageBlocks";
+import { InteractiveCard, PressButton, Reveal, Stagger, StaggerItem } from "@/components/anteprima/primitives";
 import { ShopPhoneLinks } from "@/components/ShopPhoneLinks";
 import { addCourseRegistration } from "@/services/courseRegistrationService";
 import { useToast } from "@/components/ui/use-toast";
@@ -23,240 +25,206 @@ const IscrizioneCorsi = () => {
   const timeSlots = openCourseSlots(i18n.language);
   if (isSubmitted) {
     return (
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-grow bg-brand-blue">
-          <section className="py-16 md:py-24">
-            <div className="container-custom">
-              <div className="max-w-2xl mx-auto text-center">
-                <div className="inline-flex items-center justify-center w-20 h-20 bg-green-500/20 rounded-full mb-6 animate-bounce">
-                  <CheckCircle className="w-10 h-10 text-green-400" />
-                </div>
-                <h1 className="text-4xl md:text-5xl font-black text-white mb-4">{t("courseRegistration.success.title")}</h1>
-                <p className="text-gray-300 text-lg mb-8">
-                  {t("courseRegistration.success.description")}
-                </p>
-                <div className="bg-white/5 border border-white/10 rounded-lg p-6 mb-8 backdrop-blur-sm">
-                  <p className="text-sm text-gray-300">
-                    <strong className="text-white">{t("courseRegistration.success.nextStepsTitle")}</strong><br />
-                    {t("courseRegistration.success.step1")}<br />
-                    {t("courseRegistration.success.step2")}<br />
-                    {t("courseRegistration.success.step3")}
-                  </p>
-                </div>
-                <Button 
-                  onClick={() => window.location.href = '/'}
-                  variant="secondary"
-                >
-                  {t("courseRegistration.success.backHome")}
-                </Button>
-              </div>
-            </div>
-          </section>
-        </main>
-        <Footer />
-      </div>
+      <PageShell>
+        <PageHero
+          title={t("courseRegistration.success.title")}
+          subtitle={t("courseRegistration.success.description")}
+          badge={
+            <motion.div
+              className="relative mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-green-500/20"
+              initial={{ scale: 0, rotate: -30 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ type: "spring", stiffness: 260, damping: 14, delay: 0.2 }}
+            >
+              <span
+                aria-hidden
+                className="absolute inset-0 rounded-full ring-2 ring-green-400/40 motion-safe:animate-ping [animation-duration:2.4s] [animation-iteration-count:3]"
+              />
+              <CheckCircle className="h-10 w-10 text-green-400" />
+            </motion.div>
+          }
+        >
+          <div className="mx-auto max-w-2xl rounded-3xl border border-white/10 bg-white/5 p-6 text-left backdrop-blur-sm md:p-8">
+            <p className="mb-4 font-semibold text-white">{t("courseRegistration.success.nextStepsTitle")}</p>
+            <Stagger className="space-y-3" delay={0.5}>
+              {[
+                t("courseRegistration.success.step1"),
+                t("courseRegistration.success.step2"),
+                t("courseRegistration.success.step3"),
+              ].map((step) => (
+                <StaggerItem key={step}>
+                  <p className="text-sm text-gray-300 md:text-base">{step}</p>
+                </StaggerItem>
+              ))}
+            </Stagger>
+          </div>
+          <div className="mt-8">
+            <PressButton
+              variant="light"
+              size="lg"
+              onClick={() => window.location.href = '/'}
+            >
+              {t("courseRegistration.success.backHome")}
+            </PressButton>
+          </div>
+        </PageHero>
+      </PageShell>
     );
   }
 
+  const features: { icon: LucideIcon; title: string; description: string }[] = [
+    {
+      icon: Users,
+      title: t("courseRegistration.features.smallGroups.title"),
+      description: t("courseRegistration.features.smallGroups.description"),
+    },
+    {
+      icon: BookOpen,
+      title: t("courseRegistration.features.practiceTheory.title"),
+      description: t("courseRegistration.features.practiceTheory.description"),
+    },
+    {
+      icon: Clock,
+      title: t("courseRegistration.features.twoEvenings.title"),
+      description: t("courseRegistration.features.twoEvenings.description"),
+    },
+  ];
+
+  const modules = [
+    { duration: "1h", key: "safety", items: 3 },
+    { duration: "3h", key: "fdm", items: 4 },
+    { duration: "3h", key: "sla", items: 4 },
+    { duration: "1h", key: "techniques", items: 4 },
+  ];
+
+  const includes = [1, 2, 3, 4, 5, 6].map((n) => t(`courseRegistration.includes.item${n}`));
+
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-      <main className="flex-grow">
-        {/* Hero + Caratteristiche + Form - Tutto su sfondo brand-blue */}
-        <section className="bg-brand-blue py-16 md:py-24">
+    <PageShell>
+      <PageHero
+        title={t("courseRegistration.hero.title")}
+        subtitle={t("courseRegistration.hero.subtitle")}
+        badge={
+          <Reveal y={0} scale={0.6} delay={0.1} className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand-accent/20">
+            <GraduationCap className="h-8 w-8 text-brand-accent" />
+          </Reveal>
+        }
+        footer={
+          <Stagger className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6" delay={0.45}>
+            {features.map(({ icon: Icon, title, description }) => (
+              <StaggerItem key={title} className="h-full">
+                <InteractiveCard
+                  lift={6}
+                  glow="rgba(61,157,255,0.25)"
+                  className="h-full rounded-3xl border border-white/10 bg-white/5 backdrop-blur-sm transition-colors duration-300 hover:border-brand-accent/40"
+                >
+                  <div className="flex h-full flex-col items-center justify-center p-6 text-center md:min-h-[200px]">
+                    <span className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-full bg-brand-accent/20 text-brand-accent transition-colors duration-300 group-hover:bg-brand-accent group-hover:text-white">
+                      <Icon aria-hidden className="h-7 w-7 transition-transform duration-500 group-hover:scale-110" />
+                    </span>
+                    <h3 className="mb-2 text-xl font-bold text-white">{title}</h3>
+                    <p className="text-sm text-gray-400">{description}</p>
+                  </div>
+                </InteractiveCard>
+              </StaggerItem>
+            ))}
+          </Stagger>
+        }
+      />
+
+        {/* Programma del corso */}
+        <section className="bg-white py-16 md:py-24">
           <div className="container-custom">
+            <div className="mx-auto max-w-6xl">
+              <SectionIntro title={t("courseRegistration.program.title")} text={t("courseRegistration.program.subtitle")} />
 
-            {/* Titolo */}
-            <div className="max-w-4xl mx-auto text-center mb-16">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-brand-accent/20 rounded-full mb-6">
-                <GraduationCap className="w-8 h-8 text-brand-accent" />
-              </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4">
-                {t("courseRegistration.hero.title")}
-              </h1>
-              <p className="text-lg md:text-xl text-gray-300">
-                {t("courseRegistration.hero.subtitle")}
-              </p>
-            </div>
+              <Stagger className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
+                {modules.map((module) => (
+                  <StaggerItem key={module.key} className="h-full">
+                    <InteractiveCard
+                      lift={6}
+                      className="h-full rounded-3xl bg-[#E5DDD3]/45 p-5 ring-1 ring-brand-blue/5 transition-shadow duration-300 hover:shadow-xl md:p-6"
+                    >
+                      <div className="mb-4 flex items-center gap-3">
+                        <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand-accent text-lg font-bold text-white shadow-lg shadow-brand-accent/30 transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110">
+                          {module.duration}
+                        </span>
+                        <h3 className="text-lg font-bold text-brand-blue">
+                          {t(`courseRegistration.program.modules.${module.key}.title`)}
+                        </h3>
+                      </div>
+                      <ul className="space-y-2 text-sm text-gray-700">
+                        {Array.from({ length: module.items }, (_, index) => (
+                          <li key={index} className="flex items-start gap-2.5">
+                            <span aria-hidden className="mt-[0.45rem] h-1.5 w-1.5 shrink-0 rounded-full bg-brand-accent" />
+                            {t(`courseRegistration.program.modules.${module.key}.item${index + 1}`)}
+                          </li>
+                        ))}
+                      </ul>
+                    </InteractiveCard>
+                  </StaggerItem>
+                ))}
+              </Stagger>
 
-            {/* Caratteristiche - 3 card glassmorphism */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-              <div className="bg-white/5 p-6 rounded-lg border border-white/10 backdrop-blur-sm flex flex-col items-center justify-center min-h-[200px]">
-                <div className="inline-flex items-center justify-center w-14 h-14 bg-brand-accent/20 rounded-full mb-4">
-                  <Users className="w-7 h-7 text-brand-accent" />
+              <Reveal>
+                <div className="rounded-3xl bg-gradient-to-br from-brand-blue to-slate-900 p-6 text-white shadow-xl shadow-brand-blue/20 md:p-8">
+                  <h3 className="mb-5 text-lg font-bold">{t("courseRegistration.includes.title")}</h3>
+                  <Stagger className="grid grid-cols-1 gap-x-6 gap-y-3 text-sm text-gray-200 md:grid-cols-2" stagger={0.05}>
+                    {includes.map((item) => (
+                      <StaggerItem key={item}>
+                        <div className="group flex items-center gap-3">
+                          <CheckDot className="bg-brand-accent/20" />
+                          {item}
+                        </div>
+                      </StaggerItem>
+                    ))}
+                  </Stagger>
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">{t("courseRegistration.features.smallGroups.title")}</h3>
-                <p className="text-gray-400 text-sm text-center">
-                  {t("courseRegistration.features.smallGroups.description")}
-                </p>
-              </div>
-              <div className="bg-white/5 p-6 rounded-lg border border-white/10 backdrop-blur-sm flex flex-col items-center justify-center min-h-[200px]">
-                <div className="inline-flex items-center justify-center w-14 h-14 bg-brand-accent/20 rounded-full mb-4">
-                  <BookOpen className="w-7 h-7 text-brand-accent" />
-                </div>
-                <h3 className="text-xl font-bold text-white mb-2">{t("courseRegistration.features.practiceTheory.title")}</h3>
-                <p className="text-gray-400 text-sm text-center">
-                  {t("courseRegistration.features.practiceTheory.description")}
-                </p>
-              </div>
-              <div className="bg-white/5 p-6 rounded-lg border border-white/10 backdrop-blur-sm flex flex-col items-center justify-center min-h-[200px]">
-                <div className="inline-flex items-center justify-center w-14 h-14 bg-brand-accent/20 rounded-full mb-4">
-                  <Clock className="w-7 h-7 text-brand-accent" />
-                </div>
-                <h3 className="text-xl font-bold text-white mb-2">{t("courseRegistration.features.twoEvenings.title")}</h3>
-                <p className="text-gray-400 text-sm text-center">
-                  {t("courseRegistration.features.twoEvenings.description")}
-                </p>
-              </div>
-            </div>
-
-          </div>
-        </section>
-
-        {/* Sezione Programma del Corso - Full Width */}
-        <section className="py-16 md:py-6" style={{ backgroundColor: '#E5DDD3' }}>
-          <div className="container-custom">
-            <div className="max-w-6xl mx-auto">
-              <h2 className="text-3xl md:text-4xl font-black text-brand-blue mb-3 text-center">
-                {t("courseRegistration.program.title")}
-              </h2>
-              <p className="text-gray-600 mb-10 italic text-center text-lg">
-                {t("courseRegistration.program.subtitle")}
-              </p>
-              
-              {/* 4 Moduli in Griglia 2x2 */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
-                
-                {/* Modulo 1 - Sicurezza */}
-                <div className="bg-white rounded-lg p-5 shadow-sm border border-gray-200">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-12 h-12 rounded-full bg-brand-accent flex items-center justify-center flex-shrink-0">
-                      <span className="text-white text-lg font-bold">1h</span>
-                    </div>
-                    <h3 className="text-lg font-bold text-brand-blue">{t("courseRegistration.program.modules.safety.title")}</h3>
-                  </div>
-                  <ul className="space-y-1.5 text-sm text-gray-700">
-                    <li>• {t("courseRegistration.program.modules.safety.item1")}</li>
-                    <li>• {t("courseRegistration.program.modules.safety.item2")}</li>
-                    <li>• {t("courseRegistration.program.modules.safety.item3")}</li>
-                  </ul>
-                </div>
-
-                {/* Modulo 2 - FDM */}
-                <div className="bg-white rounded-lg p-5 shadow-sm border border-gray-200">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-12 h-12 rounded-full bg-brand-accent flex items-center justify-center flex-shrink-0">
-                      <span className="text-white text-lg font-bold">3h</span>
-                    </div>
-                    <h3 className="text-lg font-bold text-brand-blue">{t("courseRegistration.program.modules.fdm.title")}</h3>
-                  </div>
-                  <ul className="space-y-1.5 text-sm text-gray-700">
-                    <li>• {t("courseRegistration.program.modules.fdm.item1")}</li>
-                    <li>• {t("courseRegistration.program.modules.fdm.item2")}</li>
-                    <li>• {t("courseRegistration.program.modules.fdm.item3")}</li>
-                    <li>• {t("courseRegistration.program.modules.fdm.item4")}</li>
-                  </ul>
-                </div>
-
-                {/* Modulo 3 - SLA */}
-                <div className="bg-white rounded-lg p-5 shadow-sm border border-gray-200">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-12 h-12 rounded-full bg-brand-accent flex items-center justify-center flex-shrink-0">
-                      <span className="text-white text-lg font-bold">3h</span>
-                    </div>
-                    <h3 className="text-lg font-bold text-brand-blue">{t("courseRegistration.program.modules.sla.title")}</h3>
-                  </div>
-                  <ul className="space-y-1.5 text-sm text-gray-700">
-                    <li>• {t("courseRegistration.program.modules.sla.item1")}</li>
-                    <li>• {t("courseRegistration.program.modules.sla.item2")}</li>
-                    <li>• {t("courseRegistration.program.modules.sla.item3")}</li>
-                    <li>• {t("courseRegistration.program.modules.sla.item4")}</li>
-                  </ul>
-                </div>
-
-                {/* Modulo 4 - Tecniche */}
-                <div className="bg-white rounded-lg p-5 shadow-sm border border-gray-200">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-12 h-12 rounded-full bg-brand-accent flex items-center justify-center flex-shrink-0">
-                      <span className="text-white text-lg font-bold">1h</span>
-                    </div>
-                    <h3 className="text-lg font-bold text-brand-blue">{t("courseRegistration.program.modules.techniques.title")}</h3>
-                  </div>
-                  <ul className="space-y-1.5 text-sm text-gray-700">
-                    <li>• {t("courseRegistration.program.modules.techniques.item1")}</li>
-                    <li>• {t("courseRegistration.program.modules.techniques.item2")}</li>
-                    <li>• {t("courseRegistration.program.modules.techniques.item3")}</li>
-                    <li>• {t("courseRegistration.program.modules.techniques.item4")}</li>
-                  </ul>
-                </div>
-              </div>
-
-              {/* Dettagli Corso - Lista compatta */}
-              <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
-                <h3 className="font-bold text-brand-blue mb-4 text-lg">{t("courseRegistration.includes.title")}</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2 text-sm text-gray-700">
-                  <div className="flex items-center gap-2">
-                    <span className="text-brand-accent font-bold">✓</span> {t("courseRegistration.includes.item1")}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-brand-accent font-bold">✓</span> {t("courseRegistration.includes.item2")}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-brand-accent font-bold">✓</span> {t("courseRegistration.includes.item3")}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-brand-accent font-bold">✓</span> {t("courseRegistration.includes.item4")}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-brand-accent font-bold">✓</span> {t("courseRegistration.includes.item5")}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-brand-accent font-bold">✓</span> {t("courseRegistration.includes.item6")}
-                  </div>
-                </div>
-              </div>
+              </Reveal>
             </div>
           </div>
         </section>
 
-        {/* Sezione Prezzo e Form - Su sfondo chiaro */}
-        <section className="py-16 md:py-20" style={{ backgroundColor: '#E5DDD3' }}>
+        {/* Prezzo e iscrizione */}
+        <section className="py-16 md:py-24" style={{ backgroundColor: '#E5DDD3' }}>
           <div className="container-custom">
-            <div className="max-w-5xl mx-auto">
-              
+            <div className="mx-auto max-w-5xl">
               {/* Prezzo in evidenza */}
-              <div className="grid grid-cols-1 gap-6 mb-10">
-                
-                {/* Banner Offerta Limitata */}
-                <div className="relative">
-                  <div className="absolute -top-3 left-4 bg-red-600 text-white px-4 py-1 rounded-full text-xs font-bold uppercase shadow-md z-10">
-                    {t("courseRegistration.pricing.limitedSpots")}
-                  </div>
-                  <div className="border-2 border-brand-accent rounded-lg p-6 bg-white shadow-md h-full">
-                    <div className="text-center">
-                      <p className="text-gray-600 text-sm font-semibold mb-3 mt-2">{t("courseRegistration.pricing.earlyBird")}</p>
-                      <div className="flex items-center justify-center gap-3 mb-3">
-                        <span className="text-gray-400 line-through text-2xl font-bold">550</span>
-                        <span className="text-brand-accent text-5xl font-black">450</span>
-                        <span className="text-gray-700 text-xl font-bold">CHF</span>
-                      </div>
-                      <p className="text-green-600 font-semibold text-sm mb-3">
-                        {t("courseRegistration.pricing.savings")}
+              <Reveal y={24} className="relative mb-10">
+                <motion.div
+                  className="absolute -top-3 left-4 z-10 rounded-full bg-brand-orange px-4 py-1 text-xs font-bold uppercase text-white shadow-md"
+                  initial={{ rotate: -8, scale: 0.8 }}
+                  whileInView={{ rotate: 0, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ type: "spring", stiffness: 300, damping: 12, delay: 0.3 }}
+                >
+                  {t("courseRegistration.pricing.limitedSpots")}
+                </motion.div>
+                <div className="rounded-3xl border-2 border-brand-accent bg-white p-6 shadow-xl shadow-brand-accent/10 md:p-8">
+                  <div className="text-center">
+                    <p className="mb-3 mt-2 text-sm font-semibold text-gray-600">{t("courseRegistration.pricing.earlyBird")}</p>
+                    <div className="mb-3 flex items-center justify-center gap-3">
+                      <span className="relative text-2xl font-bold text-gray-400">
+                        550
+                        <GrowLine className="absolute -left-1 -right-1 top-1/2 -mt-px h-0.5 bg-gray-400" delay={0.5} />
+                      </span>
+                      <span className="text-5xl font-black text-brand-accent">450</span>
+                      <span className="text-xl font-bold text-gray-700">CHF</span>
+                    </div>
+                    <p className="mb-3 text-sm font-semibold text-green-600">
+                      {t("courseRegistration.pricing.savings")}
+                    </p>
+                    <div className="border-t border-gray-200 pt-3">
+                      <p className="text-xs text-gray-500">
+                        {t("courseRegistration.pricing.cta")}
                       </p>
-                      <div className="border-t border-gray-200 pt-3">
-                        <p className="text-xs text-gray-500">
-                          {t("courseRegistration.pricing.cta")}
-                        </p>
-                      </div>
                     </div>
                   </div>
                 </div>
-
-              </div>
+              </Reveal>
 
               {/* Form Iscrizione - Full Width */}
-              <div className="bg-white rounded-lg shadow-lg p-6 md:p-8">
+              <div className="rounded-3xl bg-white px-4 py-6 shadow-xl shadow-brand-blue/10 ring-1 ring-brand-blue/5 max-sm:[&_form_button]:text-base sm:p-6 md:p-10">
                 <div className="text-center mb-8">
                   <h3 className="text-3xl font-bold text-brand-blue mb-2">{t("courseRegistration.form.title")}</h3>
                   <p className="text-gray-600 text-sm">
@@ -544,21 +512,21 @@ const IscrizioneCorsi = () => {
               </div>
 
               {/* Contatti */}
-              <div className="mt-8 text-center text-gray-600 text-sm bg-white/50 rounded-lg p-4">
-                <p className="font-semibold text-brand-blue mb-1">{t("courseRegistration.contact.title")}</p>
-                <p>
-                  {t("courseRegistration.contact.prompt")}{" "}
-                  <ShopPhoneLinks stacked={false} linkClassName="text-brand-accent hover:underline font-semibold inline" />
-                  {" "}{t("courseRegistration.contact.orEmail")}{" "}
-                  <a href="mailto:info@3dmakes.ch" className="text-brand-accent hover:underline font-semibold">info@3dmakes.ch</a>
-                </p>
-              </div>
+              <Reveal className="mt-8">
+                <div className="rounded-3xl bg-white/60 p-5 text-center text-sm text-gray-600 ring-1 ring-brand-blue/5 backdrop-blur-sm md:p-6">
+                  <p className="font-semibold text-brand-blue mb-1">{t("courseRegistration.contact.title")}</p>
+                  <p>
+                    {t("courseRegistration.contact.prompt")}{" "}
+                    <ShopPhoneLinks stacked={false} className="justify-center" linkClassName="text-brand-accent hover:underline font-semibold inline" />
+                    {" "}{t("courseRegistration.contact.orEmail")}{" "}
+                    <a href="mailto:info@3dmakes.ch" className="text-brand-accent hover:underline font-semibold">info@3dmakes.ch</a>
+                  </p>
+                </div>
+              </Reveal>
             </div>
           </div>
         </section>
-      </main>
-      <Footer />
-    </div>
+    </PageShell>
   );
 };
 

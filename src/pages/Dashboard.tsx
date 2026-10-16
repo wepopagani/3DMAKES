@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/use-toast";
@@ -11,7 +10,7 @@ import { db, storage } from "@/firebase/config";
 import { formatDistanceToNow } from 'date-fns';
 import { it } from 'date-fns/locale';
 import UserPanel from "@/components/UserPanel";
-import { useNavigate, Link, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   Dialog,
   DialogContent,
@@ -20,17 +19,13 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FileInfo } from "@/types/user";
 import { ModelViewerPreventivo } from "@/components/ModelViewer";
-import { LogOut, File, User, Menu, ChevronDown, Home } from "lucide-react";
+import { LogOut, File, User } from "lucide-react";
+import { AccountShell, WorkspaceHeader, accountPanel, primaryButtonClass } from "@/components/anteprima/accountUi";
+import { cn } from "@/lib/utils";
 import AutoScrollText from "@/components/AutoScrollText";
 import {
   fetchLabDocuments,
@@ -40,6 +35,7 @@ import {
 } from "@/lib/gestionaleDocuments";
 
 const Dashboard = () => {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const { currentUser, userData, logOut, isAdmin } = useAuth();
   const navigate = useNavigate();
@@ -105,9 +101,6 @@ const Dashboard = () => {
     console.log("Dashboard - Current User:", currentUser);
     console.log("Dashboard - User Data:", userData);
   }, [location.pathname, navigate]);
-  
-  // Only render Footer when not on Messages tab
-  const shouldRenderFooter = true;
   
   // Fetch user projects and files from Firestore
   useEffect(() => {
@@ -642,94 +635,37 @@ const Dashboard = () => {
     document.body.removeChild(a);
   };
 
+  const firstName = userData?.nome?.trim();
+  const tabClass = (active: boolean) =>
+    cn(
+      "inline-flex h-10 items-center gap-2 rounded-full px-4 text-sm font-semibold transition-colors",
+      active ? "bg-brand-blue text-white" : "bg-white text-brand-blue hover:bg-white/70"
+    );
+
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="sticky top-0 z-30">
-        <Navbar />
-        <div className="bg-white border-b border-gray-200 flex justify-between px-6 py-2">
-          {/* Desktop Navigation - Hidden on mobile */}
-          <div className="hidden md:flex items-center space-x-4">
-            <Button 
-              variant={activeTab === "files" ? "default" : "ghost"} 
-              size="sm" 
-              onClick={() => navigate("/dashboard/file")}
-              className="flex items-center gap-2"
-            >
-              <File className="h-4 w-4 mr-1" />
-              I miei file
-            </Button>
-            <Button 
-              variant={activeTab === "profile" ? "default" : "ghost"} 
-              size="sm" 
-              onClick={() => navigate("/dashboard/profilo")}
-              className="flex items-center gap-2"
-            >
-              <User className="h-4 w-4 mr-1" />
-              Profilo
-            </Button>
-          </div>
-
-          {/* Mobile Navigation - Dropdown menu */}
-          <div className="md:hidden flex items-center">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" className="flex items-center gap-2">
-                  <Menu className="h-4 w-4" />
-                  {activeTab === "files" && "I miei file"}
-                  {activeTab === "profile" && "Profilo"}
-                  <ChevronDown className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="w-48">
-                <DropdownMenuItem 
-                  onClick={() => navigate("/")}
-                  className="flex items-center gap-2"
-                >
-                  <Home className="h-4 w-4" />
-                  Torna al sito
-                </DropdownMenuItem>
-                <DropdownMenuItem 
-                  onClick={() => navigate("/dashboard/file")}
-                  className="flex items-center gap-2"
-                >
-                  <File className="h-4 w-4" />
-                  I miei file
-                </DropdownMenuItem>
-                <DropdownMenuItem 
-                  onClick={() => navigate("/dashboard/profilo")}
-                  className="flex items-center gap-2"
-                >
-                  <User className="h-4 w-4" />
-                  Profilo
-                </DropdownMenuItem>
-                <DropdownMenuItem 
-                  onClick={handleLogout}
-                  className="flex items-center gap-2 text-red-600 hover:text-red-700 hover:bg-red-50"
-                >
-                  <LogOut className="h-4 w-4" />
-                  Logout
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-
-          <Button 
-            variant="outline" 
-            size="sm" 
-            onClick={handleLogout} 
-            className="flex items-center gap-2 text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
+    <AccountShell>
+      <div className="container-custom py-8 md:py-12">
+        <WorkspaceHeader
+          eyebrow={t("dashboard.areaEyebrow")}
+          title={firstName ? t("dashboard.hello", { name: firstName }) : t("dashboard.filesHeading")}
+        >
+          <button type="button" className={tabClass(activeTab === "files")} onClick={() => navigate("/dashboard/file")}>
+            <File className="h-4 w-4" />
+            {t("dashboard.myFiles")}
+          </button>
+          <button type="button" className={tabClass(activeTab === "profile")} onClick={() => navigate("/dashboard/profilo")}>
+            <User className="h-4 w-4" />
+            {t("dashboard.profile")}
+          </button>
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="inline-flex h-10 items-center gap-2 rounded-full border border-brand-blue/15 bg-white px-4 text-sm font-semibold text-brand-blue transition-colors hover:border-red-200 hover:text-red-600"
           >
-            <LogOut size={16} />
-            <span className="hidden sm:inline">Logout</span>
-          </Button>
-        </div>
-      </div>
-      <main className="flex-1">
-        <h1 className="sr-only">Area cliente — 3DMAKES</h1>
-        {/* Dashboard Content */}
-        <section className="py-8 md:py-10" style={{backgroundColor: '#E4DDD4'}}>
-          <div className="container-custom">
-            {/* Hidden TabsList - we're using our custom navigation instead */}
+            <LogOut className="h-4 w-4" />
+            {t("auth.logout")}
+          </button>
+        </WorkspaceHeader>
             <div className="hidden">
               <Tabs defaultValue={activeTab} value={activeTab} onValueChange={setActiveTab}>
                 <TabsList>
@@ -742,12 +678,12 @@ const Dashboard = () => {
             {/* Files Tab */}
             {activeTab === "files" && (
               <div className="space-y-6">
-              <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
-                <div className="p-6">
+              <div className={cn(accountPanel, "overflow-hidden")}>
+                <div className="p-6 md:p-8">
                   <div className="mb-6">
-                    <h2 className="text-xl font-semibold">Documenti 3DMAKES</h2>
-                    <p className="text-sm text-gray-500">
-                      Fatture e documenti caricati dal laboratorio.
+                    <h2 className="font-display text-2xl font-extrabold text-brand-blue">{t("dashboard.labTitle")}</h2>
+                    <p className="mt-1 text-sm text-brand-blue/60">
+                      {t("dashboard.labHint")}
                     </p>
                   </div>
                   {loading ? (
@@ -757,7 +693,7 @@ const Dashboard = () => {
                   ) : labDocs.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                       {labDocs.map((doc) => (
-                        <div key={doc.id} className="border rounded-lg overflow-hidden">
+                        <div key={doc.id} className="overflow-hidden rounded-2xl border border-brand-blue/10 bg-white">
                           <div
                             className="h-40 bg-gray-100 flex items-center justify-center overflow-hidden cursor-pointer"
                             onClick={() => handleOpenLabPreview(doc)}
@@ -795,7 +731,7 @@ const Dashboard = () => {
                                 className="h-8 px-2"
                                 onClick={() => handleOpenLabPreview(doc)}
                               >
-                                Anteprima
+                                {t("dashboard.preview")}
                               </Button>
                               <Button
                                 variant="ghost"
@@ -803,7 +739,7 @@ const Dashboard = () => {
                                 className="h-8 px-2"
                                 onClick={() => handleDownloadLabDoc(doc)}
                               >
-                                Scarica
+                                {t("common.download")}
                               </Button>
                             </div>
                           </div>
@@ -811,19 +747,19 @@ const Dashboard = () => {
                       ))}
                     </div>
                   ) : (
-                    <p className="text-sm text-gray-500">
-                      Quando ti inviamo una fattura o un documento, lo trovi qui.
+                    <p className="text-sm text-brand-blue/60">
+                      {t("dashboard.labEmpty")}
                     </p>
                   )}
                 </div>
               </div>
 
-              <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
-                <div className="p-6">
-                  <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-xl font-semibold">I tuoi file</h2>
-                    <Button size="sm" onClick={handleOpenUploadDialog}>
-                      Carica file
+              <div className={cn(accountPanel, "overflow-hidden")}>
+                <div className="p-6 md:p-8">
+                  <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <h2 className="font-display text-2xl font-extrabold text-brand-blue">{t("dashboard.filesHeading")}</h2>
+                    <Button size="sm" onClick={handleOpenUploadDialog} className={primaryButtonClass}>
+                      {t("dashboard.uploadFile")}
                     </Button>
                   </div>
                   
@@ -834,7 +770,7 @@ const Dashboard = () => {
                   ) : files.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                       {files.map(file => (
-                        <div key={file.id} className="border rounded-lg overflow-hidden">
+                        <div key={file.id} className="overflow-hidden rounded-2xl border border-brand-blue/10 bg-white">
                           <div className="h-40 bg-gray-100 flex items-center justify-center overflow-hidden cursor-pointer"
                                onClick={() => handleOpenPreview(file)}>
                             {file.type === '3d' && (
@@ -918,10 +854,10 @@ const Dashboard = () => {
                       ))}
                     </div>
                   ) : (
-                    <div className="text-center py-12">
-                      <p className="text-brand-gray mb-4">Non hai ancora caricato nessun file.</p>
-                      <Button onClick={handleOpenUploadDialog}>
-                        Carica il tuo primo file
+                    <div className="py-12 text-center">
+                      <p className="mb-4 text-brand-blue/70">{t("dashboard.noFiles")}</p>
+                      <Button onClick={handleOpenUploadDialog} className={primaryButtonClass}>
+                        {t("dashboard.uploadFirst")}
                       </Button>
                     </div>
                   )}
@@ -935,11 +871,7 @@ const Dashboard = () => {
               <UserPanel />
             )}
           </div>
-        </section>
-      </main>
-      
-      {shouldRenderFooter && <Footer />}
-      
+
       {/* Dialog per caricamento file */}
       <Dialog open={isUploadDialogOpen} onOpenChange={setIsUploadDialogOpen}>
         <DialogContent className="sm:max-w-md">
@@ -1180,7 +1112,7 @@ const Dashboard = () => {
           </div>
         </DialogContent>
       </Dialog>
-    </div>
+    </AccountShell>
   );
 };
 

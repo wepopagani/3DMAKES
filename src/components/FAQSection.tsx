@@ -1,7 +1,13 @@
 import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { ChevronDown } from "lucide-react";
+import { FaqAccordion, WRAP_LONG_WORDS } from "@/components/anteprima/PageBlocks";
+import { HEADING_2, PressLink, Reveal, SplitWords, Stagger, StaggerItem } from "@/components/anteprima/primitives";
 import { buildCompactFaqCategories } from "@/data/faqCategories";
+import { cn } from "@/lib/utils";
+
+const EASE_OUT: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 interface FAQSectionProps {
   /**
@@ -29,6 +35,7 @@ export default function FAQSection({
   hideViewAllLink = false,
 }: FAQSectionProps = {}) {
   const { t, i18n } = useTranslation();
+  const reduce = useReducedMotion();
 
   const faqCategories = useMemo(
     () => buildCompactFaqCategories(t),
@@ -48,15 +55,9 @@ export default function FAQSection({
       : faqCategories;
 
   const [openCategory, setOpenCategory] = useState<number | null>(null);
-  const [openFAQ, setOpenFAQ] = useState<number | null>(null);
 
   const toggleCategory = (index: number) => {
     setOpenCategory(openCategory === index ? null : index);
-    setOpenFAQ(null);
-  };
-
-  const toggleFAQ = (index: number) => {
-    setOpenFAQ(openFAQ === index ? null : index);
   };
 
   const faqPageSchema = useMemo(() => {
@@ -86,107 +87,100 @@ export default function FAQSection({
   }, [faqCategories, extraFaqs]);
 
   return (
-    <section className="py-16" style={{ backgroundColor: "#E5DDD3" }}>
+    <section className="relative overflow-hidden py-16 md:py-24" style={{ backgroundColor: "#E5DDD3" }}>
       <div className="container-custom">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageSchema) }}
         />
-        <div className="text-center max-w-3xl mx-auto mb-12">
-          <div className="inline-block px-3 py-1 text-sm font-medium rounded-full bg-brand-accent/10 text-brand-accent mb-4">
+        <div className="mx-auto mb-10 max-w-3xl text-center md:mb-12">
+          <Reveal y={12} className="mb-4 inline-block rounded-full bg-brand-accent/10 px-3 py-1 text-sm font-medium text-brand-accent">
             FAQ
-          </div>
-          <h2 className="heading-2 mb-6">{t("faq.title")}</h2>
-          <p className="body-text">{t("faq.subtitle")}</p>
+          </Reveal>
+          <h2 className={cn(HEADING_2, WRAP_LONG_WORDS, "mb-4 text-brand-blue")}>
+            <SplitWords text={t("faq.title")} />
+          </h2>
+          <Reveal delay={0.15}>
+            <p className="body-text">{t("faq.subtitle")}</p>
+          </Reveal>
         </div>
 
-        <div className="max-w-3xl mx-auto space-y-6">
-          {visibleCategories.map((category, categoryIndex) => (
-            <div
-              key={category.id}
-              className="bg-gray-50 rounded-lg overflow-hidden shadow-sm border border-gray-100"
-            >
-              <button
-                type="button"
-                className="w-full px-6 py-4 flex items-center justify-between text-left focus:outline-none"
-                onClick={() => toggleCategory(categoryIndex)}
-              >
-                <h3 className="text-lg font-semibold text-brand-blue">
-                  {category.title}
-                </h3>
-                <svg
-                  className={`w-5 h-5 text-brand-accent transform transition-transform ${
-                    openCategory === categoryIndex ? "rotate-180" : ""
-                  }`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
+        <Stagger className="mx-auto max-w-3xl space-y-4" stagger={0.07}>
+          {visibleCategories.map((category, categoryIndex) => {
+            const isOpen = openCategory === categoryIndex;
+            const panelId = `faq-categoria-${category.id}`;
+            return (
+              <StaggerItem key={category.id}>
+                <div
+                  className={cn(
+                    "overflow-hidden rounded-3xl bg-white ring-1 transition-shadow duration-300",
+                    isOpen ? "shadow-xl shadow-brand-blue/10 ring-brand-accent/30" : "shadow-sm ring-brand-blue/5 hover:shadow-md"
+                  )}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </button>
-
-              {openCategory === categoryIndex && (
-                <div className="px-6 pb-4">
-                  <div className="space-y-4">
-                    {category.faqs.map((faq, faqIndex) => (
-                      <div
-                        key={faqIndex}
-                        className="border-b border-gray-200 last:border-0"
-                      >
-                        <button
-                          type="button"
-                          className="w-full py-4 flex items-center justify-between text-left focus:outline-none"
-                          onClick={() => toggleFAQ(faqIndex)}
-                        >
-                          <h4 className="text-gray-800 pr-8 font-medium">
-                            {faq.question}
-                          </h4>
-                          <svg
-                            className={`w-4 h-4 text-brand-accent transform transition-transform flex-shrink-0 ${
-                              openFAQ === faqIndex ? "rotate-180" : ""
-                            }`}
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            aria-hidden="true"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M19 9l-7 7-7-7"
-                            />
-                          </svg>
-                        </button>
-                        {openFAQ === faqIndex && (
-                          <div className="pb-4 text-brand-gray">{faq.answer}</div>
+                  <h3>
+                    <motion.button
+                      type="button"
+                      id={`${panelId}-trigger`}
+                      aria-expanded={isOpen}
+                      aria-controls={panelId}
+                      onClick={() => toggleCategory(categoryIndex)}
+                      whileTap={{ scale: 0.985 }}
+                      className="group flex w-full items-center justify-between gap-4 px-5 py-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand-accent md:px-6 md:py-5"
+                    >
+                      <span
+                        className={cn(
+                          "min-w-0 text-lg font-semibold transition-colors duration-300",
+                          WRAP_LONG_WORDS,
+                          isOpen ? "text-brand-accent" : "text-brand-blue group-hover:text-brand-accent"
                         )}
-                      </div>
-                    ))}
-                  </div>
+                      >
+                        {category.title}
+                      </span>
+                      <motion.span
+                        aria-hidden
+                        animate={{ rotate: isOpen ? 180 : 0 }}
+                        transition={{ type: "spring", stiffness: 400, damping: 26 }}
+                        className={cn(
+                          "flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition-colors duration-300",
+                          isOpen ? "bg-brand-accent text-white" : "bg-brand-blue/5 text-brand-blue group-hover:bg-brand-accent/15"
+                        )}
+                      >
+                        <ChevronDown className="h-4 w-4" />
+                      </motion.span>
+                    </motion.button>
+                  </h3>
+
+                  <AnimatePresence initial={false}>
+                    {isOpen ? (
+                      <motion.div
+                        key="faqs"
+                        id={panelId}
+                        role="region"
+                        aria-labelledby={`${panelId}-trigger`}
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={reduce ? { duration: 0 } : { duration: 0.4, ease: EASE_OUT }}
+                        className="overflow-hidden"
+                      >
+                        <div className="mx-5 border-t border-brand-blue/10 pb-2 md:mx-6">
+                          <FaqAccordion items={category.faqs} idPrefix={`${panelId}-domanda`} headingLevel="h4" tone="flush" />
+                        </div>
+                      </motion.div>
+                    ) : null}
+                  </AnimatePresence>
                 </div>
-              )}
-            </div>
-          ))}
-        </div>
+              </StaggerItem>
+            );
+          })}
+        </Stagger>
 
         {!hideViewAllLink && (
-          <div className="text-center mt-10">
-            <Link
-              to="/faq"
-              className="inline-flex items-center gap-2 text-brand-blue font-medium hover:text-brand-accent transition-colors"
-            >
+          <Reveal className="mt-10 text-center">
+            <PressLink to="/faq" variant="outlineDark" arrow>
               {t("faq.viewAll")}
-              <span aria-hidden="true">→</span>
-            </Link>
-          </div>
+            </PressLink>
+          </Reveal>
         )}
       </div>
     </section>

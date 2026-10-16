@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import { AccountShell, WorkspaceHeader, primaryButtonClass } from "@/components/anteprima/accountUi";
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Plus, Upload, User, FileText, Send, Mail } from 'lucide-react';
+import { Plus, Upload, User, FileText, Send, Mail } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { collection, query, getDocs, where, orderBy, addDoc, doc, getDoc, setDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
@@ -388,36 +387,24 @@ const AdminQuotes = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <Navbar />
-      <main className="flex-grow container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-4">
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={() => navigate('/admin')}
-              className="flex items-center gap-2"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Torna alla Dashboard
-            </Button>
-            <div>
-              <h1 className="text-3xl font-bold">Gestione Preventivi</h1>
-              <p className="text-gray-600 mt-1">Visualizza e gestisci tutti i preventivi</p>
-            </div>
-          </div>
-          
-          <Button 
+    <AccountShell>
+      <div className="container-custom py-8 md:py-12">
+        <WorkspaceHeader
+          title="Gestione preventivi"
+          subtitle="Visualizza e gestisci tutti i preventivi."
+          onBack={() => navigate("/admin")}
+          backLabel="Torna al pannello"
+        >
+          <Button
             onClick={() => setIsCreateDialogOpen(true)}
-            className="flex items-center gap-2 bg-brand-accent hover:bg-brand-accent/90"
+            className={primaryButtonClass}
           >
             <Plus className="h-4 w-4" />
-            Crea Preventivo
+            Crea preventivo
           </Button>
-        </div>
+        </WorkspaceHeader>
         
-        <Card>
+        <Card className="rounded-[1.75rem] border-white/80 bg-white shadow-[0_18px_50px_-32px_rgba(26,42,74,0.55)]">
           <CardHeader>
             <CardTitle>Preventivi ({quotes.length})</CardTitle>
             <CardDescription>
@@ -710,9 +697,8 @@ const AdminQuotes = () => {
             </DialogFooter>
           </DialogContent>
         </Dialog>
-      </main>
-      <Footer />
-    </div>
+      </div>
+    </AccountShell>
   );
 };
 

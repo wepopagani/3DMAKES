@@ -60,6 +60,61 @@
       "projects": "Completed projects",
       "clients": "Satisfied clients",
       "precision": "Guaranteed precision"
+    },
+    "lab": {
+      "line1": "From the idea",
+      "line2": "to the finished part.",
+      "subtitle": "3D scanning, design, 3D printing, CNC and laser. All in one lab.",
+      "primary": "Tell us about your project",
+      "technologies": "Explore the technologies",
+      "courses": "Courses",
+      "aria": "Three-dimensional model of a component moving through a point cloud, scan, CAD, 3D printing, CNC milling and laser engraving.",
+      "modes": {
+        "print": "3D printing",
+        "scan": "3D scanning",
+        "cnc": "CNC",
+        "laser": "Laser"
+      },
+      "phases": {
+        "idea": "Idea",
+        "scan": "Scan",
+        "cad": "CAD",
+        "print": "3D printing",
+        "cnc": "CNC",
+        "laser": "Laser"
+      },
+      "chapters": {
+        "scan": {
+          "eyebrow": "3D scanning",
+          "title": "The part, as points.",
+          "body": "A line crosses the object and records its surface."
+        },
+        "reverse": {
+          "eyebrow": "Reverse engineering",
+          "title": "From the cloud to CAD.",
+          "body": "Points become a mesh, then a model you can edit."
+        },
+        "print": {
+          "eyebrow": "3D printing",
+          "title": "Layer after layer.",
+          "body": "The component grows from the bed, one layer at a time."
+        },
+        "cnc": {
+          "eyebrow": "CNC",
+          "title": "From stock to surface.",
+          "body": "The mill removes metal down to the finished shape."
+        },
+        "laser": {
+          "eyebrow": "Laser",
+          "title": "The mark on the part.",
+          "body": "The beam writes the logo onto the surface."
+        },
+        "done": {
+          "eyebrow": "One project",
+          "title": "Every technology it takes to make it.",
+          "body": "Have a project? Let's talk."
+        }
+      }
     }
   },
   "index": {
@@ -988,7 +1043,44 @@
     "loginWithGoogle": "Sign in with Google",
     "registerWithGoogle": "Sign up with Google",
     "backToLogin": "Back to login",
-    "accountCreatedSuccess": "Account created successfully!"
+    "accountCreatedSuccess": "Account created successfully!",
+    "or": "or",
+    "firstName": "First name",
+    "phone": "Phone",
+    "popupClosed": "Sign-in cancelled.",
+    "popupBlocked": "The browser blocked the window. Allow pop-ups for this site.",
+    "emailNotFound": "Email not found."
+  },
+  "clientIntake": {
+    "eyebrow": "Records",
+    "title": "Client registration",
+    "subtitle": "Fill in your details. They go straight into the 3DMAKES records.",
+    "formTitle": "Your details",
+    "formHint": "Private or company: choose one and complete the fields.",
+    "private": "Private",
+    "company": "Company",
+    "companyName": "Company name",
+    "vat": "VAT / IDE number",
+    "contactFirst": "Contact first name",
+    "contactLast": "Contact last name",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "zip": "Postcode",
+    "city": "City",
+    "notes": "Notes (optional)",
+    "submit": "Send registration",
+    "sending": "Sending…",
+    "thanksTitle": "Thanks, we have your details",
+    "thanksBody": "We will get back to you. For anything urgent:",
+    "linkUsed": "This link has already been used.",
+    "linkInvalid": "This link is no longer valid.",
+    "linkCheck": "The link could not be checked. Try again later.",
+    "linkHelp": "Ask 3DMAKES for a new link, or write to",
+    "failTitle": "Could not send",
+    "failBody": "Check the details and try again. If it keeps failing, write to info@3dmakes.ch."
   },
   "dashboard": {
     "title": "Dashboard",
@@ -1000,7 +1092,33 @@
     "files": "File",
     "newProject": "Nuovo Progetto",
     "newOrder": "Nuovo Ordine",
-    "viewAll": "Visualizza Tutti"
+    "viewAll": "Visualizza Tutti",
+    "areaEyebrow": "Client area",
+    "hello": "Hello, {{name}}",
+    "filesHeading": "Your files",
+    "myFiles": "My files",
+    "labTitle": "3DMAKES documents",
+    "labHint": "Invoices and documents uploaded by the lab.",
+    "labEmpty": "When we send you an invoice or a document, it shows up here.",
+    "uploadFile": "Upload file",
+    "noFiles": "You have not uploaded any files yet.",
+    "uploadFirst": "Upload your first file",
+    "preview": "Preview",
+    "profileTitle": "Your profile",
+    "profileHint": "Your account details.",
+    "notSet": "Not set",
+    "changeEmail": "Change email",
+    "changeEmailHelp": "Enter the new email and your current password.",
+    "newEmail": "New email",
+    "currentPassword": "Current password",
+    "confirmChange": "Confirm",
+    "updating": "Updating…",
+    "notSignedIn": "You are not signed in",
+    "signInRequired": "Sign in to see your profile.",
+    "phoneLabel": "Phone",
+    "addressLabel": "Address",
+    "cityLabel": "City",
+    "zipLabel": "Postcode"
   },
   "projects": {
     "title": "Progetti",

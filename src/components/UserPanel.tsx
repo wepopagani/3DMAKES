@@ -11,6 +11,8 @@ import { Label } from "./ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { User, Edit, Check, X, Mail, Lock } from 'lucide-react';
 import { useToast } from "./ui/use-toast";
+import { useTranslation } from "react-i18next";
+import { accountPanel, fieldClass, labelClass, primaryButtonClass } from "@/components/anteprima/accountUi";
 import {
   Dialog,
   DialogContent,
@@ -56,6 +58,7 @@ const UserPanel = () => {
   
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useTranslation();
   
   useEffect(() => {
     const fetchUserData = async () => {
@@ -196,7 +199,7 @@ const UserPanel = () => {
   
   if (loading) {
     return (
-      <div className="p-6 bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className={`${accountPanel} p-6`}>
         <div className="space-y-3">
           <Skeleton className="h-10 w-1/3" />
           <Skeleton className="h-4 w-1/2" />
@@ -215,9 +218,9 @@ const UserPanel = () => {
   
   if (!currentUser) {
     return (
-      <div className="p-4 mb-4 bg-red-50 text-red-700 rounded border border-red-200">
-        <p className="font-medium">Non sei autenticato</p>
-        <p className="text-sm">Esegui il login per visualizzare quest'area</p>
+      <div className="mb-4 rounded-2xl border border-red-200 bg-red-50 p-4 text-red-700">
+        <p className="font-medium">{t("dashboard.notSignedIn")}</p>
+        <p className="text-sm">{t("dashboard.signInRequired")}</p>
       </div>
     );
   }
@@ -225,12 +228,12 @@ const UserPanel = () => {
   return (
     <div className="max-w-3xl mx-auto">
       {/* Profilo utente */}
-      <Card>
+      <Card className={accountPanel}>
         <CardHeader>
-          <div className="flex justify-between items-start">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
-              <CardTitle>Profilo Utente</CardTitle>
-              <CardDescription>Informazioni personali</CardDescription>
+              <CardTitle className="font-display text-2xl font-extrabold text-brand-blue">{t("dashboard.profileTitle")}</CardTitle>
+              <CardDescription>{t("dashboard.profileHint")}</CardDescription>
             </div>
             {!isEditingProfile ? (
               <Button 
@@ -239,7 +242,7 @@ const UserPanel = () => {
                 onClick={() => setIsEditingProfile(true)}
               >
                 <Edit className="h-4 w-4 mr-2" />
-                Modifica
+                {t("common.edit")}
               </Button>
             ) : (
               <div className="flex space-x-2">
@@ -249,7 +252,7 @@ const UserPanel = () => {
                   onClick={() => setIsEditingProfile(false)}
                 >
                   <X className="h-4 w-4 mr-2" />
-                  Annulla
+                  {t("common.cancel")}
                 </Button>
                 <Button 
                   size="sm"
@@ -257,7 +260,7 @@ const UserPanel = () => {
                   disabled={isSavingProfile}
                 >
                   <Check className="h-4 w-4 mr-2" />
-                  Salva
+                  {t("common.save")}
                 </Button>
               </div>
             )}
@@ -308,7 +311,7 @@ const UserPanel = () => {
                       className="mt-6"
                     >
                       <Mail className="h-4 w-4 mr-2" />
-                      Cambia Email
+                      {t("dashboard.changeEmail")}
                     </Button>
                   </div>
                   
@@ -354,19 +357,19 @@ const UserPanel = () => {
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label className="text-sm font-medium text-gray-500">Nome</Label>
-                      <p className="text-lg">{userData.nome || 'Non specificato'}</p>
+                      <Label className="text-sm font-medium text-brand-blue/50">{t("auth.firstName")}</Label>
+                      <p className="text-lg text-brand-blue">{userData.nome || t("dashboard.notSet")}</p>
                     </div>
                     <div>
-                      <Label className="text-sm font-medium text-gray-500">Cognome</Label>
-                      <p className="text-lg">{userData.cognome || 'Non specificato'}</p>
+                      <Label className="text-sm font-medium text-brand-blue/50">{t("auth.surname")}</Label>
+                      <p className="text-lg text-brand-blue">{userData.cognome || t("dashboard.notSet")}</p>
                     </div>
                   </div>
                   
                   <div className="flex items-center justify-between">
                     <div>
-                      <Label className="text-sm font-medium text-gray-500">Email</Label>
-                      <p className="text-lg">{userData.email}</p>
+                      <Label className="text-sm font-medium text-brand-blue/50">{t("auth.email")}</Label>
+                      <p className="text-lg text-brand-blue">{userData.email}</p>
                     </div>
                     <Button 
                       variant="outline"
@@ -374,7 +377,7 @@ const UserPanel = () => {
                       onClick={() => setIsChangingEmail(true)}
                     >
                       <Mail className="h-4 w-4 mr-2" />
-                      Cambia Email
+                      {t("dashboard.changeEmail")}
                     </Button>
                   </div>
                   
@@ -382,20 +385,20 @@ const UserPanel = () => {
                   
                   <dl className="space-y-2">
                     <div className="flex justify-between">
-                      <dt className="text-gray-500 font-medium">Telefono:</dt>
-                      <dd className="font-medium">{userData.telefono || 'Non specificato'}</dd>
+                      <dt className="font-medium text-brand-blue/50">{t("dashboard.phoneLabel")}</dt>
+                      <dd className="font-medium text-brand-blue">{userData.telefono || t("dashboard.notSet")}</dd>
                     </div>
                     <div className="flex justify-between">
-                      <dt className="text-gray-500 font-medium">Indirizzo:</dt>
-                      <dd className="font-medium">{userData.indirizzo || 'Non specificato'}</dd>
+                      <dt className="font-medium text-brand-blue/50">{t("dashboard.addressLabel")}</dt>
+                      <dd className="font-medium text-brand-blue">{userData.indirizzo || t("dashboard.notSet")}</dd>
                     </div>
                     <div className="flex justify-between">
-                      <dt className="text-gray-500 font-medium">Città:</dt>
-                      <dd className="font-medium">{userData.citta || 'Non specificata'}</dd>
+                      <dt className="font-medium text-brand-blue/50">{t("dashboard.cityLabel")}</dt>
+                      <dd className="font-medium text-brand-blue">{userData.citta || t("dashboard.notSet")}</dd>
                     </div>
                     <div className="flex justify-between">
-                      <dt className="text-gray-500 font-medium">CAP:</dt>
-                      <dd className="font-medium">{userData.cap || 'Non specificato'}</dd>
+                      <dt className="font-medium text-brand-blue/50">{t("dashboard.zipLabel")}</dt>
+                      <dd className="font-medium text-brand-blue">{userData.cap || t("dashboard.notSet")}</dd>
                     </div>
                   </dl>
                 </div>
@@ -411,20 +414,20 @@ const UserPanel = () => {
           <DialogHeader>
             <DialogTitle className="flex items-center">
               <Mail className="h-5 w-5 mr-2 text-brand-accent" />
-              Cambia Email
+              {t("dashboard.changeEmail")}
             </DialogTitle>
             <DialogDescription>
-              Inserisci la tua nuova email e la password attuale per confermare il cambio.
+              {t("dashboard.changeEmailHelp")}
             </DialogDescription>
           </DialogHeader>
           
           <div className="space-y-4">
             <div>
-              <Label htmlFor="newEmail">Nuova Email</Label>
+              <Label htmlFor="newEmail" className={labelClass}>{t("dashboard.newEmail")}</Label>
               <Input
                 id="newEmail"
                 type="email"
-                placeholder="nuova-email@esempio.com"
+                className={fieldClass}
                 value={emailChangeData.newEmail}
                 onChange={(e) => setEmailChangeData({
                   ...emailChangeData,
@@ -434,11 +437,11 @@ const UserPanel = () => {
             </div>
             
             <div>
-              <Label htmlFor="currentPassword">Password Attuale</Label>
+              <Label htmlFor="currentPassword" className={labelClass}>{t("dashboard.currentPassword")}</Label>
               <Input
                 id="currentPassword"
                 type="password"
-                placeholder="Inserisci la tua password"
+                className={fieldClass}
                 value={emailChangeData.password}
                 onChange={(e) => setEmailChangeData({
                   ...emailChangeData,
@@ -456,22 +459,22 @@ const UserPanel = () => {
                 setEmailChangeData({ newEmail: '', password: '' });
               }}
             >
-              Annulla
+              {t("common.cancel")}
             </Button>
             <Button
               onClick={handleChangeEmail}
               disabled={isChangingEmailLoading || !emailChangeData.newEmail || !emailChangeData.password}
-              className="bg-brand-accent hover:bg-brand-accent/90"
+              className={primaryButtonClass}
             >
               {isChangingEmailLoading ? (
                 <>
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Aggiornamento...
+                  {t("dashboard.updating")}
                 </>
               ) : (
                 <>
                   <Check className="h-4 w-4 mr-2" />
-                  Conferma Cambio
+                  {t("dashboard.confirmChange")}
                 </>
               )}
             </Button>

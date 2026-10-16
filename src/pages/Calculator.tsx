@@ -1,9 +1,9 @@
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
 import QuoteCalculator from "@/components/QuoteCalculator";
 import { useTranslation } from 'react-i18next';
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { PageHero, SectionIntro } from "@/components/anteprima/PageBlocks";
+import PageShell from "@/components/anteprima/PageShell";
+import { InteractiveCard, PressAnchor, PressLink, Reveal, Stagger, StaggerItem } from "@/components/anteprima/primitives";
 
 const Calculator = () => {
   const { t, i18n } = useTranslation();
@@ -70,74 +70,55 @@ const Calculator = () => {
   }, [i18n.language]); // ricalcola quando cambia lingua
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-      <main className="flex-grow">
-        {/* Hero Section */}
-        <section className="bg-brand-blue text-white py-16 md:py-24">
-          <div className="container-custom">
-            <div className="text-center max-w-3xl mx-auto">
-              <h1 className="heading-1 mb-6">{t('calculator.title')}</h1>
-              <p className="text-xl text-gray-300">
-                {t('calculator.subtitle')}
-              </p>
-            </div>
-          </div>
-        </section>
+    <PageShell>
+      <PageHero title={t('calculator.title')} subtitle={t('calculator.subtitle')} />
 
-        {/* Calculator Section */}
-        <section className="py-16 md:py-24" style={{backgroundColor: '#E4DDD4'}}>
-          <div className="container-custom">
-            <div className="max-w-5xl mx-auto">
-              <QuoteCalculator />
-            </div>
+      {/* Calculator Section */}
+      <section className="py-16 md:py-24" style={{ backgroundColor: '#E5DDD3' }}>
+        <div className="container-custom">
+          <div className="max-w-5xl mx-auto">
+            <QuoteCalculator />
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* FAQ Section */}
-        <section className="py-16 md:py-24 bg-white">
-          <div className="container-custom">
-            <div className="text-center max-w-3xl mx-auto mb-12">
-              <h2 className="heading-2 mb-6">{t('faq.title')}</h2>
-              <p className="body-text">
-                {t('faq.subtitle')}
-              </p>
-            </div>
-            
-            <div className="max-w-4xl mx-auto">
-              <div className="space-y-6">
-                {faqs.map((faq, index) => (
-                  <div key={index} className="bg-gray-50 rounded-lg p-6 transition-all">
-                    <h3 className="text-lg font-semibold mb-3">{faq.question}</h3>
-                    <p className="text-brand-gray">{faq.answer}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-            
-            <div className="text-center mt-12 space-y-5">
-              <div>
-                <Link
-                  to="/faq"
-                  className="inline-flex items-center gap-2 text-brand-blue font-medium hover:text-brand-accent transition-colors"
+      {/* FAQ Section */}
+      <section className="bg-white py-16 md:py-24">
+        <div className="container-custom">
+          <SectionIntro title={t('faq.title')} text={t('faq.subtitle')} />
+
+          <Stagger className="mx-auto max-w-4xl space-y-4" stagger={0.07}>
+            {faqs.map((faq, index) => (
+              <StaggerItem key={index}>
+                <InteractiveCard
+                  lift={4}
+                  className="overflow-hidden rounded-2xl bg-[#E5DDD3]/45 p-6 ring-1 ring-brand-blue/5 transition-shadow duration-300 hover:shadow-lg"
                 >
-                  {t('faq.viewAll')}
-                  <span aria-hidden="true">→</span>
-                </Link>
-              </div>
-              <p className="body-text mb-2">{t('contact.title')}?</p>
-              <a href="mailto:info@3dmakes.ch" className="inline-flex items-center text-brand-accent font-medium hover:underline">
+                  <span
+                    aria-hidden
+                    className="absolute -bottom-6 -left-6 -top-6 w-1 origin-top scale-y-0 bg-brand-accent transition-transform duration-500 group-hover:scale-y-100"
+                  />
+                  <h3 className="mb-3 text-lg font-semibold text-brand-blue">{faq.question}</h3>
+                  <p className="leading-relaxed text-brand-gray">{faq.answer}</p>
+                </InteractiveCard>
+              </StaggerItem>
+            ))}
+          </Stagger>
+
+          <Reveal className="mt-12 flex flex-col items-center gap-5 text-center">
+            <PressLink to="/faq" variant="outlineDark" arrow>
+              {t('faq.viewAll')}
+            </PressLink>
+            <div>
+              <p className="body-text mb-3">{t('contact.title')}?</p>
+              <PressAnchor href="mailto:info@3dmakes.ch" variant="accent" arrow>
                 {t('contact.form.send')}
-                <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-              </a>
+              </PressAnchor>
             </div>
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </div>
+          </Reveal>
+        </div>
+      </section>
+    </PageShell>
   );
 };
 

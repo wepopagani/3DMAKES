@@ -497,7 +497,7 @@ const QuoteCalculator = () => {
           
           <form onSubmit={handleSubmit} className="space-y-8">
             <div className="space-y-4">
-              <div className="flex items-center justify-between gap-4">
+              <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
                 <h4 className="text-lg font-medium">1. Carica i tuoi file</h4>
                 <span className="text-sm text-gray-500">
                   {files.length}/{MAX_FILES} file · max {Math.round(MAX_FILE_SIZE / 1024 / 1024)}MB ciascuno

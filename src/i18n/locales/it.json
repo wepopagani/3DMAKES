@@ -60,6 +60,61 @@
       "projects": "Progetti completati",
       "clients": "Clienti soddisfatti",
       "precision": "Precisione garantita"
+    },
+    "lab": {
+      "line1": "Dall'idea",
+      "line2": "al pezzo finito.",
+      "subtitle": "Scansione 3D, progettazione, stampa 3D, CNC e laser. Tutto in un unico laboratorio.",
+      "primary": "Raccontaci il tuo progetto",
+      "technologies": "Esplora le tecnologie",
+      "courses": "Corsi",
+      "aria": "Modello tridimensionale di un componente che passa da nuvola di punti, scansione, CAD, stampa 3D, fresatura CNC e incisione laser.",
+      "modes": {
+        "print": "Stampa 3D",
+        "scan": "Scansione 3D",
+        "cnc": "CNC",
+        "laser": "Laser"
+      },
+      "phases": {
+        "idea": "Idea",
+        "scan": "Scansione",
+        "cad": "CAD",
+        "print": "Stampa 3D",
+        "cnc": "CNC",
+        "laser": "Laser"
+      },
+      "chapters": {
+        "scan": {
+          "eyebrow": "Scansione 3D",
+          "title": "Il pezzo, in punti.",
+          "body": "Una linea attraversa l'oggetto e ne registra la superficie."
+        },
+        "reverse": {
+          "eyebrow": "Reverse engineering",
+          "title": "Dalla nuvola al CAD.",
+          "body": "I punti diventano una mesh, poi un modello da modificare."
+        },
+        "print": {
+          "eyebrow": "Stampa 3D",
+          "title": "Strato dopo strato.",
+          "body": "Il componente nasce dal piano, un layer alla volta."
+        },
+        "cnc": {
+          "eyebrow": "CNC",
+          "title": "Dal grezzo alla superficie.",
+          "body": "La fresa asporta il metallo fino alla forma finita."
+        },
+        "laser": {
+          "eyebrow": "Laser",
+          "title": "L'incisione sul pezzo.",
+          "body": "Il fascio scrive il marchio sulla superficie."
+        },
+        "done": {
+          "eyebrow": "Un progetto",
+          "title": "Tutte le tecnologie per realizzarlo.",
+          "body": "Hai un progetto? Parliamone."
+        }
+      }
     }
   },
   "index": {
@@ -988,7 +1043,44 @@
     "loginWithGoogle": "Accedi con Google",
     "registerWithGoogle": "Registrati con Google",
     "backToLogin": "Torna al login",
-    "accountCreatedSuccess": "Account creato con successo!"
+    "accountCreatedSuccess": "Account creato con successo!",
+    "or": "oppure",
+    "firstName": "Nome",
+    "phone": "Telefono",
+    "popupClosed": "Accesso annullato.",
+    "popupBlocked": "Il browser ha bloccato la finestra. Consenti i popup per questo sito.",
+    "emailNotFound": "Email non trovata."
+  },
+  "clientIntake": {
+    "eyebrow": "Anagrafica",
+    "title": "Registrazione cliente",
+    "subtitle": "Compila i tuoi dati. Arrivano direttamente in anagrafica 3DMAKES.",
+    "formTitle": "I tuoi dati",
+    "formHint": "Privato o azienda: scegli e completa i campi.",
+    "private": "Privato",
+    "company": "Azienda",
+    "companyName": "Ragione sociale",
+    "vat": "Partita IVA / IDE",
+    "contactFirst": "Nome referente",
+    "contactLast": "Cognome referente",
+    "firstName": "Nome",
+    "lastName": "Cognome",
+    "email": "Email",
+    "phone": "Telefono",
+    "address": "Indirizzo",
+    "zip": "CAP",
+    "city": "Località",
+    "notes": "Note (facoltative)",
+    "submit": "Invia registrazione",
+    "sending": "Invio in corso…",
+    "thanksTitle": "Grazie, dati ricevuti",
+    "thanksBody": "Ti ricontattiamo noi. Per urgenze:",
+    "linkUsed": "Questo link è già stato usato.",
+    "linkInvalid": "Questo link non è più valido.",
+    "linkCheck": "Non riesco a verificare il link. Riprova più tardi.",
+    "linkHelp": "Chiedi a 3DMAKES un nuovo link, oppure scrivi a",
+    "failTitle": "Invio non riuscito",
+    "failBody": "Controlla i dati e riprova. Se continua, scrivici a info@3dmakes.ch."
   },
   "dashboard": {
     "title": "Dashboard",
@@ -1000,7 +1092,33 @@
     "files": "File",
     "newProject": "Nuovo Progetto",
     "newOrder": "Nuovo Ordine",
-    "viewAll": "Visualizza Tutti"
+    "viewAll": "Visualizza Tutti",
+    "areaEyebrow": "Area clienti",
+    "hello": "Ciao, {{name}}",
+    "filesHeading": "I tuoi file",
+    "myFiles": "I miei file",
+    "labTitle": "Documenti 3DMAKES",
+    "labHint": "Fatture e documenti caricati dal laboratorio.",
+    "labEmpty": "Quando ti inviamo una fattura o un documento, lo trovi qui.",
+    "uploadFile": "Carica file",
+    "noFiles": "Non hai ancora caricato nessun file.",
+    "uploadFirst": "Carica il tuo primo file",
+    "preview": "Anteprima",
+    "profileTitle": "Il tuo profilo",
+    "profileHint": "I dati del tuo account.",
+    "notSet": "Non indicato",
+    "changeEmail": "Cambia email",
+    "changeEmailHelp": "Inserisci la nuova email e la password attuale.",
+    "newEmail": "Nuova email",
+    "currentPassword": "Password attuale",
+    "confirmChange": "Conferma",
+    "updating": "Aggiornamento…",
+    "notSignedIn": "Non sei autenticato",
+    "signInRequired": "Accedi per vedere il profilo.",
+    "phoneLabel": "Telefono",
+    "addressLabel": "Indirizzo",
+    "cityLabel": "Città",
+    "zipLabel": "CAP"
   },
   "projects": {
     "title": "Progetti",

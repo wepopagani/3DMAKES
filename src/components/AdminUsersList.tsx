@@ -299,7 +299,7 @@ const AdminUsersList = () => {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-semibold">Gestione Utenti</h2>
+        <h2 className="sr-only">Gestione utenti</h2>
         <div className="flex space-x-2">
           <Button onClick={() => setIsAddClientDialogOpen(true)} variant="default">
             Aggiungi Cliente

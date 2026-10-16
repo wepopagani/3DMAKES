@@ -1,4 +1,7 @@
 import React from 'react';
+import { GrowLine } from '@/components/anteprima/PageBlocks';
+import { InteractiveCard, Reveal } from '@/components/anteprima/primitives';
+import { cn } from '@/lib/utils';
 
 interface Step {
   step: number;
@@ -11,62 +14,57 @@ interface ProcessTimelineProps {
   title?: string;
 }
 
+/** Passi alternati a sinistra e destra su desktop, in colonna su mobile; la linea si disegna allo scroll. */
 const ProcessTimeline: React.FC<ProcessTimelineProps> = ({ steps, title }) => {
   return (
-    <div className="container mx-auto">
-      {title && <h2 className="text-3xl font-bold text-center mb-12">{title}</h2>}
-      
+    <div className="mx-auto max-w-4xl">
+      {title && <h2 className="mb-12 text-center text-3xl font-bold text-brand-blue">{title}</h2>}
+
       <div className="relative">
-        {/* Vertical Line */}
-        <div className="absolute left-1/2 top-0 h-full w-0.5 bg-gray-200 transform -translate-x-1/2 hidden md:block"></div>
-        
-        <div className="space-y-16 md:space-y-24">
-          {steps.map((step, index) => (
-            <div key={index} className="relative">
-              {/* Mobile Version */}
-              <div className="md:hidden">
-                <div className="flex items-start">
-                  <div className="flex-shrink-0 z-10 flex items-center justify-center w-10 h-10 bg-brand-accent rounded-full shadow-md">
-                    <span className="text-white font-bold">{step.step}</span>
-                  </div>
-                  <div className="ml-4">
-                    <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
-                    <p className="text-brand-gray">{step.description}</p>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Desktop Version with alternating sides */}
-              <div className="hidden md:block">
-                <div className="flex items-center justify-center">
-                  {/* Circle in the middle */}
-                  <div className="absolute z-10 flex items-center justify-center w-10 h-10 bg-brand-accent rounded-full left-1/2 transform -translate-x-1/2 shadow-md">
-                    <span className="text-white font-bold">{step.step}</span>
-                  </div>
-                  
-                  {/* Left Side Content (even index) */}
-                  <div className={`w-1/2 pr-16 ${index % 2 === 0 ? 'block' : 'invisible'}`}>
-                    <div className="text-right">
-                      <h3 className="text-xl font-bold text-gray-800 mb-2">{step.title}</h3>
-                      <p className="text-brand-gray">{step.description}</p>
-                    </div>
-                  </div>
-                  
-                  {/* Right Side Content (odd index) */}
-                  <div className={`w-1/2 pl-16 ${index % 2 === 1 ? 'block' : 'invisible'}`}>
-                    <div className="text-left">
-                      <h3 className="text-xl font-bold text-gray-800 mb-2">{step.title}</h3>
-                      <p className="text-brand-gray">{step.description}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+        <GrowLine
+          axis="y"
+          delay={0.1}
+          className="absolute bottom-5 left-[19px] top-5 w-0.5 rounded-full bg-brand-accent/30 md:left-1/2 md:-ml-px"
+        />
+
+        <ol className="space-y-8 md:space-y-12">
+          {steps.map((step, index) => {
+            const right = index % 2 === 1;
+            return (
+              <li key={index} className="relative flex items-start gap-5 md:block">
+                <Reveal
+                  y={0}
+                  delay={0.1}
+                  className="relative z-10 shrink-0 md:absolute md:left-1/2 md:top-5 md:-ml-5"
+                >
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-accent font-bold text-white shadow-lg shadow-brand-accent/30">
+                    {step.step}
+                  </span>
+                </Reveal>
+                <Reveal
+                  x={right ? 40 : -40}
+                  y={0}
+                  delay={0.15}
+                  className={cn('min-w-0 flex-1 md:w-1/2', right ? 'md:ml-auto md:pl-14' : 'md:pr-14')}
+                >
+                  <InteractiveCard
+                    lift={6}
+                    className={cn(
+                      'rounded-2xl bg-white p-5 shadow-sm ring-1 ring-brand-blue/5 transition-shadow duration-300 hover:shadow-xl md:p-6',
+                      !right && 'md:text-right'
+                    )}
+                  >
+                    <h3 className="mb-2 text-xl font-semibold text-brand-blue">{step.title}</h3>
+                    <p className="leading-relaxed text-brand-gray">{step.description}</p>
+                  </InteractiveCard>
+                </Reveal>
+              </li>
+            );
+          })}
+        </ol>
       </div>
     </div>
   );
 };
 
-export default ProcessTimeline; 
+export default ProcessTimeline;

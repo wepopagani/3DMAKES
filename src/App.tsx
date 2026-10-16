@@ -11,6 +11,7 @@ import LogoSplashScreen from "@/components/LogoSplashScreen";
 import SeoManager from "@/components/SeoManager";
 
 const Index = lazy(() => import("./pages/Index"));
+const Anteprima = lazy(() => import("./pages/Anteprima"));
 const About = lazy(() => import("./pages/About"));
 const Mission = lazy(() => import("./pages/Mission"));
 const Services = lazy(() => import("./pages/Services"));
@@ -60,6 +61,7 @@ const App = () => (
           <Suspense fallback={routeFallback}>
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/anteprima" element={<Anteprima />} />
               <Route path="/about" element={<About />} />
               <Route path="/mission" element={<Mission />} />
               <Route path="/services" element={<Services />} />

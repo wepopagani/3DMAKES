@@ -1,12 +1,17 @@
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { getBlogPosts, blogPostsContent } from "@/data/blogContent";
 import { useEffect, useMemo } from "react";
-import { Button } from "@/components/ui/button";
 import { useTranslation } from 'react-i18next';
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { motion } from "framer-motion";
+import { CalendarDays, ShieldCheck, UserRound } from "lucide-react";
+import { BlogCard, GRID_CARD_LAYOUT } from "@/components/anteprima/BlogBento";
+import { CheckDot, CtaBand, PageHero, SectionIntro } from "@/components/anteprima/PageBlocks";
+import PageShell from "@/components/anteprima/PageShell";
+import { PressAnchor, PressLink, Reveal, Stagger, StaggerItem, WipeImage } from "@/components/anteprima/primitives";
+
+const SIDEBAR_CARD = "rounded-3xl bg-[#E5DDD3]/45 p-6 ring-1 ring-brand-blue/5";
 
 const BlogPostPage = () => {
   const { t, i18n } = useTranslation();
@@ -157,46 +162,50 @@ const BlogPostPage = () => {
   if (!post) {
     return <div>{t('common.loading')}</div>;
   }
+
+  const challenges: unknown = (postContent as any)?.challenges;
+  const benefits: unknown = (postContent as any)?.benefits;
   
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-      <main className="flex-grow">
-        {/* Hero Section */}
-        <section className="bg-brand-blue text-white py-12 md:py-16">
-          <div className="container-custom">
-            <div className="max-w-3xl mx-auto text-center">
-              <div className="inline-block px-3 py-1 text-sm font-medium rounded-full bg-brand-accent/20 text-white mb-6">
-                {post.category}
-              </div>
-              <h1 className="heading-1 mb-6">{post.title}</h1>
-              <div className="flex items-center justify-center text-gray-300 text-sm">
-                <span>{t('blog.publishedOn')} {post.date}</span>
-                <span className="mx-3">•</span>
-                <span>{t('blog.by')} {post.author}</span>
-              </div>
-            </div>
-          </div>
-        </section>
-        
-        {/* Featured Image */}
-        <div className="w-full h-80 md:h-96 relative -mt-8 mb-8">
-          <img 
-            src={post.imageSrc} 
-            alt={post.title}
-            className="w-full h-full object-cover"
-          />
+    <PageShell>
+      <PageHero
+        back={{ to: "/blog", label: t('blog.title') }}
+        title={post.title}
+        titleClassName="text-[clamp(1.75rem,6.5vw,3.25rem)]"
+        badge={
+          <Reveal y={10} className="mb-6 inline-block rounded-full bg-brand-accent/20 px-3 py-1 text-sm font-medium text-white">
+            {post.category}
+          </Reveal>
+        }
+      >
+        <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-gray-300">
+          <span className="inline-flex items-center gap-2">
+            <CalendarDays aria-hidden className="h-4 w-4 text-brand-accent" />
+            {t('blog.publishedOn')} {post.date}
+          </span>
+          <span className="inline-flex items-center gap-2">
+            <UserRound aria-hidden className="h-4 w-4 text-brand-accent" />
+            {t('blog.by')} {post.author}
+          </span>
         </div>
-        
-        {/* Post Content */}
-        <section className="py-8 md:py-16 bg-white">
-          <div className="container-custom">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-              {/* Main Content */}
-              <div className="lg:col-span-8">
+      </PageHero>
+
+      {/* Immagine dell'articolo */}
+      <div className="container-custom relative z-10 -mt-10 md:-mt-16">
+        <div className="mx-auto max-w-5xl overflow-hidden rounded-3xl bg-brand-blue/5 shadow-2xl shadow-brand-blue/20 ring-1 ring-black/5">
+          <WipeImage src={post.imageSrc} alt={post.title} className="block h-64 w-full object-cover sm:h-80 md:h-[26rem]" />
+        </div>
+      </div>
+
+      {/* Contenuto */}
+      <section className="bg-white py-12 md:py-16">
+        <div className="container-custom">
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
+            <div className="min-w-0 lg:col-span-8">
+              <Reveal y={20}>
                 <div
                   className="
-                    prose prose-lg max-w-none
+                    prose prose-lg max-w-none break-words
                     prose-headings:font-bold prose-headings:text-brand-blue prose-headings:scroll-mt-24
                     prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-5 prose-h2:border-b prose-h2:border-gray-200 prose-h2:pb-3
                     prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-3 prose-h3:text-brand-accent
@@ -206,7 +215,7 @@ const BlogPostPage = () => {
                     prose-strong:text-gray-900 prose-strong:font-semibold
                     prose-ul:my-5 prose-ul:space-y-1 prose-li:marker:text-brand-accent
                     prose-ol:my-5 prose-ol:space-y-1
-                    prose-blockquote:border-l-brand-accent prose-blockquote:bg-gray-50 prose-blockquote:py-1 prose-blockquote:px-4 prose-blockquote:not-italic
+                    prose-blockquote:border-l-brand-accent prose-blockquote:rounded-r-2xl prose-blockquote:bg-[#E5DDD3]/40 prose-blockquote:py-1 prose-blockquote:px-4 prose-blockquote:not-italic
                     prose-code:text-brand-accent prose-code:bg-gray-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:before:content-none prose-code:after:content-none
                     prose-hr:border-gray-200
                   "
@@ -225,143 +234,124 @@ const BlogPostPage = () => {
                     <p className="text-xl text-brand-gray mb-8">{post.excerpt}</p>
                   )}
                 </div>
-                
-                {/* Author Info */}
-                <div className="mt-12 p-6 bg-gray-50 rounded-lg">
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 rounded-full bg-brand-blue text-white flex items-center justify-center font-bold text-xl">
-                      {post.author.substring(0, 1)}
-                    </div>
-                    <div className="ml-4">
-                      <h3 className="font-semibold">{post.author}</h3>
-                      <p className="text-sm text-brand-gray">{t('blog.author')}</p>
-                    </div>
+              </Reveal>
+
+              {/* Autore */}
+              <Reveal className="mt-12">
+                <div className="group flex items-center gap-4 rounded-3xl bg-[#E5DDD3]/45 p-6 ring-1 ring-brand-blue/5">
+                  <motion.div
+                    aria-hidden
+                    whileHover={{ rotate: -8, scale: 1.06 }}
+                    transition={{ type: "spring", stiffness: 380, damping: 18 }}
+                    className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-brand-blue text-xl font-bold text-white shadow-lg shadow-brand-blue/20"
+                  >
+                    {post.author.substring(0, 1)}
+                  </motion.div>
+                  <div className="min-w-0">
+                    <h3 className="font-semibold text-brand-blue">{post.author}</h3>
+                    <p className="text-sm text-brand-gray">{t('blog.author')}</p>
                   </div>
                 </div>
-              </div>
-              
-              {/* Sidebar */}
-              <div className="lg:col-span-4">
-                {/* Post Details */}
+              </Reveal>
+            </div>
+
+            {/* Sidebar */}
+            <aside className="min-w-0 lg:col-span-4">
+              <div className="space-y-6 lg:sticky lg:top-28">
                 {postContent?.details && (
-                  <div className="mb-8 p-6 bg-gray-50 rounded-lg">
-                    <h3 className="font-semibold text-lg mb-4">{t('blog.technicalDetails')}</h3>
-                    <ul className="space-y-3">
-                      {Object.entries(postContent.details).map(([key, value]) => (
-                        <li key={key} className="flex justify-between">
-                          <span className="text-brand-gray capitalize">{key}</span>
-                          <span className="font-medium">{value}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-                
-                {/* Challenges */}
-                {(postContent as any)?.challenges && Array.isArray((postContent as any).challenges) && (
-                  <div className="mb-8 p-6 bg-gray-50 rounded-lg">
-                    <h3 className="font-semibold text-lg mb-4">{t('blog.challenges')}</h3>
-                    <ul className="space-y-2">
-                      {(postContent as any).challenges.map((challenge: string, index: number) => (
-                        <li key={index} className="flex items-start">
-                          <svg className="h-5 w-5 text-brand-accent mr-2 mt-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                          </svg>
-                          <span>{challenge}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-                
-                {/* Benefits */}
-                {(postContent as any)?.benefits && Array.isArray((postContent as any).benefits) && (
-                  <div className="p-6 bg-gray-50 rounded-lg">
-                    <h3 className="font-semibold text-lg mb-4">{t('blog.benefits')}</h3>
-                    <ul className="space-y-2">
-                      {(postContent as any).benefits.map((benefit: string, index: number) => (
-                        <li key={index} className="flex items-start">
-                          <svg className="h-5 w-5 text-brand-accent mr-2 mt-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                          </svg>
-                          <span>{benefit}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </section>
-        
-        {/* Related Posts */}
-        {relatedPosts.length > 0 && (
-          <section className="py-16" style={{backgroundColor: '#E4DDD4'}}>
-            <div className="container-custom">
-              <h2 className="heading-2 mb-8">{t('blog.relatedPosts')}</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {relatedPosts.map(relatedPost => (
-                  <div key={relatedPost.id} className="bg-white rounded-lg shadow-sm overflow-hidden">
-                    <Link to={`/blog/${relatedPost.id}`} className="block h-48 overflow-hidden">
-                      <img 
-                        src={relatedPost.imageSrc} 
-                        alt={relatedPost.title}
-                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                      />
-                    </Link>
-                    <div className="p-6">
-                      <div className="flex items-center mb-3">
-                        <span className="inline-block px-3 py-1 text-xs font-medium rounded-full bg-brand-accent/10 text-brand-accent">
-                          {relatedPost.category}
-                        </span>
-                      </div>
-                      <Link to={`/blog/${relatedPost.id}`} className="block group">
-                        <h3 className="text-lg font-semibold mb-2 group-hover:text-brand-accent transition-colors">{relatedPost.title}</h3>
-                      </Link>
-                      <p className="text-brand-gray text-sm mb-4">{relatedPost.excerpt.substring(0, 100)}...</p>
-                      <Link to={`/blog/${relatedPost.id}`} className="text-brand-accent text-sm font-medium hover:underline">
-                        {t('blog.readMore')}
-                      </Link>
+                  <Reveal x={32} y={0}>
+                    <div className={SIDEBAR_CARD}>
+                      <h3 className="mb-4 text-lg font-semibold text-brand-blue">{t('blog.technicalDetails')}</h3>
+                      <dl className="space-y-3">
+                        {Object.entries(postContent.details).map(([key, value]) => (
+                          <div key={key} className="border-b border-brand-blue/10 pb-3 last:border-0 last:pb-0">
+                            <dt className="text-sm capitalize text-brand-gray">{key}</dt>
+                            <dd className="mt-0.5 break-words font-medium text-brand-blue">{value as string}</dd>
+                          </div>
+                        ))}
+                      </dl>
                     </div>
-                  </div>
-                ))}
+                  </Reveal>
+                )}
+
+                {Array.isArray(challenges) && (
+                  <Reveal x={32} y={0} delay={0.1}>
+                    <div className={SIDEBAR_CARD}>
+                      <h3 className="mb-4 text-lg font-semibold text-brand-blue">{t('blog.challenges')}</h3>
+                      <Stagger className="space-y-3" stagger={0.06}>
+                        {challenges.map((challenge: string, index: number) => (
+                          <StaggerItem key={index}>
+                            <div className="group flex items-start gap-3">
+                              <span
+                                aria-hidden
+                                className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-accent/10 text-brand-accent transition-colors duration-300 group-hover:bg-brand-accent group-hover:text-white"
+                              >
+                                <ShieldCheck className="h-3.5 w-3.5" strokeWidth={2.5} />
+                              </span>
+                              <span className="text-brand-blue/90">{challenge}</span>
+                            </div>
+                          </StaggerItem>
+                        ))}
+                      </Stagger>
+                    </div>
+                  </Reveal>
+                )}
+
+                {Array.isArray(benefits) && (
+                  <Reveal x={32} y={0} delay={0.2}>
+                    <div className={SIDEBAR_CARD}>
+                      <h3 className="mb-4 text-lg font-semibold text-brand-blue">{t('blog.benefits')}</h3>
+                      <Stagger className="space-y-3" stagger={0.06}>
+                        {benefits.map((benefit: string, index: number) => (
+                          <StaggerItem key={index}>
+                            <div className="group flex items-start gap-3">
+                              <CheckDot />
+                              <span className="text-brand-blue/90">{benefit}</span>
+                            </div>
+                          </StaggerItem>
+                        ))}
+                      </Stagger>
+                    </div>
+                  </Reveal>
+                )}
               </div>
-            </div>
-          </section>
-        )}
-        
-        {/* CTA Section */}
-        <section className="py-16 bg-gradient-to-br from-brand-blue to-slate-900 text-white">
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      {/* Articoli correlati */}
+      {relatedPosts.length > 0 && (
+        <section className="bg-[#E5DDD3] py-16 md:py-24">
           <div className="container-custom">
-            <div className="max-w-3xl mx-auto text-center">
-              <h2 className="heading-2 mb-6">
-                {t('blog.projectInMind')}
-              </h2>
-              <p className="text-lg text-gray-300 mb-8">
-                {t('blog.contactDescription')}
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center flex-wrap">
-                <Button asChild className="bg-brand-accent hover:bg-brand-accent/90">
-                  <Link to="/calculator">{t('footer.calculateQuote')}</Link>
-                </Button>
-                <Button asChild variant="outline" className="border-white text-white bg-white/10 hover:bg-white/20">
-                  <Link to="/services">{t('nav.services')}</Link>
-                </Button>
-                <Button asChild variant="outline" className="border-white text-white bg-white/10 hover:bg-white/20">
-                  <Link to="/faq">{t('nav.faq')}</Link>
-                </Button>
-                <Button asChild className="bg-gray-600 hover:bg-gray-700 text-white">
-                  <a href="mailto:info@3dmakes.ch">{t('contact.title')}</a>
-                </Button>
-              </div>
-            </div>
+            <SectionIntro align="left" title={t('blog.relatedPosts')} />
+            <Stagger className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+              {relatedPosts.map((relatedPost) => (
+                <StaggerItem key={relatedPost.id} className="h-full">
+                  <BlogCard post={relatedPost} layout={GRID_CARD_LAYOUT} readMoreLabel={t('blog.readMore')} />
+                </StaggerItem>
+              ))}
+            </Stagger>
           </div>
         </section>
-      </main>
-      <Footer />
-    </div>
+      )}
+
+      <CtaBand title={t('blog.projectInMind')} text={t('blog.contactDescription')}>
+        <PressLink to="/calculator" variant="accent" size="lg" arrow>
+          {t('footer.calculateQuote')}
+        </PressLink>
+        <PressLink to="/services" variant="outlineLight" size="lg">
+          {t('nav.services')}
+        </PressLink>
+        <PressLink to="/faq" variant="outlineLight" size="lg">
+          {t('nav.faq')}
+        </PressLink>
+        <PressAnchor href="mailto:info@3dmakes.ch" variant="light" size="lg">
+          {t('contact.title')}
+        </PressAnchor>
+      </CtaBand>
+    </PageShell>
   );
 };
 
-export default BlogPostPage; 
+export default BlogPostPage;

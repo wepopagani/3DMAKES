@@ -1,19 +1,27 @@
-import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
-import { Button } from "@/components/ui/button";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { scrollToElement, useGoToContact } from "@/components/anteprima/hooks";
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+  CtaBand,
+  FaqAccordion,
+  FilterChips,
+  GrowLine,
+  PageHero,
+  WRAP_LONG_WORDS,
+} from "@/components/anteprima/PageBlocks";
+import PageShell from "@/components/anteprima/PageShell";
+import { PressLink } from "@/components/anteprima/primitives";
 import { buildFaqCategories } from "@/data/faqCategories";
+import { cn } from "@/lib/utils";
+
+const EASE_OUT: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 const FAQ = () => {
   const { t, i18n } = useTranslation();
+  const reduce = Boolean(useReducedMotion());
+  const goToContact = useGoToContact();
+  const listRef = useRef<HTMLElement>(null);
   const categories = useMemo(() => buildFaqCategories(t), [t, i18n.language]);
   const [activeCategory, setActiveCategory] = useState<string>("all");
 
@@ -44,125 +52,88 @@ const FAQ = () => {
     [categories]
   );
 
+  const filters = [
+    { id: "all", label: t("faq.filterAll") },
+    ...categories.map((category) => ({ id: category.id, label: category.title })),
+  ];
+
+  const selectCategory = (id: string) => {
+    setActiveCategory(id);
+    const list = listRef.current;
+    if (list && list.getBoundingClientRect().top < 0) scrollToElement(list, reduce);
+  };
+
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-      <main className="flex-grow">
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageSchema) }}
-        />
+    <PageShell>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageSchema) }}
+      />
 
-        <section className="relative overflow-hidden bg-brand-blue text-white py-16 md:py-24">
-          <div
-            className="pointer-events-none absolute inset-0 opacity-[0.12]"
-            style={{
-              backgroundImage:
-                "radial-gradient(circle at 18% 22%, #3D9DFF 0%, transparent 42%), radial-gradient(circle at 82% 70%, #64748B 0%, transparent 38%)",
-            }}
-          />
-          <div className="container-custom relative">
-            <div className="max-w-3xl mx-auto text-center">
-              <p className="text-sm font-medium tracking-[0.18em] uppercase text-brand-accent mb-4">
-                FAQ
-              </p>
-              <h1 className="heading-1 mb-6">{t("faq.pageTitle")}</h1>
-              <p className="text-xl text-gray-300 leading-relaxed">
-                {t("faq.pageSubtitle")}
-              </p>
-            </div>
-          </div>
-        </section>
+      <PageHero eyebrow="FAQ" title={t("faq.pageTitle")} subtitle={t("faq.pageSubtitle")} />
 
-        <section className="py-10 md:py-14 bg-white border-b border-gray-100">
+      <section ref={listRef} className="bg-[#E5DDD3] pb-16 md:pb-24">
+        <div className="sticky top-16 z-20 border-b border-brand-blue/10 bg-[#E5DDD3]/90 py-4 backdrop-blur-md md:top-[72px]">
           <div className="container-custom">
-            <div className="-mx-4 px-4 md:mx-0 md:px-0 overflow-x-auto">
-              <div className="flex md:flex-wrap md:justify-center gap-2 md:gap-3 w-max md:w-auto mx-auto pb-1">
-                <button
-                  type="button"
-                  onClick={() => setActiveCategory("all")}
-                  className={`shrink-0 px-4 py-2 text-sm font-medium transition-colors border ${
-                    activeCategory === "all"
-                      ? "bg-brand-blue text-white border-brand-blue"
-                      : "bg-white text-brand-blue border-gray-200 hover:border-brand-accent hover:text-brand-accent"
-                  }`}
-                >
-                  {t("faq.filterAll")}
-                </button>
-                {categories.map((category) => (
-                  <button
-                    key={category.id}
-                    type="button"
-                    onClick={() => setActiveCategory(category.id)}
-                    className={`shrink-0 px-4 py-2 text-sm font-medium transition-colors border ${
-                      activeCategory === category.id
-                        ? "bg-brand-blue text-white border-brand-blue"
-                        : "bg-white text-brand-blue border-gray-200 hover:border-brand-accent hover:text-brand-accent"
-                    }`}
-                  >
-                    {category.title}
-                  </button>
-                ))}
-              </div>
-            </div>
+            <FilterChips
+              align="center"
+              options={filters}
+              active={activeCategory}
+              onChange={selectCategory}
+              layoutId="faq-filtro-attivo"
+              label={t("faq.pageTitle")}
+            />
           </div>
-        </section>
+        </div>
 
-        <section className="py-14 md:py-20" style={{ backgroundColor: "#E5DDD3" }}>
-          <div className="container-custom">
-            <div className="max-w-3xl mx-auto space-y-10">
-              {visibleCategories.map((category) => (
-                <div key={category.id}>
-                  <div className="mb-4">
-                    <h2 className="text-2xl font-semibold text-brand-blue">
-                      {category.title}
-                    </h2>
-                    <div className="mt-2 h-px w-16 bg-brand-accent" />
+        <div className="container-custom pt-10 md:pt-14">
+          <div className="mx-auto max-w-3xl">
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={activeCategory}
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.28, ease: EASE_OUT }}
+                className="space-y-12"
+              >
+                {visibleCategories.map((category) => (
+                  <div key={category.id}>
+                    <div className="mb-5">
+                      <h2 className={cn("text-2xl font-semibold text-brand-blue md:text-3xl", WRAP_LONG_WORDS)}>
+                        {category.title}
+                      </h2>
+                      <GrowLine className="mt-3 h-0.5 w-16 rounded-full bg-brand-accent" />
+                    </div>
+                    <FaqAccordion items={category.faqs} idPrefix={`faq-${category.id}`} />
                   </div>
-                  <Accordion type="single" collapsible className="bg-white border border-gray-100 shadow-sm px-5 md:px-6">
-                    {category.faqs.map((faq, index) => (
-                      <AccordionItem
-                        key={`${category.id}-${index}`}
-                        value={`${category.id}-${index}`}
-                        className="border-gray-200"
-                      >
-                        <AccordionTrigger className="text-left text-brand-blue hover:no-underline hover:text-brand-accent">
-                          {faq.question}
-                        </AccordionTrigger>
-                        <AccordionContent className="text-brand-gray leading-relaxed">
-                          {faq.answer}
-                        </AccordionContent>
-                      </AccordionItem>
-                    ))}
-                  </Accordion>
-                </div>
-              ))}
-            </div>
+                ))}
+              </motion.div>
+            </AnimatePresence>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="py-16 md:py-20 bg-white">
-          <div className="container-custom">
-            <div className="max-w-3xl mx-auto text-center">
-              <h2 className="heading-2 mb-4">{t("faq.stillHaveQuestions")}</h2>
-              <p className="body-text mb-8">{t("faq.stillHaveQuestionsText")}</p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button asChild size="lg" className="bg-brand-accent hover:bg-brand-accent/90">
-                  <Link to="/calculator">{t("faq.ctaQuote")}</Link>
-                </Button>
-                <Button asChild size="lg" variant="outline">
-                  <Link to="/services">{t("faq.ctaTechnologies")}</Link>
-                </Button>
-                <Button asChild size="lg" variant="outline">
-                  <Link to="/#contact">{t("nav.contact")}</Link>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </div>
+      <CtaBand title={t("faq.stillHaveQuestions")} text={t("faq.stillHaveQuestionsText")}>
+        <PressLink to="/calculator" variant="accent" size="lg" arrow>
+          {t("faq.ctaQuote")}
+        </PressLink>
+        <PressLink to="/services" variant="outlineLight" size="lg">
+          {t("faq.ctaTechnologies")}
+        </PressLink>
+        <PressLink
+          to="/#contact"
+          variant="outlineLight"
+          size="lg"
+          onClick={(event) => {
+            event.preventDefault();
+            goToContact();
+          }}
+        >
+          {t("nav.contact")}
+        </PressLink>
+      </CtaBand>
+    </PageShell>
   );
 };
 

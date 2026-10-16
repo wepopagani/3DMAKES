@@ -1,23 +1,15 @@
-import React from 'react';
-import AdminPanel from '@/components/AdminPanel';
-import { useAuth } from '@/firebase/AuthContext';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import AdminPanel from "@/components/AdminPanel";
+import { AccountShell } from "@/components/anteprima/accountUi";
 
 const AdminPanelPage = () => {
-  const { currentUser } = useAuth();
-
   return (
-    <div className="flex flex-col min-h-screen">
-      <Navbar />
-      <main className="flex-grow container mx-auto px-4 py-8">
+    <AccountShell>
+      <div className="container-custom py-8 md:py-12">
         <h1 className="sr-only">Pannello amministrazione — 3DMAKES</h1>
         <AdminPanel />
-      </main>
-      <Footer />
-    </div>
+      </div>
+    </AccountShell>
   );
 };
 
 export default AdminPanelPage;
-

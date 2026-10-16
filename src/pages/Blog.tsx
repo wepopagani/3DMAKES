@@ -1,14 +1,22 @@
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
-import BlogPost from "@/components/BlogPost";
 import { getBlogPosts } from "@/data/blogContent";
 import { useState, useMemo, useEffect } from "react";
-import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
+import { AnimatePresence, motion } from "framer-motion";
+import { CalendarDays, UserRound } from "lucide-react";
+import { BlogCard, GRID_CARD_LAYOUT } from "@/components/anteprima/BlogBento";
+import { useGoToContact } from "@/components/anteprima/hooks";
+import { CtaBand, FilterChips, PageHero, TiltPhoto, WRAP_LONG_WORDS } from "@/components/anteprima/PageBlocks";
+import PageShell from "@/components/anteprima/PageShell";
+import { HEADING_2, PressLink, Reveal, SplitWords } from "@/components/anteprima/primitives";
+import { cn } from "@/lib/utils";
+
+const ALL_CATEGORIES = "__all";
+const EASE_OUT: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 const Blog = () => {
   const { t } = useTranslation();
+  const goToContact = useGoToContact();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   
   // Get translated blog posts
@@ -29,164 +37,131 @@ const Blog = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const filters = [
+    { id: ALL_CATEGORIES, label: t('common.all') },
+    ...categories.map((category) => ({ id: category, label: category })),
+  ];
   
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-      <main className="flex-grow">
-        {/* Hero Section */}
-        <section className="bg-brand-blue text-white py-16 md:py-24">
-          <div className="container-custom">
-            <div className="text-center max-w-3xl mx-auto">
-              <h1 className="heading-1 mb-6">{t('blog.title')}</h1>
-              <p className="text-xl text-gray-300">
-                {t('blog.subtitle')}
-              </p>
-            </div>
-          </div>
-        </section>
-        
-        {/* Featured Post */}
-        {featuredPost && (
-          <section className="py-16 md:py-24 bg-white">
-            <div className="container-custom">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div>
-                  <div className="inline-block px-3 py-1 text-sm font-medium rounded-full bg-brand-accent/10 text-brand-accent mb-4">
-                    {featuredPost.category}
-                  </div>
-                  <h2 className="heading-2 mb-6">{featuredPost.title}</h2>
-                  <p className="body-text mb-8">{featuredPost.excerpt}</p>
-                  <div className="flex items-center mb-8 text-brand-gray">
-                    <span>{t('blog.publishedOn')} {featuredPost.date}</span>
-                    <span className="mx-3">•</span>
-                    <span>{t('blog.by')} {featuredPost.author}</span>
-                  </div>
-                  <Button asChild>
-                    <Link to={`/blog/${featuredPost.id}`}>{t('blog.readMore')}</Link>
-                  </Button>
-                </div>
-                <div className="relative">
-                  <div className="bg-brand-accent/10 absolute -left-6 -top-6 w-32 h-32 rounded-lg"></div>
-                  <img
-                    src={featuredPost.imageSrc}
-                    alt={featuredPost.title}
-                    className="rounded-lg w-full h-auto object-cover shadow-lg relative z-10"
-                  />
-                </div>
-              </div>
-            </div>
-          </section>
-        )}
-        
-        {/* Blog Categories */}
-        <section className="py-8" style={{backgroundColor: '#E4DDD4'}}>
-          <div className="container-custom">
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <button 
-                onClick={() => setSelectedCategory(null)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors
-                  ${selectedCategory === null 
-                    ? 'bg-brand-accent text-white' 
-                    : 'bg-white text-brand-gray hover:bg-gray-100'}`}
-              >
-                {t('common.all')}
-              </button>
-              
-              {categories.map(category => (
-                <button 
-                  key={category}
-                  onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors
-                    ${selectedCategory === category 
-                      ? 'bg-brand-accent text-white' 
-                      : 'bg-white text-brand-gray hover:bg-gray-100'}`}
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
-          </div>
-        </section>
-        
-        {/* All Blog Posts */}
-        <section className="py-16 md:py-24" style={{backgroundColor: '#E4DDD4'}}>
-          <div className="container-custom">
-            <h2 className="text-2xl font-semibold mb-8">
-              {selectedCategory ? t('blog.articlesCategory', { category: selectedCategory }) : t('blog.allArticles')}
-            </h2>
-            
-            {filteredPosts.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredPosts.map((post) => (
-                  <article key={post.id} className="bg-white rounded-lg shadow-sm overflow-hidden">
-                    <Link to={`/blog/${post.id}`} className="block h-48 overflow-hidden">
-                      <img
-                        src={post.imageSrc}
-                        alt={post.title}
-                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                      />
-                    </Link>
-                    <div className="p-6">
-                      <div className="flex items-center mb-3">
-                        <span className="inline-block px-3 py-1 text-xs font-medium rounded-full bg-brand-accent/10 text-brand-accent">
-                          {post.category}
-                        </span>
-                      </div>
-                      <Link to={`/blog/${post.id}`} className="block group">
-                        <h3 className="text-xl font-semibold mb-3 group-hover:text-brand-accent transition-colors">
-                          {post.title}
-                        </h3>
-                      </Link>
-                      <p className="text-brand-gray mb-4">{post.excerpt}</p>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-brand-gray">{post.date}</span>
-                        <Link 
-                          to={`/blog/${post.id}`} 
-                          className="text-brand-accent text-sm font-medium hover:underline"
-                        >
-                          {t('blog.readMore')}
-                        </Link>
-                      </div>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-12">
-                <p className="text-lg text-brand-gray">{t('blog.noArticlesFound')}</p>
-              </div>
-            )}
-          </div>
-        </section>
-        
-        {/* CTA Section */}
-        <section className="py-16 bg-gradient-to-br from-brand-blue to-slate-900 text-white">
-          <div className="container-custom">
-            <div className="max-w-3xl mx-auto text-center">
-              <h2 className="heading-2 mb-6">
-                {t('blog.moreServicesTitle')}
+    <PageShell>
+      <PageHero title={t('blog.title')} subtitle={t('blog.subtitle')} />
+
+      {/* Articolo in evidenza */}
+      {featuredPost && (
+        <section className="bg-white py-16 md:py-24">
+          <div className="container-custom grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
+            <div className="min-w-0">
+              <Reveal y={12} className="mb-4 inline-block rounded-full bg-brand-accent/10 px-3 py-1 text-sm font-medium text-brand-accent">
+                {featuredPost.category}
+              </Reveal>
+              <h2 className={cn(HEADING_2, WRAP_LONG_WORDS, "mb-6 text-brand-blue")}>
+                <SplitWords text={featuredPost.title} />
               </h2>
-              <p className="text-lg text-gray-300 mb-8">
-                {t('blog.moreServicesDescription')}
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button asChild className="bg-brand-accent hover:bg-brand-accent/90">
-                  <Link to="/services">{t('nav.services')}</Link>
-                </Button>
-                <Button asChild variant="outline" className="border-white text-white bg-white/10 hover:bg-white/20">
-                  <Link to="/faq">{t('nav.faq')}</Link>
-                </Button>
-                <Button asChild className="bg-gray-600 hover:bg-gray-700 text-white">
-                  <Link to="/#contact">{t('contact.title')}</Link>
-                </Button>
-              </div>
+              <Reveal delay={0.15}>
+                <p className="body-text mb-6">{featuredPost.excerpt}</p>
+              </Reveal>
+              <Reveal delay={0.2}>
+                <div className="mb-8 flex flex-wrap items-center gap-x-5 gap-y-2 text-brand-gray">
+                  <span className="inline-flex items-center gap-2">
+                    <CalendarDays aria-hidden className="h-4 w-4 text-brand-accent" />
+                    {t('blog.publishedOn')} {featuredPost.date}
+                  </span>
+                  <span className="inline-flex items-center gap-2">
+                    <UserRound aria-hidden className="h-4 w-4 text-brand-accent" />
+                    {t('blog.by')} {featuredPost.author}
+                  </span>
+                </div>
+              </Reveal>
+              <Reveal delay={0.25}>
+                <PressLink to={`/blog/${featuredPost.id}`} size="lg" arrow>
+                  {t('blog.readMore')}
+                </PressLink>
+              </Reveal>
             </div>
+            <Reveal x={48} y={0} delay={0.15} className="relative min-w-0">
+              <div aria-hidden className="absolute -left-4 -top-4 h-32 w-32 rounded-3xl bg-brand-accent/10 md:-left-6 md:-top-6" />
+              <Link to={`/blog/${featuredPost.id}`} tabIndex={-1} aria-hidden className="relative block">
+                <TiltPhoto src={featuredPost.imageSrc} alt={featuredPost.title} />
+              </Link>
+            </Reveal>
           </div>
         </section>
-      </main>
-      <Footer />
-    </div>
+      )}
+
+      {/* Tutti gli articoli */}
+      <section className="bg-[#E5DDD3] py-16 md:py-24">
+        <div className="container-custom">
+          <div className="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.h2
+                key={selectedCategory ?? ALL_CATEGORIES}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.25, ease: EASE_OUT }}
+                className={cn(HEADING_2, WRAP_LONG_WORDS, "min-w-0 text-brand-blue")}
+              >
+                {selectedCategory ? t('blog.articlesCategory', { category: selectedCategory }) : t('blog.allArticles')}
+              </motion.h2>
+            </AnimatePresence>
+            <FilterChips
+              options={filters}
+              active={selectedCategory ?? ALL_CATEGORIES}
+              onChange={(id) => setSelectedCategory(id === ALL_CATEGORIES ? null : id)}
+              layoutId="blog-categoria-attiva"
+              label={t('blog.allArticles')}
+            />
+          </div>
+
+          {filteredPosts.length > 0 ? (
+            <Reveal y={20}>
+              <div className="relative grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+                <AnimatePresence mode="popLayout" initial={false}>
+                  {filteredPosts.map((post) => (
+                    <motion.div
+                      key={post.id}
+                      layout
+                      initial={{ opacity: 0, scale: 0.94 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.94 }}
+                      transition={{ duration: 0.35, ease: EASE_OUT }}
+                      className="h-full"
+                    >
+                      <BlogCard post={post} layout={GRID_CARD_LAYOUT} readMoreLabel={t('blog.readMore')} />
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </div>
+            </Reveal>
+          ) : (
+            <div className="py-12 text-center">
+              <p className="text-lg text-brand-gray">{t('blog.noArticlesFound')}</p>
+            </div>
+          )}
+        </div>
+      </section>
+
+      <CtaBand title={t('blog.moreServicesTitle')} text={t('blog.moreServicesDescription')}>
+        <PressLink to="/services" variant="accent" size="lg" arrow>
+          {t('nav.services')}
+        </PressLink>
+        <PressLink to="/faq" variant="outlineLight" size="lg">
+          {t('nav.faq')}
+        </PressLink>
+        <PressLink
+          to="/#contact"
+          variant="light"
+          size="lg"
+          onClick={(event) => {
+            event.preventDefault();
+            goToContact();
+          }}
+        >
+          {t('contact.title')}
+        </PressLink>
+      </CtaBand>
+    </PageShell>
   );
 };
 

@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft, TrendingUp, DollarSign, Calendar, FileText } from 'lucide-react';
+import { AccountShell, WorkspaceHeader } from "@/components/anteprima/accountUi";
+import { TrendingUp, DollarSign, Calendar, FileText } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { collection, query, getDocs, where, orderBy, Timestamp } from 'firebase/firestore';
 import { db } from '@/firebase/config';
@@ -178,25 +176,16 @@ const AdminRevenue = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <Navbar />
-      <main className="flex-grow container mx-auto px-4 py-8">
-        <div className="flex items-center gap-4 mb-6">
-          <Button 
-            variant="outline" 
-            size="sm" 
-            onClick={() => navigate('/admin')}
-            className="flex items-center gap-2"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Torna alla Dashboard
-          </Button>
-          <div className="flex-1">
-            <h1 className="text-3xl font-bold">Gestione Fatturato</h1>
-            <p className="text-gray-600 mt-1">Visualizza e analizza i dati di fatturato e pagamenti</p>
-          </div>
+    <AccountShell>
+      <div className="container-custom py-8 md:py-12">
+        <WorkspaceHeader
+          title="Fatturato"
+          subtitle="Pagamenti e importi confermati."
+          onBack={() => navigate("/admin")}
+          backLabel="Torna al pannello"
+        >
           <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
-            <SelectTrigger className="w-40">
+            <SelectTrigger className="h-11 w-44 rounded-full border-brand-blue/15 bg-white">
               <SelectValue placeholder="Periodo" />
             </SelectTrigger>
             <SelectContent>
@@ -205,11 +194,11 @@ const AdminRevenue = () => {
               <SelectItem value="year">Quest'anno</SelectItem>
             </SelectContent>
           </Select>
-        </div>
+        </WorkspaceHeader>
         
         {/* Statistiche */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card>
+          <Card className="rounded-[1.5rem] border-brand-blue/10 bg-white shadow-none">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Fatturato Totale</CardTitle>
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
@@ -222,7 +211,7 @@ const AdminRevenue = () => {
             </CardContent>
           </Card>
           
-          <Card>
+          <Card className="rounded-[1.5rem] border-brand-blue/10 bg-white shadow-none">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Fatturato Mensile</CardTitle>
               <Calendar className="h-4 w-4 text-muted-foreground" />
@@ -235,7 +224,7 @@ const AdminRevenue = () => {
             </CardContent>
           </Card>
           
-          <Card>
+          <Card className="rounded-[1.5rem] border-brand-blue/10 bg-white shadow-none">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Ordini Pagati</CardTitle>
               <DollarSign className="h-4 w-4 text-muted-foreground" />
@@ -248,7 +237,7 @@ const AdminRevenue = () => {
             </CardContent>
           </Card>
           
-          <Card>
+          <Card className="rounded-[1.5rem] border-brand-blue/10 bg-white shadow-none">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Valore Medio Ordine</CardTitle>
               <FileText className="h-4 w-4 text-muted-foreground" />
@@ -263,9 +252,9 @@ const AdminRevenue = () => {
         </div>
         
         {/* Tabella dettagliata */}
-        <Card>
+        <Card className="rounded-[1.75rem] border-white/80 bg-white shadow-[0_18px_50px_-32px_rgba(26,42,74,0.55)]">
           <CardHeader>
-            <CardTitle>Dettaglio Ordini</CardTitle>
+            <CardTitle className="font-display text-xl font-extrabold text-brand-blue">Dettaglio ordini</CardTitle>
             <CardDescription>
               Elenco dettagliato di tutti gli ordini con fatturato
             </CardDescription>
@@ -331,9 +320,8 @@ const AdminRevenue = () => {
             )}
           </CardContent>
         </Card>
-      </main>
-      <Footer />
-    </div>
+      </div>
+    </AccountShell>
   );
 };
 
