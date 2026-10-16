@@ -96,24 +96,3 @@ export function useGoToContact() {
     }, 100);
   }, [navigate, reduce]);
 }
-
-/** La pagina di anteprima non deve finire nei motori di ricerca. */
-export function usePreviewHead(title: string) {
-  useEffect(() => {
-    let robots = document.querySelector<HTMLMetaElement>('meta[name="robots"]');
-    const created = !robots;
-    if (!robots) {
-      robots = document.createElement("meta");
-      robots.name = "robots";
-      document.head.appendChild(robots);
-    }
-    const previousRobots = robots.content;
-    robots.content = "noindex,nofollow";
-    document.title = title;
-
-    return () => {
-      if (created) robots?.remove();
-      else if (robots) robots.content = previousRobots;
-    };
-  }, [title]);
-}

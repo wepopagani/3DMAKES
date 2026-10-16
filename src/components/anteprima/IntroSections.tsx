@@ -290,7 +290,7 @@ export function HeroSection() {
                     <div className="mt-8 flex flex-col items-center gap-4 lg:items-start">
                       <Magnetic>
                         <PressLink
-                          to="/anteprima"
+                          to="/#contact"
                           variant="accent"
                           size="lg"
                           arrow
