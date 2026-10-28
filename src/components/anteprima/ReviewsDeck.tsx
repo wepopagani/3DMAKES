@@ -85,7 +85,7 @@ function ReviewCard({ review, footer }: { review: PreviewReview; footer: string 
         <Quote aria-hidden className="h-9 w-9 shrink-0 text-brand-accent/20" />
       </div>
       <Stars rating={review.rating} />
-      <p className="mt-4 flex-grow text-base leading-relaxed text-brand-gray md:text-lg">"{review.text}"</p>
+      <p className="mt-4 line-clamp-6 flex-grow text-base leading-relaxed text-brand-gray md:text-lg">"{review.text}"</p>
       <div className="mt-6 flex items-center border-t border-gray-100 pt-4 text-sm text-brand-gray">
         <GoogleMark />
         {footer}

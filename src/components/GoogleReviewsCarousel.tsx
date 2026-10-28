@@ -11,117 +11,7 @@ import {
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import { GOOGLE_PUBLIC_REVIEW_COUNT } from "@/constants/googleBusiness";
-
-interface Review {
-  id: number;
-  author: string;
-  rating: number;
-  text: string;
-  date: string;
-  avatar?: string;
-}
-
-// Recensioni reali da Google
-const reviews: Review[] = [
-  {
-    id: 1,
-    author: "Titti Bl",
-    rating: 5,
-    text: "Incredibilmente disponibile e gentile. Ha risolto il mio problema con estrema competenza, ben oltre le mie aspettative. Lo consiglio a tutti. Grazie mille.",
-    date: "5 ago 2024",
-  },
-  {
-    id: 2,
-    author: "Leonardo",
-    rating: 5,
-    text: "Un esperienza professionale meritevole di lode, il titolare è stato cortese e molto qualificato per svolgere il lavoro affidatogli !!",
-    date: "26 lug 2024",
-  },
-  {
-    id: 3,
-    author: "Francesco Quattrucci",
-    rating: 5,
-    text: "Velocità e Qualità, Buonissimo il rapporto prezzo/materiale",
-    date: "26 lug 2024",
-  },
-  {
-    id: 4,
-    author: "Nicholas Chiggiato",
-    rating: 5,
-    text: "Prodotti eccezionali, molto professionali e disponibili",
-    date: "28 settimane fa",
-  },
-  {
-    id: 5,
-    author: "Elia Alacam",
-    rating: 5,
-    text: "Lavoro veloce ed efficace. Marco è stato in grado di capire esattamente la mia richiesta e senza troppe perdite di tempo ha eseguito un lavoro a dir poco perfetto. Consigliato!",
-    date: "5 dic 2024",
-  },
-  {
-    id: 6,
-    author: "Lorenzo Rebuffo",
-    rating: 5,
-    text: "Lavoro veloce e di qualità. Molto disponibile e preparato. Consiglio vivamente",
-    date: "33 settimane fa",
-  },
-  {
-    id: 7,
-    author: "turienzo gasser architectes",
-    rating: 5,
-    text: "Giovani, entusiasti e appassionati; ma soprattutto competenti ed efficaci. Ho chiesto loro una scansione di un oggetto piuttosto complicato ed il risultato è stato a dir poco entusiasmante. Prezzi onestissimi. Non posso che consigliarli. Sicuramente mi rivolgerò nuovamente a loro in caso di necessità!",
-    date: "16 settimane fa",
-  },
-  {
-    id: 8,
-    author: "Francesca Bertagnoli",
-    rating: 5,
-    text: "Ho ordinato una stampa di un'arma per un cosplay e il risultato è stato eccellente! La qualità di stampa è davvero alta, con dettagli precisi. Inoltre i tempi di realizzazione e consegna sono stati rapidissimi, molto più veloci di quanto mi aspettassi. Servizio assolutamente consigliato!",
-    date: "32 settimane fa",
-  },
-  {
-    id: 9,
-    author: "Andrea Portaro",
-    rating: 5,
-    text: "Fantastici, disposti ad ascoltarti e a capire esattamente le tue esigenze. Comunicazione veloce e precisa, non potevo chiedere di meglio.",
-    date: "6 giorni fa",
-  },
-  {
-    id: 10,
-    author: "Ian",
-    rating: 5,
-    text: "Avevo bisogno di un pezzo di ricambio e sono stati molto efficienti nel risolvere il mio problema, sono dei ragazzi gentili e offrono un altissima qualità di stampa.",
-    date: "24 settimane fa",
-  },
-  {
-    id: 11,
-    author: "Gabriele Rosa",
-    rating: 5,
-    text: "Un team super competente e professionale, che consiglio vivamente! Hanno capito subito quello di cui avevo bisogno e hanno realizzato il lavoro alla perfezione.",
-    date: "5 giorni fa",
-  },
-  {
-    id: 12,
-    author: "AURORA CASARIN",
-    rating: 5,
-    text: "Super professionali e soprattutto tempi ottimi. Consigliatissimo per gli studenti di architettura!",
-    date: "5 settimane fa",
-  },
-  {
-    id: 13,
-    author: "Maria Vittoria schultze",
-    rating: 5,
-    text: "Servizio davvero eccellente da 3DMakes a Lugano! Il ragazzo è stato super disponibile, professionale e rapidissimo, non avrei potuto chiedere di meglio.",
-    date: "5 settimane fa",
-  },
-  {
-    id: 14,
-    author: "Tanya Malfanti",
-    rating: 5,
-    text: "Abbiamo avuto un'ottima esperienza con 3D Makes. Ci siamo rivolti a loro per un problema e sono stati rapidi ed efficienti nel trovare la soluzione migliore.",
-    date: "7 settimane fa",
-  },
-];
+import { PREVIEW_REVIEWS } from "@/components/anteprima/data";
 
 const GoogleReviewsCarousel = () => {
   const { t } = useTranslation();
@@ -188,7 +78,7 @@ const GoogleReviewsCarousel = () => {
             className="w-full"
           >
             <CarouselContent>
-              {reviews.map((review) => (
+              {PREVIEW_REVIEWS.map((review) => (
                 <CarouselItem key={review.id} className="md:basis-1/2 lg:basis-1/3">
                   <div className="p-4 h-full">
                     <div className="bg-white rounded-lg shadow-md p-6 h-full flex flex-col">
@@ -209,7 +99,7 @@ const GoogleReviewsCarousel = () => {
                       </div>
 
                       {/* Testo recensione */}
-                      <p className="text-brand-gray leading-relaxed flex-grow">
+                      <p className="text-brand-gray leading-relaxed flex-grow line-clamp-6">
                         "{review.text}"
                       </p>
 
@@ -236,7 +126,7 @@ const GoogleReviewsCarousel = () => {
 
           {/* Indicatori */}
           <div className="flex justify-center gap-2 mt-8">
-            {reviews.map((_, index) => (
+            {PREVIEW_REVIEWS.map((_, index) => (
               <button
                 key={index}
                 className={`w-2 h-2 rounded-full transition-all ${
