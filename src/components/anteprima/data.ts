@@ -170,6 +170,12 @@ export const PREVIEW_PARTNERS: PreviewPartner[] = [
     logo: "/partner/marino-bernasconi.webp",
     website: "",
   },
+  {
+    id: 9,
+    name: "North Star Group",
+    logo: "/partner/north-star-group.png",
+    website: "https://www.northstargroup.ch",
+  },
 ];
 
 /** Loghi disegnati in bianco su trasparente: su fondo chiaro sparirebbero. */

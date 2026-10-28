@@ -64,6 +64,12 @@ const partners: Partner[] = [
     logo: "/partner/marino-bernasconi.webp",
     website: "",
   },
+  {
+    id: 9,
+    name: "North Star Group",
+    logo: "/partner/north-star-group.png",
+    website: "https://www.northstargroup.ch",
+  },
 ];
 
 const PartnersLogos = () => {
