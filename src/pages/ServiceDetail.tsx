@@ -1,6 +1,8 @@
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
+
+const ScanMotionLab = lazy(() => import("@/components/anteprima/ScanMotionLab"));
 import { BadgeCheck, Check, PenTool, Sparkles } from "lucide-react";
 import FAQSection from "@/components/FAQSection";
 import ProcessTimeline from "@/components/ProcessTimeline";
@@ -65,6 +67,7 @@ const CARD = "rounded-3xl bg-white shadow-sm ring-1 ring-brand-blue/10 transitio
 const ServiceDetail = () => {
   const { t } = useTranslation();
   const { serviceId } = useParams();
+  const [searchParams] = useSearchParams();
   const goToContact = useGoToContact();
   const catalogItem = getServiceByParam(serviceId);
 
@@ -135,7 +138,11 @@ const ServiceDetail = () => {
         eyebrow={catalogItem.badge}
         title={title}
         subtitle={description}
-        aside={isDecorativePhoto(catalogItem.image) ? <HeroPrint /> : <TiltPhoto src={catalogItem.image} alt={title} />}
+        aside={catalogItem.id === "scansione" && searchParams.get("motion") === "lab" ? (
+          <Suspense fallback={<TiltPhoto src={catalogItem.image} alt={title} />}>
+            <ScanMotionLab fallbackImage={catalogItem.image} />
+          </Suspense>
+        ) : isDecorativePhoto(catalogItem.image) ? <HeroPrint /> : <TiltPhoto src={catalogItem.image} alt={title} />}
       >
         {materialsSummary ? (
           <div className="space-y-2">
