@@ -3,9 +3,12 @@ import { useReducedMotion } from "framer-motion";
 import { Pause, Play, RotateCcw } from "lucide-react";
 import "./ScanFilm.css";
 
-const MEDIA = "/media/hero/object-to-scan";
+const DEFAULT_MEDIA = "/media/hero/object-to-scan";
 /** One approved clip. Scrub mode follows a normalized playhead; once mode holds its last frame. */
-export default function ScanFilm({ progressRef, mode = "once" }: {
+export default function ScanFilm({ progressRef, mode = "once", media = DEFAULT_MEDIA, alt = "Un componente metallico viene digitalizzato in una nuvola di punti blu", onTimeChange }: {
+  media?: string;
+  alt?: string;
+  onTimeChange?: (seconds: number) => void;
   progressRef?: MutableRefObject<number>;
   mode?: "scrub" | "once";
 }) {
@@ -63,10 +66,11 @@ export default function ScanFilm({ progressRef, mode = "once" }: {
   }, [mode, ready, reduce, progressRef, failed]);
 
   return <div ref={root} className={`scan-film ${mode === "scrub" ? "scan-film--scrub" : ""}`}>
-    <img src={`${MEDIA}-poster.jpg`} alt="Un componente metallico viene digitalizzato in una nuvola di punti blu" width={1916} height={1080} className="scan-film-poster" />
-    <video ref={video} src={!reduce && inView && !failed ? `${MEDIA}.mp4` : undefined} muted playsInline preload="auto" aria-hidden="true" tabIndex={-1}
+    <img src={`${media}-poster.jpg`} alt={alt} width={1916} height={1080} className="scan-film-poster" />
+    <video ref={video} src={!reduce && inView && !failed ? `${media}.mp4` : undefined} muted playsInline preload="auto" aria-hidden="true" tabIndex={-1}
       className={ready && !failed && !reduce ? "scan-film-video is-ready" : "scan-film-video"}
       onLoadedData={() => setReady(true)} onError={() => { setFailed(true); pause(); }}
+      onTimeUpdate={event => onTimeChange?.(event.currentTarget.currentTime)}
       onEnded={() => { setPlaying(false); setEnded(true); }} />
     {mode === "once" && !reduce && !failed && <button type="button" className="scan-film-control" onClick={() => playing ? pause() : void play()} aria-label={playing ? "Metti in pausa il video" : ended ? "Riguarda la trasformazione" : "Riproduci il video"}>
       {playing ? <Pause size={14} /> : ended ? <RotateCcw size={14} /> : <Play size={14} />}<span>{playing ? "Pausa" : ended ? "Riguarda" : "Riproduci"}</span>

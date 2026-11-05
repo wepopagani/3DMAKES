@@ -79,6 +79,15 @@ const ServiceDetail = () => {
     return <NotFound />;
   }
 
+  const filmByService: Record<string, { slug: string; alt: string }> = {
+    scansione: { slug: "object-to-scan", alt: "Il componente metallico diventa una scansione a punti" },
+    progettazione: { slug: "scan-to-cad", alt: "La nuvola di punti diventa un modello CAD a superfici continue" },
+    fdm: { slug: "cad-to-print", alt: "Il modello CAD viene costruito a strati in polimero" },
+    prototipazione: { slug: "cad-to-print", alt: "Realizzazione illustrativa di un prototipo in stampa 3D" },
+    cnc: { slug: "cnc-pocket", alt: "Fresatura illustrativa della tasca superiore di un componente metallico" },
+    "incisione-laser": { slug: "laser-mark", alt: "Marcatura laser 3DMAKES sul componente fresato" },
+  };
+  const serviceFilm = filmByService[catalogItem.id];
   const key = catalogItem.translationKey;
   const title = t(`services.${key}.title`);
   const description = t(`services.${key}.description`);
@@ -138,9 +147,9 @@ const ServiceDetail = () => {
         eyebrow={catalogItem.badge}
         title={title}
         subtitle={description}
-        aside={catalogItem.id === "scansione" && searchParams.get("motion") === "video" ? (
+        aside={serviceFilm && searchParams.get("motion") === "video" ? (
           <Suspense fallback={<TiltPhoto src={catalogItem.image} alt={title} />}>
-            <div className="scan-film-service"><ScanFilm /></div>
+            <div className="scan-film-service"><ScanFilm key={serviceFilm.slug} media={`/media/hero/${serviceFilm.slug}`} alt={serviceFilm.alt} /></div>
           </Suspense>
         ) : isDecorativePhoto(catalogItem.image) ? <HeroPrint /> : <TiltPhoto src={catalogItem.image} alt={title} />}
       >
