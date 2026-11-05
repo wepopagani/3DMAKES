@@ -55,10 +55,10 @@ export default function ScanFilmHero() {
           <p className="scan-film-subtitle">{t("hero.lab.chapters." + chapter.chapter + ".body")}</p>
         </div>
         <PressLink to="/#contact" variant="accent" size="lg" arrow onClick={event => { event.preventDefault(); goToContact(); }}>{t("hero.lab.primary")}</PressLink>
-        <Link className="scan-film-link" to={`/services/${SERVICES[active]}?motion=video`}>{LABELS[active]} ↗</Link>
+        <Link className="scan-film-link" to={`/services/${SERVICES[active]}`}>{LABELS[active]} ↗</Link>
       </div>
       <div className="scan-film-visual"><ScanFilm key={scrollDriven ? "scroll" : "once"} mode={scrollDriven ? "scrub" : "once"} media="/media/hero/full-journey" progressRef={progress} onTimeChange={onTimeChange} alt="Dall’oggetto alla scansione e al CAD: stampa 3D oppure fresatura CNC, seguita da marcatura laser" />
-        <div className="scan-film-chapters" aria-label="Capitoli del processo">{LABELS.map((label, index) => <Link key={label} to={`/services/${SERVICES[index]}?motion=video`} aria-current={index === active ? "step" : undefined}><span>0{index + 1}</span>{label}</Link>)}</div>
+        <div className="scan-film-chapters" aria-label="Capitoli del processo">{LABELS.map((label, index) => <Link key={label} to={`/services/${SERVICES[index]}`} aria-current={index === active ? "step" : undefined}><span>0{index + 1}</span>{label}</Link>)}</div>
         <p className="scan-film-route-note">{active === 3 ? "PERCORSO ALTERNATIVO ALLA STAMPA 3D" : active === 4 ? "PERSONALIZZAZIONE DEL PEZZO METALLICO" : "DALL’OGGETTO AL MODELLO, DAL MODELLO ALLA PRODUZIONE"}</p>
       </div>
     </div>{scrollDriven && <div className="scan-film-scroll">SCORRI PER ESPLORARE LE TECNOLOGIE <span>↓</span></div>}</div>

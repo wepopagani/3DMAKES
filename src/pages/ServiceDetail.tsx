@@ -1,4 +1,4 @@
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { lazy, Suspense, useEffect } from "react";
 
@@ -67,7 +67,6 @@ const CARD = "rounded-3xl bg-white shadow-sm ring-1 ring-brand-blue/10 transitio
 const ServiceDetail = () => {
   const { t } = useTranslation();
   const { serviceId } = useParams();
-  const [searchParams] = useSearchParams();
   const goToContact = useGoToContact();
   const catalogItem = getServiceByParam(serviceId);
 
@@ -147,7 +146,7 @@ const ServiceDetail = () => {
         eyebrow={catalogItem.badge}
         title={title}
         subtitle={description}
-        aside={serviceFilm && searchParams.get("motion") === "video" ? (
+        aside={serviceFilm ? (
           <Suspense fallback={<TiltPhoto src={catalogItem.image} alt={title} />}>
             <div className="scan-film-service"><ScanFilm key={serviceFilm.slug} media={`/media/hero/${serviceFilm.slug}`} alt={serviceFilm.alt} /></div>
           </Suspense>

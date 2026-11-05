@@ -1,5 +1,4 @@
 import { lazy, Suspense, useRef } from "react";
-import { useSearchParams } from "react-router-dom";
 
 const ScanFilmHero = lazy(() => import("@/components/anteprima/ScanFilmHero"));
 import { MotionConfig } from "framer-motion";
@@ -10,7 +9,7 @@ import BlogBento from "@/components/anteprima/BlogBento";
 import { FinalCta } from "@/components/anteprima/CtaPanels";
 import { FaqSection, HowWeHelpSection } from "@/components/anteprima/HelpAndFaq";
 import { IntroContext, usePageUncovered } from "@/components/anteprima/hooks";
-import { AboutSection, BannerSection, HeroSection } from "@/components/anteprima/IntroSections";
+import { AboutSection, BannerSection } from "@/components/anteprima/IntroSections";
 import { MissionSection, TonySection } from "@/components/anteprima/MissionAndTony";
 import ModelSearch from "@/components/anteprima/ModelSearch";
 import PartnersStrip from "@/components/anteprima/PartnersStrip";
@@ -21,8 +20,6 @@ import ServicesExplorer from "@/components/anteprima/ServicesExplorer";
 
 /** Homepage pubblica. */
 const Anteprima = () => {
-  const [searchParams] = useSearchParams();
-  const filmPreview = searchParams.get("motion") === "video";
   const rootRef = useRef<HTMLDivElement>(null);
   const uncovered = usePageUncovered(rootRef);
 
@@ -33,7 +30,7 @@ const Anteprima = () => {
           <PreviewNavbar />
           <main className="flex-grow">
             <BannerSection />
-            {filmPreview ? <Suspense fallback={<div className="min-h-[70vh] bg-[#101c30]" />}><ScanFilmHero /></Suspense> : <HeroSection />}
+            <Suspense fallback={<div className="min-h-[70vh] bg-[#101c30]" />}><ScanFilmHero /></Suspense>
             <AboutSection />
             <ReviewsDeck />
             <ServicesExplorer />
