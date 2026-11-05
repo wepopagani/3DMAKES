@@ -16,8 +16,6 @@ export type ProcessInput = {
   ready: boolean;
   pointerX: number;
   pointerY: number;
-  /** Opt-in manual viewer: keep the angle fixed until the visitor drags. */
-  freezeMotion?: boolean;
 };
 
 const CHAPTERS: Array<{ id: ProcessChapter; span: number }> = [
@@ -506,8 +504,8 @@ function ProcessObject({
       current[key] = rewind || Math.abs(current[key] - goal) > 3 ? goal : damp(current[key], goal, step, speed);
     });
 
-    if (flutes.current && !input.freezeMotion) flutes.current.rotation.y += step * 42;
-    if (!input.freezeMotion) yaw.current += step * 0.22 * current.spin;
+    if (flutes.current) flutes.current.rotation.y += step * 42;
+    yaw.current += step * 0.22 * current.spin;
     group.current.rotation.y = damp(group.current.rotation.y, yaw.current + input.pointerX * 0.7, step, 6);
     group.current.rotation.x = damp(group.current.rotation.x, -0.16 + input.pointerY * 0.32, step, 6);
 

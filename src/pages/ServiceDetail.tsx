@@ -2,7 +2,7 @@ import { useParams, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { lazy, Suspense, useEffect } from "react";
 
-const ScanMotionLab = lazy(() => import("@/components/anteprima/ScanMotionLab"));
+const ScanFilm = lazy(() => import("@/components/anteprima/ScanFilm"));
 import { BadgeCheck, Check, PenTool, Sparkles } from "lucide-react";
 import FAQSection from "@/components/FAQSection";
 import ProcessTimeline from "@/components/ProcessTimeline";
@@ -138,9 +138,9 @@ const ServiceDetail = () => {
         eyebrow={catalogItem.badge}
         title={title}
         subtitle={description}
-        aside={catalogItem.id === "scansione" && searchParams.get("motion") === "lab" ? (
+        aside={catalogItem.id === "scansione" && searchParams.get("motion") === "video" ? (
           <Suspense fallback={<TiltPhoto src={catalogItem.image} alt={title} />}>
-            <ScanMotionLab fallbackImage={catalogItem.image} />
+            <div className="scan-film-service"><ScanFilm /></div>
           </Suspense>
         ) : isDecorativePhoto(catalogItem.image) ? <HeroPrint /> : <TiltPhoto src={catalogItem.image} alt={title} />}
       >
