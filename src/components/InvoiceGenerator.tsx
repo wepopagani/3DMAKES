@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { useAuth } from '@/firebase/AuthContext';
 import jsPDF from 'jspdf';
-import { SHOP_PHONE_CONTACTS } from '@/constants/shopPhones';
+import { formatShopPhone, SHOP_PHONE_CONTACTS, SHOP_PHONE_ROLE_LABELS } from '@/constants/shopPhones';
 
 // Interfaccia per l'ordine
 interface OrderType {
@@ -142,11 +142,21 @@ const InvoiceGenerator: React.FC<{
       
       // Note
       yPosition += 20;
+      const contactLines = [
+        'Per informazioni contattare:',
+        'Email: info@3dmakes.ch',
+        ...SHOP_PHONE_CONTACTS.map(
+          (contact) => `${contact.name} (${SHOP_PHONE_ROLE_LABELS[contact.role]}): ${formatShopPhone(contact.telE164)}`
+        ),
+      ];
+      if (yPosition + (contactLines.length - 1) * 6 > pdf.internal.pageSize.getHeight() - 15) {
+        pdf.addPage();
+        yPosition = 20;
+      }
       pdf.setFontSize(10);
-      pdf.text('Per informazioni contattare:', 20, yPosition);
-      pdf.text('Email: info@3dmakes.ch', 20, yPosition + 10);
-      pdf.text(`Marco: ${SHOP_PHONE_CONTACTS[0].displayLocal}`, 20, yPosition + 20);
-      pdf.text(`Matteo: ${SHOP_PHONE_CONTACTS[1].displayLocal}`, 20, yPosition + 30);
+      contactLines.forEach((line, index) => {
+        pdf.text(line, 20, yPosition + index * 6);
+      });
       
       // Salva il PDF
       pdf.save(`Fattura_3DMakes_${invoiceNumber}.pdf`);
@@ -187,4 +197,4 @@ const InvoiceGenerator: React.FC<{
   );
 };
 
-export default InvoiceGenerator; 
+export default InvoiceGenerator;

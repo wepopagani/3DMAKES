@@ -411,6 +411,11 @@ export const serviceExtendedContent: Record<string, ExtendedServiceContent> = {
         description:
           "Digitalizzazione di elementi architettonici e oggetti di design per archivio o rielaborazione.",
       },
+      {
+        name: "Hotellerie e ristorazione",
+        description:
+          "Scansioniamo maniglie, supporti e altri componenti di arredi e attrezzature per ricostruire ricambi su misura per hotel e ristoranti.",
+      },
     ],
     whenToChoose:
       "La scansione 3D è la scelta giusta quando l'oggetto esiste fisicamente ma non ne hai il modello CAD, quando vuoi verificare la conformità dimensionale di un pezzo prodotto, quando devi riprodurre un oggetto che non puoi più reperire sul mercato, o quando hai bisogno di una base digitale fedele per un nuovo progetto. Non è la scelta giusta se il tuo oggetto è trasparente, molto riflettente o in movimento: in quei casi servono spray matteganti o approcci alternativi.",

@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense, useEffect, type CSSProperties } from "react";
 
 const ScanFilm = lazy(() => import("@/components/anteprima/ScanFilm"));
 import { BadgeCheck, Check, PenTool, Sparkles } from "lucide-react";
@@ -391,42 +391,44 @@ const ServiceDetail = () => {
                   <p className="body-text mb-12 text-lg leading-relaxed">{extendedContent.overview}</p>
                 </Reveal>
 
-                <div className="mb-12 grid grid-cols-1 gap-10 lg:grid-cols-2">
-                  <div className="min-w-0">
-                    <h3 className="mb-5 text-2xl font-semibold text-brand-blue">Applicazioni concrete</h3>
-                    <Stagger className="space-y-3" stagger={0.06}>
-                      {extendedContent.applications.map((app) => (
-                        <StaggerItem key={app.title}>
-                          <div className="group relative overflow-hidden rounded-2xl bg-white p-5 pl-6 shadow-sm ring-1 ring-brand-blue/10 transition-shadow duration-300 hover:shadow-lg">
+                <div
+                  className="mb-12 grid grid-cols-1 gap-x-10 gap-y-10 lg:grid-cols-2 lg:gap-y-3"
+                  style={{
+                    "--detail-rows": 1 + Math.max(extendedContent.applications.length, extendedContent.sectors.length),
+                  } as CSSProperties}
+                >
+                  {[
+                    {
+                      heading: "Applicazioni concrete",
+                      entries: extendedContent.applications,
+                      accent: "bg-brand-accent",
+                    },
+                    {
+                      heading: "Settori che serviamo",
+                      entries: extendedContent.sectors.map(({ name, description }) => ({ title: name, description })),
+                      accent: "bg-brand-blue",
+                    },
+                  ].map(({ heading, entries, accent }) => (
+                    <Stagger
+                      key={heading}
+                      className="min-w-0 space-y-3 lg:supports-[grid-template-rows:subgrid]:row-span-[var(--detail-rows)] lg:supports-[grid-template-rows:subgrid]:grid lg:supports-[grid-template-rows:subgrid]:grid-rows-subgrid lg:supports-[grid-template-rows:subgrid]:space-y-0"
+                      stagger={0.06}
+                    >
+                      <h3 className="pb-2 text-2xl font-semibold text-brand-blue">{heading}</h3>
+                      {entries.map(({ title, description }) => (
+                        <StaggerItem key={title}>
+                          <div className="group relative h-full overflow-hidden rounded-2xl bg-white p-5 pl-6 shadow-sm ring-1 ring-brand-blue/10 transition-shadow duration-300 hover:shadow-lg">
                             <span
                               aria-hidden
-                              className="absolute inset-y-4 left-0 w-1 rounded-r-full bg-brand-accent transition-[top,bottom] duration-300 group-hover:inset-y-0"
+                              className={cn("absolute inset-y-4 left-0 w-1 rounded-r-full transition-[top,bottom] duration-300 group-hover:inset-y-0", accent)}
                             />
-                            <h4 className="mb-1 font-semibold text-brand-blue">{app.title}</h4>
-                            <p className="leading-relaxed text-brand-gray">{app.description}</p>
+                            <h4 className="mb-1 font-semibold text-brand-blue">{title}</h4>
+                            <p className="leading-relaxed text-brand-gray">{description}</p>
                           </div>
                         </StaggerItem>
                       ))}
                     </Stagger>
-                  </div>
-
-                  <div className="min-w-0">
-                    <h3 className="mb-5 text-2xl font-semibold text-brand-blue">Settori che serviamo</h3>
-                    <Stagger className="space-y-3" stagger={0.06}>
-                      {extendedContent.sectors.map((sector) => (
-                        <StaggerItem key={sector.name}>
-                          <div className="group relative overflow-hidden rounded-2xl bg-white p-5 pl-6 shadow-sm ring-1 ring-brand-blue/10 transition-shadow duration-300 hover:shadow-lg">
-                            <span
-                              aria-hidden
-                              className="absolute inset-y-4 left-0 w-1 rounded-r-full bg-brand-blue transition-[top,bottom] duration-300 group-hover:inset-y-0"
-                            />
-                            <h4 className="mb-1 font-semibold text-brand-blue">{sector.name}</h4>
-                            <p className="leading-relaxed text-brand-gray">{sector.description}</p>
-                          </div>
-                        </StaggerItem>
-                      ))}
-                    </Stagger>
-                  </div>
+                  ))}
                 </div>
 
                 <Stagger className="mb-12 grid grid-cols-1 gap-4 md:gap-6 lg:grid-cols-2">

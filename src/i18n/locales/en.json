@@ -954,6 +954,10 @@
     "helpRealizeIdeas": "We are here to help you realize your ideas. Contact us to discuss your project or to receive more information about our services.",
     "contactInfo": "Contact information",
     "chatWithUs": "Chat with us",
+    "phoneRoles": {
+      "sales": "Sales",
+      "technical": "Technical"
+    },
     "fullAddress": "Via Cantonale 15\n6918 Figino, Switzerland",
     "mondayFriday": "Monday - Friday",
     "saturday": "Saturday",

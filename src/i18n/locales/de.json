@@ -908,6 +908,10 @@
     "helpRealizeIdeas": "Wir sind hier, um Ihnen bei der Realisierung Ihrer Ideen zu helfen. Kontaktieren Sie uns, um Ihr Projekt zu besprechen oder weitere Informationen über unsere Dienstleistungen zu erhalten.",
     "contactInfo": "Kontaktinformationen",
     "chatWithUs": "Chatten Sie mit uns",
+    "phoneRoles": {
+      "sales": "Vertrieb",
+      "technical": "Technik"
+    },
     "fullAddress": "Via Cantonale 15\n6918 Figino, Schweiz",
     "mondayFriday": "Montag - Freitag",
     "saturday": "Samstag",

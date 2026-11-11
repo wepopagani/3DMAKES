@@ -954,6 +954,10 @@
     "helpRealizeIdeas": "Siamo qui per aiutarti a realizzare le tue idee. Contattaci per discutere del tuo progetto o per ricevere maggiori informazioni sui nostri servizi.",
     "contactInfo": "Informazioni di contatto",
     "chatWithUs": "Chatta con noi",
+    "phoneRoles": {
+      "sales": "Commerciale",
+      "technical": "Tecnico"
+    },
     "fullAddress": "Via Cantonale 15\n6918 Figino, Svizzera",
     "mondayFriday": "Lunedì - Venerdì",
     "saturday": "Sabato",
