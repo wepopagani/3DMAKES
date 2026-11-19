@@ -18,6 +18,8 @@ import {
   isDecorativePhoto,
 } from "@/components/anteprima/PageBlocks";
 import PageShell from "@/components/anteprima/PageShell";
+import MediaClip from "@/components/anteprima/MediaClip";
+import WorkshopShowcase from "@/components/anteprima/WorkshopShowcase";
 import {
   Eyebrow,
   HEADING_2,
@@ -63,6 +65,15 @@ const asArray = <T,>(value: unknown): T[] => (Array.isArray(value) ? (value as T
 const ANCILLARY_ICONS = [PenTool, Sparkles, BadgeCheck];
 
 const CARD = "rounded-3xl bg-white shadow-sm ring-1 ring-brand-blue/10 transition-shadow duration-300 hover:shadow-xl";
+const MATERIAL_FILMS: Partial<Record<string, string>> = {
+  cff: "fiber-details",
+  sls: "nylon-details",
+  sla: "resin-details",
+  slm: "metal-details",
+  lsam: "large-format-details",
+  mjf: "mjf-details",
+  polyjet: "polyjet-details",
+};
 
 const ServiceDetail = () => {
   const { t } = useTranslation();
@@ -87,6 +98,7 @@ const ServiceDetail = () => {
     "incisione-laser": { slug: "laser-mark", alt: "Marcatura laser 3DMAKES sul componente fresato" },
   };
   const serviceFilm = filmByService[catalogItem.id];
+  const materialFilm = MATERIAL_FILMS[catalogItem.id];
   const key = catalogItem.translationKey;
   const title = t(`services.${key}.title`);
   const description = t(`services.${key}.description`);
@@ -116,6 +128,7 @@ const ServiceDetail = () => {
   const noCadText = t(`services.${key}.noCadText`, { defaultValue: "" });
   const isCalculatorRequest = catalogItem.id === "fdm" || catalogItem.id === "sla";
   const extendedContent = getExtendedServiceContent(catalogItem.id);
+  const sectorFeature = extendedContent?.sectorFeature;
   const gallery = catalogItem.gallery ?? [];
   const ancillaryItems = asArray<Application>(
     t("services.ancillaryServices.items", { returnObjects: true })
@@ -148,8 +161,21 @@ const ServiceDetail = () => {
         subtitle={description}
         aside={serviceFilm ? (
           <Suspense fallback={<TiltPhoto src={catalogItem.image} alt={title} />}>
-            <div className="scan-film-service"><ScanFilm key={serviceFilm.slug} media={`/media/hero/${serviceFilm.slug}`} alt={serviceFilm.alt} /></div>
+            <div className="scan-film-service">
+              <ScanFilm key={serviceFilm.slug} media={`/media/hero/${serviceFilm.slug}`} videoSrc={`/media/hero/playback/${serviceFilm.slug}.mp4`} alt={serviceFilm.alt} />
+            </div>
           </Suspense>
+        ) : materialFilm ? (
+          <figure>
+            <MediaClip
+              key={materialFilm}
+              src={`/media/service-films/${materialFilm}.mp4`}
+              poster={`/media/service-films/${materialFilm}-poster.jpg`}
+              label={t(`siteMedia.${catalogItem.id}`)}
+              className="aspect-video w-full rounded-3xl border border-white/15"
+            />
+            <figcaption className="mt-3 text-center text-xs text-blue-100/75">{t("siteMedia.generated")}</figcaption>
+          </figure>
         ) : isDecorativePhoto(catalogItem.image) ? <HeroPrint /> : <TiltPhoto src={catalogItem.image} alt={title} />}
       >
         {materialsSummary ? (
@@ -159,6 +185,10 @@ const ServiceDetail = () => {
           </div>
         ) : null}
       </PageHero>
+
+      {catalogItem.id === "fdm" && <WorkshopShowcase clip="printing" />}
+      {catalogItem.id === "cnc" && <WorkshopShowcase clip="cnc" />}
+      {catalogItem.id === "incisione-laser" && <WorkshopShowcase clip="laser" />}
 
       {/* Alterna bianco e beige contando dal fondo: l'ultima fascia resta bianca prima delle FAQ beige. */}
       <div className="[&>section:nth-last-of-type(even)]:bg-[#E5DDD3]">
@@ -430,29 +460,36 @@ const ServiceDetail = () => {
                   ))}
                 </div>
 
-                {extendedContent.sectorFeature && (
+                {sectorFeature && (
                   <Reveal className="mb-12">
                     <article className="grid overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-brand-blue/10 lg:grid-cols-2">
                       <figure className="flex min-w-0 flex-col bg-brand-blue">
-                        <img
-                          src={extendedContent.sectorFeature.image}
-                          alt={extendedContent.sectorFeature.imageAlt}
-                          width={1200}
-                          height={800}
-                          loading="lazy"
-                          decoding="async"
-                          className="aspect-video w-full object-cover lg:h-0 lg:min-h-[320px] lg:flex-1"
-                        />
+                        {sectorFeature.video ? (
+                          <MediaClip
+                            src={sectorFeature.video}
+                            poster={sectorFeature.image}
+                            label={sectorFeature.title}
+                            className="aspect-video w-full lg:h-0 lg:min-h-[320px] lg:flex-1"
+                          />
+                        ) : (
+                          <img
+                            src={sectorFeature.image}
+                            alt={sectorFeature.imageAlt}
+                            loading="lazy"
+                            decoding="async"
+                            className="aspect-video w-full object-cover lg:h-0 lg:min-h-[320px] lg:flex-1"
+                          />
+                        )}
                         <figcaption className="px-6 py-4 text-sm leading-relaxed text-white/80">
-                          {extendedContent.sectorFeature.caption}
+                          {sectorFeature.caption}{sectorFeature.video && ` · ${t("siteMedia.generated")}`}
                         </figcaption>
                       </figure>
                       <div className="min-w-0 p-6 md:p-8">
                         <h3 className="mb-5 text-2xl font-semibold leading-tight text-brand-blue md:text-3xl">
-                          {extendedContent.sectorFeature.title}
+                          {sectorFeature.title}
                         </h3>
                         <div className="space-y-4 leading-relaxed text-brand-gray">
-                          {extendedContent.sectorFeature.paragraphs.map((paragraph) => (
+                          {sectorFeature.paragraphs.map((paragraph) => (
                             <p key={paragraph}>{paragraph}</p>
                           ))}
                         </div>

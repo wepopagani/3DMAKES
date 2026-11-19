@@ -30,6 +30,7 @@ export interface ExtendedSectorFeature {
   image: string;
   imageAlt: string;
   caption: string;
+  video?: string;
 }
 
 export interface ExtendedServiceContent {
@@ -52,7 +53,7 @@ export interface ExtendedServiceContent {
 export const serviceExtendedContent: Record<string, ExtendedServiceContent> = {
   fdm: {
     overview:
-      "La stampa 3D FDM (Fused Deposition Modeling) è la tecnologia additiva più diffusa al mondo e il punto di partenza ideale per la maggior parte dei progetti di prototipazione rapida e produzione in piccola serie. In 3DMAKES lavoriamo con stampanti professionali Stratasys per unire precisione, affidabilità di processo e un costo al pezzo tra i più competitivi del mercato. Dalla nostra sede di Figino (Lugano) serviamo aziende e privati in Canton Ticino, Grigioni italiani e Lombardia con ritiro in sede o spedizione con corriere espresso.",
+      "La stampa 3D FDM (Fused Deposition Modeling) è la tecnologia additiva più diffusa al mondo e il punto di partenza ideale per la maggior parte dei progetti di prototipazione rapida e produzione in piccola serie. Nel laboratorio 3DMAKES utilizziamo Bambu Lab H2D e H2S ed ELEGOO OrangeStorm Giga, scegliendo la macchina in base al materiale, alla geometria e all’utilizzo del pezzo. Dalla nostra sede di Figino (Lugano) serviamo aziende e privati in Canton Ticino, Grigioni italiani e Lombardia con ritiro in sede o spedizione con corriere espresso.",
     applications: [
       {
         title: "Prototipazione funzionale",
@@ -110,7 +111,7 @@ export const serviceExtendedContent: Record<string, ExtendedServiceContent> = {
       {
         question: "Qual è la dimensione massima stampabile in FDM?",
         answer:
-          "Sulle macchine FDM Stratasys arriviamo fino a 800 × 800 × 1000 mm in un unico pezzo. Per dimensioni superiori valutiamo stampa a sezioni e assemblaggio, oppure la tecnologia LSAM per il grande formato.",
+          "La dimensione stampabile in un unico pezzo dipende dalla macchina, dal materiale e dall’orientamento. Valutiamo il file prima di confermare il formato. Per pezzi più grandi consideriamo la stampa a sezioni con assemblaggio o, quando adatta al progetto, la tecnologia LSAM con partner specializzati.",
       },
       {
         question: "Consegnate in Lombardia e in Italia?",
@@ -132,7 +133,7 @@ export const serviceExtendedContent: Record<string, ExtendedServiceContent> = {
 
   sla: {
     overview:
-      "La stampa 3D SLA (Stereolitografia) polimerizza sezione per sezione una resina fotosensibile tramite laser UV, costruendo il pezzo con risoluzione fino a 25 µm e area di stampa di 298 × 164 × 300 mm. È la tecnologia di riferimento quando servono dettagli fini, superfici lisce e alta fedeltà estetica. 3DMAKES utilizza macchine SLA professionali e una gamma di resine calibrate per applicazioni dentali, gioielleria, modelli di studio e componenti tecnici. Serviamo clienti in Canton Ticino e Lombardia.",
+      "La stampa 3D SLA (Stereolitografia) polimerizza sezione per sezione una resina fotosensibile tramite esposizione a luce UV, costruendo il pezzo con risoluzione fino a 25 µm e area di stampa di 298 × 164 × 300 mm. È la tecnologia di riferimento quando servono dettagli fini, superfici lisce e alta fedeltà estetica. In laboratorio usiamo la Anycubic Photon Mono M7 Max per la stampa a resina con maschera LCD. Selezioniamo le resine per applicazioni dentali, gioielleria, modelli di studio e componenti tecnici. Serviamo clienti in Canton Ticino e Lombardia.",
     applications: [
       {
         title: "Modelli dentali e odontotecnici",
@@ -212,7 +213,7 @@ export const serviceExtendedContent: Record<string, ExtendedServiceContent> = {
 
   "incisione-laser": {
     overview:
-      "Il nostro servizio di incisione, marcatura e taglio laser su metalli utilizza tecnologia laser a fibra MOPA da 60 W, ideale per lavorazioni precise su acciaio inossidabile, alluminio, ottone e rame. Realizziamo targhe industriali, marcature seriali, codici QR, componenti meccanici tagliati e personalizzazioni su metallo con area di lavoro di 250 × 250 mm e precisione di 0,1 mm. Lavoriamo su file DXF e PDF e serviamo clienti in Canton Ticino e Lombardia.",
+      "Il nostro servizio di incisione, marcatura e taglio laser su metalli utilizza xTool F2 Ultra con sorgente a fibra MOPA da 60 W per lavorazioni precise su acciaio inossidabile, alluminio, ottone e rame. Realizziamo targhe industriali, marcature seriali, codici QR, componenti meccanici tagliati e personalizzazioni su metallo con area interna standard di 220 × 220 mm e precisione di 0,1 mm. Lavoriamo su file DXF e PDF e serviamo clienti in Canton Ticino e Lombardia.",
     applications: [
       {
         title: "Marcatura industriale",
@@ -274,6 +275,7 @@ export const serviceExtendedContent: Record<string, ExtendedServiceContent> = {
         "Per bicchieri e tovagliette valutiamo insieme materiale, finitura e tecnica di personalizzazione, così da scegliere una lavorazione adatta all'oggetto e al suo utilizzo quotidiano. Dal singolo pezzo per un evento alle piccole serie per sala, reception e camere, curiamo proporzioni, leggibilità e coerenza con l'identità del locale. Possiamo partire dal tuo logo o sviluppare con te la grafica e il supporto, concordando i dettagli su un campione prima della serie.",
       ],
       image: "/images/services/laser-hospitality-v1.webp",
+      video: "/media/service-films/hospitality-details.mp4",
       imageAlt: "Posate, targhette e supporti QR personalizzati per hotel e ristoranti",
       caption: "Esempi di personalizzazione per hotel e ristoranti",
     },
@@ -295,7 +297,7 @@ export const serviceExtendedContent: Record<string, ExtendedServiceContent> = {
       {
         question: "Qual è l'area di lavoro massima?",
         answer:
-          "L'area utile è 250 × 250 mm. Per lavorazioni più grandi valutiamo soluzioni su misura.",
+          "L’area interna standard della xTool F2 Ultra è 220 × 220 mm. Per lavorazioni più grandi valutiamo soluzioni su misura.",
       },
       {
         question: "Offrite anche progettazione e finitura?",

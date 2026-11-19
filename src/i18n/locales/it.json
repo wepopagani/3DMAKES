@@ -67,6 +67,13 @@
       "subtitle": "Scansione 3D, progettazione, stampa 3D, CNC e laser. Tutto in un unico laboratorio.",
       "primary": "Raccontaci il tuo progetto",
       "technologies": "Esplora le tecnologie",
+      "cncAlternative": "Un’alternativa alla stampa 3D.",
+      "playback": {
+        "play": "Riproduci",
+        "pause": "Pausa",
+        "replay": "Riguarda",
+        "retry": "Riprova a riprodurre"
+      },
       "courses": "Corsi",
       "aria": "Modello tridimensionale di un componente che passa da nuvola di punti, scansione, CAD, stampa 3D, fresatura CNC e incisione laser.",
       "modes": {
@@ -147,17 +154,17 @@
       "description": "Tecnologia di stampa a deposizione di materiale fuso, ideale per prototipi e produzioni in vari materiali plastici."
     },
     "fdm": {
-      "title": "Stampa 3D FDM – Stratasys",
-      "description": "La tecnologia Fused Deposition Modeling (FDM) Stratasys è ideale per la produzione di prototipi funzionali e parti resistenti. Utilizziamo macchine professionali Fortus per garantire la massima qualità e precisione industriale.",
+      "title": "Stampa 3D FDM",
+      "description": "La stampa 3D FDM deposita filamento termoplastico strato dopo strato per realizzare prototipi funzionali, componenti tecnici e piccole serie. In laboratorio lavoriamo con Bambu Lab H2D e H2S ed ELEGOO OrangeStorm Giga.",
       "machines": [
-        "Fortus 900",
-        "Fortus 450",
-        "Fortus 370"
+        "Bambu Lab H2D",
+        "Bambu Lab H2S",
+        "ELEGOO OrangeStorm Giga"
       ],
       "features": [
-        "Tecnologia Stratasys professionale per applicazioni industriali",
-        "Dimensioni di stampa fino a 800×800×1000 mm",
-        "Risoluzione fino a 100 micron per strato",
+        "Stampante e materiale scelti in base all’uso del pezzo",
+        "Grandi formati valutati per ogni progetto, anche con partner specializzati",
+        "Altezza dello strato scelta in base alla finitura richiesta",
         "Ideale per prototipi funzionali, parti meccaniche e produzione industriale",
         "Materiali certificati per applicazioni critiche"
       ],
@@ -378,7 +385,7 @@
       "description": "Servizio professionale di incisione, marcatura e taglio laser su metalli. Realizziamo targhe industriali, componenti meccanici, personalizzazioni e marcature seriali su acciaio inox, alluminio, ottone e rame con tecnologia laser a fibra MOPA da 60 W.",
       "features": [
         "Tecnologia laser a fibra MOPA, 60 W",
-        "Area di lavoro: 250 × 250 mm",
+        "Area di lavoro: 220 × 220 mm",
         "Precisione: 0,1 mm",
         "Materiali: acciaio inossidabile, alluminio, ottone, rame",
         "Incisione e marcatura permanente su metalli",
@@ -987,7 +994,7 @@
       "subjectPlaceholder": "Di cosa vorresti parlare?",
       "messagePlaceholder": "Descrivi il tuo progetto o la tua richiesta...",
       "services": {
-        "fdm": "Stampa 3D FDM – Stratasys",
+        "fdm": "Stampa 3D FDM",
         "cff": "Stampa 3D CFF – Markforged",
         "lsam": "Stampa 3D LSAM – Caracol",
         "mjf": "Stampa 3D MJF – HP",
@@ -1264,7 +1271,7 @@
     "unsupportedFormatForType": "Formato file non supportato per {printType}. Usa: {formats}.",
     "laserInfo": {
       "title": "Informazioni Laser",
-      "workArea": "Area di lavoro: 250 × 250 mm",
+      "workArea": "Area di lavoro: 220 × 220 mm",
       "precision": "Precisione: 0,1 mm",
       "fileFormats": "Formati: DXF, PDF",
       "materials": "Materiali: acciaio inox, alluminio, ottone, rame, acrilico, pelle e altri",
@@ -1602,7 +1609,7 @@
     "fdmMaterialsAnswer": "Offriamo un’ampia gamma di materiali tra cui PLA, PETG, ABS, TPU, Nylon e filamenti rinforzati con fibra di carbonio. Per applicazioni ad alta precisione offriamo anche stampa in resina (SLA/PolyJet) e tecnologie a polvere (SLS, MJF) oltre allo SLM per metallo.",
     "deliveryTimesAnswer": "I tempi dipendono da dimensioni, tecnologia, complessità e quantità. Gli ordini standard spesso si chiudono in 2–5 giorni lavorativi; progetti urgenti o piccole serie possono richiedere pianificazione dedicata.",
     "maxSize": "Qual è la dimensione massima di stampa?",
-    "maxSizeAnswer": "Con FDM arriviamo fino a 800×800×1000 mm (80×80×100 cm) in un unico pezzo. Oggetti più grandi possono essere stampati a sezioni e assemblati.",
+    "maxSizeAnswer": "La dimensione stampabile in un unico pezzo dipende dalla macchina, dal materiale e dall’orientamento. Per i formati più grandi valutiamo il file e possiamo proporre una stampa a sezioni con assemblaggio.",
     "scanningPrecision": "Qual è la precisione del vostro servizio di scansione 3D?",
     "scanningPrecisionAnswer": "I nostri scanner professionali raggiungono una precisione fino a circa 0,1 mm in base a dimensioni e complessità dell’oggetto. Possiamo acquisire geometria e, dove utile, informazioni di texture.",
     "largeObjects": "Potete scansionare oggetti grandi?",
@@ -2092,5 +2099,53 @@
     "orderOnWhatsApp": "Invia ordine su WhatsApp",
     "orderDisclaimer": "Verrai contattato entro 24 ore per confermare disponibilità, prezzi e modalità di pagamento.",
     "waIntro": "Ciao 3DMAKES! Vorrei ordinare questa configurazione drone:"
+  },
+  "siteMedia": {
+    "playNamed": "Riproduci: {{title}}",
+    "unavailable": "Il video non è disponibile.",
+    "generated": "Visualizzazione generata",
+    "sls": "Dettagli dei campioni in nylon SLS",
+    "sla": "Dettagli dei campioni in resina",
+    "slm": "Superfici e geometrie dei campioni in metallo",
+    "lsam": "Dettagli dei campioni stampati in grande formato",
+    "cff": "Dettagli dei campioni in composito rinforzato",
+    "mjf": "Dettagli dei campioni MJF in nylon",
+    "polyjet": "Dettagli dei campioni PolyJet a colori",
+    "workshop": {
+      "title": "Dentro il laboratorio",
+      "equipment": "Le macchine del laboratorio",
+      "types": {
+        "filament": "Stampa a filamento",
+        "resin": "Stampa a resina",
+        "cnc": "Fresatura CNC",
+        "laser": "Incisione laser"
+      },
+      "clips": {
+        "printing": {
+          "tab": "Stampa 3D",
+          "title": "Il pezzo prende forma",
+          "description": "Un timelapse del nostro laboratorio mostra la testina che deposita il filamento mentre il pezzo cresce strato dopo strato.",
+          "link": "Scopri la stampa FDM"
+        },
+        "laser": {
+          "tab": "Laser",
+          "title": "Controllo delle targhette incise",
+          "description": "Dopo la marcatura puliamo le targhette metalliche e controlliamo la leggibilità e la finitura dell’incisione.",
+          "link": "Scopri incisione e taglio laser"
+        },
+        "machines": {
+          "tab": "Stampanti",
+          "title": "Dentro la Bambu Lab H2S",
+          "description": "Una ripresa ravvicinata della bobina sul piano di stampa, dall’interno della camera.",
+          "link": "Conosci 3DMAKES"
+        },
+        "cnc": {
+          "tab": "CNC",
+          "title": "Preparazione dei pezzi per la fresatura",
+          "description": "Allineiamo le placche di metallo sul piano della Makera Z1 prima della lavorazione.",
+          "link": "Scopri la fresatura CNC"
+        }
+      }
+    }
   }
 }

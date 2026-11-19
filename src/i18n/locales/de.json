@@ -67,6 +67,13 @@
       "subtitle": "3D-Scan, Konstruktion, 3D-Druck, CNC und Laser. Alles in einem Labor.",
       "primary": "Erzählen Sie uns von Ihrem Projekt",
       "technologies": "Technologien entdecken",
+      "cncAlternative": "Eine Alternative zum 3D-Druck.",
+      "playback": {
+        "play": "Abspielen",
+        "pause": "Pause",
+        "replay": "Erneut abspielen",
+        "retry": "Wiedergabe erneut versuchen"
+      },
       "courses": "Kurse",
       "aria": "Dreidimensionales Modell eines Bauteils, das von Punktwolke über Scan, CAD, 3D-Druck, CNC-Fräsen und Lasergravur läuft.",
       "modes": {
@@ -147,16 +154,16 @@
     },
     "fdm": {
       "title": "FDM 3D-Druck",
-      "description": "Die Fused Deposition Modeling (FDM) Technologie ist ideal für die Produktion funktionaler Prototypen und widerstandsfähiger Teile. Wir verwenden professionelle 3D-Drucker für maximale Qualität und Präzision.",
+      "description": "Beim FDM-3D-Druck wird thermoplastisches Filament Schicht für Schicht aufgetragen. So entstehen funktionale Prototypen, technische Bauteile und Kleinserien. In unserer Werkstatt nutzen wir Bambu Lab H2D und H2S sowie den ELEGOO OrangeStorm Giga.",
       "machines": [
-        "Fortus 900",
-        "Fortus 450",
-        "Fortus 370"
+        "Bambu Lab H2D",
+        "Bambu Lab H2S",
+        "ELEGOO OrangeStorm Giga"
       ],
       "features": [
         "Breite Palette verfügbarer Materialien (PLA, ABS, PETG, TPU, Nylon, etc.)",
-        "Druckdimensionen bis zu 800×800×1000 mm",
-        "Auflösung bis zu 100 Mikron pro Schicht",
+        "Grossformate werden je nach Projekt geprüft, bei Bedarf mit spezialisierten Partnern",
+        "Schichthöhe passend zur gewünschten Oberflächenqualität",
         "Ideal für funktionale Prototypen, mechanische Teile und kleine Produktionsserien",
         "Schnelle Lieferzeiten und wettbewerbsfähige Preise"
       ],
@@ -351,7 +358,7 @@
       "description": "Professioneller Lasergravur-, Markierungs- und Schneidservice für Metalle. Wir bearbeiten Edelstahl, Aluminium, Messing und Kupfer mit 60-W-MOPA-Faserlasertechnologie.",
       "features": [
         "MOPA-Faserlasertechnologie, 60 W",
-        "Arbeitsbereich: 250 × 250 mm",
+        "Arbeitsbereich: 220 × 220 mm",
         "Präzision: 0,1 mm",
         "Materialien: Edelstahl, Aluminium, Messing, Kupfer",
         "Dauerhafte Gravur und Markierung auf Metallen",
@@ -1218,7 +1225,7 @@
     "unsupportedFormatForType": "Nicht unterstütztes Dateiformat für {printType}. Verwendung: {Formate}.",
     "laserInfo": {
       "title": "Laserinformationen",
-      "workArea": "Arbeitsbereich: 250 × 250 mm",
+      "workArea": "Arbeitsbereich: 220 × 220 mm",
       "precision": "Genauigkeit: 0,1 mm",
       "fileFormats": "Formate: DXF, PDF",
       "materials": "Materialien: Edelstahl, Aluminium, Messing, Kupfer, Acryl, Leder und mehr",
@@ -1608,7 +1615,7 @@
     "fdmMaterialsAnswer": "Wir bieten u. a. PLA, PETG, ABS, TPU, Nylon und carbonfaserverstärkte Filamente. Für hohe Detailtreue auch Harzdruck (SLA/PolyJet), Pulververfahren (SLS, MJF) und SLM für Metall.",
     "deliveryTimesAnswer": "Lieferzeiten hängen von Größe, Technologie, Komplexität und Stückzahl ab. Standardaufträge sind oft in 2–5 Werktagen fertig; Eilaufträge oder Kleinserien brauchen eine eigene Planung.",
     "maxSize": "Was ist die maximale Druckgröße?",
-    "maxSizeAnswer": "Mit FDM erreichen wir bis zu 800×800×1000 mm (80×80×100 cm) in einem Stück. Größere Objekte können sektioniert gedruckt und montiert werden.",
+    "maxSizeAnswer": "Die Grösse, die sich in einem Stück drucken lässt, hängt vom Drucker, vom Material und von der Ausrichtung ab. Bei grösseren Teilen prüfen wir die Datei und können den Druck in Teilstücken mit anschliessender Montage empfehlen.",
     "scanningPrecision": "Wie präzise ist Ihr 3D-Scanning-Service?",
     "scanningPrecisionAnswer": "Unsere professionellen Scanner erreichen eine Präzision von bis zu ca. 0,1 mm je nach Größe und Komplexität. Wir erfassen Geometrie und bei Bedarf Texturinformationen.",
     "largeObjects": "Können Sie große Objekte scannen?",
@@ -2098,5 +2105,53 @@
     "orderOnWhatsApp": "Bestellung per WhatsApp senden",
     "orderDisclaimer": "Wir melden uns innerhalb von 24 Stunden mit Verfügbarkeit, Preis und Zahlungsoptionen.",
     "waIntro": "Hallo 3DMAKES! Ich möchte diese Drohnen-Konfiguration bestellen:"
+  },
+  "siteMedia": {
+    "playNamed": "Abspielen: {{title}}",
+    "unavailable": "Das Video ist nicht verfügbar.",
+    "generated": "Generierte Visualisierung",
+    "sls": "Details der SLS-Muster aus Nylon",
+    "sla": "Details der Harzmuster",
+    "slm": "Oberflächen und Geometrien der Metallmuster",
+    "lsam": "Details der großformatig gedruckten Muster",
+    "cff": "Details der verstärkten Verbundwerkstoffmuster",
+    "mjf": "Details der MJF-Muster aus Nylon",
+    "polyjet": "Details der farbigen PolyJet-Muster",
+    "workshop": {
+      "title": "Einblick in die Werkstatt",
+      "equipment": "Maschinen in der Werkstatt",
+      "types": {
+        "filament": "Filamentdruck",
+        "resin": "Harzdruck",
+        "cnc": "CNC-Fräsen",
+        "laser": "Lasergravur"
+      },
+      "clips": {
+        "printing": {
+          "tab": "3D-Druck",
+          "title": "Das Bauteil nimmt Form an",
+          "description": "Ein Zeitraffer aus unserer Werkstatt zeigt, wie der Druckkopf Filament ablegt und das Bauteil Schicht für Schicht entsteht.",
+          "link": "FDM-Druck entdecken"
+        },
+        "laser": {
+          "tab": "Laser",
+          "title": "Kontrolle der gravierten Schilder",
+          "description": "Nach der Beschriftung reinigen wir die Metallschilder und prüfen Lesbarkeit und Oberflächenqualität der Gravur.",
+          "link": "Lasergravur und Laserschnitt entdecken"
+        },
+        "machines": {
+          "tab": "Drucker",
+          "title": "Ein Blick in die Bambu Lab H2S",
+          "description": "Nahaufnahme einer Spule auf dem Druckbett, aus dem Inneren der Druckkammer.",
+          "link": "3DMAKES kennenlernen"
+        },
+        "cnc": {
+          "tab": "CNC",
+          "title": "Teile zum Fräsen vorbereiten",
+          "description": "Vor der Bearbeitung richten wir die Metallplatten auf dem Maschinentisch der Makera Z1 aus.",
+          "link": "CNC-Fräsen entdecken"
+        }
+      }
+    }
   }
 }

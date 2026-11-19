@@ -67,6 +67,13 @@
       "subtitle": "3D scanning, design, 3D printing, CNC and laser. All in one lab.",
       "primary": "Tell us about your project",
       "technologies": "Explore the technologies",
+      "cncAlternative": "An alternative to 3D printing.",
+      "playback": {
+        "play": "Play",
+        "pause": "Pause",
+        "replay": "Replay",
+        "retry": "Try playing again"
+      },
       "courses": "Courses",
       "aria": "Three-dimensional model of a component moving through a point cloud, scan, CAD, 3D printing, CNC milling and laser engraving.",
       "modes": {
@@ -146,17 +153,17 @@
       "description": "Fused deposition modeling technology, ideal for prototypes and production in various plastic materials."
     },
     "fdm": {
-      "title": "FDM 3D Printing – Stratasys",
-      "description": "Stratasys Fused Deposition Modeling (FDM) technology is ideal for producing functional prototypes and resistant parts. We use professional Fortus machines to ensure maximum quality and industrial precision.",
+      "title": "FDM 3D Printing",
+      "description": "FDM 3D printing deposits thermoplastic filament layer by layer to make functional prototypes, technical parts and small production runs. Our workshop uses Bambu Lab H2D and H2S printers and the ELEGOO OrangeStorm Giga.",
       "machines": [
-        "Fortus 900",
-        "Fortus 450",
-        "Fortus 370"
+        "Bambu Lab H2D",
+        "Bambu Lab H2S",
+        "ELEGOO OrangeStorm Giga"
       ],
       "features": [
-        "Professional Stratasys technology for industrial applications",
-        "Print dimensions up to 800×800×1000 mm",
-        "Resolution up to 100 microns per layer",
+        "Printer and material selected for the part’s intended use",
+        "Large formats assessed per project, with specialist partners where appropriate",
+        "Layer height selected for the required finish",
         "Ideal for functional prototypes, mechanical parts and industrial production",
         "Certified materials for critical applications"
       ],
@@ -377,7 +384,7 @@
       "description": "Professional laser engraving, marking and cutting service on metals. We produce industrial nameplates, mechanical components, customizations and serial markings on stainless steel, aluminum, brass and copper with 60 W MOPA fiber laser technology.",
       "features": [
         "MOPA fiber laser technology, 60 W",
-        "Work area: 250 × 250 mm",
+        "Work area: 220 × 220 mm",
         "Precision: 0.1 mm",
         "Materials: stainless steel, aluminum, brass, copper",
         "Permanent engraving and marking on metals",
@@ -987,7 +994,7 @@
       "subjectPlaceholder": "Di cosa vorresti parlare?",
       "messagePlaceholder": "Descrivi il tuo progetto o la tua richiesta...",
       "services": {
-        "fdm": "FDM 3D Printing – Stratasys",
+        "fdm": "FDM 3D Printing",
         "cff": "CFF 3D Printing – Markforged",
         "lsam": "LSAM 3D Printing – Caracol",
         "mjf": "MJF 3D Printing – HP",
@@ -1264,7 +1271,7 @@
     "unsupportedFormatForType": "Formato file non supportato per {printType}. Usa: {formats}.",
     "laserInfo": {
       "title": "Laser Information",
-      "workArea": "Work area: 250 × 250 mm",
+      "workArea": "Work area: 220 × 220 mm",
       "precision": "Precision: 0.1 mm",
       "fileFormats": "Formats: DXF, PDF",
       "materials": "Materials: stainless steel, aluminum, brass, copper, acrylic, leather and more",
@@ -1606,7 +1613,7 @@
     "fdmMaterialsAnswer": "We offer a wide range including PLA, PETG, ABS, TPU, Nylon and carbon-fibre reinforced filaments. For high-detail work we also offer resin printing (SLA/PolyJet), powder technologies (SLS, MJF) and SLM for metal.",
     "deliveryTimesAnswer": "Lead times depend on size, technology, complexity and quantity. Standard orders often complete in 2–5 business days; urgent jobs or short series may need dedicated scheduling.",
     "maxSize": "What is the maximum print size?",
-    "maxSizeAnswer": "With FDM we reach up to 800×800×1000 mm (80×80×100 cm) in a single piece. Larger objects can be printed in sections and assembled.",
+    "maxSizeAnswer": "The size we can print in one piece depends on the printer, material and orientation. For larger parts, we review the file and can recommend printing in sections and assembling them.",
     "scanningPrecision": "How precise is your 3D scanning service?",
     "scanningPrecisionAnswer": "Our professional scanners reach precision up to about 0.1 mm depending on object size and complexity. We can capture geometry and, where useful, texture information.",
     "largeObjects": "Can you scan large objects?",
@@ -2096,5 +2103,53 @@
     "orderOnWhatsApp": "Send order on WhatsApp",
     "orderDisclaimer": "We'll get back to you within 24 hours to confirm availability, pricing and payment.",
     "waIntro": "Hi 3DMAKES! I'd like to order this drone configuration:"
+  },
+  "siteMedia": {
+    "playNamed": "Play: {{title}}",
+    "unavailable": "The video is unavailable.",
+    "generated": "Generated visualisation",
+    "sls": "Details of SLS nylon samples",
+    "sla": "Details of the resin samples",
+    "slm": "Surfaces and shapes of the metal samples",
+    "lsam": "Details of the large-format printed samples",
+    "cff": "Details of the reinforced composite samples",
+    "mjf": "Details of the MJF nylon samples",
+    "polyjet": "Details of the full-colour PolyJet samples",
+    "workshop": {
+      "title": "Inside the workshop",
+      "equipment": "Workshop equipment",
+      "types": {
+        "filament": "Filament printing",
+        "resin": "Resin printing",
+        "cnc": "CNC machining",
+        "laser": "Laser engraving"
+      },
+      "clips": {
+        "printing": {
+          "tab": "3D printing",
+          "title": "The part takes shape",
+          "description": "A timelapse from our workshop shows the toolhead depositing filament as the part grows layer by layer.",
+          "link": "Explore FDM printing"
+        },
+        "laser": {
+          "tab": "Laser",
+          "title": "Checking the engraved tags",
+          "description": "After marking, we clean the metal tags and check the engraving’s legibility and finish.",
+          "link": "Explore laser engraving and cutting"
+        },
+        "machines": {
+          "tab": "Printers",
+          "title": "Inside the Bambu Lab H2S",
+          "description": "A close-up of a spool on the print bed, seen from inside the chamber.",
+          "link": "Meet 3DMAKES"
+        },
+        "cnc": {
+          "tab": "CNC",
+          "title": "Setting up parts for machining",
+          "description": "We line up the metal plates on the Makera Z1 bed before machining.",
+          "link": "Explore CNC machining"
+        }
+      }
+    }
   }
 }

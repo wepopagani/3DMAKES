@@ -67,6 +67,13 @@
       "subtitle": "Scan 3D, conception, impression 3D, CNC et laser. Tout dans un seul laboratoire.",
       "primary": "Parlez-nous de votre projet",
       "technologies": "Explorer les technologies",
+      "cncAlternative": "Une alternative à l’impression 3D.",
+      "playback": {
+        "play": "Lire",
+        "pause": "Pause",
+        "replay": "Relire",
+        "retry": "Réessayer la lecture"
+      },
       "courses": "Cours",
       "aria": "Modèle tridimensionnel d'un composant qui passe du nuage de points au scan, au CAD, à l'impression 3D, au fraisage CNC et à la gravure laser.",
       "modes": {
@@ -147,16 +154,16 @@
     },
     "fdm": {
       "title": "Impression 3D FDM",
-      "description": "La technologie Fused Deposition Modeling (FDM) est idéale pour la production de prototypes fonctionnels et de pièces résistantes. Nous utilisons des imprimantes 3D professionnelles pour garantir la qualité et précision maximales.",
+      "description": "L’impression 3D FDM dépose du filament thermoplastique couche par couche pour réaliser des prototypes fonctionnels, des pièces techniques et des petites séries. Notre atelier utilise les imprimantes Bambu Lab H2D et H2S ainsi que l’ELEGOO OrangeStorm Giga.",
       "machines": [
-        "Fortus900",
-        "Fortus450",
-        "Fortus370"
+        "Bambu Lab H2D",
+        "Bambu Lab H2S",
+        "ELEGOO OrangeStorm Giga"
       ],
       "features": [
         "Large gamme de matériaux disponibles (PLA, ABS, PETG, TPU, Nylon, etc.)",
-        "Dimensions d’impression jusqu’à 800×800×1000 mm",
-        "Résolution jusqu'à 100 microns par couche",
+        "Grands formats étudiés selon le projet, avec des partenaires spécialisés si nécessaire",
+        "Hauteur de couche choisie selon la finition souhaitée",
         "Idéal pour prototypes fonctionnels, pièces mécaniques et petites séries",
         "Délais de livraison rapides et prix compétitifs"
       ],
@@ -351,7 +358,7 @@
       "description": "Service professionnel de gravure, marquage et découpe laser sur métaux. Nous travaillons l'acier inoxydable, l'aluminium, le laiton et le cuivre avec une technologie laser fibre MOPA de 60 W.",
       "features": [
         "Technologie laser fibre MOPA, 60 W",
-        "Zone de travail : 250 × 250 mm",
+        "Zone de travail : 220 × 220 mm",
         "Précision : 0,1 mm",
         "Matériaux : acier inoxydable, aluminium, laiton, cuivre",
         "Gravure et marquage permanent sur métaux",
@@ -1218,7 +1225,7 @@
     "unsupportedFormatForType": "Format de fichier non pris en charge pour {printType}. Utilisez : {formats}.",
     "laserInfo": {
       "title": "Informations sur les lasers",
-      "workArea": "Zone de travail : 250 × 250 mm",
+      "workArea": "Zone de travail : 220 × 220 mm",
       "precision": "Précision : 0,1 mm",
       "fileFormats": "Formats : DXF, PDF",
       "materials": "Matériaux : acier inox, aluminium, laiton, cuivre, acrylique, cuir et plus",
@@ -1608,7 +1615,7 @@
     "fdmMaterialsAnswer": "Nous proposons une large gamme : PLA, PETG, ABS, TPU, Nylon et filaments renforcés fibre de carbone. Pour la haute précision, aussi résine (SLA/PolyJet), poudre (SLS, MJF) et SLM pour le métal.",
     "deliveryTimesAnswer": "Les délais dépendent de la taille, de la technologie, de la complexité et de la quantité. Les commandes standard se terminent souvent en 2–5 jours ouvrables ; les urgences ou petites séries nécessitent une planification dédiée.",
     "maxSize": "Quelle est la taille maximale d’impression ?",
-    "maxSizeAnswer": "En FDM nous atteignons jusqu’à 800×800×1000 mm (80×80×100 cm) en une seule pièce. Les objets plus grands peuvent être imprimés en sections puis assemblés.",
+    "maxSizeAnswer": "La taille imprimable en une seule pièce dépend de la machine, du matériau et de l’orientation. Pour les grands formats, nous étudions le fichier et pouvons proposer une impression en plusieurs sections à assembler.",
     "scanningPrecision": "Quelle est la précision de votre service de scan 3D ?",
     "scanningPrecisionAnswer": "Nos scanners professionnels atteignent une précision jusqu’à environ 0,1 mm selon la taille et la complexité. Nous capturons la géométrie et, si utile, la texture.",
     "largeObjects": "Pouvez-vous scanner de grands objets ?",
@@ -2098,5 +2105,53 @@
     "orderOnWhatsApp": "Envoyer la commande sur WhatsApp",
     "orderDisclaimer": "Nous te recontactons sous 24 h pour confirmer disponibilité, prix et moyens de paiement.",
     "waIntro": "Bonjour 3DMAKES ! J'aimerais commander cette configuration drone :"
+  },
+  "siteMedia": {
+    "playNamed": "Lire : {{title}}",
+    "unavailable": "La vidéo est indisponible.",
+    "generated": "Visualisation générée",
+    "sls": "Détails des échantillons en nylon SLS",
+    "sla": "Détails des échantillons en résine",
+    "slm": "Surfaces et géométries des échantillons métalliques",
+    "lsam": "Détails des échantillons imprimés en grand format",
+    "cff": "Détails des échantillons en composite renforcé",
+    "mjf": "Détails des échantillons MJF en nylon",
+    "polyjet": "Détails des échantillons PolyJet en couleur",
+    "workshop": {
+      "title": "Dans l’atelier",
+      "equipment": "Les machines de l’atelier",
+      "types": {
+        "filament": "Impression filament",
+        "resin": "Impression résine",
+        "cnc": "Fraisage CNC",
+        "laser": "Gravure laser"
+      },
+      "clips": {
+        "printing": {
+          "tab": "Impression 3D",
+          "title": "La pièce prend forme",
+          "description": "Un accéléré de notre atelier montre la tête déposer le filament pendant que la pièce se construit couche par couche.",
+          "link": "Découvrir l’impression FDM"
+        },
+        "laser": {
+          "tab": "Laser",
+          "title": "Contrôle des plaquettes gravées",
+          "description": "Après le marquage, nous nettoyons les plaquettes métalliques et contrôlons la lisibilité et la finition de la gravure.",
+          "link": "Découvrir la gravure et la découpe laser"
+        },
+        "machines": {
+          "tab": "Imprimantes",
+          "title": "Dans la Bambu Lab H2S",
+          "description": "Gros plan sur une bobine posée sur le plateau, depuis l’intérieur de la chambre.",
+          "link": "Découvrir 3DMAKES"
+        },
+        "cnc": {
+          "tab": "CNC",
+          "title": "Préparation des pièces pour le fraisage",
+          "description": "Nous alignons les plaques métalliques sur le plateau de la Makera Z1 avant l’usinage.",
+          "link": "Découvrir le fraisage CNC"
+        }
+      }
+    }
   }
 }

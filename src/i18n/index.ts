@@ -22,6 +22,10 @@ const resources = {
   },
 };
 
+i18n.on('languageChanged', (language) => {
+  if (typeof document !== 'undefined') document.documentElement.lang = language;
+});
+
 // Strategia audit SEO v3.0: IT è la lingua primaria del sito (mercato Ticino).
 // Il rilevamento da `navigator` veniva interpretato dai crawler (e dai visitatori con
 // browser in inglese) come contenuto EN, causando l'incoerenza linguistica segnalata.
@@ -56,4 +60,4 @@ i18n
     returnObjects: true,
   });
 
-export default i18n; 
+export default i18n;

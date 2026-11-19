@@ -17,6 +17,7 @@ import PreviewNavbar from "@/components/anteprima/PreviewNavbar";
 import { Reveal } from "@/components/anteprima/primitives";
 import ReviewsDeck from "@/components/anteprima/ReviewsDeck";
 import ServicesExplorer from "@/components/anteprima/ServicesExplorer";
+import WorkshopShowcase from "@/components/anteprima/WorkshopShowcase";
 
 /** Homepage pubblica. */
 const Anteprima = () => {
@@ -31,6 +32,7 @@ const Anteprima = () => {
             <BannerSection />
             <Suspense fallback={<div className="min-h-[70vh] bg-[#101c30]" />}><ScanFilmHero /></Suspense>
             <AboutSection />
+            <WorkshopShowcase />
             <ReviewsDeck />
             <ServicesExplorer />
             <HowWeHelpSection />

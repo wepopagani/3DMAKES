@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from "react";
-import { motion, useInView, useReducedMotion, type Variants } from "framer-motion";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import { MISSION_PILLARS } from "./data";
+import MediaClip from "./MediaClip";
 import {
   Eyebrow,
   HEADING_2,
@@ -117,61 +117,17 @@ export function MissionSection() {
 
 export function TonySection() {
   const { t } = useTranslation();
-  const reduce = useReducedMotion();
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const inView = useInView(videoRef, { amount: 0.35 });
-  const nearViewport = useInView(videoRef, { once: true, margin: "500px" });
-  const [videoFailed, setVideoFailed] = useState(false);
-  const [pageVisible, setPageVisible] = useState(() => !document.hidden);
-
-  useEffect(() => {
-    const updateVisibility = () => setPageVisible(!document.hidden);
-    document.addEventListener("visibilitychange", updateVisibility);
-    return () => document.removeEventListener("visibilitychange", updateVisibility);
-  }, []);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    if (inView && pageVisible && !reduce) video.play().catch(() => undefined);
-    else video.pause();
-  }, [inView, pageVisible, reduce]);
 
   return (
     <section className="overflow-hidden bg-white py-16 md:py-24">
       <div className="container-custom flex flex-col items-center justify-center gap-8 lg:flex-row">
         <Reveal x={-48} y={0} className="w-full max-w-2xl">
-          {videoFailed ? (
-            <img
-              src={`https://placehold.co/600x400/ffffff/333333?text=${encodeURIComponent(t("index.tonyVideoFallbackText"))}`}
-              alt={t("index.tonyVideoAlt")}
-              className="h-auto w-full"
-            />
-          ) : (
-            <video
-              ref={videoRef}
-              src={nearViewport ? "/tony si sdraia.mp4" : undefined}
-              width={1280}
-              height={720}
-              className="h-auto w-full"
-              muted
-              playsInline
-              preload="metadata"
-              controls={Boolean(reduce)}
-              onEnded={
-                reduce
-                  ? undefined
-                  : (event) => {
-                      if (!inView || document.hidden) return;
-                      event.currentTarget.currentTime = 3;
-                      event.currentTarget.play().catch(() => undefined);
-                    }
-              }
-              onError={() => setVideoFailed(true)}
-            >
-              {t("index.videoUnsupported")}
-            </video>
-          )}
+          <MediaClip
+            src="/tony%20si%20sdraia.mp4"
+            poster="/media/workshop/tony-poster.jpg"
+            label={t("index.tonyVideoAlt")}
+            className="aspect-video rounded-3xl bg-white"
+          />
         </Reveal>
         <Reveal x={48} y={0} delay={0.15} className="w-full max-w-xl text-center lg:text-left">
           <h2 className={cn(HEADING_2, "mb-4 text-brand-blue")}>

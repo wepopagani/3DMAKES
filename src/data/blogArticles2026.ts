@@ -116,7 +116,7 @@ L’**FDM** (Fused Deposition Modeling) deposita materiale termoplastico strato 
 
 **Quando la consigliamo**
 - Ti serve un pezzo **robusto** o da montare/testare
-- Dimensioni medio-grandi (con FDM arriviamo fino a **800×800×1000 mm**)
+- Dimensioni medio-grandi, da valutare in base a macchina, materiale e orientamento
 - Budget contenuto o più iterazioni rapide
 - Materiali come PLA, PETG, ABS, ASA, TPU, Nylon o filamenti caricati fibra
 
@@ -161,12 +161,12 @@ Non esiste una risposta unica: a volte stampiamo un **prototipo estetico in SLA*
 Carica il file sul [calcolatore preventivo](/calculator) oppure scrivici: ti indichiamo tecnologia e materiale in base al progetto. Hai dubbi generali? Consulta le [FAQ](/faq).`,
     contentEn: `When you request a 3D printing quote, the useful first question is not only “how much?”, but **which technology you really need**. At 3DMAKES in Figino (Ticino) we work daily with **FDM** and **SLA** — two different processes with opposite strengths.
 
-**FDM** is ideal for functional parts, larger sizes (up to 800×800×1000 mm), technical materials and tighter budgets. **SLA** wins on fine detail and smooth surfaces for aesthetic, dental or jewelry applications.
+**FDM** is ideal for functional parts, larger sizes, technical materials and tighter budgets. The feasible build size depends on the printer, material and orientation. **SLA** wins on fine detail and smooth surfaces for aesthetic, dental or jewelry applications.
 
 We guide you based on budget, strength, finish and quantity. Explore [FDM](/services/fdm), [SLA](/services/sla), the [quote calculator](/calculator) or our [FAQ](/faq).`,
     details: {
       tecnologie: "FDM / SLA",
-      formatoMax: "fino a 800×800×1000 mm (FDM)",
+      formatoMax: "Da valutare sul progetto",
       sede: "Figino (Ticino)",
       preventivo: "Online + conferma tecnica",
     },

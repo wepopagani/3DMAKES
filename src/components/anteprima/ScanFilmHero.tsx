@@ -1,67 +1,160 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useReducedMotion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { ArrowUpRight, Pause, Play, RotateCcw } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { useFinePointer, useGoToContact, useMediaQuery } from "./hooks";
+import { useGoToContact } from "./hooks";
 import { PressLink } from "./primitives";
-import ScanFilm from "./ScanFilm";
 import { HERO_FILM_CHAPTERS } from "./heroFilmData";
-import "./ScanFilm.css";
+import "./ScanFilmHero.css";
 
-const SERVICES = ["scansione", "progettazione", "fdm", "cnc", "laser"];
-const LABELS = ["Scansione 3D", "Progettazione CAD", "Stampa 3D", "Fresatura CNC", "Marcatura laser"];
+type Playback = "idle" | "loading" | "playing" | "paused" | "ended" | "error";
 
-/** Full production story. CNC is introduced as an alternative to the printed route. */
+function ChapterPlayer({ slug }: { slug: string }) {
+  const { t } = useTranslation();
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [playback, setPlayback] = useState<Playback>("idle");
+  const [showVideo, setShowVideo] = useState(false);
+  const playing = playback === "loading" || playback === "playing";
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const onVisibilityChange = () => {
+      if (document.hidden) video.pause();
+    };
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) video.pause();
+    });
+    observer.observe(video);
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      video.pause();
+      if (video.hasAttribute("src")) {
+        video.removeAttribute("src");
+        video.load();
+      }
+    };
+  }, []);
+
+  const togglePlayback = async () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (playing) {
+      video.pause();
+      return;
+    }
+
+    if (playback === "ended") video.currentTime = 0;
+    if (!video.hasAttribute("src") || playback === "error") {
+      video.src = `/media/hero/playback/${slug}.mp4`;
+    }
+    setPlayback("loading");
+    try {
+      await video.play();
+    } catch (error) {
+      if (videoRef.current !== video || (error instanceof DOMException && error.name === "AbortError")) return;
+      setPlayback("error");
+      setShowVideo(false);
+    }
+  };
+
+  const label = playing ? "pause" : playback === "ended" ? "replay" : playback === "error" ? "retry" : "play";
+  const Icon = playing ? Pause : playback === "ended" || playback === "error" ? RotateCcw : Play;
+
+  return (
+    <div className="process-film-player">
+      <img src={`/media/hero/${slug}-poster.jpg`} alt="" width={1916} height={1080} decoding="async" />
+      <video
+        ref={videoRef}
+        aria-hidden="true"
+        muted
+        playsInline
+        preload="none"
+        className={showVideo ? "is-visible" : undefined}
+        onPlaying={() => {
+          setPlayback("playing");
+          setShowVideo(true);
+        }}
+        onPause={(event) => {
+          if (!event.currentTarget.ended) setPlayback((state) => state === "error" ? state : "paused");
+        }}
+        onEnded={() => setPlayback("ended")}
+        onError={() => {
+          setPlayback("error");
+          setShowVideo(false);
+        }}
+      />
+      <button type="button" className="process-film-toggle" onClick={() => void togglePlayback()}>
+        <Icon aria-hidden size={16} />
+        {t(`hero.lab.playback.${label}`)}
+      </button>
+    </div>
+  );
+}
+
 export default function ScanFilmHero() {
   const { t } = useTranslation();
-  const reduce = Boolean(useReducedMotion());
-  const desktop = useMediaQuery("(min-width: 1024px) and (min-height: 720px)");
-  const finePointer = useFinePointer();
-  const scrollDriven = desktop && finePointer && !reduce;
-  const track = useRef<HTMLElement>(null);
-  const progress = useRef(0);
   const [active, setActive] = useState(0);
   const goToContact = useGoToContact();
-  const onTimeChange = useCallback((seconds: number) => {
-    let next = 0;
-    HERO_FILM_CHAPTERS.forEach((chapter, index) => { if (seconds >= chapter.start + (index === 3 ? .325 : index > 0 ? .175 : 0)) next = index; });
-    setActive(current => current === next ? current : next);
-  }, []);
-  useEffect(() => {
-    if (!scrollDriven) return;
-    const element = track.current;
-    if (!element) return;
-    let frame = 0;
-    const measure = () => {
-      const stage = element.firstElementChild as HTMLElement;
-      const header = document.querySelector("header")?.getBoundingClientRect().height ?? 72;
-      const travel = Math.max(1, element.offsetHeight - stage.offsetHeight);
-      const p = Math.max(0, Math.min(1, (header - element.getBoundingClientRect().top) / travel));
-      progress.current = Math.max(0, Math.min(1, (p - .025) / .93));
-      frame = 0;
-    };
-    const update = () => { if (!frame) frame = requestAnimationFrame(measure); };
-    measure();
-    window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-    return () => { cancelAnimationFrame(frame); window.removeEventListener("scroll", update); window.removeEventListener("resize", update); };
-  }, [scrollDriven]);
   const chapter = HERO_FILM_CHAPTERS[active];
-  return <section ref={track} className={`scan-film-hero ${scrollDriven ? "is-scroll-driven" : ""}`}>
-    <div className="scan-film-stage"><div className="container-custom scan-film-layout">
-      <div className="scan-film-copy"><p className="scan-film-eyebrow">{t("hero.lab.chapters." + chapter.chapter + ".eyebrow")}</p>
-        <h1>{t("hero.lab.line1")}<span>{t("hero.lab.line2")}</span></h1>
-        <div className="scan-film-chapter-copy" aria-live="off">
-          <h2>{active === 3 ? "Un’alternativa: lavorato dal pieno." : t("hero.lab.chapters." + chapter.chapter + ".title")}</h2>
-          <p className="scan-film-subtitle">{t("hero.lab.chapters." + chapter.chapter + ".body")}</p>
+  const copyKey = `hero.lab.chapters.${chapter.chapter}`;
+
+  return (
+    <section className="process-film" aria-labelledby="process-film-heading">
+      <div className="container-custom process-film-layout">
+        <div className="process-film-intro">
+          <h1 id="process-film-heading">
+            {t("hero.lab.line1")}{" "}<span>{t("hero.lab.line2")}</span>
+          </h1>
+          <p>{t("hero.lab.subtitle")}</p>
         </div>
-        <PressLink to="/#contact" variant="accent" size="lg" arrow onClick={event => { event.preventDefault(); goToContact(); }}>{t("hero.lab.primary")}</PressLink>
-        <Link className="scan-film-link" to={`/services/${SERVICES[active]}`}>{LABELS[active]} ↗</Link>
+
+        <div className="process-film-visual">
+          <ChapterPlayer key={chapter.slug} slug={chapter.slug} />
+          <div className="process-film-chapters" role="group" aria-label={t("hero.lab.technologies")}>
+            {HERO_FILM_CHAPTERS.map((item, index) => (
+              <button
+                key={item.slug}
+                type="button"
+                aria-pressed={index === active}
+                aria-controls="process-film-caption"
+                onClick={() => setActive(index)}
+              >
+                {t(`hero.lab.phases.${item.label}`)}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="process-film-details">
+          <div className="process-film-caption" id="process-film-caption" aria-live="polite" aria-atomic="true">
+            <h2>{chapter.chapter === "cnc" ? t("hero.lab.cncAlternative") : t(`${copyKey}.title`)}</h2>
+            <p>{t(`${copyKey}.body`)}</p>
+          </div>
+          <div className="process-film-actions">
+            <Link className="process-film-service" to={`/services/${chapter.service}`}>
+              {t("common.discoverMore")}
+              <ArrowUpRight aria-hidden size={16} />
+            </Link>
+            <PressLink
+              to="/#contact"
+              variant="accent"
+              size="lg"
+              arrow
+              onClick={(event) => {
+                if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                event.preventDefault();
+                goToContact();
+              }}
+            >
+              {t("hero.lab.primary")}
+            </PressLink>
+          </div>
+        </div>
       </div>
-      <div className="scan-film-visual"><ScanFilm key={scrollDriven ? "scroll" : "once"} mode={scrollDriven ? "scrub" : "once"} media="/media/hero/full-journey" progressRef={progress} onTimeChange={onTimeChange} alt="Dall’oggetto alla scansione e al CAD: stampa 3D oppure fresatura CNC, seguita da marcatura laser" />
-        <div className="scan-film-chapters" aria-label="Capitoli del processo">{LABELS.map((label, index) => <Link key={label} to={`/services/${SERVICES[index]}`} aria-current={index === active ? "step" : undefined}><span>0{index + 1}</span>{label}</Link>)}</div>
-        <p className="scan-film-route-note">{active === 3 ? "PERCORSO ALTERNATIVO ALLA STAMPA 3D" : active === 4 ? "PERSONALIZZAZIONE DEL PEZZO METALLICO" : "DALL’OGGETTO AL MODELLO, DAL MODELLO ALLA PRODUZIONE"}</p>
-      </div>
-    </div>{scrollDriven && <div className="scan-film-scroll">SCORRI PER ESPLORARE LE TECNOLOGIE <span>↓</span></div>}</div>
-  </section>;
+    </section>
+  );
 }
