@@ -2114,7 +2114,6 @@
     "workshop": {
       "title": "Dentro il laboratorio",
       "equipment": "Le macchine del laboratorio",
-      "enlargePhoto": "Ingrandisci la foto di {{name}}",
       "types": {
         "filament": "Stampa a filamento",
         "resin": "Stampa a resina",

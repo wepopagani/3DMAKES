@@ -2120,7 +2120,6 @@
     "workshop": {
       "title": "Einblick in die Werkstatt",
       "equipment": "Maschinen in der Werkstatt",
-      "enlargePhoto": "Foto von {{name}} vergrößern",
       "types": {
         "filament": "Filamentdruck",
         "resin": "Harzdruck",

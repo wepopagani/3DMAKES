@@ -2120,7 +2120,6 @@
     "workshop": {
       "title": "Dans l’atelier",
       "equipment": "Les machines de l’atelier",
-      "enlargePhoto": "Agrandir la photo de {{name}}",
       "types": {
         "filament": "Impression filament",
         "resin": "Impression résine",
