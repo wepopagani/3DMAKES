@@ -120,14 +120,22 @@ export function TonySection() {
   const reduce = useReducedMotion();
   const videoRef = useRef<HTMLVideoElement>(null);
   const inView = useInView(videoRef, { amount: 0.35 });
+  const nearViewport = useInView(videoRef, { once: true, margin: "500px" });
   const [videoFailed, setVideoFailed] = useState(false);
+  const [pageVisible, setPageVisible] = useState(() => !document.hidden);
+
+  useEffect(() => {
+    const updateVisibility = () => setPageVisible(!document.hidden);
+    document.addEventListener("visibilitychange", updateVisibility);
+    return () => document.removeEventListener("visibilitychange", updateVisibility);
+  }, []);
 
   useEffect(() => {
     const video = videoRef.current;
-    if (!video || reduce) return;
-    if (inView) video.play().catch(() => undefined);
+    if (!video) return;
+    if (inView && pageVisible && !reduce) video.play().catch(() => undefined);
     else video.pause();
-  }, [inView, reduce]);
+  }, [inView, pageVisible, reduce]);
 
   return (
     <section className="overflow-hidden bg-white py-16 md:py-24">
@@ -142,16 +150,19 @@ export function TonySection() {
           ) : (
             <video
               ref={videoRef}
-              src="/tony si sdraia.mp4"
+              src={nearViewport ? "/tony si sdraia.mp4" : undefined}
+              width={1280}
+              height={720}
               className="h-auto w-full"
               muted
               playsInline
-              preload="auto"
+              preload="metadata"
               controls={Boolean(reduce)}
               onEnded={
                 reduce
                   ? undefined
                   : (event) => {
+                      if (!inView || document.hidden) return;
                       event.currentTarget.currentTime = 3;
                       event.currentTarget.play().catch(() => undefined);
                     }

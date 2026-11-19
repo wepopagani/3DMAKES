@@ -251,6 +251,11 @@ export const serviceExtendedContent: Record<string, ExtendedServiceContent> = {
         description:
           "Incisioni decorative su ottone, rame e acciaio per pezzi unici e personalizzazioni.",
       },
+      {
+        name: "Hotellerie e ristorazione",
+        description:
+          "Affianchiamo hotel, ristoranti, bar e strutture ricettive nella personalizzazione degli oggetti che accompagnano l'esperienza degli ospiti. Incidiamo loghi, nomi e dettagli grafici su posate e accessori metallici, realizziamo targhette per camere, portachiavi, segnaposto, numeri da tavolo e piccola segnaletica coordinata. Progettiamo anche cubi e supporti con QR per consultare il menu, accedere ai servizi dell'hotel o lasciare una recensione, combinando marcatura laser e produzione su misura in base al progetto. Per bicchieri e tovagliette valutiamo insieme materiale, finitura e tecnica di personalizzazione, così da scegliere una lavorazione adatta all'oggetto e al suo utilizzo quotidiano. Dal singolo pezzo per un evento alle piccole serie per sala, reception e camere, curiamo proporzioni, leggibilità e coerenza con l'identità del locale. Possiamo partire dal tuo logo o sviluppare con te la grafica e il supporto, concordando i dettagli su un campione prima della serie.",
+      },
     ],
     whenToChoose:
       "Scegli il laser a fibra quando devi marcare, incidere o tagliare metalli come acciaio inox, alluminio, ottone e rame con precisione e permanenza. È la soluzione ideale per targhe, marcature industriali, componenti piani in lamiera e personalizzazioni su metallo. Per geometrie tridimensionali complesse o pezzi plastici, la stampa 3D FDM, SLA o SLS è più adatta.",

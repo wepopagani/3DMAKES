@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import {
   animate,
   motion,
+  useInView,
   useMotionTemplate,
   useMotionValue,
   useReducedMotion,
@@ -75,6 +76,8 @@ function Nozzle({ progress }: { progress: MotionValue<number> }) {
 }
 
 export function HeroPrint() {
+  const root = useRef<HTMLDivElement>(null);
+  const inView = useInView(root, { amount: 0.1 });
   const reduce = useReducedMotion();
   const finePointer = useFinePointer();
   const progress = useMotionValue(reduce ? 1 : 0);
@@ -91,16 +94,18 @@ export function HeroPrint() {
       progress.set(1);
       return;
     }
+    if (!inView) return;
     const controls = animate(progress, [0, 1], {
       duration: 7.5,
       ease: "linear",
       repeat: Infinity,
     });
     return () => controls.stop();
-  }, [progress, reduce]);
+  }, [progress, reduce, inView]);
 
   return (
     <div
+      ref={root}
       className="relative mx-auto w-full max-w-lg"
       style={{ perspective: 1100 }}
       onPointerMove={(event) => {

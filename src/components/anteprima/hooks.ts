@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useState, type RefObject } from "react";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useReducedMotion } from "framer-motion";
 
@@ -20,34 +20,18 @@ export function useMediaQuery(query: string) {
 
 export const useFinePointer = () => useMediaQuery("(hover: hover) and (pointer: fine)");
 
-/**
- * Diventa true quando il centro della viewport mostra davvero la pagina:
- * all'apertura diretta lo splash del logo copre tutto per ~2 secondi e le
- * animazioni d'ingresso partirebbero senza che nessuno le veda.
- */
-export function usePageUncovered(ref: RefObject<HTMLElement>, maxWaitMs = 3500) {
-  const [uncovered, setUncovered] = useState(false);
+/** Avvia gli ingressi quando il sipario iniziale ha scoperto la pagina. */
+export function usePageUncovered() {
+  const [uncovered, setUncovered] = useState(
+    () => !document.documentElement.hasAttribute("data-site-intro")
+  );
 
   useEffect(() => {
-    const startedAt = performance.now();
-    const check = () => {
-      const probe = document.elementFromPoint(
-        window.innerWidth / 2,
-        Math.min(window.innerHeight / 2, 240)
-      );
-      const visible = probe !== null && ref.current?.contains(probe);
-      if (visible || performance.now() - startedAt > maxWaitMs) {
-        setUncovered(true);
-        return true;
-      }
-      return false;
-    };
-    if (check()) return;
-    const timer = window.setInterval(() => {
-      if (check()) window.clearInterval(timer);
-    }, 100);
-    return () => window.clearInterval(timer);
-  }, [ref, maxWaitMs]);
+    const reveal = () => setUncovered(true);
+    window.addEventListener("3dmakes:intro-complete", reveal);
+    if (!document.documentElement.hasAttribute("data-site-intro")) reveal();
+    return () => window.removeEventListener("3dmakes:intro-complete", reveal);
+  }, []);
 
   return uncovered;
 }

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -49,6 +49,8 @@ function ServicesRail({ families, discoverLabel }: FamilyListProps) {
               src={family.image}
               alt={isActive ? family.title : ""}
               draggable={false}
+              loading="lazy"
+              decoding="async"
               className={cn(
                 "absolute inset-0 h-full w-full object-cover transition duration-700 ease-out motion-safe:group-hover:scale-105",
                 isActive ? "opacity-100" : "opacity-45 grayscale-[35%]"
@@ -76,7 +78,7 @@ function ServicesRail({ families, discoverLabel }: FamilyListProps) {
                   animate={{ opacity: 1, y: 0, transition: { delay: 0.28, duration: 0.55, ease: EASE_OUT } }}
                   exit={{ opacity: 0, transition: { duration: 0.15 } }}
                 >
-                  <div className="w-[24rem] text-white xl:w-[30rem]">
+                  <div className="w-full max-w-[30rem] text-white">
                     <span className="mb-4 inline-flex rounded-full bg-white/15 px-3 py-1 text-xs font-semibold tracking-[0.18em] backdrop-blur">
                       {family.badge}
                     </span>
@@ -126,40 +128,26 @@ function ServicesRail({ families, discoverLabel }: FamilyListProps) {
 function ServicesAccordion({ families, discoverLabel }: FamilyListProps) {
   const reduce = useReducedMotion();
   const [open, setOpen] = useState<number | null>(0);
-  const releaseHold = useRef<(() => void) | null>(null);
+  const pendingAnchor = useRef<{ header: HTMLElement; top: number } | null>(null);
 
-  useEffect(() => () => releaseHold.current?.(), []);
-
-  /** Mentre il pannello sopra si chiude, il titolo toccato resta fermo invece di scivolare sotto la navbar. */
-  const holdInPlace = (header: HTMLElement) => {
-    releaseHold.current?.();
-    const startTop = header.getBoundingClientRect().top;
-    const until = performance.now() + (reduce ? 150 : 550);
-    let frame = 0;
-    const release = () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener("wheel", release);
-      window.removeEventListener("touchstart", release);
-      releaseHold.current = null;
-    };
-    const tick = () => {
-      const drift = header.getBoundingClientRect().top - startTop;
-      if (Math.abs(drift) > 0.5) window.scrollBy({ top: drift, behavior: "instant" });
-      if (performance.now() < until) frame = requestAnimationFrame(tick);
-      else release();
-    };
-    window.addEventListener("wheel", release, { passive: true });
-    window.addEventListener("touchstart", release, { passive: true });
-    releaseHold.current = release;
-    frame = requestAnimationFrame(tick);
-  };
+  // Keep a tapped lower heading in place once, before paint. Continuous scroll
+  // correction during a height animation fights Safari's touch scrolling.
+  useLayoutEffect(() => {
+    const anchor = pendingAnchor.current;
+    pendingAnchor.current = null;
+    if (!anchor) return;
+    const drift = anchor.header.getBoundingClientRect().top - anchor.top;
+    if (Math.abs(drift) > 1) window.scrollBy({ top: drift, behavior: "instant" });
+  }, [open]);
 
   const toggle = (index: number, header: HTMLElement) => {
     if (open === index) {
       setOpen(null);
       return;
     }
-    if (open !== null && open < index) holdInPlace(header);
+    if (open !== null && open < index) {
+      pendingAnchor.current = { header, top: header.getBoundingClientRect().top };
+    }
     setOpen(index);
   };
 
@@ -186,7 +174,7 @@ function ServicesAccordion({ families, discoverLabel }: FamilyListProps) {
                   className="flex w-full items-center gap-4 p-3 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand-accent sm:p-4"
                 >
                   <span className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-brand-blue">
-                    <img src={family.image} alt="" className="h-full w-full object-cover" />
+                    <img src={family.image} alt="" loading="lazy" decoding="async" width={56} height={56} className="h-full w-full object-cover" />
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="block text-xs font-semibold tracking-[0.16em] text-brand-accent">{family.badge}</span>
@@ -205,33 +193,32 @@ function ServicesAccordion({ families, discoverLabel }: FamilyListProps) {
                   </motion.span>
                 </motion.button>
               </h3>
-              <AnimatePresence initial={false}>
-                {isOpen ? (
-                  <motion.div
-                    id={panelId}
-                    key="content"
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={reduce ? { duration: 0 } : { duration: 0.4, ease: EASE_OUT }}
-                    className="overflow-hidden"
-                  >
-                    <div className="px-3 pb-5 sm:px-4">
-                      <div className="group mb-4 overflow-hidden rounded-xl">
-                        <img
-                          src={family.image}
-                          alt={family.title}
-                          className="h-44 w-full object-cover transition-transform duration-700 ease-out motion-safe:group-hover:scale-105 sm:h-56"
-                        />
-                      </div>
-                      <p className="mb-5 leading-relaxed text-brand-gray">{family.description}</p>
-                      <PressLink to={family.href} arrow>
-                        {discoverLabel}
-                      </PressLink>
+              {isOpen ? (
+                <motion.div
+                  id={panelId}
+                  key="content"
+                  initial={reduce ? false : { opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.22, ease: EASE_OUT }}
+                  className="overflow-hidden"
+                >
+                  <div className="px-3 pb-5 sm:px-4">
+                    <div className="group mb-4 overflow-hidden rounded-xl">
+                      <img
+                        src={family.image}
+                        alt={family.title}
+                        loading="lazy"
+                        decoding="async"
+                        className="h-44 w-full object-cover transition-transform duration-700 ease-out motion-safe:group-hover:scale-105 sm:h-56"
+                      />
                     </div>
-                  </motion.div>
-                ) : null}
-              </AnimatePresence>
+                    <p className="mb-5 leading-relaxed text-brand-gray">{family.description}</p>
+                    <PressLink to={family.href} arrow>
+                      {discoverLabel}
+                    </PressLink>
+                  </div>
+                </motion.div>
+              ) : null}
             </div>
           </StaggerItem>
         );
@@ -242,7 +229,7 @@ function ServicesAccordion({ families, discoverLabel }: FamilyListProps) {
 
 export default function ServicesExplorer() {
   const { t } = useTranslation();
-  const isDesktop = useMediaQuery("(min-width: 1024px)");
+  const isDesktop = useMediaQuery("(min-width: 1280px) and (hover: hover) and (pointer: fine)");
   const families: FamilyView[] = SERVICE_FAMILIES.map((family) => ({
     id: family.id,
     href: family.href,

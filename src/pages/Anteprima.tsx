@@ -1,4 +1,4 @@
-import { lazy, Suspense, useRef } from "react";
+import { lazy, Suspense } from "react";
 
 const ScanFilmHero = lazy(() => import("@/components/anteprima/ScanFilmHero"));
 import { MotionConfig } from "framer-motion";
@@ -20,13 +20,12 @@ import ServicesExplorer from "@/components/anteprima/ServicesExplorer";
 
 /** Homepage pubblica. */
 const Anteprima = () => {
-  const rootRef = useRef<HTMLDivElement>(null);
-  const uncovered = usePageUncovered(rootRef);
+  const uncovered = usePageUncovered();
 
   return (
     <MotionConfig reducedMotion="user">
       <IntroContext.Provider value={uncovered}>
-        <div ref={rootRef} className="flex min-h-screen flex-col bg-white">
+        <div className="flex min-h-screen flex-col bg-white">
           <PreviewNavbar />
           <main className="flex-grow">
             <BannerSection />

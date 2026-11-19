@@ -1,10 +1,10 @@
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, Check } from "lucide-react";
 import { HowWeHelpSection } from "@/components/anteprima/HelpAndFaq";
-import { useGoToContact } from "@/components/anteprima/hooks";
+import { useFinePointer, useGoToContact } from "@/components/anteprima/hooks";
 import {
   CtaBand,
   FilterChips,
@@ -42,6 +42,10 @@ const Services = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const goToContact = useGoToContact();
+  const finePointer = useFinePointer();
+  const reduce = useReducedMotion();
+  const animateLayout = finePointer && !reduce;
+  const pendingCatalogScroll = useRef(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const familyParam = searchParams.get("family");
   const groupParam = searchParams.get("group");
@@ -75,9 +79,18 @@ const Services = () => {
       ? technologies.filter((tech) => tech.group === activeGroup)
       : technologies;
 
-  const scrollToCatalog = (behavior: ScrollBehavior = "smooth") => {
-    document.getElementById(CATALOG_HASH)?.scrollIntoView({ behavior, block: "start" });
-  };
+  const scrollToCatalog = useCallback(() => {
+    document.getElementById(CATALOG_HASH)?.scrollIntoView({
+      behavior: animateLayout ? "smooth" : "instant",
+      block: "start",
+    });
+  }, [animateLayout]);
+
+  useLayoutEffect(() => {
+    if (!pendingCatalogScroll.current) return;
+    pendingCatalogScroll.current = false;
+    scrollToCatalog();
+  }, [location.search, scrollToCatalog]);
 
   const capabilities = [
     {
@@ -108,13 +121,13 @@ const Services = () => {
   useEffect(() => {
     if (location.hash.replace("#", "") === CATALOG_HASH) return;
     window.scrollTo(0, 0);
-  }, []);
+  }, [location.hash]);
 
   useEffect(() => {
     if (location.hash.replace("#", "") !== CATALOG_HASH) return;
     const frame = window.requestAnimationFrame(() => scrollToCatalog());
     return () => window.cancelAnimationFrame(frame);
-  }, [location.hash, location.search]);
+  }, [location.hash, location.search, scrollToCatalog]);
 
   return (
     <PageShell>
@@ -238,28 +251,33 @@ const Services = () => {
               </AnimatePresence>
             </div>
             <FilterChips
+              className="min-w-0 max-w-full md:max-w-[50%]"
               options={groups}
               active={activeGroup}
               layoutId="servizi-gruppo-attivo"
               label={t("services.catalogTitle")}
               onChange={(id) => {
+                if (!activeFamily && activeGroup === id) {
+                  scrollToCatalog();
+                  return;
+                }
+                pendingCatalogScroll.current = true;
                 setSearchParams(id === "all" ? {} : { group: id });
-                scrollToCatalog();
               }}
             />
           </div>
 
           <Reveal y={20}>
             <div className="relative grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3">
-              <AnimatePresence mode="popLayout" initial={false}>
+              <AnimatePresence mode={animateLayout ? "popLayout" : "sync"} initial={false}>
                 {visibleTechnologies.map((tech) => (
                   <motion.div
                     key={tech.id}
-                    layout
-                    initial={{ opacity: 0, scale: 0.94 }}
+                    layout={animateLayout}
+                    initial={animateLayout ? { opacity: 0, scale: 0.94 } : false}
                     animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.94 }}
-                    transition={{ duration: 0.35, ease: EASE_OUT }}
+                    exit={animateLayout ? { opacity: 0, scale: 0.94 } : undefined}
+                    transition={{ duration: animateLayout ? 0.35 : 0, ease: EASE_OUT }}
                     className="h-full"
                   >
                     <InteractiveCard

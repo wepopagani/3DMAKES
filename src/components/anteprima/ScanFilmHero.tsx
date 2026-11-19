@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { useGoToContact, useMediaQuery } from "./hooks";
+import { useFinePointer, useGoToContact, useMediaQuery } from "./hooks";
 import { PressLink } from "./primitives";
 import ScanFilm from "./ScanFilm";
 import { HERO_FILM_CHAPTERS } from "./heroFilmData";
@@ -15,8 +15,9 @@ const LABELS = ["Scansione 3D", "Progettazione CAD", "Stampa 3D", "Fresatura CNC
 export default function ScanFilmHero() {
   const { t } = useTranslation();
   const reduce = Boolean(useReducedMotion());
-  const desktop = useMediaQuery("(min-width: 1024px)");
-  const scrollDriven = desktop && !reduce;
+  const desktop = useMediaQuery("(min-width: 1024px) and (min-height: 720px)");
+  const finePointer = useFinePointer();
+  const scrollDriven = desktop && finePointer && !reduce;
   const track = useRef<HTMLElement>(null);
   const progress = useRef(0);
   const [active, setActive] = useState(0);

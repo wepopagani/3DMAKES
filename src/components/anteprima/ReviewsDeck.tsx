@@ -220,13 +220,8 @@ export default function ReviewsDeck() {
             onPointerLeave={() => setPaused(false)}
             onFocus={() => setPaused(true)}
             onBlur={() => setPaused(false)}
-            className="relative mx-auto grid max-w-xl grid-cols-1 cursor-grab select-none rounded-3xl pb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-4 active:cursor-grabbing lg:max-w-none"
+            className="relative mx-auto grid min-h-[416px] max-w-xl grid-cols-1 cursor-grab select-none rounded-3xl pb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-4 active:cursor-grabbing md:min-h-[448px] lg:max-w-none"
           >
-            {PREVIEW_REVIEWS.map((review) => (
-              <div key={review.id} aria-hidden className="invisible col-start-1 row-start-1">
-                <ReviewCard review={review} footer={footer} />
-              </div>
-            ))}
             {[2, 1].map((depth) => {
               const review = PREVIEW_REVIEWS[(index + depth) % total];
               return (
@@ -258,6 +253,7 @@ export default function ReviewsDeck() {
                 animate="center"
                 exit="exit"
                 drag="x"
+                style={{ touchAction: "pan-y" }}
                 dragConstraints={{ left: 0, right: 0 }}
                 dragElastic={0.85}
                 onDragStart={() => setInteracted(true)}

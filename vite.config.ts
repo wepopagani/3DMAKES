@@ -133,16 +133,20 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks(id) {
+          // CommonJS interop must initialize alongside React, before its consumers.
+          if (id.includes("commonjsHelpers.js")) return "react-runtime";
           if (!id.includes("node_modules")) return;
+          if (/\/node_modules\/(react|react-dom|scheduler)\//.test(id)) return "react-runtime";
           if (id.includes("firebase")) return "firebase";
-          // NON separare three / @react-three: in un chunk dedicato React risulta undefined (useLayoutEffect crash → schermo bianco).
           if (id.includes("recharts")) return "recharts";
           if (id.includes("@radix-ui")) return "radix-ui";
           if (id.includes("framer-motion")) return "framer-motion";
           if (id.includes("lucide-react")) return "icons";
           if (id.includes("html2canvas") || id.includes("jspdf") || id.includes("purify")) return "pdf-export";
           if (id.includes("i18next") || id.includes("react-i18next")) return "i18n";
-          return "vendor";
+          // Let Rollup keep calculator/viewer dependencies behind their lazy routes.
+          // A catch-all vendor chunk also loaded Three.js on the public homepage.
+          return undefined;
         },
       },
     },

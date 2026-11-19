@@ -3,6 +3,34 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- The cover is outside React so prerendered content cannot flash before the app starts. -->
+    <style>
+      #site-intro { display: none; }
+      html[data-site-intro] #site-intro {
+        position: fixed; inset: 0; z-index: 9999; display: flex;
+        align-items: center; justify-content: center; background: #fff;
+        transition: transform 360ms cubic-bezier(.22, 1, .36, 1);
+      }
+      #site-intro img { width: min(65vw, 320px); height: auto; }
+      html[data-site-intro="leaving"] #site-intro { transform: translateY(-100%); }
+      @media (prefers-reduced-motion: reduce) {
+        html[data-site-intro] #site-intro { display: none; }
+      }
+    </style>
+    <script>
+      (function () {
+        var seen = false;
+        try { seen = sessionStorage.getItem('3dmakes:intro-seen') === '1'; } catch (_) {}
+        if (!seen && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          document.documentElement.setAttribute('data-site-intro', 'visible');
+          // Keep prerendered content accessible if the application fails to start.
+          window.setTimeout(function () {
+            document.documentElement.removeAttribute('data-site-intro');
+            window.dispatchEvent(new Event('3dmakes:intro-complete'));
+          }, 6000);
+        }
+      })();
+    </script>
     <meta name="robots" content="index,follow" />
     <title>Stampa 3D Professionale | Lugano & Ticino | 3DMAKES</title>
     <meta name="description" content="Tecnologie di stampa 3D di alta qualità a Lugano, Ticino e Lombardia. Prototipazione rapida, modellazione 3D e produzione con FDM, SLA e altro." />
@@ -188,6 +216,9 @@
   </head>
 
   <body>
+    <div id="site-intro" aria-hidden="true">
+      <img src="/logo%202.png" alt="" width="320" height="160" decoding="async" fetchpriority="high" />
+    </div>
     <!-- Contenuto statico per crawler senza JS (es. audit con rendering disattivato,
          bot AI come ChatGPT/Perplexity/Gemini, audit SEO GEO). React sostituisce #root al mount.
          Ampliato in seguito all'audit v3.0 (aprile 2026): riporta counter reali, FAQ visibili,

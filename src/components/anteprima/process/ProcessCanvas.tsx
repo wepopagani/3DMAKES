@@ -62,9 +62,9 @@ type Look = {
   spin: number;
 };
 
-const POLYMER = new THREE.Color("#d7d2ca");
-const METAL = new THREE.Color("#c4c8ce");
-const ANODIZED = new THREE.Color("#3d444c");
+const POLYMER = /* @__PURE__ */ new THREE.Color("#d7d2ca");
+const METAL = /* @__PURE__ */ new THREE.Color("#c4c8ce");
+const ANODIZED = /* @__PURE__ */ new THREE.Color("#3d444c");
 const INTRO_SECONDS = 7.4;
 const CNC_LOOP_MS = 9000;
 

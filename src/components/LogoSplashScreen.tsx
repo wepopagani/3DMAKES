@@ -1,24 +1,38 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const LogoSplashScreen = () => {
-  const [visible, setVisible] = useState(true);
-
   useEffect(() => {
-    const timeout = setTimeout(() => setVisible(false), 2000);
-    return () => clearTimeout(timeout);
+    const root = document.documentElement;
+    if (!root.hasAttribute("data-site-intro")) return;
+
+    let openTimer: number;
+    let finishTimer: number;
+    const finish = () => {
+      root.removeAttribute("data-site-intro");
+      try { sessionStorage.setItem("3dmakes:intro-seen", "1"); } catch { /* Storage can be disabled. */ }
+      window.dispatchEvent(new Event("3dmakes:intro-complete"));
+    };
+    const uncover = () => {
+      if (!document.querySelector("#root main")) return;
+      observer.disconnect();
+      // Let the mounted route paint beneath the cover before opening it.
+      openTimer = window.setTimeout(() => {
+        root.setAttribute("data-site-intro", "leaving");
+        finishTimer = window.setTimeout(finish, 380);
+      }, 120);
+    };
+    const observer = new MutationObserver(uncover);
+    observer.observe(document.getElementById("root")!, { childList: true, subtree: true });
+    uncover();
+
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(openTimer);
+      window.clearTimeout(finishTimer);
+    };
   }, []);
 
-  if (!visible) return null;
-
-  return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-white">
-      <img
-        src="/logo 2.png"
-        alt="Logo 3DMAKES — stampa 3D professionale a Lugano"
-        className="w-60 h-auto md:w-80"
-      />
-    </div>
-  );
+  return null;
 };
 
 export default LogoSplashScreen;

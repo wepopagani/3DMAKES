@@ -437,9 +437,10 @@ interface WipeImageProps {
 export function WipeImage({ src, alt, className, width, height }: WipeImageProps) {
   const { ref, show } = useReveal<HTMLImageElement>();
   const reduce = useReducedMotion();
+  const finePointer = useFinePointer();
 
   if (reduce) {
-    return <img ref={ref} src={src} alt={alt} width={width} height={height} className={className} />;
+    return <img ref={ref} src={src} alt={alt} width={width} height={height} loading="lazy" decoding="async" className={className} />;
   }
 
   return (
@@ -449,10 +450,12 @@ export function WipeImage({ src, alt, className, width, height }: WipeImageProps
       alt={alt}
       width={width}
       height={height}
+      loading="lazy"
+      decoding="async"
       className={className}
-      initial={{ clipPath: "inset(0% 100% 0% 0%)" }}
-      animate={{ clipPath: show ? "inset(0% 0% 0% 0%)" : "inset(0% 100% 0% 0%)" }}
-      transition={{ duration: 1.1, ease: EASE_OUT }}
+      initial={finePointer ? { clipPath: "inset(0% 100% 0% 0%)" } : { opacity: 0 }}
+      animate={finePointer ? { clipPath: show ? "inset(0% 0% 0% 0%)" : "inset(0% 100% 0% 0%)" } : { opacity: show ? 1 : 0 }}
+      transition={{ duration: finePointer ? 1.1 : 0.4, ease: EASE_OUT }}
     />
   );
 }

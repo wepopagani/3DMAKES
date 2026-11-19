@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { useInView } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import { GOOGLE_CSE_ID, GOOGLE_CSE_STYLES, GRID_PATTERN } from "./data";
@@ -6,8 +7,11 @@ import { HEADING_2, Reveal, SplitWords } from "./primitives";
 
 export default function ModelSearch() {
   const { t } = useTranslation();
+  const sectionRef = useRef<HTMLElement>(null);
+  const nearViewport = useInView(sectionRef, { once: true, margin: "500px" });
 
   useEffect(() => {
+    if (!nearViewport) return;
     const script = document.createElement("script");
     script.src = `https://cse.google.com/cse.js?cx=${GOOGLE_CSE_ID}`;
     script.async = true;
@@ -21,10 +25,10 @@ export default function ModelSearch() {
       document.querySelector('script[src*="cse.google.com"]')?.remove();
       styleSheet.remove();
     };
-  }, []);
+  }, [nearViewport]);
 
   return (
-    <section className="relative overflow-hidden bg-brand-blue py-16 text-white md:py-24">
+    <section ref={sectionRef} className="relative overflow-hidden bg-brand-blue py-16 text-white md:py-24">
       <div aria-hidden className="pointer-events-none absolute inset-0 opacity-10" style={{ backgroundImage: GRID_PATTERN }} />
       <div className="container-custom relative">
         <div className="mx-auto mb-12 max-w-3xl text-center">
@@ -41,7 +45,7 @@ export default function ModelSearch() {
 
         {/* Solo dissolvenza: un transform sugli antenati sposterebbe l'overlay fixed dei risultati Google. */}
         <Reveal y={0} delay={0.2} className="mx-auto max-w-3xl rounded-2xl bg-white p-6 shadow-2xl ring-1 ring-white/10">
-          <div className="gcse-search" />
+          <div className="gcse-search min-h-12" />
           <p className="mt-6 text-center text-sm italic text-gray-600">{t("search.instructions")}</p>
         </Reveal>
       </div>

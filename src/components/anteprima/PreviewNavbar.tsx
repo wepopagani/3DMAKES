@@ -1,4 +1,4 @@
-import { useEffect, useState, type MouseEvent } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   AnimatePresence,
@@ -32,10 +32,18 @@ const PreviewNavbar = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hovered, setHovered] = useState<string | null>(null);
+  const headerRef = useRef<HTMLElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const { scrollY, scrollYProgress } = useScroll();
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 160, damping: 30, restDelta: 0.001 });
 
-  useMotionValueEvent(scrollY, "change", (latest) => setScrolled(latest > 12));
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    if ((latest > 12) !== scrolled) setScrolled(latest > 12);
+  });
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     if (isDesktop) setOpen(false);
@@ -44,10 +52,23 @@ const PreviewNavbar = () => {
   useEffect(() => {
     if (!open) return;
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpen(false);
+      if (event.key === "Escape") {
+        setOpen(false);
+        menuButtonRef.current?.focus();
+      }
     };
+    const onPointerDown = (event: PointerEvent) => {
+      if (!headerRef.current?.contains(event.target as Node)) setOpen(false);
+    };
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    window.addEventListener("pointerdown", onPointerDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("pointerdown", onPointerDown);
+    };
   }, [open]);
 
   const clientAreaPath = currentUser ? "/dashboard" : "/login";
@@ -93,11 +114,12 @@ const PreviewNavbar = () => {
 
   return (
     <header
+      ref={headerRef}
       className={cn(
         "sticky top-0 z-40 w-full border-b transition-[background-color,box-shadow,border-color] duration-300",
         scrolled || open
-          ? "border-brand-blue/10 bg-white/90 shadow-[0_10px_30px_-18px_rgba(26,42,74,0.45)] backdrop-blur-md"
-          : "border-transparent bg-[#E5DDD3]/85 backdrop-blur-sm"
+          ? "border-brand-blue/10 bg-white shadow-[0_10px_30px_-18px_rgba(26,42,74,0.45)] xl:bg-white/90 xl:backdrop-blur-md"
+          : "border-transparent bg-[#E5DDD3] xl:bg-[#E5DDD3]/85 xl:backdrop-blur-sm"
       )}
     >
       <div className="container-custom flex h-16 items-center gap-4 md:h-[72px]">
@@ -167,6 +189,7 @@ const PreviewNavbar = () => {
             <LanguageSelector />
           </div>
           <motion.button
+            ref={menuButtonRef}
             type="button"
             whileTap={{ scale: 0.86 }}
             onClick={() => setOpen((value) => !value)}
@@ -206,7 +229,7 @@ const PreviewNavbar = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
-            className="absolute inset-x-0 top-full max-h-[calc(100vh-4rem)] overflow-y-auto border-b border-brand-blue/10 bg-white shadow-xl xl:hidden"
+            className="absolute inset-x-0 top-full max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain border-b border-brand-blue/10 bg-white shadow-xl md:max-h-[calc(100dvh-72px)] xl:hidden"
           >
             <motion.ul
               className="container-custom py-3"
