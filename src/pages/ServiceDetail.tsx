@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { lazy, Suspense, useEffect, type CSSProperties } from "react";
+import { lazy, Suspense, useEffect } from "react";
 
 const ScanFilm = lazy(() => import("@/components/anteprima/ScanFilm"));
 import { BadgeCheck, Check, PenTool, Sparkles } from "lucide-react";
@@ -391,12 +391,7 @@ const ServiceDetail = () => {
                   <p className="body-text mb-12 text-lg leading-relaxed">{extendedContent.overview}</p>
                 </Reveal>
 
-                <div
-                  className="mb-12 grid grid-cols-1 gap-x-10 gap-y-10 lg:grid-cols-2 lg:gap-y-3"
-                  style={{
-                    "--detail-rows": 1 + Math.max(extendedContent.applications.length, extendedContent.sectors.length),
-                  } as CSSProperties}
-                >
+                <div className="mb-12 space-y-10">
                   {[
                     {
                       heading: "Applicazioni concrete",
@@ -409,27 +404,62 @@ const ServiceDetail = () => {
                       accent: "bg-brand-blue",
                     },
                   ].map(({ heading, entries, accent }) => (
-                    <Stagger
-                      key={heading}
-                      className="min-w-0 space-y-3 lg:supports-[grid-template-rows:subgrid]:row-span-[var(--detail-rows)] lg:supports-[grid-template-rows:subgrid]:grid lg:supports-[grid-template-rows:subgrid]:grid-rows-subgrid lg:supports-[grid-template-rows:subgrid]:space-y-0"
-                      stagger={0.06}
-                    >
-                      <h3 className="pb-2 text-2xl font-semibold text-brand-blue">{heading}</h3>
-                      {entries.map(({ title, description }) => (
-                        <StaggerItem key={title}>
-                          <div className="group relative h-full overflow-hidden rounded-2xl bg-white p-5 pl-6 shadow-sm ring-1 ring-brand-blue/10 transition-shadow duration-300 hover:shadow-lg">
-                            <span
-                              aria-hidden
-                              className={cn("absolute inset-y-4 left-0 w-1 rounded-r-full transition-[top,bottom] duration-300 group-hover:inset-y-0", accent)}
-                            />
-                            <h4 className="mb-1 font-semibold text-brand-blue">{title}</h4>
-                            <p className="leading-relaxed text-brand-gray">{description}</p>
-                          </div>
-                        </StaggerItem>
-                      ))}
-                    </Stagger>
+                    <div key={heading} className="min-w-0">
+                      <h3 className="mb-4 text-2xl font-semibold text-brand-blue">{heading}</h3>
+                      <Stagger className="grid grid-cols-1 gap-3 md:grid-cols-2" stagger={0.06}>
+                        {entries.map(({ title, description }, index) => (
+                          <StaggerItem
+                            key={title}
+                            className={cn(
+                              "h-full",
+                              entries.length % 2 === 1 && index === entries.length - 1 && "md:col-span-2"
+                            )}
+                          >
+                            <div className="group relative h-full overflow-hidden rounded-2xl bg-white p-5 pl-6 shadow-sm ring-1 ring-brand-blue/10 transition-shadow duration-300 hover:shadow-lg">
+                              <span
+                                aria-hidden
+                                className={cn("absolute inset-y-4 left-0 w-1 rounded-r-full transition-[top,bottom] duration-300 group-hover:inset-y-0", accent)}
+                              />
+                              <h4 className="mb-1 font-semibold text-brand-blue">{title}</h4>
+                              <p className="leading-relaxed text-brand-gray">{description}</p>
+                            </div>
+                          </StaggerItem>
+                        ))}
+                      </Stagger>
+                    </div>
                   ))}
                 </div>
+
+                {extendedContent.sectorFeature && (
+                  <Reveal className="mb-12">
+                    <article className="grid overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-brand-blue/10 lg:grid-cols-2">
+                      <figure className="flex min-w-0 flex-col bg-brand-blue">
+                        <img
+                          src={extendedContent.sectorFeature.image}
+                          alt={extendedContent.sectorFeature.imageAlt}
+                          width={1200}
+                          height={800}
+                          loading="lazy"
+                          decoding="async"
+                          className="aspect-video w-full object-cover lg:h-0 lg:min-h-[320px] lg:flex-1"
+                        />
+                        <figcaption className="px-6 py-4 text-sm leading-relaxed text-white/80">
+                          {extendedContent.sectorFeature.caption}
+                        </figcaption>
+                      </figure>
+                      <div className="min-w-0 p-6 md:p-8">
+                        <h3 className="mb-5 text-2xl font-semibold leading-tight text-brand-blue md:text-3xl">
+                          {extendedContent.sectorFeature.title}
+                        </h3>
+                        <div className="space-y-4 leading-relaxed text-brand-gray">
+                          {extendedContent.sectorFeature.paragraphs.map((paragraph) => (
+                            <p key={paragraph}>{paragraph}</p>
+                          ))}
+                        </div>
+                      </div>
+                    </article>
+                  </Reveal>
+                )}
 
                 <Stagger className="mb-12 grid grid-cols-1 gap-4 md:gap-6 lg:grid-cols-2">
                   <StaggerItem className="h-full">

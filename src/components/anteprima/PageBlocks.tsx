@@ -461,6 +461,7 @@ export function ServiceImage({ id, src, alt, label, className }: ServiceImagePro
       src={src}
       alt={alt}
       loading="lazy"
+      decoding="async"
       className={cn("h-full w-full object-cover transition-transform duration-700 ease-out motion-safe:group-hover:scale-105", className)}
     />
   );

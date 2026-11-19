@@ -24,6 +24,14 @@ export interface ExtendedFaq {
   answer: string;
 }
 
+export interface ExtendedSectorFeature {
+  title: string;
+  paragraphs: string[];
+  image: string;
+  imageAlt: string;
+  caption: string;
+}
+
 export interface ExtendedServiceContent {
   /** Paragrafo introduttivo che espande la descrizione base. */
   overview: string;
@@ -31,6 +39,8 @@ export interface ExtendedServiceContent {
   applications: ExtendedApplication[];
   /** Settori o tipologie di cliente serviti. */
   sectors: ExtendedSector[];
+  /** Approfondimento visivo di un settore, separato dalle schede sintetiche. */
+  sectorFeature?: ExtendedSectorFeature;
   /** Quando è la tecnologia giusta — e quando no. */
   whenToChoose: string;
   /** Trust signals: perché 3DMAKES, cosa rende il servizio affidabile. */
@@ -254,9 +264,19 @@ export const serviceExtendedContent: Record<string, ExtendedServiceContent> = {
       {
         name: "Hotellerie e ristorazione",
         description:
-          "Affianchiamo hotel, ristoranti, bar e strutture ricettive nella personalizzazione degli oggetti che accompagnano l'esperienza degli ospiti. Incidiamo loghi, nomi e dettagli grafici su posate e accessori metallici, realizziamo targhette per camere, portachiavi, segnaposto, numeri da tavolo e piccola segnaletica coordinata. Progettiamo anche cubi e supporti con QR per consultare il menu, accedere ai servizi dell'hotel o lasciare una recensione, combinando marcatura laser e produzione su misura in base al progetto. Per bicchieri e tovagliette valutiamo insieme materiale, finitura e tecnica di personalizzazione, così da scegliere una lavorazione adatta all'oggetto e al suo utilizzo quotidiano. Dal singolo pezzo per un evento alle piccole serie per sala, reception e camere, curiamo proporzioni, leggibilità e coerenza con l'identità del locale. Possiamo partire dal tuo logo o sviluppare con te la grafica e il supporto, concordando i dettagli su un campione prima della serie.",
+          "Posate, accessori metallici, targhette camere, segnaposto e supporti QR personalizzati per hotel, ristoranti e bar. Materiali, finiture e lavorazioni vengono valutati in base all'oggetto e al suo utilizzo.",
       },
     ],
+    sectorFeature: {
+      title: "Personalizzazioni per hotel e ristoranti",
+      paragraphs: [
+        "Affianchiamo hotel, ristoranti, bar e strutture ricettive nella personalizzazione degli oggetti che accompagnano l'esperienza degli ospiti. Incidiamo loghi, nomi e dettagli grafici su posate e accessori metallici, realizziamo targhette per camere, portachiavi, segnaposto, numeri da tavolo e piccola segnaletica coordinata. Progettiamo anche cubi e supporti con QR per consultare il menu, accedere ai servizi dell'hotel o lasciare una recensione, combinando marcatura laser e produzione su misura in base al progetto.",
+        "Per bicchieri e tovagliette valutiamo insieme materiale, finitura e tecnica di personalizzazione, così da scegliere una lavorazione adatta all'oggetto e al suo utilizzo quotidiano. Dal singolo pezzo per un evento alle piccole serie per sala, reception e camere, curiamo proporzioni, leggibilità e coerenza con l'identità del locale. Possiamo partire dal tuo logo o sviluppare con te la grafica e il supporto, concordando i dettagli su un campione prima della serie.",
+      ],
+      image: "/images/services/laser-hospitality-v1.webp",
+      imageAlt: "Posate, targhette e supporti QR personalizzati per hotel e ristoranti",
+      caption: "Esempi di personalizzazione per hotel e ristoranti",
+    },
     whenToChoose:
       "Scegli il laser a fibra quando devi marcare, incidere o tagliare metalli come acciaio inox, alluminio, ottone e rame con precisione e permanenza. È la soluzione ideale per targhe, marcature industriali, componenti piani in lamiera e personalizzazioni su metallo. Per geometrie tridimensionali complesse o pezzi plastici, la stampa 3D FDM, SLA o SLS è più adatta.",
     whyUs:

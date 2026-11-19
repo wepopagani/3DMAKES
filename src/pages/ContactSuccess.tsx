@@ -80,26 +80,6 @@ const ContactSuccess = () => {
 
   const contactCards: { key: string; icon: ReactNode; iconClassName: string; title: string; body: ReactNode }[] = [
     {
-      key: "contacts",
-      icon: <Mail className="h-6 w-6" />,
-      iconClassName: "bg-brand-accent/10 text-brand-accent group-hover:bg-brand-accent group-hover:text-white",
-      title: t('contactSuccess.contacts'),
-      body: (
-        <>
-          <p className="mb-2 text-sm text-brand-gray">
-            📧{" "}
-            <a href="mailto:info@3dmakes.ch" className="hover:text-brand-accent hover:underline">
-              info@3dmakes.ch
-            </a>
-          </p>
-          <div className="flex flex-col items-center gap-1 text-sm text-brand-gray">
-            <span aria-hidden>📞</span>
-            <ShopPhoneLinks stacked linkClassName="hover:text-brand-accent hover:underline" className="items-center" />
-          </div>
-        </>
-      ),
-    },
-    {
       key: "whatsapp",
       icon: (
         <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden>
@@ -176,7 +156,33 @@ const ContactSuccess = () => {
         <div className="container-custom">
           <div className="mx-auto max-w-5xl">
             <SectionIntro title={t('contactSuccess.howToFindUs')} text={t('contactSuccess.urgentContact')} />
-            <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-4">
+            <Reveal className="mb-4 md:mb-6">
+              <InteractiveCard
+                lift={6}
+                className="rounded-3xl bg-[#E5DDD3]/45 p-6 ring-1 ring-brand-blue/5 transition-shadow duration-300 hover:shadow-xl md:p-8"
+              >
+                <div className="mb-6 flex items-center gap-3">
+                  <span className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-brand-accent/10 text-brand-accent">
+                    <Mail aria-hidden className="h-6 w-6" />
+                  </span>
+                  <h3 className="font-semibold text-brand-blue">{t('contactSuccess.contacts')}</h3>
+                </div>
+                <div className="grid gap-5 text-sm text-brand-gray md:grid-cols-[minmax(0,0.75fr)_minmax(0,2fr)] md:gap-8">
+                  <div className="min-w-0">
+                    <p className="mb-0.5 text-xs font-semibold">{t('contact.info.email')}</p>
+                    <a href="mailto:info@3dmakes.ch" className="break-words hover:text-brand-accent hover:underline">
+                      info@3dmakes.ch
+                    </a>
+                  </div>
+                  <ShopPhoneLinks
+                    stacked={false}
+                    linkClassName="hover:text-brand-accent hover:underline"
+                    className="grid w-full grid-cols-1 gap-5 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)]"
+                  />
+                </div>
+              </InteractiveCard>
+            </Reveal>
+            <Stagger className="grid grid-cols-1 gap-4 sm:grid-cols-3 md:gap-6">
               {contactCards.map((card) => (
                 <StaggerItem key={card.key} className="h-full">
                   <InteractiveCard

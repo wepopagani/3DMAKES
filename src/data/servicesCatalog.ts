@@ -145,7 +145,7 @@ export const SERVICE_CATALOG: ServiceCatalogItem[] = [
     family: "laser",
     badge: "CNC",
     translationKey: "cnc",
-    image: `${IMG}/workshop.jpg`,
+    image: "/images/services/cnc-machining-v1.webp",
     contentKind: "applications",
   },
   {
@@ -156,7 +156,7 @@ export const SERVICE_CATALOG: ServiceCatalogItem[] = [
     family: "design",
     badge: "DfAM",
     translationKey: "design",
-    image: `${IMG}/workshop.jpg`,
+    image: "/images/services/cad-design-v1.webp",
     contentKind: "applications",
   },
   {
@@ -200,7 +200,7 @@ export const SERVICE_CATALOG: ServiceCatalogItem[] = [
     family: "consulting",
     badge: "TT",
     translationKey: "consulting",
-    image: `${IMG}/cover.jpg`,
+    image: "/images/services/engineering-consulting-v1.webp",
     contentKind: "applications",
   },
 ];
@@ -210,7 +210,7 @@ export const SERVICE_FAMILIES: ServiceFamily[] = [
     id: "design",
     href: familyCatalogHref("design"),
     translationKey: "families.design",
-    image: `${IMG}/workshop.jpg`,
+    image: "/images/services/cad-design-v1.webp",
     badge: "01",
   },
   {
@@ -245,7 +245,7 @@ export const SERVICE_FAMILIES: ServiceFamily[] = [
     id: "consulting",
     href: familyCatalogHref("consulting"),
     translationKey: "families.consulting",
-    image: `${IMG}/cover.jpg`,
+    image: "/images/services/engineering-consulting-v1.webp",
     badge: "06",
   },
 ];

@@ -60,11 +60,11 @@ export function BlogCard({ post, layout, readMoreLabel = BLOG_READ_MORE }: BlogC
           </span>
         </div>
         <div className={cn("flex flex-col p-6", layout.body)}>
-          <div className="mb-3 flex items-center gap-3">
+          <div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-2">
             <span className="inline-block rounded-full bg-brand-accent/10 px-3 py-1 text-xs font-medium text-brand-accent">
               {post.category}
             </span>
-            <span className="ml-auto text-sm text-brand-gray">{post.date}</span>
+            <span className="ml-auto whitespace-nowrap text-sm text-brand-gray">{post.date}</span>
           </div>
           <h3
             className={cn(
@@ -77,12 +77,14 @@ export function BlogCard({ post, layout, readMoreLabel = BLOG_READ_MORE }: BlogC
             </Link>
           </h3>
           <p className="mb-4 flex-grow text-brand-gray">{post.excerpt}</p>
-          <div className="mt-auto flex items-center border-t border-gray-100 pt-4">
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-blue text-sm font-medium text-white">
-              {post.author.substring(0, 1)}
+          <div className="mt-auto flex items-center gap-3 border-t border-gray-100 pt-4">
+            <span className="flex min-w-0 flex-1 items-center gap-2">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-blue text-sm font-medium text-white">
+                {post.author.substring(0, 1)}
+              </span>
+              <span className="min-w-0 break-words text-sm font-medium">{post.author}</span>
             </span>
-            <span className="ml-2 text-sm font-medium">{post.author}</span>
-            <span className="ml-auto inline-flex items-center gap-1 text-sm font-medium text-brand-accent">
+            <span className="ml-auto inline-flex shrink-0 items-center gap-1 whitespace-nowrap text-sm font-medium text-brand-accent">
               {readMoreLabel}
               <ArrowRight
                 aria-hidden

@@ -197,12 +197,7 @@ const Services = () => {
                       </div>
                       <div className="flex flex-1 items-end justify-between gap-4 p-5">
                         <div className="min-w-0">
-                          <h3
-                            className={cn(
-                              "mb-1.5 text-lg font-semibold transition-colors duration-300 group-hover:text-brand-accent",
-                              WRAP_LONG_WORDS
-                            )}
-                          >
+                          <h3 className="mb-1.5 text-lg font-semibold hyphens-none [overflow-wrap:break-word] transition-colors duration-300 group-hover:text-brand-accent sm:min-h-[3.5rem]">
                             {title}
                           </h3>
                           <p className="text-sm leading-relaxed text-gray-300">{t(`services.${family.translationKey}.tags`)}</p>
@@ -268,9 +263,9 @@ const Services = () => {
           </div>
 
           <Reveal y={20}>
-            <div className="relative grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3">
+            <div className="relative grid grid-cols-1 gap-4 sm:grid-cols-4 md:gap-6 lg:grid-cols-6">
               <AnimatePresence mode={animateLayout ? "popLayout" : "sync"} initial={false}>
-                {visibleTechnologies.map((tech) => (
+                {visibleTechnologies.map((tech, index) => (
                   <motion.div
                     key={tech.id}
                     layout={animateLayout}
@@ -278,7 +273,12 @@ const Services = () => {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={animateLayout ? { opacity: 0, scale: 0.94 } : undefined}
                     transition={{ duration: animateLayout ? 0.35 : 0, ease: EASE_OUT }}
-                    className="h-full"
+                    className={cn(
+                      "h-full sm:col-span-2 lg:col-start-auto",
+                      visibleTechnologies.length % 2 === 1 && index === visibleTechnologies.length - 1 && "sm:col-start-2",
+                      visibleTechnologies.length % 3 === 1 && index === visibleTechnologies.length - 1 && "lg:col-start-3",
+                      visibleTechnologies.length % 3 === 2 && index === visibleTechnologies.length - 2 && "lg:col-start-2"
+                    )}
                   >
                     <InteractiveCard
                       lift={8}
@@ -295,12 +295,7 @@ const Services = () => {
                           </span>
                         </div>
                         <div className="flex flex-1 flex-col p-6">
-                          <h3
-                            className={cn(
-                              "mb-3 text-xl font-semibold text-brand-blue transition-colors duration-300 group-hover:text-brand-accent",
-                              WRAP_LONG_WORDS
-                            )}
-                          >
+                          <h3 className="mb-3 text-xl font-semibold text-brand-blue hyphens-none [overflow-wrap:break-word] transition-colors duration-300 group-hover:text-brand-accent sm:min-h-[3.5rem]">
                             {tech.title}
                           </h3>
                           <p className="mb-5 line-clamp-3 leading-relaxed text-brand-gray">{tech.description}</p>

@@ -122,37 +122,39 @@ const Mission = () => {
             title={t("mission.howWeRealize")}
             text={t("mission.commitmentDescription")}
           />
-          <Stagger className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6" stagger={0.12}>
+          <Stagger className="grid grid-cols-1 gap-4 md:gap-6" stagger={0.12}>
             {commitments.map((item) => (
-              <StaggerItem key={item.title} className="h-full">
+              <StaggerItem key={item.title}>
                 <InteractiveCard
                   lift={8}
-                  className="h-full overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-brand-blue/5 transition-shadow duration-300 hover:shadow-xl"
+                  className="overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-brand-blue/5 transition-shadow duration-300 hover:shadow-xl"
                 >
-                  <div className="flex h-full flex-col p-6 md:p-8">
-                    <span className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-accent/10 text-brand-accent transition-colors duration-300 group-hover:bg-brand-accent group-hover:text-white">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        aria-hidden
-                        className="h-7 w-7 transition-transform duration-500 group-hover:-rotate-6 group-hover:scale-110"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        {reduce ? (
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.iconPath} />
-                        ) : (
-                          <motion.path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d={item.iconPath}
-                            variants={drawVariants}
-                          />
-                        )}
-                      </svg>
-                    </span>
-                    <h3 className="mb-3 text-xl font-bold tracking-[0.08em] text-brand-blue">{item.title}</h3>
+                  <div className="grid gap-5 p-6 md:grid-cols-[14rem_minmax(0,1fr)] md:items-start md:gap-8 md:p-8">
+                    <div className="flex min-w-0 items-center gap-4">
+                      <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-brand-accent/10 text-brand-accent transition-colors duration-300 group-hover:bg-brand-accent group-hover:text-white">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          aria-hidden
+                          className="h-7 w-7 transition-transform duration-500 group-hover:-rotate-6 group-hover:scale-110"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          {reduce ? (
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={item.iconPath} />
+                          ) : (
+                            <motion.path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d={item.iconPath}
+                              variants={drawVariants}
+                            />
+                          )}
+                        </svg>
+                      </span>
+                      <h3 className="min-w-0 text-lg font-bold tracking-[0.08em] text-brand-blue lg:text-xl">{item.title}</h3>
+                    </div>
                     <p className="leading-relaxed text-brand-gray">{item.text}</p>
                   </div>
                 </InteractiveCard>
