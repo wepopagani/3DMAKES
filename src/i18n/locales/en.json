@@ -2118,6 +2118,7 @@
     "workshop": {
       "title": "Inside the workshop",
       "equipment": "Workshop equipment",
+      "enlargePhoto": "Enlarge the photo of {{name}}",
       "types": {
         "filament": "Filament printing",
         "resin": "Resin printing",
