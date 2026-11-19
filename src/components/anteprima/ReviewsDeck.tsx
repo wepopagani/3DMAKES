@@ -1,8 +1,14 @@
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { AnimatePresence, motion, useInView, useReducedMotion, type PanInfo, type Variants } from "framer-motion";
-import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
+import { ArrowUpRight, ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { GOOGLE_PUBLIC_REVIEW_COUNT } from "@/constants/googleBusiness";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  GOOGLE_PUBLIC_REVIEW_COUNT,
+  GOOGLE_PUBLIC_REVIEW_RATING,
+  GOOGLE_REVIEW_SNAPSHOT_DATE,
+  GOOGLE_REVIEWS_URL,
+} from "@/constants/googleBusiness";
 import { cn } from "@/lib/utils";
 import { PREVIEW_REVIEWS, type PreviewReview } from "./data";
 import { HEADING_2, Reveal, RoundButton, SplitWords } from "./primitives";
@@ -30,9 +36,9 @@ const topCardVariants: Variants = {
   }),
 };
 
-function Stars({ rating, animated = false }: { rating: number; animated?: boolean }) {
+function Stars({ rating, label, animated = false }: { rating: number; label?: string; animated?: boolean }) {
   return (
-    <span className="flex">
+    <span className="flex" role={label ? "img" : undefined} aria-label={label} aria-hidden={!label}>
       {Array.from({ length: 5 }).map((_, index) => {
         const star = (
           <Star
@@ -71,21 +77,24 @@ function GoogleMark() {
   );
 }
 
-function ReviewCard({ review, footer }: { review: PreviewReview; footer: string }) {
+function ReviewCard({ review, footer, ratingLabel }: { review: PreviewReview; footer: string; ratingLabel: string }) {
   return (
     <article className="flex h-full flex-col rounded-3xl border border-gray-100 bg-white p-6 shadow-xl shadow-brand-blue/[0.07] md:p-8">
       <div className="mb-4 flex items-center gap-3">
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand-blue text-lg font-bold text-white">
+        <div aria-hidden className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-brand-blue text-lg font-bold text-white">
           {review.author.charAt(0)}
         </div>
-        <div className="min-w-0 flex-1">
-          <h3 className="break-words font-semibold leading-snug text-brand-blue">{review.author}</h3>
-          <p className="text-sm text-brand-gray">{review.date}</p>
-        </div>
-        <Quote aria-hidden className="h-9 w-9 shrink-0 text-brand-accent/20" />
+        <h3 className="min-w-0 flex-1 break-words font-semibold leading-snug text-brand-blue">{review.author}</h3>
+        {review.text && <Quote aria-hidden className="h-9 w-9 shrink-0 text-brand-accent/20" />}
       </div>
-      <Stars rating={review.rating} />
-      <p className="mt-4 line-clamp-6 flex-grow text-base leading-relaxed text-brand-gray md:text-lg">"{review.text}"</p>
+      <div className="flex-grow">
+        <Stars rating={review.rating} label={ratingLabel} />
+        {review.text && (
+          <blockquote className="mt-4 line-clamp-6 whitespace-pre-line break-words text-base leading-relaxed text-brand-gray md:text-lg">
+            {review.text}
+          </blockquote>
+        )}
+      </div>
       <div className="mt-6 flex items-center border-t border-gray-100 pt-4 text-sm text-brand-gray">
         <GoogleMark />
         {footer}
@@ -94,16 +103,73 @@ function ReviewCard({ review, footer }: { review: PreviewReview; footer: string 
   );
 }
 
+function GoogleReviewsDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
+  const { t, i18n } = useTranslation();
+  const title = t("reviews.all", { count: GOOGLE_PUBLIC_REVIEW_COUNT });
+  const snapshotDate = new Intl.DateTimeFormat(i18n.resolvedLanguage || i18n.language, {
+    dateStyle: "long",
+    timeZone: "UTC",
+  }).format(new Date(GOOGLE_REVIEW_SNAPSHOT_DATE));
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogTrigger asChild>
+        <button
+          type="button"
+          className="inline-flex min-h-11 items-center rounded-full border border-brand-blue/20 bg-white px-5 py-2 text-sm font-semibold text-brand-blue transition-colors hover:border-brand-blue hover:bg-brand-blue/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2"
+        >
+          {title}
+        </button>
+      </DialogTrigger>
+      <DialogContent className="flex max-h-[90svh] w-[min(94vw,44rem)] max-w-none flex-col gap-0 overflow-hidden rounded-2xl p-0 motion-reduce:animate-none sm:rounded-2xl">
+        <DialogHeader className="shrink-0 border-b border-gray-100 py-4 pl-4 pr-12 text-left sm:py-5 sm:pl-6">
+          <DialogTitle className="text-xl leading-tight text-brand-blue sm:text-2xl">{title}</DialogTitle>
+          <DialogDescription className="text-brand-gray">{t("reviews.snapshotNote", { date: snapshotDate })}</DialogDescription>
+          <a
+            href={GOOGLE_REVIEWS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-11 items-center gap-1.5 self-start rounded-sm text-sm font-semibold text-brand-blue underline underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent"
+          >
+            {t("reviews.openOnGoogle")}
+            <ArrowUpRight aria-hidden className="h-4 w-4" />
+          </a>
+        </DialogHeader>
+        <div
+          role="region"
+          aria-label={title}
+          tabIndex={0}
+          className="min-h-0 overflow-y-auto overscroll-contain px-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand-accent sm:px-6"
+        >
+          <ol className="divide-y divide-gray-100">
+            {PREVIEW_REVIEWS.map(({ id, author, rating, text, date }) => (
+              <li key={id} className="py-4">
+                <h3 className="break-words font-semibold text-brand-blue">{author}</h3>
+                <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
+                  <Stars rating={rating} label={t("reviews.starsLabel", { rating })} />
+                  <span className="text-sm text-brand-gray">{date}</span>
+                </div>
+                {text && <blockquote className="mt-2 whitespace-pre-line break-words leading-relaxed text-brand-gray">{text}</blockquote>}
+              </li>
+            ))}
+          </ol>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 export default function ReviewsDeck() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const reduce = useReducedMotion();
   const total = PREVIEW_REVIEWS.length;
   const [[index, direction], setPage] = useState<[number, number]>([0, 1]);
   const [paused, setPaused] = useState(false);
   const [interacted, setInteracted] = useState(false);
+  const [reviewsOpen, setReviewsOpen] = useState(false);
   const deckRef = useRef<HTMLDivElement>(null);
   const inView = useInView(deckRef, { margin: "-15% 0px -15% 0px" });
-  const autoplay = !reduce && !interacted;
+  const autoplay = !reduce && !interacted && !reviewsOpen;
 
   const paginate = useCallback(
     (step: number) => setPage(([current]) => [(current + step + total) % total, step]),
@@ -113,11 +179,6 @@ export default function ReviewsDeck() {
   const step = (delta: number) => {
     setInteracted(true);
     paginate(delta);
-  };
-
-  const goTo = (target: number) => {
-    setInteracted(true);
-    setPage(([current]) => [target, target >= current ? 1 : -1]);
   };
 
   useEffect(() => {
@@ -144,10 +205,15 @@ export default function ReviewsDeck() {
 
   const footer = t("reviews.googleReview");
   const current = PREVIEW_REVIEWS[index];
+  const publicRating = new Intl.NumberFormat(i18n.resolvedLanguage || i18n.language, {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  }).format(GOOGLE_PUBLIC_REVIEW_RATING);
   const counter = (
     <div className="flex items-center gap-3 text-sm font-semibold tabular-nums text-brand-blue">
       <span>{String(index + 1).padStart(2, "0")}</span>
-      <span className="relative h-0.5 w-20 overflow-hidden rounded-full bg-brand-blue/10 md:w-24">
+      <span className="sr-only"> / </span>
+      <span aria-hidden className="relative h-0.5 w-20 overflow-hidden rounded-full bg-brand-blue/10 md:w-24">
         <motion.span
           className="absolute inset-y-0 left-0 rounded-full bg-brand-accent"
           initial={false}
@@ -189,8 +255,8 @@ export default function ReviewsDeck() {
             <SplitWords text={t("reviews.title")} />
           </h2>
           <Reveal delay={0.1} className="mb-5 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 lg:justify-start">
-            <Stars rating={5} animated />
-            <span className="text-lg font-semibold text-brand-gray">5.0 {t("reviews.ratingLabel")}</span>
+            <Stars rating={GOOGLE_PUBLIC_REVIEW_RATING} animated={!reduce} />
+            <span className="text-lg font-semibold text-brand-gray">{publicRating} {t("reviews.ratingLabel")}</span>
             <span className="text-base font-medium text-brand-gray max-sm:basis-full">
               <span aria-hidden className="max-sm:hidden">· </span>
               {t("reviews.totalOnGoogle", { count: GOOGLE_PUBLIC_REVIEW_COUNT })}
@@ -198,6 +264,9 @@ export default function ReviewsDeck() {
           </Reveal>
           <Reveal delay={0.2}>
             <p className="body-text mx-auto max-w-xl lg:mx-0">{t("reviews.description")}</p>
+          </Reveal>
+          <Reveal delay={0.25} className="mt-5">
+            <GoogleReviewsDialog open={reviewsOpen} onOpenChange={setReviewsOpen} />
           </Reveal>
           <Reveal delay={0.3} className="mt-8 hidden items-center gap-3 lg:flex">
             {controls}
@@ -239,7 +308,7 @@ export default function ReviewsDeck() {
                   }}
                   transition={{ type: "spring", stiffness: 260, damping: 28 }}
                 >
-                  <ReviewCard review={review} footer={footer} />
+                  <ReviewCard review={review} footer={footer} ratingLabel={t("reviews.starsLabel", { rating: review.rating })} />
                 </motion.div>
               );
             })}
@@ -259,25 +328,9 @@ export default function ReviewsDeck() {
                 onDragStart={() => setInteracted(true)}
                 onDragEnd={onDragEnd}
               >
-                <ReviewCard review={current} footer={footer} />
+                <ReviewCard review={current} footer={footer} ratingLabel={t("reviews.starsLabel", { rating: current.rating })} />
               </motion.div>
             </AnimatePresence>
-          </div>
-
-          <div className="mt-6 flex flex-wrap justify-center gap-2">
-            {PREVIEW_REVIEWS.map((review, dotIndex) => (
-              <button
-                key={review.id}
-                type="button"
-                onClick={() => goTo(dotIndex)}
-                aria-label={`Vai alla recensione ${dotIndex + 1}`}
-                aria-current={dotIndex === index ? "true" : undefined}
-                className={cn(
-                  "relative h-2 rounded-full transition-all duration-300 before:absolute before:-inset-2 before:content-[''] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent",
-                  dotIndex === index ? "w-8 bg-brand-blue" : "w-2 bg-gray-300 hover:bg-brand-accent/60"
-                )}
-              />
-            ))}
           </div>
 
           <div className="mt-6 flex items-center justify-center gap-3 lg:hidden">

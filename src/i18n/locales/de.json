@@ -1905,7 +1905,11 @@
     "ratingLabel": "auf Google",
     "description": "Die Zufriedenheit unserer Kunden ist unsere Priorität. Lesen Sie, was sie über uns sagen.",
     "totalOnGoogle": "{{count}} Bewertungen bei Google",
-    "googleReview": "Google Bewertung"
+    "googleReview": "Google Bewertung",
+    "all": "Alle {{count}} Bewertungen lesen",
+    "openOnGoogle": "In Google Maps öffnen",
+    "snapshotNote": "Die relativen Zeitangaben entsprechen der Anzeige bei Google am {{date}}.",
+    "starsLabel": "{{rating}} von 5 Sternen"
   },
   "courseRegistration": {
     "hero": {

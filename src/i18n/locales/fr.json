@@ -1905,7 +1905,11 @@
     "ratingLabel": "sur Google",
     "description": "La satisfaction de nos clients est notre priorité. Lisez ce qu'ils disent de nous.",
     "totalOnGoogle": "{{count}} avis sur Google",
-    "googleReview": "Avis Google"
+    "googleReview": "Avis Google",
+    "all": "Lire les {{count}} avis",
+    "openOnGoogle": "Ouvrir dans Google Maps",
+    "snapshotNote": "Les dates relatives sont celles affichées par Google le {{date}}.",
+    "starsLabel": "{{rating}} étoiles sur 5"
   },
   "courseRegistration": {
     "hero": {

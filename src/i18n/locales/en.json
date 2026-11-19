@@ -1903,7 +1903,11 @@
     "ratingLabel": "on Google",
     "description": "Customer satisfaction is our priority. Read what they have to say about us.",
     "totalOnGoogle": "{{count}} reviews on Google",
-    "googleReview": "Google Review"
+    "googleReview": "Google Review",
+    "all": "Read all {{count}} reviews",
+    "openOnGoogle": "Open in Google Maps",
+    "snapshotNote": "Relative dates are shown as they appeared on Google on {{date}}.",
+    "starsLabel": "{{rating}} out of 5 stars"
   },
   "courseRegistration": {
     "hero": {

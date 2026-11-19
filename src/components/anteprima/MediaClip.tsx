@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Play } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
@@ -9,9 +9,10 @@ interface MediaClipProps {
   label: string;
   className?: string;
   fit?: "cover" | "contain";
+  autoPlayInView?: boolean;
 }
 
-export default function MediaClip({ src, poster, label, className, fit = "cover" }: MediaClipProps) {
+export default function MediaClip({ src, poster, label, className, fit = "cover", autoPlayInView = false }: MediaClipProps) {
   const { t } = useTranslation();
   const videoRef = useRef<HTMLVideoElement>(null);
   const playButton = useRef<HTMLButtonElement>(null);
@@ -19,27 +20,51 @@ export default function MediaClip({ src, poster, label, className, fit = "cover"
   const [started, setStarted] = useState(false);
   const [failed, setFailed] = useState(false);
 
+  const play = useCallback(async (fromButton = false) => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (!video.hasAttribute("src")) video.src = src;
+    try {
+      await video.play();
+      if (!video.isConnected) return;
+      transferFocus.current = fromButton && document.activeElement === playButton.current;
+      setStarted(true);
+    } catch {
+      if (video.error) setFailed(true);
+    }
+  }, [src]);
+
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-    const observer = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting) video.pause();
-    });
-    observer.observe(video);
-    const pauseWhenHidden = () => {
-      if (document.hidden) video.pause();
+    let enoughVisible = false;
+    const tryAutoplay = () => {
+      if (autoPlayInView && enoughVisible && !document.hidden && !video.hasAttribute("src") &&
+          !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        void play();
+      }
     };
-    document.addEventListener("visibilitychange", pauseWhenHidden);
+    const observer = new IntersectionObserver(([entry]) => {
+      enoughVisible = entry.isIntersecting && entry.intersectionRatio >= .35;
+      if (!entry.isIntersecting) video.pause();
+      else tryAutoplay();
+    }, { threshold: autoPlayInView ? [0, .35] : 0 });
+    observer.observe(video);
+    const updateVisibility = () => {
+      if (document.hidden) video.pause();
+      else tryAutoplay();
+    };
+    document.addEventListener("visibilitychange", updateVisibility);
     return () => {
       observer.disconnect();
-      document.removeEventListener("visibilitychange", pauseWhenHidden);
+      document.removeEventListener("visibilitychange", updateVisibility);
       video.pause();
       if (video.hasAttribute("src")) {
         video.removeAttribute("src");
         video.load();
       }
     };
-  }, []);
+  }, [autoPlayInView, play]);
 
   useLayoutEffect(() => {
     if (started && transferFocus.current) {
@@ -47,20 +72,6 @@ export default function MediaClip({ src, poster, label, className, fit = "cover"
       transferFocus.current = false;
     }
   }, [started]);
-
-  const play = async () => {
-    const video = videoRef.current;
-    if (!video) return;
-    if (!video.hasAttribute("src")) video.src = src;
-    try {
-      await video.play();
-      if (!video.isConnected) return;
-      transferFocus.current = document.activeElement === playButton.current;
-      setStarted(true);
-    } catch {
-      if (video.error) setFailed(true);
-    }
-  };
 
   const mediaClass = cn("absolute inset-0 h-full w-full", fit === "cover" ? "object-cover" : "object-contain");
 
@@ -71,8 +82,9 @@ export default function MediaClip({ src, poster, label, className, fit = "cover"
       )}
       <video
         ref={videoRef}
-        className={cn(mediaClass, (!started || failed) && "invisible")}
+        className={cn(mediaClass, (!started || failed) && "opacity-0")}
         aria-label={label}
+        aria-hidden={!started || failed || undefined}
         tabIndex={started && !failed ? 0 : -1}
         muted
         playsInline
@@ -88,7 +100,7 @@ export default function MediaClip({ src, poster, label, className, fit = "cover"
         <button
           ref={playButton}
           type="button"
-          onClick={() => void play()}
+          onClick={() => void play(true)}
           className="absolute inset-0 grid place-items-center bg-black/10 text-white transition-colors hover:bg-black/30 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-white"
           aria-label={t("siteMedia.playNamed", { title: label })}
         >

@@ -127,6 +127,7 @@ export function TonySection() {
             poster="/media/workshop/tony-poster.jpg"
             label={t("index.tonyVideoAlt")}
             className="aspect-video rounded-3xl bg-white"
+            autoPlayInView
           />
         </Reveal>
         <Reveal x={48} y={0} delay={0.15} className="w-full max-w-xl text-center lg:text-left">

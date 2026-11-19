@@ -1899,7 +1899,11 @@
     "ratingLabel": "su Google",
     "description": "La soddisfazione dei nostri clienti è la nostra priorità. Leggi cosa hanno da dire su di noi.",
     "totalOnGoogle": "{{count}} recensioni su Google",
-    "googleReview": "Recensione Google"
+    "googleReview": "Recensione Google",
+    "all": "Leggi tutte le {{count}} recensioni",
+    "openOnGoogle": "Apri su Google Maps",
+    "snapshotNote": "Le date relative sono quelle mostrate da Google il {{date}}.",
+    "starsLabel": "{{rating}} stelle su 5"
   },
   "courseRegistration": {
     "hero": {
